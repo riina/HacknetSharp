@@ -181,7 +181,7 @@ namespace HacknetSharp.Server.Standard
         [Verb("run", HelpText = "run server")]
         private class RunOptions
         {
-            [Value(0, MetaName = "externalAddr", HelpText = "External address.")]
+            [Value(0, MetaName = "externalAddr", HelpText = "External address.", Required = true)]
             public string ExternalAddr { get; set; }
 
             [Value(1, MetaName = "worldConfigs", HelpText = "World configuration YAML files.")]

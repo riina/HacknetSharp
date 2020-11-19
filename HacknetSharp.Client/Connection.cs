@@ -15,7 +15,7 @@ namespace HacknetSharp.Client
             using var sslStream = new SslStream(
                 client.GetStream(), false, ValidateServerCertificate
             );
-            sslStream.AuthenticateAsClient(server, default, SslProtocols.Default, true);
+            sslStream.AuthenticateAsClient(server, default, SslProtocols.Tls12, true);
 
             // TODO implement handshake + user credentials
             var ns = new NetSerializer(sslStream);
