@@ -32,6 +32,8 @@ namespace HacknetSharp.Server
             var storageContextFactoryType = config.StorageContextFactoryType ??
                                             throw new ArgumentException(
                                                 $"{nameof(ServerConfig.StorageContextFactoryType)} not specified");
+            _cert = config.Certificate ?? throw new ArgumentException(
+                $"{nameof(ServerConfig.Certificate)} not specified");
             _accessController = (AccessController)(Activator.CreateInstance(accessControllerType) ??
                                                    throw new ApplicationException());
             var factory = (StorageContextFactoryBase)(Activator.CreateInstance(storageContextFactoryType) ??
