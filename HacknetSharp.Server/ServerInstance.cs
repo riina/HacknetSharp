@@ -120,6 +120,7 @@ namespace HacknetSharp.Server
             RequireState(State.Starting, State.Active);
             while (_state != State.Active) await Task.Delay(100).Caf();
             TriggerState(State.Active, State.Active, State.Dispose);
+            _connectListener.Stop();
             await Task.Run(() =>
             {
                 _op.WaitOne();
@@ -127,7 +128,6 @@ namespace HacknetSharp.Server
                 _op.Set();
                 _countdown.Wait();
             });
-            _connectListener.Stop();
             TriggerState(State.Dispose, State.Dispose, State.Disposed);
         }
 

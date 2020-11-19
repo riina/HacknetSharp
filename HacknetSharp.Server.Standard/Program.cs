@@ -181,13 +181,36 @@ namespace HacknetSharp.Server.Standard
         [Verb("run", HelpText = "run server")]
         private class RunOptions
         {
-            [Value(0, MetaName = "worldConfigs", HelpText = "World configuration YAML files.")]
+            [Value(0, MetaName = "externalAddr", HelpText = "External address.")]
+            public string ExternalAddr { get; set; }
+
+            [Value(1, MetaName = "worldConfigs", HelpText = "World configuration YAML files.")]
             public IEnumerable<string> WorldConfigs { get; set; } = null!;
         }
 
         private static async Task<int> RunRun(RunOptions options)
         {
             // TODO maybe programs -> types (declare with attrs)
+            Console.WriteLine("Looking for cert...");
+            X509Certificate? cert = null;
+            foreach ((StoreName name, StoreLocation location) in _wStores)
+            {
+                var store = new X509Store(name, location);
+                store.Open(OpenFlags.ReadOnly);
+                var certs = store.Certificates.Find(X509FindType.FindBySubjectName, options.ExternalAddr, false);
+                store.Close();
+                if (certs.Count <= 0) continue;
+                Console.WriteLine($"Found cert in {location}:{name}");
+                cert = certs[0];
+                break;
+            }
+
+            if (cert == null)
+            {
+                Console.WriteLine("Failed to find certificate");
+                return 304;
+            }
+
 
             var instance = new ServerConfig()
                 .WithModels(_models)
@@ -196,6 +219,7 @@ namespace HacknetSharp.Server.Standard
                 .WithAccessController<StandardAccessController>()
                 .WithWorldConfigs(options.WorldConfigs.Select(ReadWorldConfigFromFile))
                 .WithPort(42069)
+                .WithCertificate(cert)
                 .CreateInstance();
             await instance.StartAsync();
 
