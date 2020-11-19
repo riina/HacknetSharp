@@ -7,7 +7,7 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
-using HacknetSharp.Server.Postgres;
+using HacknetSharp.Server.Sqlite;
 using YamlDotNet.Serialization;
 
 namespace HacknetSharp.Server.Standard
@@ -25,7 +25,7 @@ namespace HacknetSharp.Server.Standard
 
         private const string ExtensionsFolder = "extensions";
 
-        private class StandardPostgresStorageContextFactory : PostgresStorageContextFactory
+        private class StandardSqliteStorageContextFactory : SqliteStorageContextFactory
         {
             protected override IEnumerable<IEnumerable<Type>> CustomModelsMulti => _models;
         }
@@ -192,7 +192,7 @@ namespace HacknetSharp.Server.Standard
             var instance = new ServerConfig()
                 .WithModels(_models)
                 .WithPrograms(_programs)
-                .WithStorageContextFactory<StandardPostgresStorageContextFactory>()
+                .WithStorageContextFactory<StandardSqliteStorageContextFactory>()
                 .WithAccessController<StandardAccessController>()
                 .WithWorldConfigs(options.WorldConfigs.Select(ReadWorldConfigFromFile))
                 .WithPort(42069)
