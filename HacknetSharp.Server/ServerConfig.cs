@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace HacknetSharp.Server
 {
@@ -33,6 +34,16 @@ namespace HacknetSharp.Server
         /// User access controller type.
         /// </summary>
         public Type? AccessControllerType { get; set; }
+
+        /// <summary>
+        /// Server certificate.
+        /// </summary>
+        public X509Certificate? Certificate { get; set; }
+
+        /// <summary>
+        /// TCP port.
+        /// </summary>
+        public ushort Port { get; set; }
 
         /// <summary>
         /// Creates new instance of <see cref="ServerConfig"/>
@@ -119,6 +130,28 @@ namespace HacknetSharp.Server
         public ServerConfig WithWorldConfigs(IEnumerable<WorldConfig> worldConfigs)
         {
             WorldConfigs.UnionWith(worldConfigs);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets TCP port.
+        /// </summary>
+        /// <returns>This config.</returns>
+        /// <param name="port">TCP port.</param>
+        public ServerConfig WithPort(ushort port)
+        {
+            Port = port;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets server certificate.
+        /// </summary>
+        /// <returns>Certificate.</returns>
+        /// <param name="certificate">Server certificate.</param>
+        public ServerConfig WithCertificate(X509Certificate certificate)
+        {
+            Certificate = certificate;
             return this;
         }
 

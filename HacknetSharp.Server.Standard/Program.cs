@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp.Server.Postgres;
@@ -9,6 +12,7 @@ using YamlDotNet.Serialization;
 
 namespace HacknetSharp.Server.Standard
 {
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal static class Program
     {
         static Program()
@@ -49,20 +53,111 @@ namespace HacknetSharp.Server.Standard
 
         private static async Task<int> Main(string[] args) =>
             await Parser.Default
-                .ParseArguments<CreateOptions, RunOptions
+                .ParseArguments<InstallCertOptions, UninstallCertOptions, CreateOptions, RunOptions
                 >(args)
-                .MapResult<CreateOptions, RunOptions, Task<int>>(
+                .MapResult<InstallCertOptions, UninstallCertOptions, CreateOptions, RunOptions, Task<int>>(
+                    RunInstallCert,
+                    RunUninstallCert,
                     RunCreate,
                     RunRun,
                     errs => Task.FromResult(1));
 
-        // TODO purge option (clear database of content outside specified worlds)
+        // TODO purge verb (clear database of content outside specified worlds)
+
+        private static readonly (StoreName name, StoreLocation location)[] _wStores =
+        {
+            (StoreName.My, StoreLocation.CurrentUser), (StoreName.Root, StoreLocation.CurrentUser),
+        };
+
+        [Verb("installcert", HelpText = "install server certificate")]
+        private class InstallCertOptions
+        {
+            [Value(0, MetaName = "certFile", HelpText = "File with PKCS#12 X509 key/cert", Required = true)]
+            public string CertFile { get; set; } = null!;
+        }
+
+        private static Task<int> RunInstallCert(InstallCertOptions options)
+        {
+            X509Certificate2? nCert = null;
+            try
+            {
+                var ss = PromptSecureString("Pfx/p12 export password:");
+                if (ss == null)
+                    return Task.FromResult(0);
+                try
+                {
+                    nCert = new X509Certificate2(options.CertFile, ss);
+                }
+                finally
+                {
+                    ss.Dispose();
+                }
+
+                foreach ((StoreName name, StoreLocation location) in _wStores)
+                {
+                    Console.WriteLine($"Registering to {location}:{name}...");
+                    var nStore = new X509Store(name, location);
+                    nStore.Open(OpenFlags.ReadWrite);
+                    nStore.Add(nCert);
+                    nStore.Close();
+                }
+            }
+            finally
+            {
+                nCert?.Dispose();
+            }
+
+            Console.WriteLine("Cert registration complete.");
+            return Task.FromResult(0);
+        }
+
+        [Verb("uninstallcert", HelpText = "uninstall server certificate")]
+        private class UninstallCertOptions
+        {
+            [Value(0, MetaName = "certFile", HelpText = "File with PKCS#12 X509 key/cert", Required = true)]
+            public string CertFile { get; set; } = null!;
+        }
+
+        private static Task<int> RunUninstallCert(UninstallCertOptions options)
+        {
+            X509Certificate2? nCert = null;
+            try
+            {
+                var ss = PromptSecureString("Pfx/p12 export password:");
+                if (ss == null)
+                    return Task.FromResult(0);
+                try
+                {
+                    nCert = new X509Certificate2(options.CertFile, ss);
+                }
+                finally
+                {
+                    ss.Dispose();
+                }
+
+                foreach ((StoreName name, StoreLocation location) in _wStores)
+                {
+                    Console.WriteLine($"Removing from {location}:{name}...");
+                    var nStore = new X509Store(name, location);
+                    nStore.Open(OpenFlags.ReadWrite);
+                    nStore.Remove(nCert);
+                    nStore.Close();
+                }
+            }
+            finally
+            {
+                nCert?.Dispose();
+            }
+
+            Console.WriteLine("Cert removal complete.");
+            return Task.FromResult(0);
+        }
 
         [Verb("create", HelpText = "create world configuration")]
         private class CreateOptions
         {
             [Value(0, MetaName = "worldName", HelpText = "Name of world", Required = true)]
-            public string WorldName { get; set; }
+            public string WorldName { get; set; } = null!;
 
             [Option('f', "force", HelpText = "Force overwrite existing config.")]
             public bool Force { get; set; }
@@ -87,7 +182,7 @@ namespace HacknetSharp.Server.Standard
         private class RunOptions
         {
             [Value(0, MetaName = "worldConfigs", HelpText = "World configuration YAML files.")]
-            public IEnumerable<string> WorldConfigs { get; set; }
+            public IEnumerable<string> WorldConfigs { get; set; } = null!;
         }
 
         private static async Task<int> RunRun(RunOptions options)
@@ -100,6 +195,7 @@ namespace HacknetSharp.Server.Standard
                 .WithStorageContextFactory<StandardPostgresStorageContextFactory>()
                 .WithAccessController<StandardAccessController>()
                 .WithWorldConfigs(options.WorldConfigs.Select(ReadWorldConfigFromFile))
+                .WithPort(42069)
                 .CreateInstance();
             await instance.StartAsync();
 
@@ -125,5 +221,39 @@ namespace HacknetSharp.Server.Standard
 
         private static WorldConfig ReadWorldConfigFromFile(string file) =>
             _deserializer.Deserialize<WorldConfig>(File.ReadAllText(file));
+
+        /// <summary>
+        /// Prompt user for SecureString password
+        /// </summary>
+        /// <param name="mes">Prompt message</param>
+        /// <returns>Password or null if terminated</returns>
+        public static SecureString? PromptSecureString(string mes)
+        {
+            Console.Write(mes);
+
+            var ss = new SecureString();
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter) break;
+                if (key.Key == ConsoleKey.C && (key.Modifiers & ConsoleModifiers.Control) == ConsoleModifiers.Control)
+                {
+                    ss.Dispose();
+                    return null;
+                }
+
+                if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (ss.Length != 0)
+                        ss.RemoveAt(ss.Length - 1);
+                    continue;
+                }
+
+                ss.AppendChar(key.KeyChar);
+            }
+
+            Console.WriteLine();
+            return ss;
+        }
     }
 }

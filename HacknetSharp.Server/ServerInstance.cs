@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using Ns;
 
 namespace HacknetSharp.Server
 {
@@ -13,6 +18,11 @@ namespace HacknetSharp.Server
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private State _state;
+
+
+        private readonly TcpListener _connectListener;
+        private readonly X509Certificate _cert;
+        private Task? _connectTask;
 
         protected internal ServerInstance(ServerConfig config)
         {
@@ -31,27 +41,77 @@ namespace HacknetSharp.Server
             _programTypes = config.Programs;
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
+            _connectListener = new TcpListener(IPAddress.Any, config.Port);
             _state = State.NotStarted;
+        }
+
+
+        private void RunConnectListener()
+        {
+            _connectListener.Start();
+            _connectTask = Task.Run(async () =>
+            {
+                while (TryIncrementCountdown(State.Active, State.Active))
+                {
+                    try
+                    {
+                        await _connectListener.AcceptTcpClientAsync().ContinueWith(HandleAsyncConnection);
+                    }
+                    finally
+                    {
+                        DecrementCountdown();
+                    }
+                }
+            });
+        }
+
+        private async Task HandleAsyncConnection(Task<TcpClient> task)
+        {
+            if (!TryIncrementCountdown(State.Active, State.Active)) return;
+            try
+            {
+                var client = await task;
+                await using var sslStream = new SslStream(client.GetStream(), false, default, default,
+                    EncryptionPolicy.RequireEncryption);
+                // Authenticate the server but don't require the client to authenticate
+                await sslStream.AuthenticateAsServerAsync(_cert, false, true);
+                sslStream.ReadTimeout = 10 * 1000;
+                sslStream.WriteTimeout = 10 * 1000;
+                var ns = new NetSerializer(sslStream);
+                string? text = ns.ReadUtf8String();
+                Console.WriteLine(text);
+                // TODO handle user
+            }
+            finally
+            {
+                DecrementCountdown();
+            }
         }
 
         public async Task<Task> StartAsync()
         {
             TriggerState(State.NotStarted, State.NotStarted, State.Starting);
-
-            // TODO socket configuration? or clients
             // TODO initialize programs
             TriggerState(State.Starting, State.Starting, State.Active);
-            return UpdateLoop();
+            RunConnectListener();
+            return UpdateAsync();
         }
 
-        private async Task UpdateLoop()
+        private async Task UpdateAsync()
         {
             while (TryIncrementCountdown(State.Active, State.Active))
             {
-                // TODO get queued inputs
-                // TODO update worlds lockstep
+                try
+                {
+                    // TODO get queued inputs from connections
+                    // TODO update worlds lockstep
 
-                await Task.Delay(10).Caf();
+                    await Task.Delay(10).Caf();
+                }
+                finally
+                {
+                    DecrementCountdown();
+                }
             }
         }
 
@@ -67,6 +127,7 @@ namespace HacknetSharp.Server
                 _op.Set();
                 _countdown.Wait();
             });
+            _connectListener.Stop();
             TriggerState(State.Dispose, State.Dispose, State.Disposed);
         }
 
