@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server", "HacknetSharp.Server\HacknetSharp.Server.csproj", "{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Client", "HacknetSharp.Client\HacknetSharp.Client.csproj", "{84D24E95-8795-4CA2-B48F-90B9F2395618}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Postgres", "HacknetSharp.Server.Postgres\HacknetSharp.Server.Postgres.csproj", "{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Standard", "HacknetSharp.Server.Standard\HacknetSharp.Server.Standard.csproj", "{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Common", "HacknetSharp.Server.Common\HacknetSharp.Server.Common.csproj", "{855594F6-D6E7-469D-B925-75D4E25D68C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Test", "HacknetSharp.Server.Test\HacknetSharp.Server.Test.csproj", "{DC155C3D-7C3D-41CC-9444-604D51275178}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Release|Any CPU.Build.0 = Release|Any CPU
+		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC155C3D-7C3D-41CC-9444-604D51275178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC155C3D-7C3D-41CC-9444-604D51275178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC155C3D-7C3D-41CC-9444-604D51275178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC155C3D-7C3D-41CC-9444-604D51275178}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
