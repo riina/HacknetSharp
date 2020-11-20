@@ -120,7 +120,7 @@ namespace HacknetSharp.Server
         {
             Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             while (_state != LifecycleState.Active) await Task.Delay(100).Caf();
-            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Disposed, ref _state);
+            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref _state);
             _connectListener.Stop();
             var connectionIds = _connections.Keys;
             foreach (var id in connectionIds)
