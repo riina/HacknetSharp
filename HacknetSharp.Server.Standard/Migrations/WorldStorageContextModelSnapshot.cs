@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HacknetSharp.Server.Standard.Migrations
 {
-    [DbContext(typeof(WorldStorageContext))]
+    [DbContext(typeof(ServerStorageContext))]
     partial class WorldStorageContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

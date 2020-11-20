@@ -43,7 +43,6 @@ namespace HacknetSharp.Client
                 );
                 await sslStream.AuthenticateAsClientAsync(_server, default, SslProtocols.Tls12, true);
                 var bs = new BufferedStream(sslStream);
-                // TODO implement handshake + user credentials
                 bs.WriteCommand(ClientServerCommand.Login);
                 bs.WriteUtf8String(_user);
                 bs.WriteUtf8String(_pass);

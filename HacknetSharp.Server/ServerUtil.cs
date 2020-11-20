@@ -30,9 +30,11 @@ namespace HacknetSharp.Server
         /// <param name="folder">Search folder</param>
         /// <param name="models">Model types</param>
         /// <param name="programs">Program types</param>
-        public static void LoadProgramTypesFromFolder(string folder, HashSet<Type[]> programs)
+        /// <returns>Set of type arrays</returns>
+        public static HashSet<Type[]> LoadProgramTypesFromFolder(string folder)
         {
-            if (!Directory.Exists(folder)) return;
+            HashSet<Type[]> ret = new HashSet<Type[]>();
+            if (!Directory.Exists(folder)) return ret;
             var opts = new EnumerationOptions {MatchCasing = MatchCasing.CaseInsensitive};
             try
             {
@@ -45,7 +47,7 @@ namespace HacknetSharp.Server
                         if (fDll != null)
                         {
                             var assembly = Assembly.LoadFrom(fDll);
-                            programs.Add(GetTypes(typeof(Program), assembly).ToArray());
+                            ret.Add(GetTypes(typeof(Program), assembly).ToArray());
                         }
                     }
                     catch (Exception e)
@@ -58,6 +60,8 @@ namespace HacknetSharp.Server
             {
                 Console.WriteLine(e);
             }
+
+            return ret;
         }
 
         public static bool IsSubclass(Type @base, Type? toCheck) =>

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HacknetSharp.Server.Common\HacknetSharp.Server.Common.csproj" />
     <ProjectReference Include="..\HacknetSharp\HacknetSharp.csproj" />
   </ItemGroup>

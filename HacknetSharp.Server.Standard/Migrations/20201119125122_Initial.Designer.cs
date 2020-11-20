@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HacknetSharp.Server.Standard.Migrations
 {
-    [DbContext(typeof(WorldStorageContext))]
+    [DbContext(typeof(ServerStorageContext))]
     [Migration("20201119125122_Initial")]
     partial class Initial
     {

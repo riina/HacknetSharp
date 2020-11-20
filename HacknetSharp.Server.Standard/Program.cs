@@ -7,6 +7,8 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
+using HacknetSharp.Server.BasicLogin;
+using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Sqlite;
 using YamlDotNet.Serialization;
 
@@ -15,39 +17,19 @@ namespace HacknetSharp.Server.Standard
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal static class Program
     {
-        static Program()
-        {
-            _programs = new HashSet<Type[]>();
-            ServerUtil.LoadProgramTypesFromFolder(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ExtensionsFolder),
-                _programs);
-        }
-
         private const string ExtensionsFolder = "extensions";
+
+        private static readonly HashSet<Type[]> _programs =
+            ServerUtil.LoadProgramTypesFromFolder(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                ExtensionsFolder));
 
         private class StandardSqliteStorageContextFactory : SqliteStorageContextFactory
         {
-            protected override IEnumerable<IEnumerable<Type>> CustomProgramsMulti => _programs;
+            protected override IEnumerable<IEnumerable<Type>> CustomPrograms => _programs;
+
+            protected override IEnumerable<IEnumerable<Type>> CustomModels =>
+                new[] {ServerUtil.GetTypes(typeof(Model<>), typeof(BasicAccessController).Assembly)};
         }
-
-        private class StandardAccessController : AccessController
-        {
-            public override bool Authenticate(string user, string pass)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void Register(string user, string pass, string adminUser)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void Deregister(string user, string pass, string adminUser, bool purge)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private static readonly HashSet<Type[]> _programs;
 
         private static async Task<int> Main(string[] args) =>
             await Parser.Default
@@ -188,7 +170,6 @@ namespace HacknetSharp.Server.Standard
 
         private static async Task<int> RunRun(RunOptions options)
         {
-            // TODO maybe programs -> types (declare with attrs)
             Console.WriteLine("Looking for cert...");
             X509Certificate? cert = null;
             foreach ((StoreName name, StoreLocation location) in _wStores)
@@ -213,7 +194,7 @@ namespace HacknetSharp.Server.Standard
             var instance = new ServerConfig()
                 .WithPrograms(_programs)
                 .WithStorageContextFactory<StandardSqliteStorageContextFactory>()
-                .WithAccessController<StandardAccessController>()
+                .WithAccessController<BasicAccessController>()
                 .WithWorldConfigs(options.WorldConfigs.Select(ReadWorldConfigFromFile))
                 .WithPort(42069)
                 .WithCertificate(cert)

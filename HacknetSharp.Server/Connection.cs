@@ -56,8 +56,16 @@ namespace HacknetSharp.Server
                 {
                     string user = bs.ReadUtf8String();
                     string pass = bs.ReadUtf8String();
-                    Console.WriteLine($"{user} {pass.Length}");
-                    await Task.Delay(5000, cancellationToken);
+                    if (!await _server.AccessController.AuthenticateAsync(user, pass))
+                    {
+                        bs.WriteCommand(ServerClientCommand.LoginFail);
+                        await bs.FlushAsync(cancellationToken);
+                        return;
+                    }
+
+                    // TODO provide basic user state
+                    bs.WriteCommand(ServerClientCommand.UserInfo);
+                    await bs.FlushAsync(cancellationToken);
                 }
             }
             catch

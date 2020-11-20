@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using HacknetSharp.Server.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server
@@ -9,7 +10,7 @@ namespace HacknetSharp.Server
     /// <summary>
     /// Represents a database session.
     /// </summary>
-    public class WorldStorageContext : DbContext
+    public class ServerStorageContext : DbContext
     {
         /// <summary>
         /// Delegate type for methods with <see cref="ModelBuilderCallbackAttribute"/>
@@ -20,15 +21,16 @@ namespace HacknetSharp.Server
         private readonly List<ModelBuilderDelegate> _configureList;
 
         /// <summary>
-        /// Creates a new instance of <see cref="WorldStorageContext"/> with the given database options and components.
+        /// Creates a new instance of <see cref="ServerStorageContext"/> with the given database options and components.
         /// </summary>
         /// <param name="options">The options for this context.</param>
         /// <param name="programs">The program types to initialize.</param>
-        public WorldStorageContext(DbContextOptions options, IEnumerable<Type> programs) : base(options)
+        /// <param name="models">Additional model types to initialize.</param>
+        public ServerStorageContext(DbContextOptions options, IEnumerable<Type> programs, IEnumerable<Type> models) : base(options)
         {
             _configureList = new List<ModelBuilderDelegate>();
             HashSet<Type> programSet = new HashSet<Type>();
-            HashSet<Type> initSet = new HashSet<Type>(ServerUtil.DefaultModels);
+            HashSet<Type> initSet = new HashSet<Type>(ServerUtil.DefaultModels.Concat(models));
 
             void AddDepTypes(IEnumerable<Type> depTypes)
             {

@@ -10,10 +10,8 @@ using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
 {
-    public class ServerInstance
+    public class ServerInstance : Common.Server
     {
-        private readonly AccessController _accessController;
-        private readonly WorldDatabase _worldDatabase;
         private readonly HashSet<Type> _programTypes;
         private readonly Dictionary<Guid, Program> _programs;
         private readonly CountdownEvent _countdown;
@@ -21,10 +19,11 @@ namespace HacknetSharp.Server
         private readonly ConcurrentDictionary<Guid, Connection> _connections;
         private LifecycleState _state;
 
-
         private readonly TcpListener _connectListener;
         private Task? _connectTask;
         internal X509Certificate Cert { get; }
+        internal AccessController AccessController { get; }
+        public Dictionary<Guid, WorldInstance> Worlds { get; }
 
         protected internal ServerInstance(ServerConfig config)
         {
@@ -36,12 +35,15 @@ namespace HacknetSharp.Server
                                                 $"{nameof(ServerConfig.StorageContextFactoryType)} not specified");
             Cert = config.Certificate ?? throw new ArgumentException(
                 $"{nameof(ServerConfig.Certificate)} not specified");
-            _accessController = (AccessController)(Activator.CreateInstance(accessControllerType) ??
-                                                   throw new ApplicationException());
+            AccessController = (AccessController)(Activator.CreateInstance(accessControllerType) ??
+                                                  throw new ApplicationException());
+            AccessController.Server = this;
             var factory = (StorageContextFactoryBase)(Activator.CreateInstance(storageContextFactoryType) ??
                                                       throw new ApplicationException());
             var context = factory.CreateDbContext(Array.Empty<string>());
-            _worldDatabase = new WorldDatabase(context);
+            Database = new ServerDatabaseInstance(context);
+            Worlds = new Dictionary<Guid, WorldInstance>();
+            // TODO inject worlds
             _programTypes = config.Programs;
             _programs = new Dictionary<Guid, Program>();
             _countdown = new CountdownEvent(1);
@@ -105,7 +107,14 @@ namespace HacknetSharp.Server
                 try
                 {
                     // TODO get queued inputs from connections
-                    // TODO update worlds lockstep
+                    foreach (var world in Worlds.Values)
+                    {
+                        world.Tick();
+                        Database.AddBulk(world.RegistrationSet);
+                        Database.EditBulk(world.DirtySet);
+                        Database.DeleteBulk(world.DeregistrationSet);
+                        await Database.SyncAsync();
+                    }
 
                     await Task.Delay(10).Caf();
                 }
