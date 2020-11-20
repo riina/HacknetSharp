@@ -16,6 +16,8 @@ namespace HacknetSharp.Server.Test
         {
             Assert.IsTrue(ServerUtil.IsSubclass(typeof(Model<>), typeof(SubModel)));
             Assert.IsFalse(ServerUtil.IsSubclass(typeof(Model<>), typeof(int)));
+            Assert.IsFalse(ServerUtil.IsSubclass(typeof(int), typeof(int)));
+            Assert.IsFalse(ServerUtil.IsSubclass(typeof(Model<>), typeof(Model<>)));
             Assert.IsTrue(ServerUtil.IsSubclass(typeof(object), typeof(string)));
             Assert.IsTrue(ServerUtil.IsSubclass(typeof(object), typeof(List<int>)));
         }

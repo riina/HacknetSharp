@@ -13,7 +13,7 @@ namespace HacknetSharp.Server
     public static class ServerUtil
     {
         public static IEnumerable<Type> GetTypes(Type t, Assembly assembly) =>
-            assembly.GetTypes().Where(type => IsSubclass(t, type));
+            assembly.GetTypes().Where(type => IsSubclass(t, type) && !type.IsAbstract);
 
         internal static readonly HashSet<Type> DefaultModels =
             new HashSet<Type>(GetTypes(typeof(Model<>), typeof(Model<>).Assembly)
