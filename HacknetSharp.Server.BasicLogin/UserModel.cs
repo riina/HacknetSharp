@@ -6,9 +6,9 @@ namespace HacknetSharp.Server.BasicLogin
 {
     public class UserModel : Model<string>
     {
-        public string Base64Salt { get; set; } = null!;
-        public string Base64Password { get; set; } = null!;
-        public bool Admin { get; set; }
+        public virtual string Base64Salt { get; set; } = null!;
+        public virtual string Base64Password { get; set; } = null!;
+        public virtual bool Admin { get; set; }
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591

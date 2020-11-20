@@ -6,9 +6,9 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class PlayerModel : Model<Guid>
     {
-        public Guid ActiveWorld { get; set; }
-        public Guid DefaultSystem { get; set; }
-        public SystemModel CurrentSystem { get; set; } = null!;
+        public virtual Guid ActiveWorld { get; set; }
+        public virtual Guid DefaultSystem { get; set; }
+        public virtual SystemModel CurrentSystem { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

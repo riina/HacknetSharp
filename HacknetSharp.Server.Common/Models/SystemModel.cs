@@ -7,10 +7,10 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class SystemModel : WorldMember<Guid>
     {
-        public string Name { get; set; } = null!;
-        public PersonModel Owner { get; set; } = null!;
-        public List<SimpleFileModel> SimpleFiles { get; set; } = null!;
-        public List<FolderModel> Folders { get; set; } = null!;
+        public virtual string Name { get; set; } = null!;
+        public virtual PersonModel Owner { get; set; } = null!;
+        public virtual List<SimpleFileModel> SimpleFiles { get; set; } = null!;
+        public virtual List<FolderModel> Folders { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

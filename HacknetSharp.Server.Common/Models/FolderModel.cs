@@ -6,8 +6,8 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class FolderModel : WorldMember<Guid>
     {
-        public SystemModel Owner { get; set; } = null!;
-        public string Path { get; set; } = null!;
+        public virtual SystemModel Owner { get; set; } = null!;
+        public virtual string Path { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

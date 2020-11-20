@@ -7,9 +7,9 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class PersonModel : WorldMember<Guid>
     {
-        public string Name { get; set; } = null!;
-        public string UserName { get; set; } = null!;
-        public List<SystemModel> Systems { get; set; } = null!;
+        public virtual string Name { get; set; } = null!;
+        public virtual string UserName { get; set; } = null!;
+        public virtual List<SystemModel> Systems { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

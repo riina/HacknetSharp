@@ -26,11 +26,12 @@ namespace HacknetSharp.Server
         /// <param name="options">The options for this context.</param>
         /// <param name="programs">The program types to initialize.</param>
         /// <param name="models">Additional model types to initialize.</param>
-        public ServerStorageContext(DbContextOptions options, IEnumerable<Type> programs, IEnumerable<Type> models) : base(options)
+        public ServerStorageContext(DbContextOptions options, IEnumerable<Type> programs, IEnumerable<Type> models) :
+            base(options)
         {
             _configureList = new List<ModelBuilderDelegate>();
             HashSet<Type> programSet = new HashSet<Type>();
-            HashSet<Type> initSet = new HashSet<Type>(ServerUtil.DefaultModels.Concat(models));
+            HashSet<Type> initSet = new HashSet<Type>();
 
             void AddDepTypes(IEnumerable<Type> depTypes)
             {
@@ -43,6 +44,8 @@ namespace HacknetSharp.Server
                             _configureList.Add(method.CreateDelegate<ModelBuilderDelegate>());
                 }
             }
+
+            AddDepTypes(ServerUtil.DefaultModels.Concat(models));
 
             foreach (var type in programs)
             {
