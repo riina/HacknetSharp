@@ -1,7 +1,6 @@
 # HacknetSharp
  Like HacknetPlusPlus but C#
 
-
 It's supposed to be multiplayer hacknet
 
 kind of
@@ -14,7 +13,24 @@ not ready to do anything right now
 
 Purely because tarche did [HacknetPlusPlus](https://github.com/The-Council-of-Wills/HacknetPlusPlus)
 
-### Doctor Glassman. Progress?
+## Primary end-user projects
+
+### HacknetSharp.Client.Cli
+
+CLI client interface. (The core `HacknetSharp.Client` library is
+.NET Standard 2.0 and should be usable in most scenarios).
+
+### HacknetSharp.Server.Standard
+
+Standard server implementation.
+
+Adding programs is done simply by adding assemblies in folders named 
+according to the assembly file names under `extensions/`.
+
+Using programs with extra database types would require a copy of this 
+project's source and an ef migration.
+
+## Doctor Glassman. Progress?
 
 - [x] Some idea of wtf is going on
 - [ ] Client verbs connect, register, changepassword
