@@ -3,24 +3,37 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using Ns;
 
 namespace HacknetSharp.Client
 {
     public class Connection
     {
-        public Connection(string server, ushort port)
+        private readonly string _server;
+        private readonly ushort _port;
+        private readonly string _user;
+        private string _pass;
+
+        public Connection(string server, ushort port, string user, string pass)
         {
-            var client = new TcpClient(server, port);
+            _server = server;
+            _port = port;
+            _user = user;
+            _pass = pass;
+        }
+
+        public async Task ConnectAsync()
+        {
+
+            var client = new TcpClient(_server, _port);
             using var sslStream = new SslStream(
                 client.GetStream(), false, ValidateServerCertificate
             );
-            sslStream.AuthenticateAsClient(server, default, SslProtocols.Tls12, true);
+            await sslStream.AuthenticateAsClientAsync(_server, default, SslProtocols.Tls12, true);
 
             // TODO implement handshake + user credentials
-            var ns = new NetSerializer(sslStream);
-            ns.WriteUtf8String("user here");
-
+            sslStream.WriteUtf8String("user here");
         }
 
         private static bool ValidateServerCertificate(

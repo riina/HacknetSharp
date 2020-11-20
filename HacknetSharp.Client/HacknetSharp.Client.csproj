@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ns" Version="2.0.1"/>
+    <ProjectReference Include="..\Ns\Ns.csproj" />
   </ItemGroup>
 
 </Project>

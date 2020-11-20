@@ -79,8 +79,7 @@ namespace HacknetSharp.Server
                 await sslStream.AuthenticateAsServerAsync(_cert, false, true);
                 sslStream.ReadTimeout = 10 * 1000;
                 sslStream.WriteTimeout = 10 * 1000;
-                var ns = new NetSerializer(sslStream);
-                string? text = ns.ReadUtf8String();
+                string? text = sslStream.ReadUtf8String();
                 Console.WriteLine(text);
                 // TODO handle user
             }

@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Client.Cli", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Sqlite", "HacknetSharp.Server.Sqlite\HacknetSharp.Server.Sqlite.csproj", "{82C86735-C699-46E5-AEB2-930CC670B3F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ns", "Ns\Ns.csproj", "{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Protocol", "HacknetSharp.Protocol\HacknetSharp.Protocol.csproj", "{E98CEC64-E865-40DD-81B2-A0355277EED0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +58,13 @@ Global
 		{82C86735-C699-46E5-AEB2-930CC670B3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82C86735-C699-46E5-AEB2-930CC670B3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82C86735-C699-46E5-AEB2-930CC670B3F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
