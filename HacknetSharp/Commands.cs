@@ -1,4 +1,4 @@
-﻿namespace HacknetSharp.Protocol
+﻿namespace HacknetSharp
 {
     public enum ClientServerCommand : uint
     {

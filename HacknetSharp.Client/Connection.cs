@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 using Ns;
 
@@ -13,7 +15,10 @@ namespace HacknetSharp.Client
         private readonly string _server;
         private readonly ushort _port;
         private readonly string _user;
-        private string _pass;
+        private string? _pass;
+        private readonly CountdownEvent _countdown;
+        private readonly AutoResetEvent _op;
+        private LifecycleState _state;
 
         public Connection(string server, ushort port, string user, string pass)
         {
@@ -21,19 +26,59 @@ namespace HacknetSharp.Client
             _port = port;
             _user = user;
             _pass = pass;
+            _countdown = new CountdownEvent(1);
+            _op = new AutoResetEvent(true);
+            _state = LifecycleState.NotStarted;
         }
 
         public async Task ConnectAsync()
         {
+            Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
+                ref _state);
+            try
+            {
+                var client = new TcpClient(_server, _port);
+                using var sslStream = new SslStream(
+                    client.GetStream(), false, ValidateServerCertificate
+                );
+                await sslStream.AuthenticateAsClientAsync(_server, default, SslProtocols.Tls12, true);
+                var bs = new BufferedStream(sslStream);
+                // TODO implement handshake + user credentials
+                bs.WriteCommand(ClientServerCommand.Login);
+                bs.WriteUtf8String(_user);
+                bs.WriteUtf8String(_pass);
+                _pass = null;
+                await bs.FlushAsync();
+                if (!bs.Expect(ServerClientCommand.UserInfo, out var loginRes))
+                    throw loginRes switch
+                    {
+                        ServerClientCommand.LoginFail => new LoginException("Login failed."),
+                        _ => ProtocolException.FromUnexpectedCommand(loginRes)
+                    };
+            }
+            catch
+            {
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
+                    ref _state);
+                throw;
+            }
 
-            var client = new TcpClient(_server, _port);
-            using var sslStream = new SslStream(
-                client.GetStream(), false, ValidateServerCertificate
-            );
-            await sslStream.AuthenticateAsClientAsync(_server, default, SslProtocols.Tls12, true);
+            Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active, ref _state);
+        }
 
-            // TODO implement handshake + user credentials
-            sslStream.WriteUtf8String("user here");
+        public async Task DisposeAsync()
+        {
+            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
+            while (_state != LifecycleState.Active) await Task.Delay(100).Caf();
+            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref _state);
+            await Task.Run(() =>
+            {
+                _op.WaitOne();
+                _countdown.Signal();
+                _op.Set();
+                _countdown.Wait();
+            });
+            Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
         }
 
         private static bool ValidateServerCertificate(

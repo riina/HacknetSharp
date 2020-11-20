@@ -16,11 +16,6 @@ namespace HacknetSharp.Server
         public Type? StorageContextFactoryType { get; set; }
 
         /// <summary>
-        /// Model types.
-        /// </summary>
-        public HashSet<Type> Models { get; set; }
-
-        /// <summary>
         /// Program types.
         /// </summary>
         public HashSet<Type> Programs { get; set; }
@@ -51,8 +46,7 @@ namespace HacknetSharp.Server
         public ServerConfig()
         {
             StorageContextFactoryType = null;
-            Models = new HashSet<Type>(Util.DefaultModels);
-            Programs = new HashSet<Type>(Util.DefaultPrograms);
+            Programs = new HashSet<Type>();
             WorldConfigs = new HashSet<WorldConfig>();
         }
 
@@ -64,28 +58,6 @@ namespace HacknetSharp.Server
         public ServerConfig WithStorageContextFactory<TFactory>() where TFactory : StorageContextFactoryBase
         {
             StorageContextFactoryType = typeof(TFactory);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds models.
-        /// </summary>
-        /// <param name="models">Model types.</param>
-        /// <returns>This config.</returns>
-        public ServerConfig WithModels(IEnumerable<Type> models)
-        {
-            Models.UnionWith(models);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds models.
-        /// </summary>
-        /// <param name="models">Model types.</param>
-        /// <returns>This config.</returns>
-        public ServerConfig WithModels(IEnumerable<IEnumerable<Type>> models)
-        {
-            Models.UnionWith(models.SelectMany(x => x));
             return this;
         }
 

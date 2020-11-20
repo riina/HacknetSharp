@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HacknetSharp.Server
 {
     /// <summary>
-    /// Represents the backing database for a <see cref="World"/> instance.
+    /// Represents the backing database for a <see cref="WorldInstance"/> instance.
     /// </summary>
     public class WorldDatabase
     {

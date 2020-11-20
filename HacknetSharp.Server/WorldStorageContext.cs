@@ -23,12 +23,12 @@ namespace HacknetSharp.Server
         /// Creates a new instance of <see cref="WorldStorageContext"/> with the given database options and components.
         /// </summary>
         /// <param name="options">The options for this context.</param>
-        /// <param name="models">The model types to initialize.</param>
-        public WorldStorageContext(DbContextOptions options, IEnumerable<Type> models) : base(options)
+        /// <param name="programs">The program types to initialize.</param>
+        public WorldStorageContext(DbContextOptions options, IEnumerable<Type> programs) : base(options)
         {
             _configureList = new List<ModelBuilderDelegate>();
-            HashSet<Type> componentSet = new HashSet<Type>();
-            HashSet<Type> initSet = new HashSet<Type>();
+            HashSet<Type> programSet = new HashSet<Type>();
+            HashSet<Type> initSet = new HashSet<Type>(ServerUtil.DefaultModels);
 
             void AddDepTypes(IEnumerable<Type> depTypes)
             {
@@ -42,9 +42,9 @@ namespace HacknetSharp.Server
                 }
             }
 
-            foreach (var type in models)
+            foreach (var type in programs)
             {
-                if (!componentSet.Add(type)) continue;
+                if (!programSet.Add(type)) continue;
                 foreach (var dep in type.GetCustomAttributes(typeof(StorageDependenciesAttribute)))
                     AddDepTypes(((StorageDependenciesAttribute)dep).Types);
             }

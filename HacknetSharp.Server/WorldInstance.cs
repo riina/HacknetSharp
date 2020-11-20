@@ -1,12 +1,13 @@
 ﻿using System.Threading;
+using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
 {
-    public class World
+    public class WorldInstance : World
     {
         private readonly AutoResetEvent _waitHandle;
 
-        internal World()
+        internal WorldInstance()
         {
             _waitHandle = new AutoResetEvent(true);
         }

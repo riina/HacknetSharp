@@ -9,29 +9,29 @@ namespace HacknetSharp.Server
     public abstract class StorageContextFactoryBase : IDesignTimeDbContextFactory<WorldStorageContext>
     {
         /// <summary>
-        /// Obtains model types desired for the storage context.
+        /// Obtains program types desired for the storage context.
         /// </summary>
-        /// <returns>Model types.</returns>
-        public virtual IEnumerable<Type> Models => Util.DefaultModels.Concat(CustomModels);
+        /// <returns>Program types.</returns>
+        public virtual IEnumerable<Type> Programs => ServerUtil.DefaultPrograms.Concat(CustomPrograms);
 
         /// <summary>
-        /// Obtains model component types as a group.
+        /// Obtains program types as a group.
         /// </summary>
-        /// <returns>Group of model types.</returns>
-        public virtual IEnumerable<Type> CustomModels =>
-            CustomModelsIndividual.Concat(CustomModelsMulti.SelectMany(e => e));
+        /// <returns>Group of program types.</returns>
+        public virtual IEnumerable<Type> CustomPrograms =>
+            CustomProgramsIndividual.Concat(CustomProgramsMulti.SelectMany(e => e));
 
         /// <summary>
-        /// Obtains custom model types as a group.
+        /// Obtains custom program types as a group.
         /// </summary>
-        /// <returns>Group of model types.</returns>
-        protected virtual IEnumerable<Type> CustomModelsIndividual => Enumerable.Empty<Type>();
+        /// <returns>Group of program types.</returns>
+        protected virtual IEnumerable<Type> CustomProgramsIndividual => Enumerable.Empty<Type>();
 
         /// <summary>
-        /// Obtains custom model types as a group of groups.
+        /// Obtains custom program types as a group of groups.
         /// </summary>
-        /// <returns>Group of groups of model types.</returns>
-        protected virtual IEnumerable<IEnumerable<Type>> CustomModelsMulti => Enumerable.Empty<IEnumerable<Type>>();
+        /// <returns>Group of groups of program types.</returns>
+        protected virtual IEnumerable<IEnumerable<Type>> CustomProgramsMulti => Enumerable.Empty<IEnumerable<Type>>();
 
         /// <inheritdoc />
         public abstract WorldStorageContext CreateDbContext(string[] args);

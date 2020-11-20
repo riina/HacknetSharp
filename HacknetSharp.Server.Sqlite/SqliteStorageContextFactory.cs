@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.Sqlite
                 b => b.MigrationsAssembly(MigrationAssembly.FullName));
             if (LogToConsole)
                 ob.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
-            return new WorldStorageContext(ob.Options, Models);
+            return new WorldStorageContext(ob.Options, Programs);
         }
     }
 }

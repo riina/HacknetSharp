@@ -17,9 +17,8 @@ namespace HacknetSharp.Server.Standard
     {
         static Program()
         {
-            _models = new HashSet<Type[]>();
             _programs = new HashSet<Type[]>();
-            Util.LoadTypesFromFolder(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ExtensionsFolder), _models,
+            ServerUtil.LoadProgramTypesFromFolder(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ExtensionsFolder),
                 _programs);
         }
 
@@ -27,7 +26,7 @@ namespace HacknetSharp.Server.Standard
 
         private class StandardSqliteStorageContextFactory : SqliteStorageContextFactory
         {
-            protected override IEnumerable<IEnumerable<Type>> CustomModelsMulti => _models;
+            protected override IEnumerable<IEnumerable<Type>> CustomProgramsMulti => _programs;
         }
 
         private class StandardAccessController : AccessController
@@ -48,7 +47,6 @@ namespace HacknetSharp.Server.Standard
             }
         }
 
-        private static readonly HashSet<Type[]> _models;
         private static readonly HashSet<Type[]> _programs;
 
         private static async Task<int> Main(string[] args) =>
@@ -213,7 +211,6 @@ namespace HacknetSharp.Server.Standard
 
 
             var instance = new ServerConfig()
-                .WithModels(_models)
                 .WithPrograms(_programs)
                 .WithStorageContextFactory<StandardSqliteStorageContextFactory>()
                 .WithAccessController<StandardAccessController>()

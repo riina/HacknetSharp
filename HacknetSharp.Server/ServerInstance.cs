@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using Ns;
+using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
 {
@@ -15,14 +15,16 @@ namespace HacknetSharp.Server
         private readonly AccessController _accessController;
         private readonly WorldDatabase _worldDatabase;
         private readonly HashSet<Type> _programTypes;
+        private readonly Dictionary<Guid, Program> _programs;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
-        private State _state;
+        private readonly ConcurrentDictionary<Guid, Connection> _connections;
+        private LifecycleState _state;
 
 
         private readonly TcpListener _connectListener;
-        private readonly X509Certificate _cert;
         private Task? _connectTask;
+        internal X509Certificate Cert { get; }
 
         protected internal ServerInstance(ServerConfig config)
         {
@@ -32,7 +34,7 @@ namespace HacknetSharp.Server
             var storageContextFactoryType = config.StorageContextFactoryType ??
                                             throw new ArgumentException(
                                                 $"{nameof(ServerConfig.StorageContextFactoryType)} not specified");
-            _cert = config.Certificate ?? throw new ArgumentException(
+            Cert = config.Certificate ?? throw new ArgumentException(
                 $"{nameof(ServerConfig.Certificate)} not specified");
             _accessController = (AccessController)(Activator.CreateInstance(accessControllerType) ??
                                                    throw new ApplicationException());
@@ -41,10 +43,12 @@ namespace HacknetSharp.Server
             var context = factory.CreateDbContext(Array.Empty<string>());
             _worldDatabase = new WorldDatabase(context);
             _programTypes = config.Programs;
+            _programs = new Dictionary<Guid, Program>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
-            _state = State.NotStarted;
+            _connections = new ConcurrentDictionary<Guid, Connection>();
+            _state = LifecycleState.NotStarted;
         }
 
 
@@ -53,54 +57,50 @@ namespace HacknetSharp.Server
             _connectListener.Start();
             _connectTask = Task.Run(async () =>
             {
-                while (TryIncrementCountdown(State.Active, State.Active))
+                while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
                 {
                     try
                     {
-                        await _connectListener.AcceptTcpClientAsync().ContinueWith(HandleAsyncConnection);
+                        var connection = new Connection(this, await _connectListener.AcceptTcpClientAsync());
+                        _connections.TryAdd(connection.Id, connection);
                     }
                     finally
                     {
-                        DecrementCountdown();
+                        Util.DecrementCountdown(_op, _countdown);
                     }
                 }
             });
         }
 
-        private async Task HandleAsyncConnection(Task<TcpClient> task)
-        {
-            if (!TryIncrementCountdown(State.Active, State.Active)) return;
-            try
-            {
-                var client = await task;
-                await using var sslStream = new SslStream(client.GetStream(), false, default, default,
-                    EncryptionPolicy.RequireEncryption);
-                // Authenticate the server but don't require the client to authenticate
-                await sslStream.AuthenticateAsServerAsync(_cert, false, true);
-                sslStream.ReadTimeout = 10 * 1000;
-                sslStream.WriteTimeout = 10 * 1000;
-                string? text = sslStream.ReadUtf8String();
-                Console.WriteLine(text);
-                // TODO handle user
-            }
-            finally
-            {
-                DecrementCountdown();
-            }
-        }
-
         public async Task<Task> StartAsync()
         {
-            TriggerState(State.NotStarted, State.NotStarted, State.Starting);
-            // TODO initialize programs
-            TriggerState(State.Starting, State.Starting, State.Active);
+            Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
+                ref _state);
+            try
+            {
+                foreach (var type in _programTypes)
+                {
+                    var program = Activator.CreateInstance(type) as Program ??
+                                  throw new ApplicationException(
+                                      $"{type.FullName} supplied as program but could not be casted to {nameof(Program)}");
+                    _programs.Add(program.Id, program);
+                }
+            }
+            catch
+            {
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
+                    ref _state);
+                throw;
+            }
+
+            Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active, ref _state);
             RunConnectListener();
             return UpdateAsync();
         }
 
         private async Task UpdateAsync()
         {
-            while (TryIncrementCountdown(State.Active, State.Active))
+            while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
             {
                 try
                 {
@@ -118,10 +118,13 @@ namespace HacknetSharp.Server
 
         public async Task DisposeAsync()
         {
-            RequireState(State.Starting, State.Active);
-            while (_state != State.Active) await Task.Delay(100).Caf();
-            TriggerState(State.Active, State.Active, State.Dispose);
+            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
+            while (_state != LifecycleState.Active) await Task.Delay(100).Caf();
+            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Disposed, ref _state);
             _connectListener.Stop();
+            var connectionIds = _connections.Keys;
+            foreach (var id in connectionIds)
+                DisconnectConnection(id);
             await Task.Run(() =>
             {
                 _op.WaitOne();
@@ -129,57 +132,20 @@ namespace HacknetSharp.Server
                 _op.Set();
                 _countdown.Wait();
             });
-            TriggerState(State.Dispose, State.Dispose, State.Disposed);
+            Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
         }
 
-        private void TriggerState(State min, State max, State target)
+        internal void SelfRemoveConnection(Guid id) => _connections.TryRemove(id, out _);
+
+        internal void DisconnectConnection(Guid id)
         {
-            _op.WaitOne();
-            try
-            {
-                RequireState(min, max);
-                _state = target;
-            }
-            finally
-            {
-                _op.Set();
-            }
+            if (_connections.TryRemove(id, out var connection))
+                connection.CancellationTokenSource.Cancel();
         }
 
-        private void RequireState(State min, State max)
-        {
-            if ((int)_state < (int)min)
-                throw new InvalidOperationException(
-                    $"Cannot perform this action that requires state {min} when object is in state {_state}");
-            if ((int)_state > (int)max)
-                throw new InvalidOperationException(
-                    $"Cannot perform this action that requires state {max} when object is in state {_state}");
-        }
+        internal bool TryIncrementCountdown(LifecycleState min, LifecycleState max) =>
+            Util.TryIncrementCountdown(_op, _countdown, _state, min, max);
 
-        private bool TryIncrementCountdown(State min, State max)
-        {
-            _op.WaitOne();
-            bool keepGoing = !((int)_state < (int)min || (int)_state > (int)max);
-            if (keepGoing)
-                _countdown.AddCount();
-            _op.Set();
-            return keepGoing;
-        }
-
-        private void DecrementCountdown()
-        {
-            _op.WaitOne();
-            _countdown.Signal();
-            _op.Set();
-        }
-
-        private enum State
-        {
-            NotStarted,
-            Starting,
-            Active,
-            Dispose,
-            Disposed
-        }
+        internal void DecrementCountdown() => Util.DecrementCountdown(_op, _countdown);
     }
 }
