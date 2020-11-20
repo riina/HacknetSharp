@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,36 @@ namespace HacknetSharp.Client.Cli
     {
         private static async Task Main(string[] args)
         {
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Usage: <server> <user>");
+                return;
+            }
+
             string? pass = PromptSecureString("Pass:");
             if (pass == null) return;
             var connection = new Connection(args[0], 42069, args[1], pass);
-            await connection.ConnectAsync();
+            try
+            {
+                await connection.ConnectAsync();
+            }
+            catch (LoginException)
+            {
+                Console.WriteLine("Login failed.");
+                return;
+            }
+            catch (ProtocolException e)
+            {
+                Console.WriteLine($"A protocol error occurred: {e.Message}");
+                return;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An unknown error occurred: {e.Message}.");
+                return;
+            }
+
+            // TODO client things
         }
 
         public static string? PromptSecureString(string mes)
