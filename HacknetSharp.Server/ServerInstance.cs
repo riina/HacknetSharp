@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace HacknetSharp.Server
     public class ServerInstance : Common.Server
     {
         private readonly HashSet<Type> _programTypes;
-        private readonly Dictionary<string, Program> _programs;
+        private readonly Dictionary<string, (Program, ProgramInfoAttribute)> _programs;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly ConcurrentDictionary<Guid, Connection> _connections;
@@ -45,7 +46,7 @@ namespace HacknetSharp.Server
             Worlds = new Dictionary<Guid, WorldInstance>();
             // TODO inject worlds
             _programTypes = config.Programs;
-            _programs = new Dictionary<string, Program>();
+            _programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
@@ -82,10 +83,13 @@ namespace HacknetSharp.Server
             {
                 foreach (var type in _programTypes)
                 {
+                    var info = type.GetCustomAttribute(typeof(ProgramInfoAttribute)) as ProgramInfoAttribute ??
+                               throw new ApplicationException(
+                                   $"{type.FullName} supplied as program but did not have {nameof(ProgramInfoAttribute)}");
                     var program = Activator.CreateInstance(type) as Program ??
                                   throw new ApplicationException(
                                       $"{type.FullName} supplied as program but could not be casted to {nameof(Program)}");
-                    _programs.Add(program.Id, program);
+                    _programs.Add(info.Name, (program, info));
                 }
             }
             catch
