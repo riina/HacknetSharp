@@ -5,6 +5,7 @@ namespace HacknetSharp
     /// <summary>
     /// Specifies the network code for an event.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class EventCommandAttribute : Attribute
     {
         /// <summary>
