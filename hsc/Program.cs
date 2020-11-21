@@ -19,7 +19,7 @@ namespace hsc
                 return;
             }
 
-            string? pass = PromptSecureString("Pass:");
+            string? pass = Util.PromptPassword("Pass:");
             if (pass == null) return;
             var connection = new Connection(args[0], 42069, args[1], pass);
             try
@@ -47,34 +47,6 @@ namespace hsc
             await connection.FlushAsync();
             //var res = (await connection.WaitForAsync(e => e is OutputEvent, 10) as OutputEvent)!;
             //Console.WriteLine($"Received: {res.Text}");
-        }
-
-        public static string? PromptSecureString(string mes)
-        {
-            Console.Write(mes);
-
-            var ss = new StringBuilder();
-            while (true)
-            {
-                var key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.Enter) break;
-                if (key.Key == ConsoleKey.C && (key.Modifiers & ConsoleModifiers.Control) == ConsoleModifiers.Control)
-                {
-                    return null;
-                }
-
-                if (key.Key == ConsoleKey.Backspace)
-                {
-                    if (ss.Length != 0)
-                        ss.Remove(ss.Length - 1, 1);
-                    continue;
-                }
-
-                ss.Append(key.KeyChar);
-            }
-
-            Console.WriteLine();
-            return ss.ToString();
         }
     }
 }

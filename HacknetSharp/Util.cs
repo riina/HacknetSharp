@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ns;
@@ -117,7 +118,7 @@ namespace HacknetSharp
         private static readonly Dictionary<Type, Command> _commandT2C;
         private static readonly Dictionary<Command, Type> _commandC2T;
 
-        public static TEvent ReadEvent<TEvent>(this Stream stream) where TEvent : Event
+        public static TEvent? ReadEvent<TEvent>(this Stream stream) where TEvent : Event
         {
             Command command;
             try
@@ -145,6 +146,34 @@ namespace HacknetSharp
                 throw new Exception($"Couldn't find registered command type for type {evt.GetType().FullName}");
             stream.WriteCommand(command);
             evt.Serialize(stream);
+        }
+
+        public static string? PromptPassword(string mes)
+        {
+            Console.Write(mes);
+
+            var ss = new StringBuilder();
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter) break;
+                if (key.Key == ConsoleKey.C && (key.Modifiers & ConsoleModifiers.Control) == ConsoleModifiers.Control)
+                {
+                    return null;
+                }
+
+                if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (ss.Length != 0)
+                        ss.Remove(ss.Length - 1, 1);
+                    continue;
+                }
+
+                ss.Append(key.KeyChar);
+            }
+
+            Console.WriteLine();
+            return ss.ToString();
         }
     }
 }

@@ -30,7 +30,6 @@ namespace HacknetSharp.Client
         private readonly List<ClientEvent> _outEvents;
         private readonly Task _inTask;
         private readonly Task _outTask;
-        private TcpClient? _client;
         private LifecycleState _state;
         private bool _closed;
         private SslStream? _stream;
@@ -79,7 +78,7 @@ namespace HacknetSharp.Client
 
             try
             {
-                var loginCommand = new LoginEvent {User = _user, Pass = _pass};
+                var loginCommand = new LoginEvent {User = _user, Pass = _pass!};
                 WriteEvent(loginCommand);
                 _pass = null;
                 var result = await WaitForAsync(_ => true, 10, _cancellationTokenSource.Token);
@@ -95,7 +94,7 @@ namespace HacknetSharp.Client
                         throw new LoginException("Login failed.");
                     }
                     default:
-                        throw new ProtocolException($"Unexpected event type {result.GetType().FullName} received.");
+                        throw new ProtocolException($"Unexpected event type {result?.GetType().FullName} received.");
                 }
             }
             catch
@@ -137,13 +136,15 @@ namespace HacknetSharp.Client
             throw new TaskCanceledException();
         }
 
-        private async Task ExecuteReceive(CancellationToken cancellationToken)
+        private Task ExecuteReceive(CancellationToken cancellationToken)
         {
             _readyOp.WaitOne();
+            if (_stream == null) return Task.CompletedTask;
+            if (_bs == null) return Task.CompletedTask;
             while (!cancellationToken.IsCancellationRequested)
             {
                 var evt = _bs.ReadEvent<ServerEvent>();
-                if (evt == null) return;
+                if (evt == null) return Task.CompletedTask;
                 _lockInOp.WaitOne();
                 _inEvents.Add(evt);
                 _lockInOp.Set();
@@ -210,10 +211,10 @@ namespace HacknetSharp.Client
                 }
         }
 
-        public Task<ServerEvent> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis) =>
+        public Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis) =>
             WaitForAsync(predicate, pollMillis, CancellationToken.None);
 
-        public async Task<ServerEvent> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis,
+        public async Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis,
             CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)

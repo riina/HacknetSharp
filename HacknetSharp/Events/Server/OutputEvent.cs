@@ -6,7 +6,7 @@ namespace HacknetSharp.Events.Server
     [EventCommand(Command.SC_Output)]
     public class OutputEvent : ServerEvent
     {
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 
         public override void Serialize(Stream stream)
         {

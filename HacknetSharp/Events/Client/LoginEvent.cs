@@ -6,8 +6,9 @@ namespace HacknetSharp.Events.Client
     [EventCommand(Command.CS_Login)]
     public class LoginEvent : ClientEvent
     {
-        public string User { get; set; }
-        public string Pass { get; set; }
+        public string User { get; set; } = null!;
+        public string Pass { get; set; } = null!;
+
         public override void Serialize(Stream stream)
         {
             stream.WriteUtf8String(User);

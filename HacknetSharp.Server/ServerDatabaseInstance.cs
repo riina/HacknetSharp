@@ -36,7 +36,9 @@ namespace HacknetSharp.Server
         /// <typeparam name="TKey">The key type.</typeparam>
         /// <typeparam name="TResult">The object type.</typeparam>
         /// <returns>First located object with key or default for <typeparamref name="TResult"/></returns>
+#pragma warning disable 8609
         public override async Task<TResult> GetAsync<TKey, TResult>(TKey key)
+#pragma warning restore 8609
         {
             _waitHandle.WaitOne();
             try

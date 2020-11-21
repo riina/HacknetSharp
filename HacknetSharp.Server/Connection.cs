@@ -53,7 +53,7 @@ namespace HacknetSharp.Server
                 _stream.ReadTimeout = 10 * 1000;
                 _stream.WriteTimeout = 10 * 1000;
                 var bs = new BufferedStream(_stream);
-                ClientEvent evt;
+                ClientEvent? evt;
                 PlayerModel? player = null;
                 while (!((evt = bs.ReadEvent<ClientEvent>()) is ClientDisconnectEvent))
                 {

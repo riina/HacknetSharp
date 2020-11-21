@@ -14,7 +14,7 @@ namespace HacknetSharp
         /// <param name="predicate">Predicate to match events.</param>
         /// <param name="pollMillis">Millisecond poll delay</param>
         /// <returns>The first matched event or null.</returns>
-        Task<TReceive> WaitForAsync(Func<TReceive, bool> predicate, int pollMillis);
+        Task<TReceive?> WaitForAsync(Func<TReceive, bool> predicate, int pollMillis);
 
         /// <summary>
         /// Waits for an event matching the specified predicate, removing it from the
@@ -24,7 +24,7 @@ namespace HacknetSharp
         /// <param name="pollMillis">Millisecond poll delay</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The first matched event or null.</returns>
-        Task<TReceive> WaitForAsync(Func<TReceive, bool> predicate, int pollMillis,
+        Task<TReceive?> WaitForAsync(Func<TReceive, bool> predicate, int pollMillis,
             CancellationToken cancellationToken);
 
         /// <summary>

@@ -92,7 +92,7 @@ namespace HacknetSharp.Server.BasicLogin
             return (salt, hash);
         }
 
-        private static (string salt, string hash) Base64Password(string password, byte[]? salt = null)
+        public static (string salt, string hash) Base64Password(string password, byte[]? salt = null)
         {
             byte[] hash;
             (salt, hash) = HashPassword(password, salt: salt);

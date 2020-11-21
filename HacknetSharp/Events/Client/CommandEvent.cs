@@ -6,7 +6,7 @@ namespace HacknetSharp.Events.Client
     [EventCommand(Command.CS_Command)]
     public class CommandEvent : ClientEvent
     {
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 
         public override void Serialize(Stream stream)
         {

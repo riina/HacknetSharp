@@ -7,6 +7,7 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
+using HacknetSharp;
 using HacknetSharp.Server;
 using HacknetSharp.Server.BasicLogin;
 using HacknetSharp.Server.Common;
@@ -34,9 +35,13 @@ namespace hss
 
         private static async Task<int> Main(string[] args) =>
             await Parser.Default
-                .ParseArguments<InstallCertOptions, UninstallCertOptions, CreateOptions, RunOptions
+                .ParseArguments<RegisterAdminOptions, DeregisterOptions, InstallCertOptions, UninstallCertOptions,
+                    CreateOptions, RunOptions
                 >(args)
-                .MapResult<InstallCertOptions, UninstallCertOptions, CreateOptions, RunOptions, Task<int>>(
+                .MapResult<RegisterAdminOptions, DeregisterOptions, InstallCertOptions, UninstallCertOptions,
+                    CreateOptions, RunOptions, Task<int>>(
+                    RunRegisterAdmin,
+                    RunDeregisterAdmin,
                     RunInstallCert,
                     RunUninstallCert,
                     RunCreate,
@@ -132,6 +137,48 @@ namespace hss
 
             Console.WriteLine("Cert removal complete.");
             return Task.FromResult(0);
+        }
+
+        [Verb("registeradmin", HelpText = "register admin user")]
+        private class RegisterAdminOptions
+        {
+            [Value(0, MetaName = "name", HelpText = "User name", Required = true)]
+            public string Name { get; set; } = null!;
+        }
+
+        private static async Task<int> RunRegisterAdmin(RegisterAdminOptions options)
+        {
+            var factory = new StandardSqliteStorageContextFactory();
+            var ctx = factory.CreateDbContext(new string[0]);
+            string? pass = Util.PromptPassword("Pass:");
+            if (pass == null) return 0;
+            var (salt, hash) = BasicAccessController.Base64Password(pass);
+            ctx.Add(new UserModel {Admin = true, Base64Password = hash, Base64Salt = salt, Key = options.Name});
+            await ctx.SaveChangesAsync();
+            return 0;
+        }
+
+        [Verb("deregister", HelpText = "deregister user")]
+        private class DeregisterOptions
+        {
+            [Value(0, MetaName = "name", HelpText = "User name", Required = true)]
+            public string Name { get; set; } = null!;
+        }
+
+        private static async Task<int> RunDeregisterAdmin(DeregisterOptions options)
+        {
+            var factory = new StandardSqliteStorageContextFactory();
+            var ctx = factory.CreateDbContext(new string[0]);
+            var user = ctx.Find<UserModel>(options.Name);
+            if (user == null)
+            {
+                Console.WriteLine("Could not find user with specified name.");
+                return 0;
+            }
+
+            ctx.Remove(user);
+            await ctx.SaveChangesAsync();
+            return 0;
         }
 
         [Verb("create", HelpText = "create world configuration")]

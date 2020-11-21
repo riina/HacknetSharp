@@ -74,7 +74,7 @@ namespace HacknetSharp.Server
             });
         }
 
-        public async Task<Task> StartAsync()
+        public Task<Task> StartAsync()
         {
             Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
                 ref _state);
@@ -97,7 +97,7 @@ namespace HacknetSharp.Server
 
             Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active, ref _state);
             RunConnectListener();
-            return UpdateAsync();
+            return Task.FromResult(UpdateAsync());
         }
 
         private async Task UpdateAsync()
