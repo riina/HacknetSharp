@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp.Events.Client;
+using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Client.Cli
 {
@@ -33,11 +36,14 @@ namespace HacknetSharp.Client.Cli
             }
             catch (Exception e)
             {
-                Console.WriteLine($"An unknown error occurred: {e.Message}.");
+                Console.WriteLine($"An unknown error occurred: {e}.");
                 return;
             }
 
             // TODO client things
+            connection.WriteEvent(new CommandEvent {Text = "input"});
+            var res = (await connection.WaitForAsync(e => e is OutputEvent, 10) as OutputEvent)!;
+            Console.WriteLine($"Received: {res.Text}");
         }
 
         public static string? PromptSecureString(string mes)

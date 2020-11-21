@@ -136,7 +136,6 @@ namespace HacknetSharp
                 throw new Exception($"Couldn't find registered command type for type {evt.GetType().FullName}");
             stream.WriteCommand(command);
             evt.Serialize(stream);
-            stream.Flush();
         }
     }
 }

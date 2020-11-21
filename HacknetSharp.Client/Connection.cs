@@ -28,12 +28,13 @@ namespace HacknetSharp.Client
         private readonly AutoResetEvent _outOp;
         private readonly List<ServerEvent> _inEvents;
         private readonly List<ClientEvent> _outEvents;
+        private readonly Task _inTask;
+        private readonly Task _outTask;
         private TcpClient? _client;
         private LifecycleState _state;
         private bool _closed;
         private SslStream? _stream;
         private BufferedStream? _bs;
-        public Task ExecutionTask { get; }
 
         public Connection(string server, ushort port, string user, string pass)
         {
@@ -51,8 +52,8 @@ namespace HacknetSharp.Client
             _state = LifecycleState.NotStarted;
             _inEvents = new List<ServerEvent>();
             _outEvents = new List<ClientEvent>();
-            ExecutionTask = Task.Run(async () => await ExecuteSend(_cancellationTokenSource.Token));
-            ExecutionTask = Task.Run(async () => await ExecuteReceive(_cancellationTokenSource.Token));
+            _inTask = Task.Run(async () => await ExecuteReceive(_cancellationTokenSource.Token));
+            _outTask = Task.Run(async () => await ExecuteSend(_cancellationTokenSource.Token));
         }
 
         public async Task ConnectAsync()
@@ -99,7 +100,15 @@ namespace HacknetSharp.Client
             }
             catch
             {
-                WriteEvent(ClientDisconnectEvent.Singleton);
+                try
+                {
+                    WriteEvent(ClientDisconnectEvent.Singleton);
+                }
+                catch
+                {
+                    // ignored
+                }
+
                 Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
                     ref _state);
                 throw;
@@ -199,11 +208,16 @@ namespace HacknetSharp.Client
                 }
         }
 
+        public Task<ServerEvent> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis) =>
+            WaitForAsync(predicate, pollMillis, CancellationToken.None);
+
         public async Task<ServerEvent> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis,
             CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
+                if (_inTask.IsFaulted)
+                    throw new Exception($"Could not read event: task excepted. Information:\n{_inTask.Exception}");
                 _lockInOp.WaitOne();
                 var evt = _inEvents.FirstOrDefault(predicate);
                 if (evt != null) _inEvents.Remove(evt);
@@ -226,6 +240,8 @@ namespace HacknetSharp.Client
 
         public void WriteEvent(ClientEvent evt)
         {
+            if (_outTask.IsFaulted)
+                throw new Exception($"Could not write event: task excepted. Information:\n{_outTask.Exception}");
             _lockOutOp.WaitOne();
             _outEvents.Add(evt);
             _lockOutOp.Set();
@@ -234,6 +250,8 @@ namespace HacknetSharp.Client
 
         public void WriteEvents(IEnumerable<ClientEvent> events)
         {
+            if (_outTask.IsFaulted)
+                throw new Exception($"Could not write event: task excepted. Information:\n{_outTask.Exception}");
             _lockOutOp.WaitOne();
             _outEvents.AddRange(events);
             _lockOutOp.Set();

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
@@ -53,19 +54,43 @@ namespace HacknetSharp.Server
                 _stream.WriteTimeout = 10 * 1000;
                 var bs = new BufferedStream(_stream);
                 ClientEvent evt;
+                PlayerModel? player = null;
                 while (!((evt = bs.ReadEvent<ClientEvent>()) is ClientDisconnectEvent))
                 {
                     switch (evt)
                     {
-                        case LoginEvent loginEvent:
+                        case LoginEvent login:
                         {
-                            if (!await _server.AccessController.AuthenticateAsync(loginEvent.User, loginEvent.Pass))
+                            if (player != null)
                             {
                                 bs.WriteEvent(LoginFailEvent.Singleton);
+                                await bs.FlushAsync(cancellationToken);
+                                break;
+                            }
+
+                            if (!await _server.AccessController.AuthenticateAsync(login.User, login.Pass))
+                            {
+                                player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
+                                if (player == null)
+                                {
+                                    // TODO generate player model
+                                }
+
+                                bs.WriteEvent(LoginFailEvent.Singleton);
+                                bs.WriteEvent(ServerDisconnectEvent.Singleton);
+                                await bs.FlushAsync(cancellationToken);
                                 return;
                             }
 
                             // TODO provide basic user state
+                            bs.WriteEvent(new UserInfoEvent());
+                            break;
+                        }
+                        case CommandEvent command:
+                        {
+                            if (player == null) continue;
+                            // TODO kill test code
+                            bs.WriteEvent(new OutputEvent {Text = command.Text + " sucks"});
                             break;
                         }
                     }
