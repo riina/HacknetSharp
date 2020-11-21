@@ -42,6 +42,7 @@ namespace HacknetSharp.Client.Cli
 
             // TODO client things
             connection.WriteEvent(new CommandEvent {Text = "input"});
+            await connection.FlushAsync();
             var res = (await connection.WaitForAsync(e => e is OutputEvent, 10) as OutputEvent)!;
             Console.WriteLine($"Received: {res.Text}");
         }

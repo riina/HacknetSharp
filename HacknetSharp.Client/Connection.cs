@@ -103,6 +103,7 @@ namespace HacknetSharp.Client
                 try
                 {
                     WriteEvent(ClientDisconnectEvent.Singleton);
+                    await FlushAsync(_cancellationTokenSource.Token);
                 }
                 catch
                 {
@@ -142,6 +143,7 @@ namespace HacknetSharp.Client
             while (!cancellationToken.IsCancellationRequested)
             {
                 var evt = _bs.ReadEvent<ServerEvent>();
+                if (evt == null) return;
                 _lockInOp.WaitOne();
                 _inEvents.Add(evt);
                 _lockInOp.Set();
@@ -216,13 +218,15 @@ namespace HacknetSharp.Client
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (_inTask.IsFaulted)
-                    throw new Exception($"Could not read event: task excepted. Information:\n{_inTask.Exception}");
                 _lockInOp.WaitOne();
                 var evt = _inEvents.FirstOrDefault(predicate);
                 if (evt != null) _inEvents.Remove(evt);
                 _lockInOp.Set();
                 if (evt != null) return evt;
+                if (_inTask.IsFaulted)
+                    throw new Exception($"Could not read event: task excepted. Information:\n{_inTask.Exception}");
+                if (_inTask.IsCompleted)
+                    throw new Exception("Read task has completed, cannot receive any events.");
                 await Task.Delay(pollMillis, cancellationToken);
             }
 
@@ -256,6 +260,14 @@ namespace HacknetSharp.Client
             _outEvents.AddRange(events);
             _lockOutOp.Set();
             _outOp.Set();
+        }
+
+        public Task FlushAsync() => FlushAsync(CancellationToken.None);
+
+        public async Task FlushAsync(CancellationToken cancellationToken)
+        {
+            if (!_closed && _stream != null)
+                await _stream.FlushAsync(cancellationToken);
         }
     }
 }

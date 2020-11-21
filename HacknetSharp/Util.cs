@@ -119,7 +119,16 @@ namespace HacknetSharp
 
         public static TEvent ReadEvent<TEvent>(this Stream stream) where TEvent : Event
         {
-            var command = stream.ReadCommand();
+            Command command;
+            try
+            {
+                command = stream.ReadCommand();
+            }
+            catch
+            {
+                return null;
+            }
+
             if (!_commandC2T.TryGetValue(command, out var type))
                 throw new ProtocolException($"Unknown command type {(uint)command} received");
             var obj = Activator.CreateInstance(type);

@@ -70,6 +70,8 @@ namespace HacknetSharp.Server
 
                             if (!await _server.AccessController.AuthenticateAsync(login.User, login.Pass))
                             {
+                                _stream.ReadTimeout = 100 * 1000;
+                                _stream.WriteTimeout = 100 * 1000;
                                 player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
                                 if (player == null)
                                 {
@@ -91,6 +93,7 @@ namespace HacknetSharp.Server
                             if (player == null) continue;
                             // TODO kill test code
                             bs.WriteEvent(new OutputEvent {Text = command.Text + " sucks"});
+                            await bs.FlushAsync(cancellationToken);
                             break;
                         }
                     }
@@ -98,9 +101,9 @@ namespace HacknetSharp.Server
                     await bs.FlushAsync(cancellationToken);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                // ignored
+                Console.WriteLine(e);
             }
             finally
             {
