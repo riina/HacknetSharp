@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -8,11 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
-using Ns;
 
 namespace HacknetSharp.Server
 {
-    public class Connection : IConnection<ServerEvent, ClientEvent>
+    public class Connection
     {
         public Guid Id { get; }
         public LifecycleState State { get; private set; }
@@ -30,7 +28,7 @@ namespace HacknetSharp.Server
             _server = server;
             _client = client;
             CancellationTokenSource = new CancellationTokenSource();
-            ExecutionTask = Execute(CancellationTokenSource.Token);
+            ExecutionTask = Task.Run(async () => await Execute(CancellationTokenSource.Token));
         }
 
         private async Task Execute(CancellationToken cancellationToken)
@@ -97,11 +95,5 @@ namespace HacknetSharp.Server
                     _closed = true;
                 }
         }
-
-        public ClientEvent WaitFor(Predicate<ClientEvent> predicate) => throw new NotImplementedException();
-
-        public IEnumerable<ClientEvent> ReadEvents() => throw new NotImplementedException();
-
-        public void WriteEvents(IEnumerable<ServerEvent> events) => throw new NotImplementedException();
     }
 }

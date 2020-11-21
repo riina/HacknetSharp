@@ -2,6 +2,7 @@
 
 namespace HacknetSharp.Events.Server
 {
+    [EventCommand(Command.SC_LoginFail)]
     public class LoginFailEvent : ServerEvent
     {
         public static readonly LoginFailEvent Singleton = new LoginFailEvent();
