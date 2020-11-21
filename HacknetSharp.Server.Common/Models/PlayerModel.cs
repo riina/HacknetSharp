@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Common.Models
 {
-    public class PlayerModel : Model<Guid>
+    public class PlayerModel : Model<string>
     {
         public virtual Guid ActiveWorld { get; set; }
         public virtual Guid DefaultSystem { get; set; }

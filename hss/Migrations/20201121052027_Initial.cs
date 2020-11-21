@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace HacknetSharp.Server.Standard.Migrations
+namespace hss.Migrations
 {
     public partial class Initial : Migration
     {
@@ -90,7 +90,7 @@ namespace HacknetSharp.Server.Standard.Migrations
                 name: "PlayerModel",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
                     ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false),
                     DefaultSystem = table.Column<Guid>(type: "TEXT", nullable: false),
                     CurrentSystemKey = table.Column<Guid>(type: "TEXT", nullable: true)

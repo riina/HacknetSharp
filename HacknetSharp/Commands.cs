@@ -1,18 +1,17 @@
 ﻿namespace HacknetSharp
 {
-    public enum ClientServerCommand : uint
+    public enum Command : uint
     {
-        Disconnect = 0x00_00_00_00,
-        Acknowledge = 0x00_00_00_01,
-        Register = 0x00_00_00_02,
-        Login = 0x00_00_00_03,
-    }
+        CS_Disconnect = 0x00_00_00_00,
+        CS_Acknowledge = 0x00_00_00_01,
+        CS_Register = 0x00_00_00_02,
+        CS_Login = 0x00_00_00_03,
+        CS_Command = 0x00_00_00_04,
 
-    public enum ServerClientCommand : uint
-    {
-        Disconnect = 0x00_00_00_00,
-        Acknowledge = 0x00_00_00_01,
-        UserInfo = 0x00_00_00_02,
-        LoginFail = 0x00_00_00_03,
+        SC_Disconnect = 0x80_00_00_00,
+        SC_Acknowledge = 0x80_00_00_01,
+        SC_UserInfo = 0x80_00_00_02,
+        SC_LoginFail = 0x80_00_00_03,
+        SC_Output = 0x80_00_00_04,
     }
 }

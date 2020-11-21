@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HacknetSharp.Server.Standard.Migrations
+namespace hss.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
     partial class ServerStorageContextModelSnapshot : ModelSnapshot
@@ -94,8 +94,7 @@ namespace HacknetSharp.Server.Standard.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PlayerModel", b =>
                 {
-                    b.Property<Guid>("Key")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Key")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ActiveWorld")

@@ -8,10 +8,7 @@ namespace HacknetSharp
         {
         }
 
-        public static ProtocolException FromUnexpectedCommand(ClientServerCommand command)
-            => new ProtocolException($"Unexpected command {command} received.");
-
-        public static ProtocolException FromUnexpectedCommand(ServerClientCommand command)
-            => new ProtocolException($"Unexpected command {command} received.");
+        /*public static ProtocolException FromUnexpectedCommand(Command command)
+            => new ProtocolException($"Unexpected command {command} received.");*/
     }
 }

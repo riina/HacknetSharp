@@ -15,12 +15,12 @@ Purely because tarche did [HacknetPlusPlus](https://github.com/The-Council-of-Wi
 
 ## Primary end-user projects
 
-### HacknetSharp.Client.Cli
+### hsc
 
 CLI client interface. (The core `HacknetSharp.Client` library is
 .NET Standard 2.0 and should be usable in most scenarios).
 
-### HacknetSharp.Server.Standard
+### hss
 
 Standard server implementation.
 

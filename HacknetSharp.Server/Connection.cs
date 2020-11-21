@@ -5,7 +5,9 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using Ns;
+using HacknetSharp.Events.Client;
+using HacknetSharp.Events.Server;
+using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
@@ -27,7 +29,7 @@ namespace HacknetSharp.Server
             _server = server;
             _client = client;
             CancellationTokenSource = new CancellationTokenSource();
-            ExecutionTask = Execute(CancellationTokenSource.Token);
+            ExecutionTask = Task.Run(async () => await Execute(CancellationTokenSource.Token));
         }
 
         private async Task Execute(CancellationToken cancellationToken)
@@ -51,26 +53,62 @@ namespace HacknetSharp.Server
                 _stream.ReadTimeout = 10 * 1000;
                 _stream.WriteTimeout = 10 * 1000;
                 var bs = new BufferedStream(_stream);
-                var command = bs.ReadClientServerCommand();
-                if (command == ClientServerCommand.Login)
+                ClientEvent evt;
+                PlayerModel? player = null;
+                while (!((evt = bs.ReadEvent<ClientEvent>()) is ClientDisconnectEvent))
                 {
-                    string user = bs.ReadUtf8String();
-                    string pass = bs.ReadUtf8String();
-                    if (!await _server.AccessController.AuthenticateAsync(user, pass))
+                    switch (evt)
                     {
-                        bs.WriteCommand(ServerClientCommand.LoginFail);
-                        await bs.FlushAsync(cancellationToken);
-                        return;
+                        case LoginEvent login:
+                        {
+                            if (player != null)
+                            {
+                                bs.WriteEvent(LoginFailEvent.Singleton);
+                                await bs.FlushAsync(cancellationToken);
+                                break;
+                            }
+
+                            if (!await _server.AccessController.AuthenticateAsync(login.User, login.Pass))
+                            {
+                                bs.WriteEvent(LoginFailEvent.Singleton);
+                                bs.WriteEvent(ServerDisconnectEvent.Singleton);
+                                await bs.FlushAsync(cancellationToken);
+                                return;
+                            }
+
+                            _stream.ReadTimeout = 100 * 1000;
+                            _stream.WriteTimeout = 100 * 1000;
+                            player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
+                            if (player == null)
+                            {
+                                // TODO generate / register player model, this is temporary
+                                player = new PlayerModel();
+                            }
+
+                            // TODO provide basic user state
+                            bs.WriteEvent(new UserInfoEvent());
+                            break;
+                        }
+                        case CommandEvent command:
+                        {
+                            if (player == null) continue;
+                            // TODO operate on command based on context, this is temporary
+                            bs.WriteEvent(new OutputEvent {Text = "Output is not yet implemented."});
+                            await bs.FlushAsync(cancellationToken);
+                            break;
+                        }
                     }
 
-                    // TODO provide basic user state
-                    bs.WriteCommand(ServerClientCommand.UserInfo);
                     await bs.FlushAsync(cancellationToken);
                 }
             }
-            catch
+            catch (TaskCanceledException)
             {
                 // ignored
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
             finally
             {

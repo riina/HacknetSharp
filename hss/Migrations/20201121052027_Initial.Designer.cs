@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HacknetSharp.Server.Standard.Migrations
+namespace hss.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201120091155_Initial")]
+    [Migration("20201121052027_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,8 +96,7 @@ namespace HacknetSharp.Server.Standard.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PlayerModel", b =>
                 {
-                    b.Property<Guid>("Key")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Key")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ActiveWorld")

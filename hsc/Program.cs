@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Reflection.Metadata;
-using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp;
+using HacknetSharp.Client;
+using HacknetSharp.Events.Client;
+using HacknetSharp.Events.Server;
 
-namespace HacknetSharp.Client.Cli
+namespace hsc
 {
     internal static class Program
     {
@@ -35,11 +38,15 @@ namespace HacknetSharp.Client.Cli
             }
             catch (Exception e)
             {
-                Console.WriteLine($"An unknown error occurred: {e.Message}.");
+                Console.WriteLine($"An unknown error occurred: {e}.");
                 return;
             }
 
-            // TODO client things
+            // TODO client things, this is temporary
+            connection.WriteEvent(ClientDisconnectEvent.Singleton);
+            await connection.FlushAsync();
+            //var res = (await connection.WaitForAsync(e => e is OutputEvent, 10) as OutputEvent)!;
+            //Console.WriteLine($"Received: {res.Text}");
         }
 
         public static string? PromptSecureString(string mes)
