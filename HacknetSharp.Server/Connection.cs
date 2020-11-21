@@ -75,7 +75,8 @@ namespace HacknetSharp.Server
                                 player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
                                 if (player == null)
                                 {
-                                    // TODO generate player model
+                                    // TODO generate / register player model
+                                    player = new PlayerModel();
                                 }
 
                                 bs.WriteEvent(LoginFailEvent.Singleton);
@@ -100,6 +101,10 @@ namespace HacknetSharp.Server
 
                     await bs.FlushAsync(cancellationToken);
                 }
+            }
+            catch (TaskCanceledException)
+            {
+                // ignored
             }
             catch (Exception e)
             {
