@@ -1,15 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp.Events.Client;
+using HacknetSharp.Events.Server;
 using Ns;
 
 namespace HacknetSharp.Server
 {
-    public class Connection
+    public class Connection : IConnection<ServerEvent, ClientEvent>
     {
         public Guid Id { get; }
         public LifecycleState State { get; private set; }
@@ -51,20 +54,24 @@ namespace HacknetSharp.Server
                 _stream.ReadTimeout = 10 * 1000;
                 _stream.WriteTimeout = 10 * 1000;
                 var bs = new BufferedStream(_stream);
-                var command = bs.ReadClientServerCommand();
-                if (command == ClientServerCommand.Login)
+                ClientEvent evt;
+                while (!((evt = bs.ReadEvent<ClientEvent>()) is ClientDisconnectEvent))
                 {
-                    string user = bs.ReadUtf8String();
-                    string pass = bs.ReadUtf8String();
-                    if (!await _server.AccessController.AuthenticateAsync(user, pass))
+                    switch (evt)
                     {
-                        bs.WriteCommand(ServerClientCommand.LoginFail);
-                        await bs.FlushAsync(cancellationToken);
-                        return;
+                        case LoginEvent loginEvent:
+                        {
+                            if (!await _server.AccessController.AuthenticateAsync(loginEvent.User, loginEvent.Pass))
+                            {
+                                bs.WriteEvent(LoginFailEvent.Singleton);
+                                return;
+                            }
+
+                            // TODO provide basic user state
+                            break;
+                        }
                     }
 
-                    // TODO provide basic user state
-                    bs.WriteCommand(ServerClientCommand.UserInfo);
                     await bs.FlushAsync(cancellationToken);
                 }
             }
@@ -90,5 +97,11 @@ namespace HacknetSharp.Server
                     _closed = true;
                 }
         }
+
+        public ClientEvent WaitFor(Predicate<ClientEvent> predicate) => throw new NotImplementedException();
+
+        public IEnumerable<ClientEvent> ReadEvents() => throw new NotImplementedException();
+
+        public void WriteEvents(IEnumerable<ServerEvent> events) => throw new NotImplementedException();
     }
 }

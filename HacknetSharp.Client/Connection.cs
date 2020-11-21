@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -6,11 +7,12 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp.Events.Client;
 using Ns;
 
 namespace HacknetSharp.Client
 {
-    public class Connection
+    public class Connection : IConnection<ClientEvent, ServerEvent>
     {
         private readonly string _server;
         private readonly ushort _port;
@@ -43,9 +45,8 @@ namespace HacknetSharp.Client
                 );
                 await sslStream.AuthenticateAsClientAsync(_server, default, SslProtocols.Tls12, true);
                 var bs = new BufferedStream(sslStream);
-                bs.WriteCommand(ClientServerCommand.Login);
-                bs.WriteUtf8String(_user);
-                bs.WriteUtf8String(_pass);
+                var loginCommand = new LoginEvent{User=_user,Pass=_pass};
+                bs.WriteEvent(loginCommand);
                 _pass = null;
                 await bs.FlushAsync();
                 if (!bs.Expect(ServerClientCommand.UserInfo, out var loginRes))
@@ -94,5 +95,11 @@ namespace HacknetSharp.Client
             // Do not allow this client to communicate with unauthenticated servers.
             return false;
         }
+
+        public ServerEvent WaitFor(Predicate<ServerEvent> predicate) => throw new NotImplementedException();
+
+        public IEnumerable<ServerEvent> ReadEvents() => throw new NotImplementedException();
+
+        public void WriteEvents(IEnumerable<ClientEvent> events) => throw new NotImplementedException();
     }
 }
