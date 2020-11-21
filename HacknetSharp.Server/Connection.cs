@@ -70,19 +70,19 @@ namespace HacknetSharp.Server
 
                             if (!await _server.AccessController.AuthenticateAsync(login.User, login.Pass))
                             {
-                                _stream.ReadTimeout = 100 * 1000;
-                                _stream.WriteTimeout = 100 * 1000;
-                                player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
-                                if (player == null)
-                                {
-                                    // TODO generate / register player model
-                                    player = new PlayerModel();
-                                }
-
                                 bs.WriteEvent(LoginFailEvent.Singleton);
                                 bs.WriteEvent(ServerDisconnectEvent.Singleton);
                                 await bs.FlushAsync(cancellationToken);
                                 return;
+                            }
+                            
+                            _stream.ReadTimeout = 100 * 1000;
+                            _stream.WriteTimeout = 100 * 1000;
+                            player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
+                            if (player == null)
+                            {
+                                // TODO generate / register player model
+                                player = new PlayerModel();
                             }
 
                             // TODO provide basic user state
