@@ -75,13 +75,13 @@ namespace HacknetSharp.Server
                                 await bs.FlushAsync(cancellationToken);
                                 return;
                             }
-                            
+
                             _stream.ReadTimeout = 100 * 1000;
                             _stream.WriteTimeout = 100 * 1000;
                             player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
                             if (player == null)
                             {
-                                // TODO generate / register player model
+                                // TODO generate / register player model, this is temporary
                                 player = new PlayerModel();
                             }
 
@@ -92,8 +92,8 @@ namespace HacknetSharp.Server
                         case CommandEvent command:
                         {
                             if (player == null) continue;
-                            // TODO kill test code
-                            bs.WriteEvent(new OutputEvent {Text = command.Text + " sucks"});
+                            // TODO operate on command based on context, this is temporary
+                            bs.WriteEvent(new OutputEvent {Text = "Output is not yet implemented."});
                             await bs.FlushAsync(cancellationToken);
                             break;
                         }

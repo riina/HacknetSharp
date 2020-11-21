@@ -40,11 +40,11 @@ namespace HacknetSharp.Client.Cli
                 return;
             }
 
-            // TODO client things
-            connection.WriteEvent(new CommandEvent {Text = "input"});
+            // TODO client things, this is temporary
+            connection.WriteEvent(ClientDisconnectEvent.Singleton);
             await connection.FlushAsync();
-            var res = (await connection.WaitForAsync(e => e is OutputEvent, 10) as OutputEvent)!;
-            Console.WriteLine($"Received: {res.Text}");
+            //var res = (await connection.WaitForAsync(e => e is OutputEvent, 10) as OutputEvent)!;
+            //Console.WriteLine($"Received: {res.Text}");
         }
 
         public static string? PromptSecureString(string mes)
