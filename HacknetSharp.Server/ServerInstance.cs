@@ -13,7 +13,7 @@ namespace HacknetSharp.Server
     public class ServerInstance : Common.Server
     {
         private readonly HashSet<Type> _programTypes;
-        private readonly Dictionary<Guid, Program> _programs;
+        private readonly Dictionary<string, Program> _programs;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly ConcurrentDictionary<Guid, Connection> _connections;
@@ -45,7 +45,7 @@ namespace HacknetSharp.Server
             Worlds = new Dictionary<Guid, WorldInstance>();
             // TODO inject worlds
             _programTypes = config.Programs;
-            _programs = new Dictionary<Guid, Program>();
+            _programs = new Dictionary<string, Program>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);

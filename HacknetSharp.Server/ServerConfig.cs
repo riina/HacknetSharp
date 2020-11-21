@@ -21,9 +21,19 @@ namespace HacknetSharp.Server
         public HashSet<Type> Programs { get; set; }
 
         /// <summary>
-        /// World config files.
+        /// Default world.
         /// </summary>
-        public HashSet<WorldConfig> WorldConfigs { get; set; }
+        public string DefaultWorld  { get; set; }
+
+        /// <summary>
+        /// World templates.
+        /// </summary>
+        public HashSet<WorldTemplate> WorldTemplates { get; set; }
+
+        /// <summary>
+        /// System templates.
+        /// </summary>
+        public HashSet<SystemTemplate> SystemTemplates { get; set; }
 
         /// <summary>
         /// User access controller type.
@@ -47,7 +57,7 @@ namespace HacknetSharp.Server
         {
             StorageContextFactoryType = null;
             Programs = new HashSet<Type>();
-            WorldConfigs = new HashSet<WorldConfig>();
+            WorldTemplates = new HashSet<WorldTemplate>();
         }
 
         /// <summary>
@@ -95,13 +105,35 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
-        /// Sets world configurations.
+        /// Sets default world.
         /// </summary>
         /// <returns>This config.</returns>
-        /// <param name="worldConfigs">World configurations.</param>
-        public ServerConfig WithWorldConfigs(IEnumerable<WorldConfig> worldConfigs)
+        /// <param name="defaultWorld">Default world.</param>
+        public ServerConfig WithDefaultWorld(string defaultWorld)
         {
-            WorldConfigs.UnionWith(worldConfigs);
+            DefaultWorld = defaultWorld;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets world templates.
+        /// </summary>
+        /// <returns>This config.</returns>
+        /// <param name="worldTemplates">World templates.</param>
+        public ServerConfig WithWorldTemplates(IEnumerable<WorldTemplate> worldTemplates)
+        {
+            WorldTemplates.UnionWith(worldTemplates);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets system templates.
+        /// </summary>
+        /// <returns>This config.</returns>
+        /// <param name="systemTemplates">System templates.</param>
+        public ServerConfig WithSystemTemplates(IEnumerable<SystemTemplate> systemTemplates)
+        {
+            SystemTemplates.UnionWith(systemTemplates);
             return this;
         }
 

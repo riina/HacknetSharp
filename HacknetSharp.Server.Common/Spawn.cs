@@ -18,8 +18,9 @@ namespace HacknetSharp.Server.Common
             };
         }
 
-        public static SystemModel System(System context, PersonModel owner, string name)
+        public static SystemModel System(System context, PersonModel owner, string name, string template)
         {
+            // TODO search for template and apply
             return new SystemModel
             {
                 Key = Guid.NewGuid(),

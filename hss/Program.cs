@@ -20,10 +20,10 @@ namespace hss
     internal static class Program
     {
         private const string ExtensionsFolder = "extensions";
+        private const string WorldTemplatesFolder = "templates/world";
+        private const string SystemTemplatesFolder = "templates/system";
 
-        private static readonly HashSet<Type[]> _programs =
-            ServerUtil.LoadProgramTypesFromFolder(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                ExtensionsFolder));
+        private static readonly HashSet<Type[]> _programs = ServerUtil.LoadProgramTypesFromFolder(ExtensionsFolder);
 
         private class StandardSqliteStorageContextFactory : SqliteStorageContextFactory
         {
@@ -36,15 +36,15 @@ namespace hss
         private static async Task<int> Main(string[] args) =>
             await Parser.Default
                 .ParseArguments<RegisterAdminOptions, DeregisterOptions, InstallCertOptions, UninstallCertOptions,
-                    CreateOptions, RunOptions
+                    TemplateOptions, RunOptions
                 >(args)
                 .MapResult<RegisterAdminOptions, DeregisterOptions, InstallCertOptions, UninstallCertOptions,
-                    CreateOptions, RunOptions, Task<int>>(
+                    TemplateOptions, RunOptions, Task<int>>(
                     RunRegisterAdmin,
                     RunDeregisterAdmin,
                     RunInstallCert,
                     RunUninstallCert,
-                    RunCreate,
+                    RunTemplate,
                     RunRun,
                     errs => Task.FromResult(1));
 
@@ -181,28 +181,63 @@ namespace hss
             return 0;
         }
 
-        [Verb("create", HelpText = "create world configuration")]
-        private class CreateOptions
+        [Verb("template", HelpText = "create templates")]
+        private class TemplateOptions
         {
-            [Value(0, MetaName = "worldName", HelpText = "Name of world", Required = true)]
-            public string WorldName { get; set; } = null!;
+            [Value(0, MetaName = "kind", HelpText = "kind of template", Required = true)]
+            public string Kind { get; set; } = null!;
 
-            [Option('f', "force", HelpText = "Force overwrite existing config.")]
+            [Value(1, MetaName = "name", HelpText = "name for template instance", Required = true)]
+            public string Name { get; set; } = null!;
+
+            [Option('f', "force", HelpText = "Force overwrite existing template.")]
             public bool Force { get; set; }
         }
 
-        private static Task<int> RunCreate(CreateOptions options)
+        private static Task<int> RunTemplate(TemplateOptions options)
         {
-            var worldConfig = new WorldConfig {Name = options.WorldName, DatabaseKey = Guid.NewGuid()};
-            string name = $"{options.WorldName}.yaml";
-            if (File.Exists(name) && !options.Force)
+            var (path, result) =
+                options.Kind.ToLowerInvariant() switch
+                {
+                    "system" =>
+                        (Path.Combine(SystemTemplatesFolder, $"{options.Name}.yaml"),
+                            (object)new SystemTemplate
+                            {
+                                OsName = "EncomOS",
+                                Users = new List<string>(new[] {"{u}+:{p}", "samwise:genshin"}),
+                                Filesystem = new List<string>(new[]
+                                {
+                                    "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
+                                    "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
+                                    "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
+                                    "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
+                                    "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
+                                    "prog:/bin/cd core:cd", "prog:/bin/ls core:ls"
+                                })
+                            }),
+                    "world" => (
+                        Path.Combine(WorldTemplatesFolder, $"{options.Name}.yaml"),
+                        (object)new WorldTemplate {Name = options.Name}),
+                    _ => (null, null)
+                };
+
+            if (path == null || result == null)
             {
-                Console.WriteLine($"A configuration file named {name} already exists. Use -f/--force to overwrite it.");
+                Console.WriteLine("Unrecognized template type.");
+                return Task.FromResult(7);
+            }
+
+            if (File.Exists(path) && !options.Force)
+            {
+                Console.WriteLine(
+                    $"A configuration file at {path} already exists. Use -f/--force to overwrite it.");
                 return Task.FromResult(3);
             }
 
-            using var tw = new StreamWriter(File.OpenWrite(name));
-            _serializer.Serialize(tw, worldConfig);
+            Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new ApplicationException());
+            using var tw = new StreamWriter(File.OpenWrite(path));
+            _serializer.Serialize(tw, result);
+            Console.WriteLine($"Template saved to:\n{path}");
             return Task.FromResult(0);
         }
 
@@ -212,8 +247,8 @@ namespace hss
             [Value(0, MetaName = "externalAddr", HelpText = "External address.", Required = true)]
             public string ExternalAddr { get; set; } = null!;
 
-            [Value(1, MetaName = "worldConfigs", HelpText = "World configuration YAML files.")]
-            public IEnumerable<string> WorldConfigs { get; set; } = null!;
+            [Value(1, MetaName = "defaultWorld", HelpText = "Default world to load.", Required = true)]
+            public string DefaultWorld { get; set; } = null!;
         }
 
         private static async Task<int> RunRun(RunOptions options)
@@ -239,14 +274,20 @@ namespace hss
             }
 
 
-            var instance = new ServerConfig()
+            var conf = new ServerConfig()
                 .WithPrograms(_programs)
                 .WithStorageContextFactory<StandardSqliteStorageContextFactory>()
                 .WithAccessController<BasicAccessController>()
-                .WithWorldConfigs(options.WorldConfigs.Select(ReadWorldConfigFromFile))
+                .WithDefaultWorld(options.DefaultWorld)
                 .WithPort(42069)
-                .WithCertificate(cert)
-                .CreateInstance();
+                .WithCertificate(cert);
+            if (Directory.Exists(WorldTemplatesFolder))
+                conf.WithWorldTemplates(Directory.EnumerateFiles(WorldTemplatesFolder)
+                    .Select(ReadFromFile<WorldTemplate>));
+            if (Directory.Exists(SystemTemplatesFolder))
+                conf.WithSystemTemplates(Directory.EnumerateFiles(SystemTemplatesFolder)
+                    .Select(ReadFromFile<SystemTemplate>));
+            var instance = conf.CreateInstance();
             await instance.StartAsync();
 
             // Block the program until it is closed.
@@ -269,8 +310,8 @@ namespace hss
         private static readonly IDeserializer _deserializer = new DeserializerBuilder().Build();
         private static readonly ISerializer _serializer = new SerializerBuilder().Build();
 
-        private static WorldConfig ReadWorldConfigFromFile(string file) =>
-            _deserializer.Deserialize<WorldConfig>(File.ReadAllText(file));
+        private static T ReadFromFile<T>(string file) =>
+            _deserializer.Deserialize<T>(File.ReadAllText(file));
 
         /// <summary>
         /// Prompt user for SecureString password
