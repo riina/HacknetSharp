@@ -2,10 +2,12 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp;
+using HacknetSharp.Client;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 
-namespace HacknetSharp.Client.Cli
+namespace hsc
 {
     internal static class Program
     {

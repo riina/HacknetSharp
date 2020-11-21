@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace HacknetSharp.Server.Standard.Migrations
+namespace hss.Migrations
 {
     public partial class Initial : Migration
     {

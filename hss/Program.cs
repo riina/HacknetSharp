@@ -7,12 +7,13 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
+using HacknetSharp.Server;
 using HacknetSharp.Server.BasicLogin;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Sqlite;
 using YamlDotNet.Serialization;
 
-namespace HacknetSharp.Server.Standard
+namespace hss
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal static class Program
