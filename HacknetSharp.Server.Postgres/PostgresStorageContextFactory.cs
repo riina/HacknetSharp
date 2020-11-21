@@ -58,7 +58,7 @@ namespace HacknetSharp.Server.Postgres
                 b => b.MigrationsAssembly(MigrationAssembly.FullName));
             if (LogToConsole)
                 ob.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
-            return new ServerStorageContext(ob.Options, Programs, CustomModels.SelectMany(e=>e));
+            return new ServerStorageContext(ob.Options, Programs, CustomModels.SelectMany(e => e));
         }
     }
 }

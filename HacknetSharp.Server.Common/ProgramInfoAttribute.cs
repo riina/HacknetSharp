@@ -12,10 +12,12 @@ namespace HacknetSharp.Server.Common
         /// Program name.
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// Program description.
         /// </summary>
         public string Description { get; set; }
+
         /// <summary>
         /// Program usage definition text.
         /// </summary>

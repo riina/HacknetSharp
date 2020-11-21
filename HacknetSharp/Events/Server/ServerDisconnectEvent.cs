@@ -6,6 +6,7 @@ namespace HacknetSharp.Events.Server
     public class ServerDisconnectEvent : ServerEvent
     {
         public static readonly ServerDisconnectEvent Singleton = new ServerDisconnectEvent();
+
         public override void Serialize(Stream stream)
         {
         }

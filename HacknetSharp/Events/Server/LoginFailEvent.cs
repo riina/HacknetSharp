@@ -6,6 +6,7 @@ namespace HacknetSharp.Events.Server
     public class LoginFailEvent : ServerEvent
     {
         public static readonly LoginFailEvent Singleton = new LoginFailEvent();
+
         public override void Serialize(Stream stream)
         {
         }

@@ -23,7 +23,7 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Default world.
         /// </summary>
-        public string DefaultWorld  { get; set; }
+        public string? DefaultWorld { get; set; }
 
         /// <summary>
         /// World templates.
@@ -58,6 +58,7 @@ namespace HacknetSharp.Server
             StorageContextFactoryType = null;
             Programs = new HashSet<Type>();
             WorldTemplates = new HashSet<WorldTemplate>();
+            SystemTemplates = new HashSet<SystemTemplate>();
         }
 
         /// <summary>

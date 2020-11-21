@@ -33,6 +33,7 @@ namespace HacknetSharp.Server
         {
             RegistrationSet.AddRange(models);
         }
+
         public override void DirtyModel<T>(Model<T> model)
         {
             DirtySet.Add(model);
@@ -42,6 +43,7 @@ namespace HacknetSharp.Server
         {
             DirtySet.AddRange(models);
         }
+
         public override void DeregisterModel<T>(Model<T> model)
         {
             DeregistrationSet.Add(model);
