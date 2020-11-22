@@ -148,7 +148,14 @@ namespace hss
         private static async Task<int> RunRegisterAdmin(RegisterAdminOptions options)
         {
             var factory = new StandardSqliteStorageContextFactory();
-            var ctx = factory.CreateDbContext(new string[0]);
+            var ctx = factory.CreateDbContext(Array.Empty<string>());
+            var xizt = await ctx.FindAsync<UserModel>(options.Name);
+            if (xizt != null)
+            {
+                Console.WriteLine("A user with specified name already exists.");
+                return 0;
+            }
+
             string? pass = Util.PromptPassword("Pass:");
             if (pass == null) return 0;
             var (salt, hash) = AccessController.Base64Password(pass);
