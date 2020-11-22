@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
 using HacknetSharp.Server;
-using HacknetSharp.Server.BasicLogin;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Sqlite;
 using YamlDotNet.Serialization;
@@ -30,7 +29,7 @@ namespace hss
             protected override IEnumerable<IEnumerable<Type>> CustomPrograms => _programs;
 
             protected override IEnumerable<IEnumerable<Type>> CustomModels =>
-                new[] {ServerUtil.GetTypes(typeof(Model<>), typeof(BasicAccessController).Assembly)};
+                new[] {ServerUtil.GetTypes(typeof(Model<>), typeof(AccessController).Assembly)};
         }
 
         private static async Task<int> Main(string[] args) =>
@@ -152,7 +151,7 @@ namespace hss
             var ctx = factory.CreateDbContext(new string[0]);
             string? pass = Util.PromptPassword("Pass:");
             if (pass == null) return 0;
-            var (salt, hash) = BasicAccessController.Base64Password(pass);
+            var (salt, hash) = AccessController.Base64Password(pass);
             ctx.Add(new UserModel {Admin = true, Base64Password = hash, Base64Salt = salt, Key = options.Name});
             await ctx.SaveChangesAsync();
             return 0;
@@ -277,7 +276,7 @@ namespace hss
             var conf = new ServerConfig()
                 .WithPrograms(_programs)
                 .WithStorageContextFactory<StandardSqliteStorageContextFactory>()
-                .WithAccessController<BasicAccessController>()
+                .WithAccessController<AccessController>()
                 .WithDefaultWorld(options.DefaultWorld)
                 .WithPort(42069)
                 .WithCertificate(cert);

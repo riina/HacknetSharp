@@ -2,7 +2,7 @@
 using HacknetSharp.Server.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace HacknetSharp.Server.BasicLogin
+namespace HacknetSharp.Server
 {
     public class UserModel : Model<string>
     {

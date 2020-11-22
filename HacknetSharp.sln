@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Postgre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss", "hss\hss.csproj", "{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Common", "HacknetSharp.Server.Common\HacknetSharp.Server.Common.csproj", "{855594F6-D6E7-469D-B925-75D4E25D68C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Test", "HacknetSharp.Server.Test\HacknetSharp.Server.Test.csproj", "{DC155C3D-7C3D-41CC-9444-604D51275178}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsc", "hsc\hsc.csproj", "{841D7F34-08FC-47F1-B919-297BFFD0873F}"
@@ -19,8 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ns", "Ns\Ns.csproj", "{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp", "HacknetSharp\HacknetSharp.csproj", "{E98CEC64-E865-40DD-81B2-A0355277EED0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.BasicLogin", "HacknetSharp.Server.BasicLogin\HacknetSharp.Server.BasicLogin.csproj", "{BB59CF22-25AE-42C5-BF78-E0E7EADED69D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +40,6 @@ Global
 		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Release|Any CPU.Build.0 = Release|Any CPU
-		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{855594F6-D6E7-469D-B925-75D4E25D68C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DC155C3D-7C3D-41CC-9444-604D51275178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DC155C3D-7C3D-41CC-9444-604D51275178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC155C3D-7C3D-41CC-9444-604D51275178}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,9 +60,5 @@ Global
 		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB59CF22-25AE-42C5-BF78-E0E7EADED69D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB59CF22-25AE-42C5-BF78-E0E7EADED69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB59CF22-25AE-42C5-BF78-E0E7EADED69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB59CF22-25AE-42C5-BF78-E0E7EADED69D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
