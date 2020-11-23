@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using HacknetSharp.Server;
 using HacknetSharp.Server.Common;
 using NUnit.Framework;
 
-namespace HacknetSharp.Server.Test
+namespace HacknetSharp.Test
 {
     public class Tests
     {

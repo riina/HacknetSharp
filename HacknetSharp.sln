@@ -4,19 +4,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server", "Hack
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Client", "HacknetSharp.Client\HacknetSharp.Client.csproj", "{84D24E95-8795-4CA2-B48F-90B9F2395618}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Postgres", "HacknetSharp.Server.Postgres\HacknetSharp.Server.Postgres.csproj", "{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hspostgres", "hspostgres\hspostgres.csproj", "{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss", "hss\hss.csproj", "{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Test", "HacknetSharp.Server.Test\HacknetSharp.Server.Test.csproj", "{DC155C3D-7C3D-41CC-9444-604D51275178}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Test", "HacknetSharp.Test\HacknetSharp.Test.csproj", "{DC155C3D-7C3D-41CC-9444-604D51275178}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsc", "hsc\hsc.csproj", "{841D7F34-08FC-47F1-B919-297BFFD0873F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Sqlite", "HacknetSharp.Server.Sqlite\HacknetSharp.Server.Sqlite.csproj", "{82C86735-C699-46E5-AEB2-930CC670B3F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hssqlite", "hssqlite\hssqlite.csproj", "{82C86735-C699-46E5-AEB2-930CC670B3F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ns", "Ns\Ns.csproj", "{16BC6DB9-18BC-4EE0-B638-E72A7FE00658}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp", "HacknetSharp\HacknetSharp.csproj", "{E98CEC64-E865-40DD-81B2-A0355277EED0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Common", "HacknetSharp.Server.Common\HacknetSharp.Server.Common.csproj", "{C8C17A42-B058-4480-952C-F4431DC67D25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,10 +36,6 @@ Global
 		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82B4D3F0-5A45-459D-AEEF-AA9AAA60A715}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DC155C3D-7C3D-41CC-9444-604D51275178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DC155C3D-7C3D-41CC-9444-604D51275178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC155C3D-7C3D-41CC-9444-604D51275178}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,5 +56,9 @@ Global
 		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E98CEC64-E865-40DD-81B2-A0355277EED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8C17A42-B058-4480-952C-F4431DC67D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C17A42-B058-4480-952C-F4431DC67D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C17A42-B058-4480-952C-F4431DC67D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C17A42-B058-4480-952C-F4431DC67D25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

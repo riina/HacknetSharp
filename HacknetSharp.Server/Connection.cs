@@ -16,12 +16,12 @@ namespace HacknetSharp.Server
         public LifecycleState State { get; private set; }
         public CancellationTokenSource CancellationTokenSource { get; }
         public Task ExecutionTask { get; }
-        private readonly ServerInstance _server;
+        private readonly Server _server;
         private readonly TcpClient _client;
         private SslStream? _stream;
         private bool _closed;
 
-        public Connection(ServerInstance server, TcpClient client)
+        public Connection(Server server, TcpClient client)
         {
             Id = Guid.NewGuid();
             State = LifecycleState.Starting;

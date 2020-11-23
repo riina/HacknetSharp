@@ -28,8 +28,6 @@ namespace HacknetSharp.Server
         /// Load program types from a folder
         /// </summary>
         /// <param name="folder">Search folder</param>
-        /// <param name="models">Model types</param>
-        /// <param name="programs">Program types</param>
         /// <returns>Set of type arrays</returns>
         public static HashSet<Type[]> LoadProgramTypesFromFolder(string folder)
         {

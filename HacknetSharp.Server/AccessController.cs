@@ -8,13 +8,15 @@ namespace HacknetSharp.Server
 {
     public class AccessController
     {
-        public Common.Server Server { get; set; } = null!;
+        private readonly ServerDatabase _db;
 
-        private ServerDatabase? _db;
+        public AccessController(Server server)
+        {
+            _db = server.Database;
+        }
 
         public async Task<UserModel?> AuthenticateAsync(string user, string pass)
         {
-            _db ??= Server.Database;
             var userModel = await _db.GetAsync<string, UserModel>(user);
             if (userModel == null) return null;
             var (_, hash) = Base64Password(pass, Convert.FromBase64String(userModel.Base64Salt));
@@ -23,7 +25,6 @@ namespace HacknetSharp.Server
 
         public async Task<UserModel?> RegisterAsync(string user, string pass, string registrationToken)
         {
-            _db ??= Server.Database;
             var userModel = await _db.GetAsync<string, UserModel>(user);
             if (userModel != null) return null;
             var token = await _db.GetAsync<string, RegistrationToken>(registrationToken);
@@ -38,7 +39,6 @@ namespace HacknetSharp.Server
 
         public async Task<bool> ChangePasswordAsync(UserModel userModel, string newPass)
         {
-            _db ??= Server.Database;
             (userModel.Base64Salt, userModel.Base64Password) = Base64Password(newPass);
             _db.Edit(userModel);
             await _db.SyncAsync();
@@ -47,7 +47,6 @@ namespace HacknetSharp.Server
 
         public async Task<bool> AdminChangePasswordAsync(UserModel userModel, string user, string newPass)
         {
-            _db ??= Server.Database;
             if (!userModel.Admin) return false;
             var targetUserModel = await _db.GetAsync<string, UserModel>(user);
             if (targetUserModel == null) return false;
@@ -59,7 +58,6 @@ namespace HacknetSharp.Server
 
         public async Task<bool> DeregisterAsync(UserModel userModel, bool purge)
         {
-            _db ??= Server.Database;
             _db.Delete(userModel);
             // TODO implement purge
             await _db.SyncAsync();

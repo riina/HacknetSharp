@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace hss.Migrations
+namespace hssqlite.Migrations
 {
     public partial class Initial : Migration
     {
@@ -9,14 +9,8 @@ namespace hss.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
-                columns: table => new
-                {
-                    Key = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegistrationToken", x => x.Key);
-                });
+                columns: table => new {Key = table.Column<string>(type: "TEXT", nullable: false)},
+                constraints: table => { table.PrimaryKey("PK_RegistrationToken", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "UserModel",
@@ -27,10 +21,7 @@ namespace hss.Migrations
                     Base64Password = table.Column<string>(type: "TEXT", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "SystemModel",
@@ -41,10 +32,7 @@ namespace hss.Migrations
                     OwnerKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     World = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SystemModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_SystemModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "FolderModel",

@@ -11,7 +11,7 @@ using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
 {
-    public class ServerInstance : Common.Server
+    public class Server
     {
         private readonly HashSet<Type> _programTypes;
         private readonly Dictionary<string, (Program, ProgramInfoAttribute)> _programs;
@@ -24,9 +24,10 @@ namespace HacknetSharp.Server
         private Task? _connectTask;
         internal X509Certificate Cert { get; }
         internal AccessController AccessController { get; }
-        public Dictionary<Guid, WorldInstance> Worlds { get; }
+        public Dictionary<Guid, World> Worlds { get; }
+        public ServerDatabase Database { get; protected set; }
 
-        protected internal ServerInstance(ServerConfig config)
+        protected internal Server(ServerConfig config)
         {
             var accessControllerType = config.AccessControllerType ??
                                        throw new ArgumentException(
@@ -36,16 +37,15 @@ namespace HacknetSharp.Server
                                                 $"{nameof(ServerConfig.StorageContextFactoryType)} not specified");
             Cert = config.Certificate ?? throw new ArgumentException(
                 $"{nameof(ServerConfig.Certificate)} not specified");
-            AccessController = (AccessController)(Activator.CreateInstance(accessControllerType) ??
-                                                  throw new ApplicationException());
-            AccessController.Server = this;
             var factory = (StorageContextFactoryBase)(Activator.CreateInstance(storageContextFactoryType) ??
                                                       throw new ApplicationException());
             var context = factory.CreateDbContext(Array.Empty<string>());
-            Database = new ServerDatabaseInstance(context);
-            Worlds = new Dictionary<Guid, WorldInstance>();
+            Database = new ServerDatabase(context);
+            AccessController = new AccessController(this);
+            Worlds = new Dictionary<Guid, World>();
             // TODO inject worlds
-            _programTypes = config.Programs;
+            _programTypes = new HashSet<Type>(ServerUtil.DefaultPrograms);
+            _programTypes.UnionWith(config.Programs);
             _programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);

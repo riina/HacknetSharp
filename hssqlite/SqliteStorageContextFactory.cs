@@ -1,16 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using HacknetSharp.Server;
+using HacknetSharp.Server.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace HacknetSharp.Server.Sqlite
+namespace hssqlite
 {
     /// <summary>
-    /// Represents a factory for creating a Postgres-backed storage context.
+    /// Represents a factory for creating a SQLite-backed storage context.
     /// </summary>
-    public abstract class SqliteStorageContextFactory : StorageContextFactoryBase
+    public class SqliteStorageContextFactory : StorageContextFactoryBase
     {
+        private static bool _fromMain;
+
+        public static async Task<int> Main(string[] args)
+        {
+            _fromMain = true;
+            return await new Executor<SqliteStorageContextFactory>().Run(args);
+        }
+
         /// <summary>
         /// Environment variable for sqlite storage file
         /// </summary>
@@ -29,8 +41,8 @@ namespace HacknetSharp.Server.Sqlite
         /// <inheritdoc />
         public override ServerStorageContext CreateDbContext(string[] args)
         {
-            string file = Environment.GetEnvironmentVariable(EnvStorageFile) ??
-                          throw new ApplicationException($"ENV {EnvStorageFile} not set");
+            string file = Environment.GetEnvironmentVariable(EnvStorageFile) ?? (
+                !_fromMain ? "hakase" : throw new ApplicationException($"ENV {EnvStorageFile} not set"));
             var ob = new DbContextOptionsBuilder<ServerStorageContext>();
 
             ob.UseSqlite($"Data Source={file};",

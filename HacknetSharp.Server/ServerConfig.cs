@@ -161,9 +161,9 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
-        /// Creates new <see cref="ServerInstance"/> instance using this configuration.
+        /// Creates new <see cref="Server"/> instance using this configuration.
         /// </summary>
         /// <returns>Server instance.</returns>
-        public ServerInstance CreateInstance() => new ServerInstance(this);
+        public Server CreateInstance() => new Server(this);
     }
 }

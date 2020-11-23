@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace hss.Migrations
+namespace hssqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201122090216_Initial")]
+    [Migration("20201123090540_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

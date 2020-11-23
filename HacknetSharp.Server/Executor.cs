@@ -7,32 +7,16 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
-using HacknetSharp;
-using HacknetSharp.Server;
-using HacknetSharp.Server.Common;
-using HacknetSharp.Server.Sqlite;
 using YamlDotNet.Serialization;
 
-namespace hss
+namespace HacknetSharp.Server
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    internal static class Program
+    public class Executor<TDatabaseFactory> : Executor where TDatabaseFactory : StorageContextFactoryBase
     {
-        private const string ExtensionsFolder = "extensions";
-        private const string WorldTemplatesFolder = "templates/world";
-        private const string SystemTemplatesFolder = "templates/system";
+        public HashSet<Type[]> CustomPrograms { get; set; } = new HashSet<Type[]>();
 
-        private static readonly HashSet<Type[]> _programs = ServerUtil.LoadProgramTypesFromFolder(ExtensionsFolder);
-
-        private class StandardSqliteStorageContextFactory : SqliteStorageContextFactory
-        {
-            protected override IEnumerable<IEnumerable<Type>> CustomPrograms => _programs;
-
-            protected override IEnumerable<IEnumerable<Type>> CustomModels =>
-                new[] {ServerUtil.GetTypes(typeof(Model<>), typeof(AccessController).Assembly)};
-        }
-
-        private static async Task<int> Main(string[] args) =>
+        public async Task<int> Run(string[] args) =>
             await Parser.Default
                 .ParseArguments<RegisterAdminOptions, DeregisterOptions, InstallCertOptions, UninstallCertOptions,
                     TemplateOptions, RunOptions
@@ -49,11 +33,6 @@ namespace hss
 
         // TODO purge verb (clear database of content outside specified worlds)
 
-        private static readonly (StoreName name, StoreLocation location)[] _wStores =
-        {
-            /*(StoreName.My, StoreLocation.CurrentUser), */(StoreName.Root, StoreLocation.CurrentUser)
-        };
-
         [Verb("installcert", HelpText = "install server certificate")]
         private class InstallCertOptions
         {
@@ -61,7 +40,7 @@ namespace hss
             public string CertFile { get; set; } = null!;
         }
 
-        private static Task<int> RunInstallCert(InstallCertOptions options)
+        private Task<int> RunInstallCert(InstallCertOptions options)
         {
             X509Certificate2? nCert = null;
             try
@@ -103,7 +82,7 @@ namespace hss
             public string CertFile { get; set; } = null!;
         }
 
-        private static Task<int> RunUninstallCert(UninstallCertOptions options)
+        private Task<int> RunUninstallCert(UninstallCertOptions options)
         {
             X509Certificate2? nCert = null;
             try
@@ -145,9 +124,9 @@ namespace hss
             public string Name { get; set; } = null!;
         }
 
-        private static async Task<int> RunRegisterAdmin(RegisterAdminOptions options)
+        private async Task<int> RunRegisterAdmin(RegisterAdminOptions options)
         {
-            var factory = new StandardSqliteStorageContextFactory();
+            var factory = Activator.CreateInstance<TDatabaseFactory>();
             var ctx = factory.CreateDbContext(Array.Empty<string>());
             var xizt = await ctx.FindAsync<UserModel>(options.Name);
             if (xizt != null)
@@ -171,9 +150,9 @@ namespace hss
             public string Name { get; set; } = null!;
         }
 
-        private static async Task<int> RunDeregisterAdmin(DeregisterOptions options)
+        private async Task<int> RunDeregisterAdmin(DeregisterOptions options)
         {
-            var factory = new StandardSqliteStorageContextFactory();
+            var factory = Activator.CreateInstance<TDatabaseFactory>();
             var ctx = factory.CreateDbContext(new string[0]);
             var user = ctx.Find<UserModel>(options.Name);
             if (user == null)
@@ -200,13 +179,13 @@ namespace hss
             public bool Force { get; set; }
         }
 
-        private static Task<int> RunTemplate(TemplateOptions options)
+        private Task<int> RunTemplate(TemplateOptions options)
         {
             var (path, result) =
                 options.Kind.ToLowerInvariant() switch
                 {
                     "system" =>
-                        (Path.Combine(SystemTemplatesFolder, $"{options.Name}.yaml"),
+                        (Path.Combine(Constants.SystemTemplatesFolder, $"{options.Name}.yaml"),
                             (object)new SystemTemplate
                             {
                                 OsName = "EncomOS",
@@ -222,7 +201,7 @@ namespace hss
                                 })
                             }),
                     "world" => (
-                        Path.Combine(WorldTemplatesFolder, $"{options.Name}.yaml"),
+                        Path.Combine(Constants.WorldTemplatesFolder, $"{options.Name}.yaml"),
                         (object)new WorldTemplate {Name = options.Name}),
                     _ => (null, null)
                 };
@@ -257,7 +236,7 @@ namespace hss
             public string DefaultWorld { get; set; } = null!;
         }
 
-        private static async Task<int> RunRun(RunOptions options)
+        private async Task<int> RunRun(RunOptions options)
         {
             Console.WriteLine("Looking for cert...");
             X509Certificate? cert = null;
@@ -281,17 +260,17 @@ namespace hss
 
 
             var conf = new ServerConfig()
-                .WithPrograms(_programs)
-                .WithStorageContextFactory<StandardSqliteStorageContextFactory>()
+                .WithPrograms(CustomPrograms)
+                .WithStorageContextFactory<TDatabaseFactory>()
                 .WithAccessController<AccessController>()
                 .WithDefaultWorld(options.DefaultWorld)
                 .WithPort(42069)
                 .WithCertificate(cert);
-            if (Directory.Exists(WorldTemplatesFolder))
-                conf.WithWorldTemplates(Directory.EnumerateFiles(WorldTemplatesFolder)
+            if (Directory.Exists(Constants.WorldTemplatesFolder))
+                conf.WithWorldTemplates(Directory.EnumerateFiles(Constants.WorldTemplatesFolder)
                     .Select(ReadFromFile<WorldTemplate>));
-            if (Directory.Exists(SystemTemplatesFolder))
-                conf.WithSystemTemplates(Directory.EnumerateFiles(SystemTemplatesFolder)
+            if (Directory.Exists(Constants.SystemTemplatesFolder))
+                conf.WithSystemTemplates(Directory.EnumerateFiles(Constants.SystemTemplatesFolder)
                     .Select(ReadFromFile<SystemTemplate>));
             var instance = conf.CreateInstance();
             await instance.StartAsync();
@@ -312,9 +291,6 @@ namespace hss
             Console.WriteLine("Teardown complete.");
             return 0;
         }
-
-        private static readonly IDeserializer _deserializer = new DeserializerBuilder().Build();
-        private static readonly ISerializer _serializer = new SerializerBuilder().Build();
 
         private static T ReadFromFile<T>(string file) =>
             _deserializer.Deserialize<T>(File.ReadAllText(file));
@@ -352,5 +328,16 @@ namespace hss
             Console.WriteLine();
             return ss;
         }
+    }
+
+    public class Executor
+    {
+        internal static readonly (StoreName name, StoreLocation location)[] _wStores =
+        {
+            /*(StoreName.My, StoreLocation.CurrentUser), */(StoreName.Root, StoreLocation.CurrentUser)
+        };
+
+        protected static readonly IDeserializer _deserializer = new DeserializerBuilder().Build();
+        protected static readonly ISerializer _serializer = new SerializerBuilder().Build();
     }
 }

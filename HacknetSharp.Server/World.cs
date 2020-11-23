@@ -1,17 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
 {
-    public class WorldInstance : World
+    public class World : IWorld
     {
+        public Guid Id { get; internal set; }
+
         private readonly AutoResetEvent _waitHandle;
         public List<object> RegistrationSet { get; }
         public List<object> DirtySet { get; }
         public List<object> DeregistrationSet { get; }
 
-        internal WorldInstance()
+        internal World()
         {
             _waitHandle = new AutoResetEvent(true);
             RegistrationSet = new List<object>();
@@ -24,32 +27,32 @@ namespace HacknetSharp.Server
             // TODO update
         }
 
-        public override void RegisterModel<T>(Model<T> model)
+        public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
         {
             RegistrationSet.Add(model);
         }
 
-        public override void RegisterModels<T>(IEnumerable<Model<T>> models)
+        public void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
             RegistrationSet.AddRange(models);
         }
 
-        public override void DirtyModel<T>(Model<T> model)
+        public void DirtyModel<T>(Model<T> model) where T : IEquatable<T>
         {
             DirtySet.Add(model);
         }
 
-        public override void DirtyModels<T>(IEnumerable<Model<T>> models)
+        public void DirtyModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
             DirtySet.AddRange(models);
         }
 
-        public override void DeregisterModel<T>(Model<T> model)
+        public void DeregisterModel<T>(Model<T> model) where T : IEquatable<T>
         {
             DeregistrationSet.Add(model);
         }
 
-        public override void DeregisterModels<T>(IEnumerable<Model<T>> models)
+        public void DeregisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
             DeregistrationSet.AddRange(models);
         }

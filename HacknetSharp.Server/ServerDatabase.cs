@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace HacknetSharp.Server
     /// <summary>
     /// Represents the backing database for a <see cref="Server"/> instance.
     /// </summary>
-    public class ServerDatabaseInstance : ServerDatabase
+    public class ServerDatabase : IServerDatabase
     {
         private readonly AutoResetEvent _waitHandle;
 
@@ -20,24 +21,19 @@ namespace HacknetSharp.Server
         public ServerStorageContext Context { get; }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ServerDatabaseInstance"/> with the provided <see cref="ServerStorageContext"/>.
+        /// Creates a new instance of <see cref="ServerDatabase"/> with the provided <see cref="ServerStorageContext"/>.
         /// </summary>
         /// <param name="context">Storage context to wrap.</param>
-        public ServerDatabaseInstance(ServerStorageContext context)
+        public ServerDatabase(ServerStorageContext context)
         {
             Context = context;
             _waitHandle = new AutoResetEvent(true);
         }
 
-        /// <summary>
-        /// Get an object from the database.
-        /// </summary>
-        /// <param name="key">Key to search for.</param>
-        /// <typeparam name="TKey">The key type.</typeparam>
-        /// <typeparam name="TResult">The object type.</typeparam>
-        /// <returns>First located object with key or default for <typeparamref name="TResult"/></returns>
+        /// <inheritdoc/>
 #pragma warning disable 8609
-        public override async Task<TResult> GetAsync<TKey, TResult>(TKey key)
+        public async Task<TResult?> GetAsync<TKey, TResult>(TKey key)
+            where TKey : IEquatable<TKey> where TResult : Model<TKey>
 #pragma warning restore 8609
         {
             _waitHandle.WaitOne();
@@ -73,14 +69,9 @@ namespace HacknetSharp.Server
             }
         }*/
 
-        /// <summary>
-        /// Performs a bulk operation to find all objects that have keys matching <paramref name="keys"/>.
-        /// </summary>
-        /// <param name="keys">Keys to search for.</param>
-        /// <typeparam name="TKey">The key type.</typeparam>
-        /// <typeparam name="TResult">The object type.</typeparam>
-        /// <returns>Objects with matching keys, not ordered nor one-to-one.</returns>
-        public override async Task<List<TResult>> GetBulkAsync<TKey, TResult>(ICollection<TKey> keys)
+        /// <inheritdoc/>
+        public async Task<List<TResult>> GetBulkAsync<TKey, TResult>(ICollection<TKey> keys)
+            where TKey : IEquatable<TKey> where TResult : Model<TKey>
         {
             _waitHandle.WaitOne();
             try
@@ -93,12 +84,8 @@ namespace HacknetSharp.Server
             }
         }
 
-        /// <summary>
-        /// Adds an entity to the database.
-        /// </summary>
-        /// <param name="entity">Entity to add.</param>
-        /// <typeparam name="TEntry">The entity type.</typeparam>
-        public override void Add<TEntry>(TEntry entity)
+        /// <inheritdoc/>
+        public void Add<TEntry>(TEntry entity) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
@@ -111,13 +98,8 @@ namespace HacknetSharp.Server
             }
         }
 
-
-        /// <summary>
-        /// Adds a group of entities to the database.
-        /// </summary>
-        /// <param name="entities">Entities to add.</param>
-        /// <typeparam name="TEntry">The entity type.</typeparam>
-        public override void AddBulk<TEntry>(IEnumerable<TEntry> entities)
+        /// <inheritdoc/>
+        public void AddBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
@@ -130,12 +112,8 @@ namespace HacknetSharp.Server
             }
         }
 
-        /// <summary>
-        /// Marks an entity as edited in the database.
-        /// </summary>
-        /// <param name="entity">Entity to mark.</param>
-        /// <typeparam name="TEntry">The entity type.</typeparam>
-        public override void Edit<TEntry>(TEntry entity)
+        /// <inheritdoc/>
+        public void Edit<TEntry>(TEntry entity) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
@@ -148,12 +126,8 @@ namespace HacknetSharp.Server
             }
         }
 
-        /// <summary>
-        /// Marks a group of entities as edited in the database.
-        /// </summary>
-        /// <param name="entities">Entities to mark.</param>
-        /// <typeparam name="TEntry">The entity type.</typeparam>
-        public override void EditBulk<TEntry>(IEnumerable<TEntry> entities)
+        /// <inheritdoc/>
+        public void EditBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
@@ -166,13 +140,8 @@ namespace HacknetSharp.Server
             }
         }
 
-
-        /// <summary>
-        /// Removes an entity from the database.
-        /// </summary>
-        /// <param name="entity">Entity to remove.</param>
-        /// <typeparam name="TEntry">The entity type.</typeparam>
-        public override void Delete<TEntry>(TEntry entity)
+        /// <inheritdoc/>
+        public void Delete<TEntry>(TEntry entity) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
@@ -186,12 +155,8 @@ namespace HacknetSharp.Server
         }
 
 
-        /// <summary>
-        /// Removes a group of entities from the database.
-        /// </summary>
-        /// <param name="entities">Entities to remove.</param>
-        /// <typeparam name="TEntry">The entity type.</typeparam>
-        public override void DeleteBulk<TEntry>(IEnumerable<TEntry> entities)
+        /// <inheritdoc/>
+        public void DeleteBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
@@ -204,11 +169,8 @@ namespace HacknetSharp.Server
             }
         }
 
-        /// <summary>
-        /// Synchronizes local state with database.
-        /// </summary>
-        /// <returns>Task representing this operation.</returns>
-        public override async Task SyncAsync()
+        /// <inheritdoc/>
+        public async Task SyncAsync()
         {
             _waitHandle.WaitOne();
             try
