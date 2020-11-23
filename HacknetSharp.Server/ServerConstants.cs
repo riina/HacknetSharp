@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides common constants.
     /// </summary>
-    public static class Constants
+    public static class ServerConstants
     {
         /// <summary>
         /// Assembly version string.

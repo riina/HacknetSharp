@@ -1,7 +1,6 @@
 using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using HacknetSharp.Server.Common;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace HacknetSharp.Server

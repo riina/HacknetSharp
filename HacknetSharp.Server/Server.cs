@@ -17,7 +17,7 @@ namespace HacknetSharp.Server
         private readonly Dictionary<string, (Program, ProgramInfoAttribute)> _programs;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
-        private readonly ConcurrentDictionary<Guid, Connection> _connections;
+        private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
         private LifecycleState _state;
 
         private readonly TcpListener _connectListener;
@@ -50,7 +50,7 @@ namespace HacknetSharp.Server
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
-            _connections = new ConcurrentDictionary<Guid, Connection>();
+            _connections = new ConcurrentDictionary<Guid, HostConnection>();
             _state = LifecycleState.NotStarted;
         }
 
@@ -64,7 +64,7 @@ namespace HacknetSharp.Server
                 {
                     try
                     {
-                        var connection = new Connection(this, await _connectListener.AcceptTcpClientAsync());
+                        var connection = new HostConnection(this, await _connectListener.AcceptTcpClientAsync());
                         _connections.TryAdd(connection.Id, connection);
                     }
                     finally
@@ -153,7 +153,7 @@ namespace HacknetSharp.Server
         internal void DisconnectConnection(Guid id)
         {
             if (_connections.TryRemove(id, out var connection))
-                connection.CancellationTokenSource.Cancel();
+                connection.Dispose();
         }
 
         internal bool TryIncrementCountdown(LifecycleState min, LifecycleState max) =>

@@ -20,7 +20,7 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <returns>Group of groups of program types.</returns>
         protected virtual IEnumerable<IEnumerable<Type>> CustomPrograms =>
-            ServerUtil.LoadProgramTypesFromFolder(Constants.ExtensionsFolder);
+            ServerUtil.LoadProgramTypesFromFolder(ServerConstants.ExtensionsFolder);
 
         /// <summary>
         /// Obtains custom model types as a group of groups.

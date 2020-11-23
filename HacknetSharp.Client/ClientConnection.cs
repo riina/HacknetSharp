@@ -13,13 +13,14 @@ using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Client
 {
-    public class Connection : IConnection<ClientEvent, ServerEvent>
+    public class ClientConnection : IInboundConnection<ServerEvent>, IOutboundConnection<ClientEvent>
     {
-        private readonly string _server;
-        private readonly ushort _port;
-        private readonly string _user;
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        public string Server { get; }
+        public ushort Port { get; }
+        public string User { get; }
         private string? _pass;
+        private string? _registrationToken;
+        private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly AutoResetEvent _lockInOp;
@@ -27,18 +28,20 @@ namespace HacknetSharp.Client
         private readonly List<ServerEvent> _inEvents;
         private Task? _inTask;
         private LifecycleState _state;
+        private bool _connected;
         private bool _closed;
         private TcpClient? _client;
         private SslStream? _sslStream;
         private BufferedStream? _bufferedStream;
 
-        public Connection(string server, ushort port, string user, string pass)
+        public ClientConnection(string server, ushort port, string user, string pass, string? registrationToken = null)
         {
-            _server = server;
-            _port = port;
-            _user = user;
+            Server = server;
+            Port = port;
+            User = user;
             _cancellationTokenSource = new CancellationTokenSource();
             _pass = pass;
+            _registrationToken = registrationToken;
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _lockInOp = new AutoResetEvent(true);
@@ -47,17 +50,17 @@ namespace HacknetSharp.Client
             _inEvents = new List<ServerEvent>();
         }
 
-        public async Task ConnectAsync()
+        public async Task<UserInfoEvent> ConnectAsync()
         {
             Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
                 ref _state);
             try
             {
-                _client = new TcpClient(_server, _port);
+                _client = new TcpClient(Server, Port);
                 _sslStream = new SslStream(
                     _client.GetStream(), false, ValidateServerCertificate
                 );
-                await _sslStream.AuthenticateAsClientAsync(_server, default, SslProtocols.Tls12, true);
+                await _sslStream.AuthenticateAsClientAsync(Server, default, SslProtocols.Tls12, true);
                 _bufferedStream = new BufferedStream(_sslStream);
                 _inTask = ExecuteReceive(_sslStream, _cancellationTokenSource.Token);
             }
@@ -70,28 +73,24 @@ namespace HacknetSharp.Client
 
             try
             {
-                var loginCommand = new LoginEvent {User = _user, Pass = _pass!};
+                var loginCommand = new LoginEvent {User = User, Pass = _pass!, RegistrationToken = _registrationToken};
                 WriteEvent(loginCommand);
                 await FlushAsync(_cancellationTokenSource.Token);
                 _pass = null;
                 var result = await WaitForAsync(_ => true, 10, _cancellationTokenSource.Token);
-                switch (result)
+                var info = result switch
                 {
-                    case UserInfoEvent info:
-                    {
-                        Console.WriteLine("Login successful.");
-                        break;
-                    }
-                    case LoginFailEvent fail:
-                    {
-                        throw new LoginException("Login failed.");
-                    }
-                    default:
-                        throw new ProtocolException($"Unexpected event type {result?.GetType().FullName} received.");
-                }
+                    UserInfoEvent i => i,
+                    LoginFailEvent _ => throw new LoginException("Login failed."),
+                    _ => throw new ProtocolException($"Unexpected event type {result?.GetType().FullName} received.")
+                };
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active,
+                    ref _state);
+                return info;
             }
             catch
             {
+                _connected = false;
                 try
                 {
                     WriteEvent(ClientDisconnectEvent.Singleton);
@@ -104,25 +103,32 @@ namespace HacknetSharp.Client
 
                 Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
                     ref _state);
-                CloseStream();
+                Dispose();
                 throw;
             }
-
-            Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active, ref _state);
         }
 
         private async Task ExecuteReceive(SslStream stream, CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            _connected = true;
+            _countdown.AddCount(1);
+            try
             {
-                var evt = await stream.ReadEventAsync<ServerEvent>(cancellationToken);
-                if (evt == null) return;
-                _lockInOp.WaitOne();
-                _inEvents.Add(evt);
-                _lockInOp.Set();
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    var evt = await stream.ReadEventAsync<ServerEvent>(cancellationToken);
+                    if (evt == null) return;
+                    _lockInOp.WaitOne();
+                    _inEvents.Add(evt);
+                    _lockInOp.Set();
+                }
+            }
+            finally
+            {
+                Dispose();
+                _countdown.Signal();
             }
 
-            CloseStream();
             throw new TaskCanceledException();
         }
 
@@ -134,12 +140,12 @@ namespace HacknetSharp.Client
                 return;
             }
 
-            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
+            _connected = false;
             _cancellationTokenSource.Cancel();
-            while (_state != LifecycleState.Active && _state != LifecycleState.Failed) await Task.Delay(100).Caf();
+            while (_state == LifecycleState.Starting) await Task.Delay(100).Caf();
             try
             {
-                CloseStream();
+                Dispose();
             }
             catch
             {
@@ -174,31 +180,30 @@ namespace HacknetSharp.Client
             return false;
         }
 
-        private void CloseStream()
+        private void Dispose()
         {
-            lock (_cancellationTokenSource)
-                if (!_closed)
-                {
-                    _closed = true;
+            if (_closed) return;
 
-                    try
-                    {
-                        _bufferedStream?.Close();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
+            _connected = false;
+            _closed = true;
 
-                    try
-                    {
-                        _sslStream?.Close();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-                }
+            try
+            {
+                _bufferedStream?.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            try
+            {
+                _sslStream?.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis) =>
@@ -273,5 +278,7 @@ namespace HacknetSharp.Client
                 _lockOutOp.Set();
             }
         }
+
+        public bool Connected => _connected;
     }
 }

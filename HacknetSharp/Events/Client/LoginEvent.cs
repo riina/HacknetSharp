@@ -8,17 +8,22 @@ namespace HacknetSharp.Events.Client
     {
         public string User { get; set; } = null!;
         public string Pass { get; set; } = null!;
+        public string? RegistrationToken { get; set; }
 
         public override void Serialize(Stream stream)
         {
             stream.WriteUtf8String(User);
             stream.WriteUtf8String(Pass);
+            stream.WriteU8(RegistrationToken != null ? (byte)1 : (byte)0);
+            if (RegistrationToken != null) stream.WriteUtf8String(RegistrationToken);
         }
 
         public override void Deserialize(Stream stream)
         {
             User = stream.ReadUtf8String();
             Pass = stream.ReadUtf8String();
+            if (stream.ReadU8() != 0)
+                RegistrationToken = stream.ReadUtf8String();
         }
     }
 }

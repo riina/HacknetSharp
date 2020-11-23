@@ -185,7 +185,7 @@ namespace HacknetSharp.Server
                 options.Kind.ToLowerInvariant() switch
                 {
                     "system" =>
-                        (Path.Combine(Constants.SystemTemplatesFolder, $"{options.Name}.yaml"),
+                        (Path.Combine(ServerConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
                             (object)new SystemTemplate
                             {
                                 OsName = "EncomOS",
@@ -201,7 +201,7 @@ namespace HacknetSharp.Server
                                 })
                             }),
                     "world" => (
-                        Path.Combine(Constants.WorldTemplatesFolder, $"{options.Name}.yaml"),
+                        Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
                         (object)new WorldTemplate {Name = options.Name}),
                     _ => (null, null)
                 };
@@ -266,11 +266,11 @@ namespace HacknetSharp.Server
                 .WithDefaultWorld(options.DefaultWorld)
                 .WithPort(42069)
                 .WithCertificate(cert);
-            if (Directory.Exists(Constants.WorldTemplatesFolder))
-                conf.WithWorldTemplates(Directory.EnumerateFiles(Constants.WorldTemplatesFolder)
+            if (Directory.Exists(ServerConstants.WorldTemplatesFolder))
+                conf.WithWorldTemplates(Directory.EnumerateFiles(ServerConstants.WorldTemplatesFolder)
                     .Select(ReadFromFile<WorldTemplate>));
-            if (Directory.Exists(Constants.SystemTemplatesFolder))
-                conf.WithSystemTemplates(Directory.EnumerateFiles(Constants.SystemTemplatesFolder)
+            if (Directory.Exists(ServerConstants.SystemTemplatesFolder))
+                conf.WithSystemTemplates(Directory.EnumerateFiles(ServerConstants.SystemTemplatesFolder)
                     .Select(ReadFromFile<SystemTemplate>));
             var instance = conf.CreateInstance();
             await instance.StartAsync();

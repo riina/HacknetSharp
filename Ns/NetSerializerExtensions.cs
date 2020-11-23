@@ -362,7 +362,7 @@ namespace Ns
             {
                 int read = stream.Read(Buffer, tot, sizeof(ushort) - tot);
                 if (read == 0)
-                    throw new ApplicationException(
+                    throw new EndOfStreamException(
                         $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(ushort) - tot:X} left");
                 tot += read;
             } while (tot < sizeof(ushort));
@@ -378,7 +378,7 @@ namespace Ns
             {
                 int read = stream.Read(Buffer, tot, sizeof(uint) - tot);
                 if (read == 0)
-                    throw new ApplicationException(
+                    throw new EndOfStreamException(
                         $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(uint) - tot:X} left");
                 tot += read;
             } while (tot < sizeof(uint));
@@ -394,7 +394,7 @@ namespace Ns
             {
                 int read = stream.Read(Buffer, tot, sizeof(ulong) - tot);
                 if (read == 0)
-                    throw new ApplicationException(
+                    throw new EndOfStreamException(
                         $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(ulong) - tot:X} left");
                 tot += read;
             } while (tot < sizeof(ulong));
@@ -410,7 +410,7 @@ namespace Ns
             {
                 int read = stream.Read(Buffer, tot, sizeof(decimal) - tot);
                 if (read == 0)
-                    throw new ApplicationException(
+                    throw new EndOfStreamException(
                         $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(decimal) - tot:X} left");
                 tot += read;
             } while (tot < sizeof(decimal));

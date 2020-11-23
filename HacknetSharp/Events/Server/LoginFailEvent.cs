@@ -1,18 +1,13 @@
-﻿using System.IO;
-
-namespace HacknetSharp.Events.Server
+﻿namespace HacknetSharp.Events.Server
 {
     [EventCommand(Command.SC_LoginFail)]
-    public class LoginFailEvent : ServerEvent
+    public class LoginFailEvent : FailBaseServerEvent
     {
         public static readonly LoginFailEvent Singleton = new LoginFailEvent();
 
-        public override void Serialize(Stream stream)
+        public LoginFailEvent()
         {
-        }
-
-        public override void Deserialize(Stream stream)
-        {
+            Message = "Login failed. Invalid credentials.";
         }
     }
 }
