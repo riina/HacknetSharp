@@ -13,6 +13,8 @@ namespace Ns
     [SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
     public class NetSerializer
     {
+        internal static readonly bool _swap = !BitConverter.IsLittleEndian;
+
         private static readonly Dictionary<Type, (object encoder, object decoder)> _converters =
             new Dictionary<Type, (object encoder, object decoder)>();
 

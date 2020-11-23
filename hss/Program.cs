@@ -51,7 +51,7 @@ namespace hss
 
         private static readonly (StoreName name, StoreLocation location)[] _wStores =
         {
-            (StoreName.My, StoreLocation.CurrentUser), (StoreName.Root, StoreLocation.CurrentUser),
+            /*(StoreName.My, StoreLocation.CurrentUser), */(StoreName.Root, StoreLocation.CurrentUser)
         };
 
         [Verb("installcert", HelpText = "install server certificate")]
@@ -268,8 +268,8 @@ namespace hss
                 var certs = store.Certificates.Find(X509FindType.FindBySubjectName, options.ExternalAddr, false);
                 store.Close();
                 if (certs.Count <= 0) continue;
-                Console.WriteLine($"Found cert in {location}:{name}");
                 cert = certs[0];
+                Console.WriteLine($"Found cert in {location}:{name} - {cert.Subject}");
                 break;
             }
 

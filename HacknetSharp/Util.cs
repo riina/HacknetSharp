@@ -54,6 +54,10 @@ namespace HacknetSharp
             (Command)stream.ReadU32();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async Task<Command> ReadCommandAsync(this Stream stream, CancellationToken cancellationToken) =>
+            (Command)await stream.ReadU32Async(cancellationToken);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Expect(this Stream stream, Command command, out Command actual)
         {
             actual = (Command)stream.ReadU32();
@@ -132,6 +136,30 @@ namespace HacknetSharp
 
             if (!_commandC2T.TryGetValue(command, out var type))
                 throw new ProtocolException($"Unknown command type {(uint)command} received");
+            var obj = Activator.CreateInstance(type);
+            var evt = obj as TEvent ??
+                      throw new Exception(
+                          $"Failed to cast event {obj.GetType().FullName} as {typeof(TEvent).FullName}");
+            evt.Deserialize(stream);
+            return evt;
+        }
+
+        public static async Task<TEvent?> ReadEventAsync<TEvent>(this Stream stream,
+            CancellationToken cancellationToken) where TEvent : Event
+        {
+            Command command;
+            try
+            {
+                command = await stream.ReadCommandAsync(cancellationToken);
+            }
+            catch (EndOfStreamException)
+            {
+                return null;
+            }
+
+            if (!_commandC2T.TryGetValue(command, out var type))
+                throw new ProtocolException($"Unknown command type {(uint)command} received");
+
             var obj = Activator.CreateInstance(type);
             var evt = obj as TEvent ??
                       throw new Exception(

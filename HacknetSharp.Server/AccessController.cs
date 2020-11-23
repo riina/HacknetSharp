@@ -12,59 +12,55 @@ namespace HacknetSharp.Server
 
         private ServerDatabase? _db;
 
-        public async Task<bool> AuthenticateAsync(string user, string pass)
+        public async Task<UserModel?> AuthenticateAsync(string user, string pass)
         {
             _db ??= Server.Database;
-            var userObj = await _db.GetAsync<string, UserModel>(user);
-            if (userObj == null) return false;
-            var (_, hash) = Base64Password(pass, Convert.FromBase64String(userObj.Base64Salt));
-            return hash == userObj.Base64Password;
+            var userModel = await _db.GetAsync<string, UserModel>(user);
+            if (userModel == null) return null;
+            var (_, hash) = Base64Password(pass, Convert.FromBase64String(userModel.Base64Salt));
+            return hash == userModel.Base64Password ? userModel : null;
         }
 
-        public async Task<bool> RegisterAsync(string user, string pass, string registrationToken)
+        public async Task<UserModel?> RegisterAsync(string user, string pass, string registrationToken)
         {
             _db ??= Server.Database;
+            var userModel = await _db.GetAsync<string, UserModel>(user);
+            if (userModel != null) return null;
             var token = await _db.GetAsync<string, RegistrationToken>(registrationToken);
-            if (token == null) return false;
+            if (token == null) return null;
             _db.Delete(token);
             var (salt, hash) = Base64Password(pass);
-            _db.Add(new UserModel {Key = user, Base64Salt = salt, Base64Password = hash});
+            userModel = new UserModel {Key = user, Base64Salt = salt, Base64Password = hash};
+            _db.Add(userModel);
+            await _db.SyncAsync();
+            return userModel;
+        }
+
+        public async Task<bool> ChangePasswordAsync(UserModel userModel, string newPass)
+        {
+            _db ??= Server.Database;
+            (userModel.Base64Salt, userModel.Base64Password) = Base64Password(newPass);
+            _db.Edit(userModel);
             await _db.SyncAsync();
             return true;
         }
 
-        public async Task<bool> ChangePasswordAsync(string user, string pass, string newPass)
+        public async Task<bool> AdminChangePasswordAsync(UserModel userModel, string user, string newPass)
         {
             _db ??= Server.Database;
-            var userObj = await _db.GetAsync<string, UserModel>(user);
-            if (userObj == null) return false;
-            var (_, hash) = Base64Password(pass, Convert.FromBase64String(userObj.Base64Salt));
-            if (hash != userObj.Base64Password) return false;
-            (userObj.Base64Salt, userObj.Base64Password) = Base64Password(newPass);
-            _db.Edit(userObj);
+            if (!userModel.Admin) return false;
+            var targetUserModel = await _db.GetAsync<string, UserModel>(user);
+            if (targetUserModel == null) return false;
+            (targetUserModel.Base64Salt, targetUserModel.Base64Password) = Base64Password(newPass);
+            _db.Edit(targetUserModel);
             await _db.SyncAsync();
             return true;
         }
 
-        public async Task<bool> AdminChangePasswordAsync(string user, string newPass)
+        public async Task<bool> DeregisterAsync(UserModel userModel, bool purge)
         {
             _db ??= Server.Database;
-            var userObj = await _db.GetAsync<string, UserModel>(user);
-            if (userObj == null) return false;
-            (userObj.Base64Salt, userObj.Base64Password) = Base64Password(newPass);
-            _db.Edit(userObj);
-            await _db.SyncAsync();
-            return true;
-        }
-
-        public async Task<bool> DeregisterAsync(string user, string pass, bool purge)
-        {
-            _db ??= Server.Database;
-            var userObj = await _db.GetAsync<string, UserModel>(user);
-            if (userObj == null) return false;
-            var (_, hash) = Base64Password(pass, Convert.FromBase64String(userObj.Base64Salt));
-            if (hash != userObj.Base64Password) return false;
-            _db.Delete(userObj);
+            _db.Delete(userModel);
             // TODO implement purge
             await _db.SyncAsync();
             return true;

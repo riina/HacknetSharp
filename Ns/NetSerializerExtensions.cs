@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using static System.Buffers.ArrayPool<byte>;
 using static System.Buffers.Binary.BinaryPrimitives;
+using static Ns.NetSerializer;
 
 namespace Ns
 {
@@ -18,7 +19,6 @@ namespace Ns
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class NetSerializerExtensions
     {
-        private static readonly bool _swap = !BitConverter.IsLittleEndian;
         [ThreadStatic] private static byte[] _buffer;
         [ThreadStatic] private static Decoder _decoder;
         [ThreadStatic] private static Encoder _encoder;
@@ -654,7 +654,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read signed 8-byte value
+        ///     Read signed 8-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -665,7 +665,7 @@ namespace Ns
                 : (sbyte)Buffer[0];
 
         /// <summary>
-        ///     Write signed 8-byte value
+        ///     Write signed 8-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -676,7 +676,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read unsigned 8-byte value
+        ///     Read unsigned 8-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -687,7 +687,7 @@ namespace Ns
                 : Buffer[0];
 
         /// <summary>
-        ///     Write unsigned 8-byte value
+        ///     Write unsigned 8-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -698,7 +698,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read signed 16-byte value
+        ///     Read signed 16-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -711,7 +711,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Write signed 16-byte value
+        ///     Write signed 16-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -724,7 +724,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read unsigned 16-byte value
+        ///     Read unsigned 16-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -737,7 +737,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Write unsigned 16-byte value
+        ///     Write unsigned 16-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -750,7 +750,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read signed 32-byte value
+        ///     Read signed 32-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -763,7 +763,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Write signed 32-byte value
+        ///     Write signed 32-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -776,7 +776,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read unsigned 32-byte value
+        ///     Read unsigned 32-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -789,7 +789,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Write unsigned 32-byte value
+        ///     Write unsigned 32-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -802,7 +802,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read signed 64-byte value
+        ///     Read signed 64-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -815,7 +815,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Write signed 64-byte value
+        ///     Write signed 64-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -828,7 +828,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Read unsigned 64-byte value
+        ///     Read unsigned 64-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <returns>Value</returns>
@@ -841,7 +841,7 @@ namespace Ns
         }
 
         /// <summary>
-        ///     Write unsigned 64-byte value
+        ///     Write unsigned 64-bit value
         /// </summary>
         /// <param name="stream">Source stream</param>
         /// <param name="value">Value</param>
@@ -881,7 +881,7 @@ namespace Ns
         /// <returns>Value</returns>
         public static double ReadDouble(this Stream stream)
         {
-            return MemoryMarshal.Read<double>(ReadBase32(stream));
+            return MemoryMarshal.Read<double>(ReadBase64(stream));
         }
 
         /// <summary>
@@ -946,7 +946,7 @@ namespace Ns
         /// <exception cref="ApplicationException">If attempting to serialize unregistered type</exception>
         public static void Serialize<T>(this Stream stream, T obj)
         {
-            if (!NetSerializer.GetConverter<T>(out var res))
+            if (!GetConverter<T>(out var res))
                 throw new ApplicationException("Tried to serialize unregistered type");
             stream.Serialize(obj, !typeof(T).IsValueType, res.encoder);
         }
@@ -961,7 +961,7 @@ namespace Ns
         /// <exception cref="ApplicationException">If attempting to serialize unregistered type</exception>
         public static void Serialize<T>(this Stream stream, T obj, bool nullCheck)
         {
-            if (!NetSerializer.GetConverter<T>(out var res))
+            if (!GetConverter<T>(out var res))
                 throw new ApplicationException("Tried to serialize unregistered type");
             stream.Serialize(obj, nullCheck, res.encoder);
         }
@@ -996,7 +996,7 @@ namespace Ns
         /// <returns>Deserialized object or null</returns>
         public static T Deserialize<T>(this Stream stream)
         {
-            if (!NetSerializer.GetConverter<T>(out var res))
+            if (!GetConverter<T>(out var res))
                 throw new ApplicationException("Tried to deserialize unregistered type");
             return stream.Deserialize(!typeof(T).IsValueType, res.decoder);
         }
@@ -1010,7 +1010,7 @@ namespace Ns
         /// <returns>Deserialized object or null</returns>
         public static T Deserialize<T>(this Stream stream, bool nullCheck)
         {
-            if (!NetSerializer.GetConverter<T>(out var res))
+            if (!GetConverter<T>(out var res))
                 throw new ApplicationException("Tried to deserialize unregistered type");
             return stream.Deserialize(nullCheck, res.decoder);
         }

@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
-using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
@@ -54,21 +53,21 @@ namespace HacknetSharp.Server
                 _stream.WriteTimeout = 10 * 1000;
                 var bs = new BufferedStream(_stream);
                 ClientEvent? evt;
-                PlayerModel? player = null;
-                while (!((evt = bs.ReadEvent<ClientEvent>()) is ClientDisconnectEvent))
+                UserModel? user = null;
+                while (!((evt = await bs.ReadEventAsync<ClientEvent>(cancellationToken)) is ClientDisconnectEvent))
                 {
                     switch (evt)
                     {
                         case LoginEvent login:
                         {
-                            if (player != null)
+                            if (user != null)
                             {
                                 bs.WriteEvent(LoginFailEvent.Singleton);
-                                await bs.FlushAsync(cancellationToken);
                                 break;
                             }
 
-                            if (!await _server.AccessController.AuthenticateAsync(login.User, login.Pass))
+                            user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass);
+                            if (user == null)
                             {
                                 bs.WriteEvent(LoginFailEvent.Singleton);
                                 bs.WriteEvent(ServerDisconnectEvent.Singleton);
@@ -78,12 +77,8 @@ namespace HacknetSharp.Server
 
                             _stream.ReadTimeout = 100 * 1000;
                             _stream.WriteTimeout = 100 * 1000;
-                            player = await _server.Database.GetAsync<string, PlayerModel>(login.User);
-                            if (player == null)
-                            {
-                                // TODO generate / register player model, this is temporary
-                                player = new PlayerModel();
-                            }
+
+                            // TODO check or generate / register player model
 
                             // TODO provide basic user state
                             bs.WriteEvent(new UserInfoEvent());
@@ -91,10 +86,9 @@ namespace HacknetSharp.Server
                         }
                         case CommandEvent command:
                         {
-                            if (player == null) continue;
+                            if (user == null) continue;
                             // TODO operate on command based on context, this is temporary
                             bs.WriteEvent(new OutputEvent {Text = "Output is not yet implemented."});
-                            await bs.FlushAsync(cancellationToken);
                             break;
                         }
                     }
@@ -124,8 +118,25 @@ namespace HacknetSharp.Server
             lock (_client)
                 if (!_closed)
                 {
-                    _stream?.Close();
                     _closed = true;
+
+                    try
+                    {
+                        _stream?.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
+                    try
+                    {
+                        _client.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
         }
     }
