@@ -17,24 +17,26 @@ Purely because tarche did [HacknetPlusPlus](https://github.com/The-Council-of-Wi
 
 ### hsc
 
-CLI client interface. (The core `HacknetSharp.Client` library is
-.NET Standard 2.0 and should be usable in most scenarios).
+CLI client interface.
 
-### hss
+Supports .NET Framework 4.7.2 and .NET 5.
 
-Standard server implementation.
+The core `HacknetSharp.Client` library is .NET Standard 2.0 and should be usable in most scenarios.
 
-Adding programs is done simply by adding assemblies in folders named 
-according to the assembly file names under `extensions/`.
+### hssqlite / hspostgres
 
-Using programs with extra database types would require a copy of this 
-project's source and an ef migration.
+Server programs, using either SQLite or Postres as backing database.
+
+Supports .NET 5.
+
+Additional programs are loaded from `extensions/` (must be `extensions/assemblyName/assemblyName.dll`).
 
 ## Doctor Glassman. Progress?
 
 - [x] Some idea of wtf is going on
-- [ ] Client verbs connect, register, changepassword
-- [ ] Server verbs adminregister, maketoken
+- [x] Client connection I/O design
+- [ ] Client verb changepassword
+- [ ] World execution loop
+- [ ] Client event processing (in execution loop)
 - [ ] World bootstrapping (YAML templates etc)
-- [ ] Client connection I/O design
 - [ ] Programs
