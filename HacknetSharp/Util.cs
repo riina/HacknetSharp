@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace HacknetSharp
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async Task<Command> ReadCommandAsync(this Stream stream, CancellationToken cancellationToken) =>
-            (Command)await stream.ReadU32Async(cancellationToken);
+            (Command)await stream.ReadU32Async(cancellationToken).Caf();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Expect(this Stream stream, Command command, out Command actual)
@@ -150,7 +151,7 @@ namespace HacknetSharp
             Command command;
             try
             {
-                command = await stream.ReadCommandAsync(cancellationToken);
+                command = await stream.ReadCommandAsync(cancellationToken).Caf();
             }
             catch (EndOfStreamException)
             {
@@ -202,6 +203,40 @@ namespace HacknetSharp
 
             Console.WriteLine();
             return ss.ToString();
+        }
+
+        /// <summary>
+        /// Prompt user for SecureString password
+        /// </summary>
+        /// <param name="mes">Prompt message</param>
+        /// <returns>Password or null if terminated</returns>
+        public static SecureString? PromptSecureString(string mes)
+        {
+            Console.Write(mes);
+
+            var ss = new SecureString();
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter) break;
+                if (key.Key == ConsoleKey.C && (key.Modifiers & ConsoleModifiers.Control) == ConsoleModifiers.Control)
+                {
+                    ss.Dispose();
+                    return null;
+                }
+
+                if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (ss.Length != 0)
+                        ss.RemoveAt(ss.Length - 1);
+                    continue;
+                }
+
+                ss.AppendChar(key.KeyChar);
+            }
+
+            Console.WriteLine();
+            return ss;
         }
     }
 }

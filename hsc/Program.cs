@@ -15,11 +15,11 @@ namespace hsc
     {
         private static async Task Main(string[] args)
             => await Parser.Default
-                .ParseArguments<ForgeTokenOptions, LoginOptions
+                .ParseArguments<ForgeTokenOptions, ConnectOptions
                 >(args)
-                .MapResult<ForgeTokenOptions, LoginOptions, Task<int>>(
-                    RunForgeToken, RunLogin,
-                    errs => Task.FromResult(1));
+                .MapResult<ForgeTokenOptions, ConnectOptions, Task<int>>(
+                    RunForgeToken, RunConnect,
+                    errs => Task.FromResult(1)).Caf();
 
         private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
         private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S]+)");
@@ -41,29 +41,11 @@ namespace hsc
                 return failReason.Value.Item1;
             }
 
-            UserInfoEvent userInfoEvent;
-            try
-            {
-                userInfoEvent = await connection.ConnectAsync();
-            }
-            catch (LoginException)
-            {
-                Console.WriteLine("Login failed.");
-                return 0x20201;
-            }
-            catch (ProtocolException e)
-            {
-                Console.WriteLine($"A protocol error occurred: {e.Message}");
-                return 0x10101;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"An unknown error occurred: {e}.");
-                return 0x1;
-            }
+            (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
+            if (user == null) return resCode;
 
-            Console.WriteLine($"Logged in as {connection.User} ({(userInfoEvent.Admin ? "admin" : "normal user")})");
-            if (!userInfoEvent.Admin)
+            Console.WriteLine($"Logged in as {connection.User} ({(user.Admin ? "admin" : "normal user")})");
+            if (!user.Admin)
             {
                 Console.WriteLine("Non-admin users cannot forge tokens.");
                 Console.WriteLine(0x20202);
@@ -71,25 +53,32 @@ namespace hsc
 
             var operation = Guid.NewGuid();
             connection.WriteEvent(new RegistrationTokenForgeRequestEvent {Operation = operation});
-            await connection.FlushAsync();
+            await connection.FlushAsync().Caf();
             var response = await connection.WaitForAsync(
-                e => (e is FailBaseServerEvent fail && fail.Operation == operation) ||
-                     e is RegistrationTokenForgeResponseEvent,
-                10);
-            if (response is FailBaseServerEvent failResponse)
+                e => e is IOperation op && op.Operation == operation,
+                10).Caf();
+            if (response == null)
             {
-                Console.WriteLine($"Server returned an error: {failResponse.Message}");
-            }
-            else if (response is RegistrationTokenForgeResponseEvent regResponse)
-            {
-                Console.WriteLine($"TOKEN: {regResponse.RegistrationToken}");
+                Console.WriteLine("No response received from server.");
+                return 0x10102;
             }
 
-            return 0;
+            switch (response)
+            {
+                case FailBaseServerEvent failResponse:
+                    Console.WriteLine($"Server returned an error: {failResponse.Message}");
+                    return 0x1;
+                case RegistrationTokenForgeResponseEvent regResponse:
+                    Console.WriteLine($"TOKEN: {regResponse.RegistrationToken}");
+                    return 0;
+                default:
+                    Console.WriteLine($"Unexpected event {response.GetType().FullName}");
+                    return 0x10101;
+            }
         }
 
-        [Verb("login", HelpText = "login to server")]
-        private class LoginOptions
+        [Verb("connect", HelpText = "connect to server")]
+        private class ConnectOptions
         {
             [Value(0, MetaName = "conString", HelpText = "Connection string (user@server[:port])", Required = true)]
             public string ConString { get; set; } = null!;
@@ -98,11 +87,11 @@ namespace hsc
             public bool Register { get; set; }
         }
 
-        private static async Task<int> RunLogin(LoginOptions options)
+        private static async Task<int> RunConnect(ConnectOptions options)
         {
             var connection = GetConnection(options.ConString, options.Register, out (int, string)? failReason);
             if (connection != null)
-                return await ExecuteClient(connection);
+                return await ExecuteClient(connection).Caf();
 
             if (!failReason.HasValue) return 0;
             Console.WriteLine(failReason.Value.Item2);
@@ -111,33 +100,53 @@ namespace hsc
 
         private static async Task<int> ExecuteClient(ClientConnection connection)
         {
+            connection.OnReceivedEvent += e =>
+            {
+                if (e is OutputEvent output)
+                    Console.WriteLine(output.Text);
+            };
+            (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
+            if (user == null) return resCode;
+            ServerEvent? endEvt;
+            do
+            {
+                string command = Console.ReadLine() ?? throw new ApplicationException();
+                var operation = Guid.NewGuid();
+                connection.WriteEvent(new CommandEvent {Operation = operation, Text = command});
+                await connection.FlushAsync().Caf();
+                endEvt = await connection.WaitForAsync(
+                    e => e is IOperation op && op.Operation == operation || e is ServerDisconnectEvent, 10).Caf();
+            } while (endEvt != null && !(endEvt is ServerDisconnectEvent));
+
+            await connection.FlushAsync().Caf();
+            return 0;
+        }
+
+        private static async Task<(UserInfoEvent?, int)> Connect(ClientConnection connection)
+        {
             UserInfoEvent userInfoEvent;
             try
             {
-                userInfoEvent = await connection.ConnectAsync();
+                userInfoEvent = await connection.ConnectAsync().Caf();
             }
             catch (LoginException)
             {
                 Console.WriteLine("Login failed.");
-                return 0x20201;
+                return (null, 0x20201);
             }
             catch (ProtocolException e)
             {
                 Console.WriteLine($"A protocol error occurred: {e.Message}");
-                return 0x10101;
+                return (null, 0x10101);
             }
             catch (Exception e)
             {
                 Console.WriteLine($"An unknown error occurred: {e}.");
-                return 0x1;
+                return (null, 0x1);
             }
 
-            Console.WriteLine($"Logged in as {connection.User} ({(userInfoEvent.Admin ? "admin" : "normal user")})");
-
-            // TODO client things, this is temporary
-            connection.WriteEvent(ClientDisconnectEvent.Singleton);
-            await connection.FlushAsync();
-            return 0;
+            //Console.WriteLine($"Logged in as {connection.User} ({(userInfoEvent.Admin ? "admin" : "normal user")})");
+            return (userInfoEvent, 0);
         }
 
         private static ClientConnection? GetConnection(string conString, bool askRegistrationToken,

@@ -35,8 +35,8 @@ Additional programs are loaded from `extensions/` (must be `extensions/assemblyN
 
 - [x] Some idea of wtf is going on
 - [x] Client connection I/O design
-- [ ] Client verb changepassword
 - [ ] World execution loop
 - [ ] Client event processing (in execution loop)
 - [ ] World bootstrapping (YAML templates etc)
 - [ ] Programs
+- [ ] Client verbs changepassword, resetpassword

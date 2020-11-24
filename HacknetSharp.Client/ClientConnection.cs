@@ -18,6 +18,7 @@ namespace HacknetSharp.Client
         public string Server { get; }
         public ushort Port { get; }
         public string User { get; }
+        public Action<ServerEvent> OnReceivedEvent { get; set; } = _ => { };
         private string? _pass;
         private string? _registrationToken;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -60,7 +61,7 @@ namespace HacknetSharp.Client
                 _sslStream = new SslStream(
                     _client.GetStream(), false, ValidateServerCertificate
                 );
-                await _sslStream.AuthenticateAsClientAsync(Server, default, SslProtocols.Tls12, true);
+                await _sslStream.AuthenticateAsClientAsync(Server, default, SslProtocols.Tls12, true).Caf();
                 _bufferedStream = new BufferedStream(_sslStream);
                 _inTask = ExecuteReceive(_sslStream, _cancellationTokenSource.Token);
             }
@@ -73,11 +74,17 @@ namespace HacknetSharp.Client
 
             try
             {
-                var loginCommand = new LoginEvent {User = User, Pass = _pass!, RegistrationToken = _registrationToken};
+                var loginOp = Guid.NewGuid();
+                var loginCommand = new LoginEvent
+                {
+                    Operation = loginOp, User = User, Pass = _pass!, RegistrationToken = _registrationToken
+                };
                 WriteEvent(loginCommand);
-                await FlushAsync(_cancellationTokenSource.Token);
+                await FlushAsync(_cancellationTokenSource.Token).Caf();
                 _pass = null;
-                var result = await WaitForAsync(_ => true, 10, _cancellationTokenSource.Token);
+                _registrationToken = null;
+                var result = await WaitForAsync(e => e is IOperation op && op.Operation == loginOp, 10,
+                    _cancellationTokenSource.Token).Caf();
                 var info = result switch
                 {
                     UserInfoEvent i => i,
@@ -94,7 +101,7 @@ namespace HacknetSharp.Client
                 try
                 {
                     WriteEvent(ClientDisconnectEvent.Singleton);
-                    await FlushAsync(_cancellationTokenSource.Token);
+                    await FlushAsync(_cancellationTokenSource.Token).Caf();
                 }
                 catch
                 {
@@ -116,8 +123,9 @@ namespace HacknetSharp.Client
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var evt = await stream.ReadEventAsync<ServerEvent>(cancellationToken);
+                    var evt = await stream.ReadEventAsync<ServerEvent>(cancellationToken).Caf();
                     if (evt == null) return;
+                    OnReceivedEvent(evt);
                     _lockInOp.WaitOne();
                     _inEvents.Add(evt);
                     _lockInOp.Set();
@@ -161,7 +169,7 @@ namespace HacknetSharp.Client
                 _countdown.Signal();
                 _op.Set();
                 _countdown.Wait();
-            });
+            }).Caf();
             Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
         }
 
@@ -222,9 +230,8 @@ namespace HacknetSharp.Client
                 if (evt != null) return evt;
                 if (_inTask.IsFaulted)
                     throw new Exception($"Could not read event: task excepted. Information:\n{_inTask.Exception}");
-                if (_inTask.IsCompleted)
-                    throw new Exception("Read task has completed, cannot receive any events.");
-                await Task.Delay(pollMillis, cancellationToken);
+                if (_inTask.IsCompleted) return null;
+                await Task.Delay(pollMillis, cancellationToken).Caf();
             }
 
             throw new TaskCanceledException();
@@ -274,7 +281,7 @@ namespace HacknetSharp.Client
             if (_closed || _bufferedStream == null) throw new InvalidOperationException();
             {
                 _lockOutOp.WaitOne();
-                await _bufferedStream.FlushAsync(cancellationToken);
+                await _bufferedStream.FlushAsync(cancellationToken).Caf();
                 _lockOutOp.Set();
             }
         }

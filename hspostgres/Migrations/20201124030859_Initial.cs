@@ -9,14 +9,8 @@ namespace hspostgres.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
-                columns: table => new
-                {
-                    Key = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegistrationToken", x => x.Key);
-                });
+                columns: table => new {Key = table.Column<string>(type: "text", nullable: false)},
+                constraints: table => { table.PrimaryKey("PK_RegistrationToken", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "UserModel",
@@ -27,10 +21,7 @@ namespace hspostgres.Migrations
                     Base64Password = table.Column<string>(type: "text", nullable: false),
                     Admin = table.Column<bool>(type: "boolean", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "SystemModel",
@@ -41,10 +32,7 @@ namespace hspostgres.Migrations
                     OwnerKey = table.Column<Guid>(type: "uuid", nullable: false),
                     World = table.Column<Guid>(type: "uuid", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SystemModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_SystemModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "FolderModel",

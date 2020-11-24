@@ -16,7 +16,7 @@ namespace HacknetSharp.Server
 
         public async Task<UserModel?> AuthenticateAsync(string user, string pass)
         {
-            var userModel = await _db.GetAsync<string, UserModel>(user);
+            var userModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (userModel == null) return null;
             var (_, hash) = Base64Password(pass, Convert.FromBase64String(userModel.Base64Salt));
             return hash == userModel.Base64Password ? userModel : null;
@@ -24,15 +24,15 @@ namespace HacknetSharp.Server
 
         public async Task<UserModel?> RegisterAsync(string user, string pass, string registrationToken)
         {
-            var userModel = await _db.GetAsync<string, UserModel>(user);
+            var userModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (userModel != null) return null;
-            var token = await _db.GetAsync<string, RegistrationToken>(registrationToken);
+            var token = await _db.GetAsync<string, RegistrationToken>(registrationToken).Caf();
             if (token == null) return null;
             _db.Delete(token);
             var (salt, hash) = Base64Password(pass);
             userModel = new UserModel {Key = user, Base64Salt = salt, Base64Password = hash};
             _db.Add(userModel);
-            await _db.SyncAsync();
+            await _db.SyncAsync().Caf();
             return userModel;
         }
 
@@ -40,18 +40,18 @@ namespace HacknetSharp.Server
         {
             (userModel.Base64Salt, userModel.Base64Password) = Base64Password(newPass);
             _db.Edit(userModel);
-            await _db.SyncAsync();
+            await _db.SyncAsync().Caf();
             return true;
         }
 
         public async Task<bool> AdminChangePasswordAsync(UserModel userModel, string user, string newPass)
         {
             if (!userModel.Admin) return false;
-            var targetUserModel = await _db.GetAsync<string, UserModel>(user);
+            var targetUserModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (targetUserModel == null) return false;
             (targetUserModel.Base64Salt, targetUserModel.Base64Password) = Base64Password(newPass);
             _db.Edit(targetUserModel);
-            await _db.SyncAsync();
+            await _db.SyncAsync().Caf();
             return true;
         }
 
@@ -59,7 +59,7 @@ namespace HacknetSharp.Server
         {
             _db.Delete(userModel);
             // TODO implement purge
-            await _db.SyncAsync();
+            await _db.SyncAsync().Caf();
             return true;
         }
 

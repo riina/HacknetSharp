@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommandLine;
@@ -14,7 +13,7 @@ namespace HacknetSharp.Server
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class Executor<TDatabaseFactory> : Executor where TDatabaseFactory : StorageContextFactoryBase
     {
-        public HashSet<Type[]> CustomPrograms { get; set; } = new HashSet<Type[]>();
+        public HashSet<Type[]> CustomPrograms { get; set; } = _customPrograms;
 
         public async Task<int> Run(string[] args) =>
             await Parser.Default
@@ -29,7 +28,7 @@ namespace HacknetSharp.Server
                     RunUninstallCert,
                     RunTemplate,
                     RunRun,
-                    errs => Task.FromResult(1));
+                    errs => Task.FromResult(1)).Caf();
 
         // TODO purge verb (clear database of content outside specified worlds)
 
@@ -45,7 +44,7 @@ namespace HacknetSharp.Server
             X509Certificate2? nCert = null;
             try
             {
-                var ss = PromptSecureString("Pfx/p12 export password:");
+                var ss = Util.PromptSecureString("Pfx/p12 export password:");
                 if (ss == null)
                     return Task.FromResult(0);
                 try
@@ -87,7 +86,7 @@ namespace HacknetSharp.Server
             X509Certificate2? nCert = null;
             try
             {
-                var ss = PromptSecureString("Pfx/p12 export password:");
+                var ss = Util.PromptSecureString("Pfx/p12 export password:");
                 if (ss == null)
                     return Task.FromResult(0);
                 try
@@ -128,7 +127,7 @@ namespace HacknetSharp.Server
         {
             var factory = Activator.CreateInstance<TDatabaseFactory>();
             var ctx = factory.CreateDbContext(Array.Empty<string>());
-            var xizt = await ctx.FindAsync<UserModel>(options.Name);
+            var xizt = await ctx.FindAsync<UserModel>(options.Name).Caf();
             if (xizt != null)
             {
                 Console.WriteLine("A user with specified name already exists.");
@@ -139,7 +138,7 @@ namespace HacknetSharp.Server
             if (pass == null) return 0;
             var (salt, hash) = AccessController.Base64Password(pass);
             ctx.Add(new UserModel {Admin = true, Base64Password = hash, Base64Salt = salt, Key = options.Name});
-            await ctx.SaveChangesAsync();
+            await ctx.SaveChangesAsync().Caf();
             return 0;
         }
 
@@ -162,7 +161,7 @@ namespace HacknetSharp.Server
             }
 
             ctx.Remove(user);
-            await ctx.SaveChangesAsync();
+            await ctx.SaveChangesAsync().Caf();
             return 0;
         }
 
@@ -273,7 +272,7 @@ namespace HacknetSharp.Server
                 conf.WithSystemTemplates(Directory.EnumerateFiles(ServerConstants.SystemTemplatesFolder)
                     .Select(ReadFromFile<SystemTemplate>));
             var instance = conf.CreateInstance();
-            await instance.StartAsync();
+            await instance.StartAsync().Caf();
 
             // Block the program until it is closed.
             Console.WriteLine("Press Ctrl-C to terminate.");
@@ -287,55 +286,24 @@ namespace HacknetSharp.Server
             }
 
             Console.WriteLine("Tearing down...");
-            await instance.DisposeAsync();
+            await instance.DisposeAsync().Caf();
             Console.WriteLine("Teardown complete.");
             return 0;
         }
 
         private static T ReadFromFile<T>(string file) =>
             _deserializer.Deserialize<T>(File.ReadAllText(file));
-
-        /// <summary>
-        /// Prompt user for SecureString password
-        /// </summary>
-        /// <param name="mes">Prompt message</param>
-        /// <returns>Password or null if terminated</returns>
-        public static SecureString? PromptSecureString(string mes)
-        {
-            Console.Write(mes);
-
-            var ss = new SecureString();
-            while (true)
-            {
-                var key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.Enter) break;
-                if (key.Key == ConsoleKey.C && (key.Modifiers & ConsoleModifiers.Control) == ConsoleModifiers.Control)
-                {
-                    ss.Dispose();
-                    return null;
-                }
-
-                if (key.Key == ConsoleKey.Backspace)
-                {
-                    if (ss.Length != 0)
-                        ss.RemoveAt(ss.Length - 1);
-                    continue;
-                }
-
-                ss.AppendChar(key.KeyChar);
-            }
-
-            Console.WriteLine();
-            return ss;
-        }
     }
 
     public class Executor
     {
         internal static readonly (StoreName name, StoreLocation location)[] _wStores =
         {
-            /*(StoreName.My, StoreLocation.CurrentUser), */(StoreName.Root, StoreLocation.CurrentUser)
+            (StoreName.Root, StoreLocation.CurrentUser), (StoreName.My, StoreLocation.CurrentUser)
         };
+
+        protected static readonly HashSet<Type[]> _customPrograms =
+            ServerUtil.LoadProgramTypesFromFolder(ServerConstants.ExtensionsFolder);
 
         protected static readonly IDeserializer _deserializer = new DeserializerBuilder().Build();
         protected static readonly ISerializer _serializer = new SerializerBuilder().Build();

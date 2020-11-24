@@ -15,6 +15,14 @@ namespace Ns
     /// </summary>
     public static class NetSerializerAsyncExtensions
     {
+        /// <summary>
+        /// Shorthand for ConfigureAwait(false).
+        /// </summary>
+        /// <param name="task">Task to wrap.</param>
+        /// <returns>Wrapped task.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ConfiguredTaskAwaitable<T> Caf<T>(this Task<T> task) => task.ConfigureAwait(false);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static async Task<T> ReadBase8Async<T>(this Stream stream, CancellationToken cancellationToken)
             where T : struct
@@ -25,7 +33,7 @@ namespace Ns
             {
                 do
                 {
-                    int read = await stream.ReadAsync(buffer, tot, sizeof(byte) - tot, cancellationToken);
+                    int read = await stream.ReadAsync(buffer, tot, sizeof(byte) - tot, cancellationToken).Caf();
                     if (read == 0)
                         throw new EndOfStreamException(
                             $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(byte) - tot:X} left");
@@ -50,7 +58,7 @@ namespace Ns
             {
                 do
                 {
-                    int read = await stream.ReadAsync(buffer, tot, sizeof(ushort) - tot, cancellationToken);
+                    int read = await stream.ReadAsync(buffer, tot, sizeof(ushort) - tot, cancellationToken).Caf();
                     if (read == 0)
                         throw new EndOfStreamException(
                             $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(ushort) - tot:X} left");
@@ -75,7 +83,7 @@ namespace Ns
             {
                 do
                 {
-                    int read = await stream.ReadAsync(buffer, tot, sizeof(uint) - tot, cancellationToken);
+                    int read = await stream.ReadAsync(buffer, tot, sizeof(uint) - tot, cancellationToken).Caf();
                     if (read == 0)
                         throw new EndOfStreamException(
                             $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(uint) - tot:X} left");
@@ -100,7 +108,7 @@ namespace Ns
             {
                 do
                 {
-                    int read = await stream.ReadAsync(buffer, tot, sizeof(ulong) - tot, cancellationToken);
+                    int read = await stream.ReadAsync(buffer, tot, sizeof(ulong) - tot, cancellationToken).Caf();
                     if (read == 0)
                         throw new EndOfStreamException(
                             $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(ulong) - tot:X} left");
@@ -126,7 +134,7 @@ namespace Ns
             {
                 do
                 {
-                    int read = await stream.ReadAsync(buffer, tot, sizeof(decimal) - tot, cancellationToken);
+                    int read = await stream.ReadAsync(buffer, tot, sizeof(decimal) - tot, cancellationToken).Caf();
                     if (read == 0)
                         throw new EndOfStreamException(
                             $"Failed to read required number of bytes! 0x{tot:X} read, 0x{sizeof(decimal) - tot:X} left");
@@ -149,7 +157,7 @@ namespace Ns
         /// <returns>Value</returns>
         public static async Task<sbyte> ReadS8Async(this Stream stream, CancellationToken cancellationToken)
         {
-            return await ReadBase8Async<sbyte>(stream, cancellationToken);
+            return await ReadBase8Async<sbyte>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -159,7 +167,7 @@ namespace Ns
         /// <param name="cancellationToken">Cancellation token</param>
         public static async Task<byte> ReadU8Async(this Stream stream, CancellationToken cancellationToken)
         {
-            return await ReadBase8Async<byte>(stream, cancellationToken);
+            return await ReadBase8Async<byte>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -171,8 +179,8 @@ namespace Ns
         {
             return _swap
                 ? BinaryPrimitives.ReverseEndianness(
-                    await ReadBase16Async<short>(stream, cancellationToken))
-                : await ReadBase16Async<short>(stream, cancellationToken);
+                    await ReadBase16Async<short>(stream, cancellationToken).Caf())
+                : await ReadBase16Async<short>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -184,8 +192,8 @@ namespace Ns
         {
             return _swap
                 ? BinaryPrimitives.ReverseEndianness(
-                    await ReadBase16Async<ushort>(stream, cancellationToken))
-                : await ReadBase16Async<ushort>(stream, cancellationToken);
+                    await ReadBase16Async<ushort>(stream, cancellationToken).Caf())
+                : await ReadBase16Async<ushort>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -197,8 +205,8 @@ namespace Ns
         {
             return _swap
                 ? BinaryPrimitives.ReverseEndianness(
-                    await ReadBase32Async<int>(stream, cancellationToken))
-                : await ReadBase32Async<int>(stream, cancellationToken);
+                    await ReadBase32Async<int>(stream, cancellationToken).Caf())
+                : await ReadBase32Async<int>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -210,8 +218,8 @@ namespace Ns
         {
             return _swap
                 ? BinaryPrimitives.ReverseEndianness(
-                    await ReadBase32Async<uint>(stream, cancellationToken))
-                : await ReadBase32Async<uint>(stream, cancellationToken);
+                    await ReadBase32Async<uint>(stream, cancellationToken).Caf())
+                : await ReadBase32Async<uint>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -223,8 +231,8 @@ namespace Ns
         {
             return _swap
                 ? BinaryPrimitives.ReverseEndianness(
-                    await ReadBase64Async<long>(stream, cancellationToken))
-                : await ReadBase64Async<long>(stream, cancellationToken);
+                    await ReadBase64Async<long>(stream, cancellationToken).Caf())
+                : await ReadBase64Async<long>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -236,8 +244,8 @@ namespace Ns
         {
             return _swap
                 ? BinaryPrimitives.ReverseEndianness(
-                    await ReadBase64Async<ulong>(stream, cancellationToken))
-                : await ReadBase64Async<ulong>(stream, cancellationToken);
+                    await ReadBase64Async<ulong>(stream, cancellationToken).Caf())
+                : await ReadBase64Async<ulong>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -248,7 +256,7 @@ namespace Ns
         /// <returns>Value</returns>
         public static async Task<float> ReadSingleAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            return await ReadBase32Async<float>(stream, cancellationToken);
+            return await ReadBase32Async<float>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -259,7 +267,7 @@ namespace Ns
         /// <returns>Value</returns>
         public static async Task<double> ReadDoubleAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            return await ReadBase64Async<double>(stream, cancellationToken);
+            return await ReadBase64Async<double>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -270,7 +278,7 @@ namespace Ns
         /// <returns>Value</returns>
         public static async Task<decimal> ReadDecimalAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            return await ReadBase128Async<decimal>(stream, cancellationToken);
+            return await ReadBase128Async<decimal>(stream, cancellationToken).Caf();
         }
 
         /// <summary>
@@ -281,7 +289,7 @@ namespace Ns
         /// <returns>Value</returns>
         public static async Task<Guid> ReadGuidAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            return await ReadBase128Async<Guid>(stream, cancellationToken);
+            return await ReadBase128Async<Guid>(stream, cancellationToken).Caf();
         }
     }
 }

@@ -64,7 +64,7 @@ namespace HacknetSharp.Server
                 {
                     try
                     {
-                        var connection = new HostConnection(this, await _connectListener.AcceptTcpClientAsync());
+                        var connection = new HostConnection(this, await _connectListener.AcceptTcpClientAsync().Caf());
                         _connections.TryAdd(connection.Id, connection);
                     }
                     finally
@@ -117,7 +117,7 @@ namespace HacknetSharp.Server
                         Database.AddBulk(world.RegistrationSet);
                         Database.EditBulk(world.DirtySet);
                         Database.DeleteBulk(world.DeregistrationSet);
-                        await Database.SyncAsync();
+                        await Database.SyncAsync().Caf();
                     }
 
                     await Task.Delay(10).Caf();
@@ -144,7 +144,7 @@ namespace HacknetSharp.Server
                 _countdown.Signal();
                 _op.Set();
                 _countdown.Wait();
-            });
+            }).Caf();
             Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
         }
 
