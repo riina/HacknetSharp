@@ -1,0 +1,95 @@
+name: .NET Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+defaults:
+  run:
+    working-directory: ""
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --framework net5.0 --no-restore --verbosity normal
+
+    - name: Publish hsc net5.0 osx-x64
+      run: dotnet publish hsc --framework net5.0 --configuration Release --runtime osx-x64 --self-contained false
+    - name: Publish hsc net5.0 linux-x64
+      run: dotnet publish hsc --framework net5.0 --configuration Release --runtime linux-x64 --self-contained false
+    - name: Publish hsc net5.0 win-x64
+      run: dotnet publish hsc --framework net5.0 --configuration Release --runtime win-x64 --self-contained false
+    - name: Publish hsc net472
+      run: dotnet publish hsc --framework net472 --configuration Release
+
+    - name: Publish hssqlite net5.0 osx-x64
+      run: dotnet publish hssqlite --framework net5.0 --configuration Release --runtime osx-x64 --self-contained false
+    - name: Publish hssqlite net5.0 linux-x64
+      run: dotnet publish hssqlite --framework net5.0 --configuration Release --runtime linux-x64 --self-contained false
+    - name: Publish hssqlite net5.0 win-x64
+      run: dotnet publish hssqlite --framework net5.0 --configuration Release --runtime win-x64 --self-contained false
+
+    - name: Publish hspostgres net5.0 osx-x64
+      run: dotnet publish hspostgres --framework net5.0 --configuration Release --runtime osx-x64 --self-contained false
+    - name: Publish hspostgres net5.0 linux-x64
+      run: dotnet publish hspostgres --framework net5.0 --configuration Release --runtime linux-x64 --self-contained false
+    - name: Publish hspostgres net5.0 win-x64
+      run: dotnet publish hspostgres --framework net5.0 --configuration Release --runtime win-x64 --self-contained false
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hsc-net5.0-osx-64
+        path: hsc/bin/Release/net5.0/osx-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hsc-net5.0-linux-64
+        path: hsc/bin/Release/net5.0/linux-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hsc-net5.0-win-64
+        path: hsc/bin/Release/net5.0/win-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hsc-net472
+        path: hsc/bin/Release/net472/publish/
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hssqlite-net5.0-osx-64
+        path: hssqlite/bin/Release/net5.0/osx-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hssqlite-net5.0-linux-64
+        path: hssqlite/bin/Release/net5.0/linux-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hssqlite-net5.0-win-64
+        path: hssqlite/bin/Release/net5.0/win-x64/publish/
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hspostgres-net5.0-osx-64
+        path: hspostgres/bin/Release/net5.0/osx-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hspostgres-net5.0-linux-64
+        path: hspostgres/bin/Release/net5.0/linux-x64/publish/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: hspostgres-net5.0-win-64
+        path: hspostgres/bin/Release/net5.0/win-x64/publish/
