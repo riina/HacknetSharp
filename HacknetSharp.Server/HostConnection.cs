@@ -127,9 +127,13 @@ namespace HacknetSharp.Server
                             var line = Arguments.SplitCommandLine(command.Text);
                             // TODO operate on command based on context, this is temporary
                             if (line.Length > 0 && line[0].Equals("exit", StringComparison.InvariantCultureIgnoreCase))
+                            {
                                 WriteEvent(ServerDisconnectEvent.Singleton);
+                                await FlushAsync(cancellationToken).Caf();
+                                return;
+                            }
                             else
-                                WriteEvent(new OutputEvent {Text = "Output is not yet implemented."});
+                                WriteEvent(new OutputEvent {Text = "Shells are not yet implemented. Gomenasai."});
                             WriteEvent(new OperationCompleteEvent {Operation = op});
                             break;
                         }

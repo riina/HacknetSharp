@@ -4,7 +4,7 @@ using Ns;
 
 namespace HacknetSharp.Events.Server
 {
-    [EventCommand(Command.SC_LoginFail)]
+    [EventCommand(Command.SC_OperationComplete)]
     public class OperationCompleteEvent : ServerEvent, IOperation
     {
         public Guid Operation { get; set; }

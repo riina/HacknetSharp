@@ -14,5 +14,6 @@
         SC_Output = 0x80_00_00_04,
         SC_FailBaseServer = 0x80_00_00_05,
         SC_RegistrationTokenForgeResponse = 0x40_00_00_06,
+        SC_OperationComplete = 0x40_00_00_07,
     }
 }
