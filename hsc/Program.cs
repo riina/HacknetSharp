@@ -163,7 +163,7 @@ namespace hsc
             string user = conStringMatch.Groups[1].Value;
             string server = conStringMatch.Groups[2].Value;
             ushort port = Constants.DefaultPort;
-            if (server.Contains(':'))
+            if (server.Contains(":"))
             {
                 var serverPortMatch = _serverPortRegex.Match(server);
                 if (!serverPortMatch.Success || !ushort.TryParse(serverPortMatch.Groups[2].Value, out port))
