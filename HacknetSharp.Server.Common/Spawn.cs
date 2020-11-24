@@ -27,20 +27,7 @@ namespace HacknetSharp.Server.Common
                 World = context.World.Id,
                 Owner = owner,
                 Name = name,
-                Folders = new List<FolderModel>(),
-                SimpleFiles = new List<SimpleFileModel>()
-            };
-        }
-
-        public static FolderModel Folder(System context, string path)
-        {
-            return new FolderModel
-            {
-                Key = Guid.NewGuid(),
-                World = context.World.Id,
-                Owner = context.Model ??
-                        throw new ArgumentException($"{nameof(context)}.{nameof(context.Model)} was null"),
-                Path = path
+                Files = new List<FileModel>()
             };
         }
     }

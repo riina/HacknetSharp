@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using HacknetSharp.Server.Common.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace HacknetSharp.Server
@@ -55,12 +56,26 @@ namespace HacknetSharp.Server
             return true;
         }
 
-        public async Task<bool> DeregisterAsync(UserModel userModel, bool purge)
+        public async Task DeregisterNonSyncAsync(UserModel userModel, bool purge)
         {
-            _db.Delete(userModel);
-            // TODO implement purge
-            await _db.SyncAsync().Caf();
-            return true;
+            // this can only be executed during sync step of world update, must queue
+            var ctx = _db.Context;
+            ctx.RemoveRange(userModel);
+            if (purge)
+            {
+                var player = await ctx.FindAsync<PlayerModel>(userModel.Key);
+                if (player != null)
+                {
+                    foreach (var person in player.Identities)
+                    {
+                        foreach (var system in person.Systems) ctx.RemoveRange(system.Files);
+                        ctx.RemoveRange(person.Systems);
+                    }
+
+                    ctx.RemoveRange(player.Identities);
+                    ctx.Remove(player);
+                }
+            }
         }
 
         /// <summary>

@@ -30,6 +30,12 @@ namespace HacknetSharp.Server
                     RunRun,
                     errs => Task.FromResult(1)).Caf();
 
+        public enum Kind
+        {
+            Ls,
+            Rm
+        }
+
         // TODO purge verb (clear database of content outside specified worlds)
 
         [Verb("installcert", HelpText = "install server certificate")]
@@ -39,7 +45,7 @@ namespace HacknetSharp.Server
             public string CertFile { get; set; } = null!;
         }
 
-        private Task<int> RunInstallCert(InstallCertOptions options)
+        private static Task<int> RunInstallCert(InstallCertOptions options)
         {
             X509Certificate2? nCert = null;
             try
@@ -81,7 +87,7 @@ namespace HacknetSharp.Server
             public string CertFile { get; set; } = null!;
         }
 
-        private Task<int> RunUninstallCert(UninstallCertOptions options)
+        private static Task<int> RunUninstallCert(UninstallCertOptions options)
         {
             X509Certificate2? nCert = null;
             try
@@ -123,7 +129,7 @@ namespace HacknetSharp.Server
             public string Name { get; set; } = null!;
         }
 
-        private async Task<int> RunRegisterAdmin(RegisterAdminOptions options)
+        private static async Task<int> RunRegisterAdmin(RegisterAdminOptions options)
         {
             var factory = Activator.CreateInstance<TDatabaseFactory>();
             var ctx = factory.CreateDbContext(Array.Empty<string>());
@@ -149,7 +155,7 @@ namespace HacknetSharp.Server
             public string Name { get; set; } = null!;
         }
 
-        private async Task<int> RunDeregisterAdmin(DeregisterOptions options)
+        private static async Task<int> RunDeregisterAdmin(DeregisterOptions options)
         {
             var factory = Activator.CreateInstance<TDatabaseFactory>();
             var ctx = factory.CreateDbContext(new string[0]);
@@ -178,38 +184,43 @@ namespace HacknetSharp.Server
             public bool Force { get; set; }
         }
 
-        private Task<int> RunTemplate(TemplateOptions options)
-        {
-            var (path, result) =
-                options.Kind.ToLowerInvariant() switch
-                {
-                    "system" =>
-                        (Path.Combine(ServerConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
-                            (object)new SystemTemplate
-                            {
-                                OsName = "EncomOS",
-                                Users = new List<string>(new[] {"{u}+:{p}", "samwise:genshin"}),
-                                Filesystem = new List<string>(new[]
-                                {
-                                    "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
-                                    "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
-                                    "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
-                                    "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
-                                    "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
-                                    "prog:/bin/cd core:cd", "prog:/bin/ls core:ls"
-                                })
-                            }),
-                    "world" => (
-                        Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
-                        (object)new WorldTemplate {Name = options.Name}),
-                    _ => (null, null)
-                };
-
-            if (path == null || result == null)
+        private static Dictionary<string, Func<TemplateOptions, (string path, object result)>> _templateGenerators =
+            new Dictionary<string, Func<TemplateOptions, (string path, object result)>>
             {
-                Console.WriteLine("Unrecognized template type.");
+                {
+                    "system", options => (Path.Combine(ServerConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
+                        (object)new SystemTemplate
+                        {
+                            OsName = "EncomOS",
+                            Users = new List<string>(new[] {"{u}+:{p}", "samwise:genshin"}),
+                            Filesystem = new List<string>(new[]
+                            {
+                                "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
+                                "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib", "fold:/usr/local",
+                                "fold:/usr/share", "fold:/var", "fold:/var/spool",
+                                "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
+                                "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
+                                "prog:/bin/cd core:cd", "prog:/bin/ls core:ls"
+                            })
+                        })
+                },
+                {
+                    "world", options => (
+                        Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
+                        (object)new WorldTemplate {Name = options.Name})
+                }
+            };
+
+        private static Task<int> RunTemplate(TemplateOptions options)
+        {
+            if (!_templateGenerators.TryGetValue(options.Kind.ToLowerInvariant(), out var action))
+            {
+                Console.WriteLine("Unrecognized template type. Supported types:");
+                foreach (var key in _templateGenerators.Keys) Console.WriteLine(key);
                 return Task.FromResult(7);
             }
+
+            (string? path, object? result) = action(options);
 
             if (File.Exists(path) && !options.Force)
             {

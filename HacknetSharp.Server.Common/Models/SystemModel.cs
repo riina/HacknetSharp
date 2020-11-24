@@ -9,8 +9,7 @@ namespace HacknetSharp.Server.Common.Models
     {
         public virtual string Name { get; set; } = null!;
         public virtual PersonModel Owner { get; set; } = null!;
-        public virtual List<SimpleFileModel> SimpleFiles { get; set; } = null!;
-        public virtual List<FolderModel> Folders { get; set; } = null!;
+        public virtual List<FileModel> Files { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

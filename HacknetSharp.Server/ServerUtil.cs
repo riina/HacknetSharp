@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using HacknetSharp.Server.Common;
+using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
@@ -12,6 +13,16 @@ namespace HacknetSharp.Server
     /// </summary>
     public static class ServerUtil
     {
+        public static void Consideration(Action<FileModel?> files, Action<SystemModel?> systems,
+            Action<PersonModel?> persons, Action<PlayerModel?> players, Action<WorldModel?> worlds)
+        {
+            files(null);
+            systems(null);
+            persons(null);
+            players(null);
+            worlds(null);
+        }
+
         public static IEnumerable<Type> GetTypes(Type t, Assembly assembly) =>
             assembly.GetTypes().Where(type => IsSubclass(t, type) && !type.IsAbstract);
 

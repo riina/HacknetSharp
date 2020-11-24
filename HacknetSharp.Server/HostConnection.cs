@@ -13,7 +13,7 @@ using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
-    public class HostConnection : IPlayerContext
+    public class HostConnection : IPersonContext
     {
         public Guid Id { get; }
 
@@ -224,7 +224,7 @@ namespace HacknetSharp.Server
             _lockOutOp.Set();
         }
 
-        public PlayerModel GetPlayerModel(Guid world) => throw new NotImplementedException();
+        public PersonModel GetPerson(Guid world) => throw new NotImplementedException();
 
         public bool Connected => _connected;
     }

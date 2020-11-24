@@ -104,7 +104,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.AddRange(entities.ToArray());
+                Context.AddRange((IEnumerable<object>)entities);
             }
             finally
             {
@@ -132,7 +132,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.UpdateRange(entities.ToArray());
+                Context.UpdateRange((IEnumerable<object>)entities);
             }
             finally
             {
@@ -161,7 +161,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.RemoveRange(entities.ToArray());
+                Context.RemoveRange((IEnumerable<object>)entities);
             }
             finally
             {
