@@ -11,6 +11,9 @@ namespace HacknetSharp.Server
     /// <summary>
     /// Represents the backing database for a <see cref="Server"/> instance.
     /// </summary>
+    /// <remarks>
+    /// This class mainly exists to ensure no parallel database access occurs.
+    /// </remarks>
     public class ServerDatabase : IServerDatabase
     {
         private readonly AutoResetEvent _waitHandle;
@@ -18,7 +21,7 @@ namespace HacknetSharp.Server
         /// <summary>
         /// The storage context for this database.
         /// </summary>
-        public ServerStorageContext Context { get; }
+        private readonly ServerStorageContext _context;
 
         /// <summary>
         /// Creates a new instance of <see cref="ServerDatabase"/> with the provided <see cref="ServerStorageContext"/>.
@@ -26,7 +29,7 @@ namespace HacknetSharp.Server
         /// <param name="context">Storage context to wrap.</param>
         public ServerDatabase(ServerStorageContext context)
         {
-            Context = context;
+            _context = context;
             _waitHandle = new AutoResetEvent(true);
         }
 
@@ -39,7 +42,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                return await Context.Set<TResult>().SingleOrDefaultAsync(r => r.Key.Equals(key)).Caf();
+                return await _context.Set<TResult>().FindAsync(key).Caf();
             }
             finally
             {
@@ -53,7 +56,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                var res = await AsyncEnumerable.SingleOrDefaultAsync(set, r => r.Key.Equals(key)).Caf();
+                var res = await Context.Set<TResult>().FindAsync(key).Caf();
                 if (res == null)
                 {
                     res = creator(key);
@@ -76,7 +79,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                return await Context.Set<TResult>().Where(u => keys.Contains(u.Key)).ToListAsync().Caf();
+                return await _context.Set<TResult>().Where(u => keys.Contains(u.Key)).ToListAsync().Caf();
             }
             finally
             {
@@ -90,7 +93,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.Add(entity);
+                _context.Add(entity);
             }
             finally
             {
@@ -104,7 +107,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.AddRange((IEnumerable<object>)entities);
+                _context.AddRange((IEnumerable<object>)entities);
             }
             finally
             {
@@ -118,7 +121,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.Update(entity);
+                _context.Update(entity);
             }
             finally
             {
@@ -132,7 +135,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.UpdateRange((IEnumerable<object>)entities);
+                _context.UpdateRange((IEnumerable<object>)entities);
             }
             finally
             {
@@ -146,7 +149,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.Remove(entity);
+                _context.Remove(entity);
             }
             finally
             {
@@ -161,7 +164,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                Context.RemoveRange((IEnumerable<object>)entities);
+                _context.RemoveRange((IEnumerable<object>)entities);
             }
             finally
             {
@@ -175,7 +178,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                await Context.SaveChangesAsync().Caf();
+                await _context.SaveChangesAsync().Caf();
             }
             finally
             {

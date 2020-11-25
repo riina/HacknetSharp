@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hssqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201123090540_Initial")]
+    [Migration("20201125094606_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,10 +18,21 @@ namespace hssqlite.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FolderModel", b =>
+            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FileModel", b =>
                 {
                     b.Property<Guid>("Key")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte>("Kind")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("OwnerKey")
@@ -38,7 +49,7 @@ namespace hssqlite.Migrations
 
                     b.HasIndex("OwnerKey");
 
-                    b.ToTable("FolderModel");
+                    b.ToTable("FileModel");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PersonModel", b =>
@@ -89,33 +100,6 @@ namespace hssqlite.Migrations
                     b.ToTable("PlayerModel");
                 });
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.SimpleFileModel", b =>
-                {
-                    b.Property<Guid>("Key")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("OwnerKey")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("World")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Key");
-
-                    b.HasIndex("OwnerKey");
-
-                    b.ToTable("SimpleFileModel");
-                });
-
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.SystemModel", b =>
                 {
                     b.Property<Guid>("Key")
@@ -144,7 +128,12 @@ namespace hssqlite.Migrations
                     b.Property<string>("Key")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ForgerKey")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Key");
+
+                    b.HasIndex("ForgerKey");
 
                     b.ToTable("RegistrationToken");
                 });
@@ -170,10 +159,10 @@ namespace hssqlite.Migrations
                     b.ToTable("UserModel");
                 });
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FolderModel", b =>
+            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FileModel", b =>
                 {
                     b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "Owner")
-                        .WithMany("Folders")
+                        .WithMany("Files")
                         .HasForeignKey("OwnerKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -199,17 +188,6 @@ namespace hssqlite.Migrations
                     b.Navigation("CurrentSystem");
                 });
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.SimpleFileModel", b =>
-                {
-                    b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "Owner")
-                        .WithMany("SimpleFiles")
-                        .HasForeignKey("OwnerKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.SystemModel", b =>
                 {
                     b.HasOne("HacknetSharp.Server.Common.Models.PersonModel", "Owner")
@@ -219,6 +197,15 @@ namespace hssqlite.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("HacknetSharp.Server.RegistrationToken", b =>
+                {
+                    b.HasOne("HacknetSharp.Server.UserModel", "Forger")
+                        .WithMany()
+                        .HasForeignKey("ForgerKey");
+
+                    b.Navigation("Forger");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PersonModel", b =>
@@ -233,9 +220,7 @@ namespace hssqlite.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.SystemModel", b =>
                 {
-                    b.Navigation("Folders");
-
-                    b.Navigation("SimpleFiles");
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

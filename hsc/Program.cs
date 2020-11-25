@@ -33,7 +33,7 @@ namespace hsc
 
         private static async Task<int> RunForgeToken(ForgeTokenOptions options)
         {
-            var connection = GetConnection(options.ConString, true, out (int, string)? failReason);
+            var connection = GetConnection(options.ConString, false, out (int, string)? failReason);
             if (connection == null)
             {
                 if (!failReason.HasValue) return 0;
@@ -117,8 +117,6 @@ namespace hsc
                 endEvt = await connection.WaitForAsync(
                     e => e is IOperation op && op.Operation == operation || e is ServerDisconnectEvent, 10).Caf();
             } while (endEvt != null && !(endEvt is ServerDisconnectEvent));
-
-            await connection.FlushAsync().Caf();
             return 0;
         }
 

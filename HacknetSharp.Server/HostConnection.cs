@@ -77,7 +77,11 @@ namespace HacknetSharp.Server
                                 break;
                             }
 
-                            user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                            if (login.RegistrationToken != null)
+                                user = await _server.AccessController
+                                    .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
+                            else
+                                user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
                             if (user == null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
@@ -114,7 +118,7 @@ namespace HacknetSharp.Server
                                 token = Convert.ToBase64String(arr);
                             } while (await _server.Database.GetAsync<string, RegistrationToken>(token).Caf() != null);
 
-                            var tokenModel = new RegistrationToken {Key = token};
+                            var tokenModel = new RegistrationToken {Forger = user, Key = token};
                             _server.Database.Add(tokenModel);
                             await _server.Database.SyncAsync().Caf();
                             WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
@@ -134,6 +138,7 @@ namespace HacknetSharp.Server
                             }
                             else
                                 WriteEvent(new OutputEvent {Text = "Shells are not yet implemented. Gomenasai."});
+
                             WriteEvent(new OperationCompleteEvent {Operation = op});
                             break;
                         }
@@ -141,6 +146,10 @@ namespace HacknetSharp.Server
 
                     await FlushAsync(cancellationToken).Caf();
                 }
+            }
+            catch (IOException)
+            {
+                // ignored
             }
             catch (OperationCanceledException)
             {
@@ -225,6 +234,18 @@ namespace HacknetSharp.Server
         }
 
         public PersonModel GetPerson(Guid world) => throw new NotImplementedException();
+
+        public void WriteEventSafe(ServerEvent evt)
+        {
+            try
+            {
+                WriteEvent(evt);
+            }
+            catch
+            {
+                // Ignored
+            }
+        }
 
         public bool Connected => _connected;
     }

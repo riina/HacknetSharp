@@ -6,6 +6,8 @@ namespace HacknetSharp.Server
 {
     public class RegistrationToken : Model<string>
     {
+        public virtual UserModel Forger { get; set; } = null!;
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591

@@ -59,23 +59,24 @@ namespace HacknetSharp.Server
         public async Task DeregisterNonSyncAsync(UserModel userModel, bool purge)
         {
             // this can only be executed during sync step of world update, must queue
-            var ctx = _db.Context;
-            ctx.RemoveRange(userModel);
+            //var ctx = _db.Context;
             if (purge)
             {
-                var player = await ctx.FindAsync<PlayerModel>(userModel.Key);
+                var player = await _db.GetAsync<string, PlayerModel>(userModel.Key).Caf();
                 if (player != null)
                 {
                     foreach (var person in player.Identities)
                     {
-                        foreach (var system in person.Systems) ctx.RemoveRange(system.Files);
-                        ctx.RemoveRange(person.Systems);
+                        foreach (var system in person.Systems) _db.DeleteBulk(system.Files);
+                        _db.DeleteBulk(person.Systems);
                     }
 
-                    ctx.RemoveRange(player.Identities);
-                    ctx.Remove(player);
+                    _db.DeleteBulk(player.Identities);
+                    _db.Delete(player);
                 }
             }
+
+            _db.Delete(userModel);
         }
 
         /// <summary>

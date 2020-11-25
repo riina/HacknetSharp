@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace hspostgres.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201124030859_Initial")]
+    [Migration("20201125094617_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,11 +21,22 @@ namespace hspostgres.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FolderModel", b =>
+            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FileModel", b =>
                 {
                     b.Property<Guid>("Key")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte>("Kind")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("OwnerKey")
                         .HasColumnType("uuid");
@@ -41,7 +52,7 @@ namespace hspostgres.Migrations
 
                     b.HasIndex("OwnerKey");
 
-                    b.ToTable("FolderModel");
+                    b.ToTable("FileModel");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PersonModel", b =>
@@ -92,33 +103,6 @@ namespace hspostgres.Migrations
                     b.ToTable("PlayerModel");
                 });
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.SimpleFileModel", b =>
-                {
-                    b.Property<Guid>("Key")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("OwnerKey")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("World")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Key");
-
-                    b.HasIndex("OwnerKey");
-
-                    b.ToTable("SimpleFileModel");
-                });
-
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.SystemModel", b =>
                 {
                     b.Property<Guid>("Key")
@@ -147,7 +131,12 @@ namespace hspostgres.Migrations
                     b.Property<string>("Key")
                         .HasColumnType("text");
 
+                    b.Property<string>("ForgerKey")
+                        .HasColumnType("text");
+
                     b.HasKey("Key");
+
+                    b.HasIndex("ForgerKey");
 
                     b.ToTable("RegistrationToken");
                 });
@@ -173,10 +162,10 @@ namespace hspostgres.Migrations
                     b.ToTable("UserModel");
                 });
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FolderModel", b =>
+            modelBuilder.Entity("HacknetSharp.Server.Common.Models.FileModel", b =>
                 {
                     b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "Owner")
-                        .WithMany("Folders")
+                        .WithMany("Files")
                         .HasForeignKey("OwnerKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -202,17 +191,6 @@ namespace hspostgres.Migrations
                     b.Navigation("CurrentSystem");
                 });
 
-            modelBuilder.Entity("HacknetSharp.Server.Common.Models.SimpleFileModel", b =>
-                {
-                    b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "Owner")
-                        .WithMany("SimpleFiles")
-                        .HasForeignKey("OwnerKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.SystemModel", b =>
                 {
                     b.HasOne("HacknetSharp.Server.Common.Models.PersonModel", "Owner")
@@ -222,6 +200,15 @@ namespace hspostgres.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("HacknetSharp.Server.RegistrationToken", b =>
+                {
+                    b.HasOne("HacknetSharp.Server.UserModel", "Forger")
+                        .WithMany()
+                        .HasForeignKey("ForgerKey");
+
+                    b.Navigation("Forger");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PersonModel", b =>
@@ -236,9 +223,7 @@ namespace hspostgres.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.SystemModel", b =>
                 {
-                    b.Navigation("Folders");
-
-                    b.Navigation("SimpleFiles");
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }
