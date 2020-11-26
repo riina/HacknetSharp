@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 
@@ -37,16 +35,10 @@ namespace HacknetSharp.Server.Runnables
             var conf = new ServerConfig()
                 .WithPrograms(executor.CustomPrograms)
                 .WithStorageContextFactory<TDatabaseFactory>()
-                .WithAccessController<AccessController>()
                 .WithDefaultWorld(options.DefaultWorld)
                 .WithPort(42069)
+                .WithTemplates(ServerUtil.GetTemplates(""))
                 .WithCertificate(cert.Value.Item2);
-            if (Directory.Exists(ServerConstants.WorldTemplatesFolder))
-                conf.WithWorldTemplates(Directory.EnumerateFiles(ServerConstants.WorldTemplatesFolder)
-                    .Select(ReadFromFile<WorldTemplate>));
-            if (Directory.Exists(ServerConstants.SystemTemplatesFolder))
-                conf.WithSystemTemplates(Directory.EnumerateFiles(ServerConstants.SystemTemplatesFolder)
-                    .Select(ReadFromFile<SystemTemplate>));
             var instance = conf.CreateInstance();
             await instance.StartAsync().Caf();
 
@@ -61,14 +53,13 @@ namespace HacknetSharp.Server.Runnables
             {
             }
 
+            Console.TreatControlCAsInput = false;
+
             Console.WriteLine("Tearing down...");
             await instance.DisposeAsync().Caf();
             Console.WriteLine("Teardown complete.");
             return 0;
         }
-
-        private static T ReadFromFile<T>(string file) =>
-            ServerUtil.YamlDeserializer.Deserialize<T>(File.ReadAllText(file));
 
         public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) => await Parser
             .Default.ParseArguments<Options>(args)

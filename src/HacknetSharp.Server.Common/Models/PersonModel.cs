@@ -19,7 +19,7 @@ namespace HacknetSharp.Server.Common.Models
             builder.Entity<PersonModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasOne(p => p.Player).WithMany(p => p!.Identities);
+                x.HasMany(x => x.Systems).WithOne(x => x.Owner).OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

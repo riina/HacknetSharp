@@ -121,5 +121,61 @@ namespace HacknetSharp.Server
 
         internal static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
         internal static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
+
+
+        public static TemplateGroup GetTemplates(string installDir)
+        {
+            var templates = new TemplateGroup();
+            if (Directory.Exists(ServerConstants.WorldTemplatesFolder))
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(installDir,
+                    ServerConstants.WorldTemplatesFolder)))
+                {
+                    try
+                    {
+                        var (name, template) = ReadFromFile<WorldTemplate>(file);
+                        templates.WorldTemplates.Add(name, template);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+
+            if (Directory.Exists(ServerConstants.PersonTemplatesFolder))
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(installDir,
+                    ServerConstants.PersonTemplatesFolder)))
+                {
+                    try
+                    {
+                        var (name, template) = ReadFromFile<PersonTemplate>(file);
+                        templates.PersonTemplates.Add(name, template);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+
+            if (Directory.Exists(ServerConstants.SystemTemplatesFolder))
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(installDir,
+                    ServerConstants.SystemTemplatesFolder)))
+                {
+                    try
+                    {
+                        var (name, template) = ReadFromFile<SystemTemplate>(file);
+                        templates.SystemTemplates.Add(name, template);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+
+            return templates;
+        }
+
+        internal static (string, T) ReadFromFile<T>(string file) => (
+            Path.GetFileNameWithoutExtension(file).ToLowerInvariant(),
+            YamlDeserializer.Deserialize<T>(File.ReadAllText(file)));
     }
 }

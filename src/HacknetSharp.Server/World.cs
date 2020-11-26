@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using HacknetSharp.Server.Common;
+using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
     public class World : IWorld
     {
-        public Guid Id { get; internal set; }
-
-        private readonly AutoResetEvent _waitHandle;
+        public WorldModel Model { get; }
+        public ISpawn Spawn { get; }
+        public IServerDatabase Database { get; }
         public List<object> RegistrationSet { get; }
         public List<object> DirtySet { get; }
         public List<object> DeregistrationSet { get; }
 
-        internal World()
+        internal World(WorldModel model, IServerDatabase database, TemplateGroup templates)
         {
-            _waitHandle = new AutoResetEvent(true);
+            Model = model;
+            Spawn = new Spawn(templates);
+            Database = database;
             RegistrationSet = new List<object>();
             DirtySet = new List<object>();
             DeregistrationSet = new List<object>();

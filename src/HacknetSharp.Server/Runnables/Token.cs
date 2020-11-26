@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
+using HacknetSharp.Server.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Runnables
@@ -31,6 +32,12 @@ namespace HacknetSharp.Server.Runnables
                 var tokens = await (All
                     ? ctx.Set<RegistrationToken>()
                     : ctx.Set<RegistrationToken>().Where(u => names.Contains(u.Forger.Key))).ToListAsync().Caf();
+
+                foreach (var token in tokens)
+                    Console.WriteLine($"{token.Forger.Key}");
+
+                if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
+
                 ctx.RemoveRange(tokens);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;

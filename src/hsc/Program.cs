@@ -105,6 +105,20 @@ namespace hsc
                 if (e is OutputEvent output)
                     Console.WriteLine(output.Text);
             };
+            connection.OnDisconnect += e =>
+            {
+                Console.WriteLine($"Disconnected by server. Reason: {e.Reason}");
+                try
+                {
+                    connection.DisposeAsync().Wait();
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                Environment.Exit(0);
+            };
             (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
             if (user == null) return resCode;
             ServerEvent? endEvt;
@@ -115,8 +129,10 @@ namespace hsc
                 connection.WriteEvent(new CommandEvent {Operation = operation, Text = command});
                 await connection.FlushAsync().Caf();
                 endEvt = await connection.WaitForAsync(
-                    e => e is IOperation op && op.Operation == operation || e is ServerDisconnectEvent, 10).Caf();
-            } while (endEvt != null && !(endEvt is ServerDisconnectEvent));
+                    e => e is IOperation op && op.Operation == operation, 10).Caf();
+            } while (endEvt != null);
+
+            await connection.DisposeAsync();
             return 0;
         }
 

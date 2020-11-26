@@ -33,7 +33,7 @@ namespace HacknetSharp.Server.Runnables
                     return 0;
                 }
 
-                var spawned = new Spawn().World(Name, Template);
+                var spawned = new Spawn(ServerUtil.GetTemplates("")).World(Name, Template);
                 if (spawned == null)
                 {
                     Console.WriteLine("Could not find a template with the specified name.");
@@ -69,10 +69,9 @@ namespace HacknetSharp.Server.Runnables
                     : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
-                {
-                    // TODO search tables
+                    Console.WriteLine($"{world.Name}:{world.Key}");
 
-                }
+                if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
                 ctx.RemoveRange(worlds);
                 await ctx.SaveChangesAsync().Caf();

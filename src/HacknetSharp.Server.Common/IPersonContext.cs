@@ -5,7 +5,7 @@ namespace HacknetSharp.Server.Common
 {
     public interface IPersonContext : IOutboundConnection<ServerEvent>
     {
-        PersonModel GetPerson(Guid world);
+        PersonModel GetPerson(IWorld world);
 
         public void WriteEventSafe(ServerEvent evt);
     }

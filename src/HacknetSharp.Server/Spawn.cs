@@ -7,12 +7,19 @@ namespace HacknetSharp.Server
 {
     public class Spawn : ISpawn
     {
+        private readonly TemplateGroup _templates;
+
+        public Spawn(TemplateGroup templates)
+        {
+            _templates = templates;
+        }
+
         public PersonModel Person(Common.System context, string name, string userName)
         {
             return new PersonModel
             {
                 Key = Guid.NewGuid(),
-                World = context.World.Id,
+                World = context.World.Model,
                 Name = name,
                 UserName = userName,
                 Systems = new List<SystemModel>()
@@ -25,7 +32,7 @@ namespace HacknetSharp.Server
             return new SystemModel
             {
                 Key = Guid.NewGuid(),
-                World = context.World.Id,
+                World = context.World.Model,
                 Owner = owner,
                 Name = name,
                 Files = new List<FileModel>()
@@ -35,7 +42,8 @@ namespace HacknetSharp.Server
         public (WorldModel, List<PersonModel>, List<SystemModel>)? World(string name, string template)
         {
             // TODO search for template and apply
-            return (new WorldModel {Key = Guid.NewGuid(), Name = name}, new List<PersonModel>(), new List<SystemModel>());
+            return (new WorldModel {Key = Guid.NewGuid(), Name = name}, new List<PersonModel>(),
+                new List<SystemModel>());
         }
     }
 }

@@ -21,6 +21,11 @@
         public const string WorldTemplatesFolder = "templates/world";
 
         /// <summary>
+        /// Path to person template folder.
+        /// </summary>
+        public const string PersonTemplatesFolder = "templates/person";
+
+        /// <summary>
         /// Path to system template folder.
         /// </summary>
         public const string SystemTemplatesFolder = "templates/system";

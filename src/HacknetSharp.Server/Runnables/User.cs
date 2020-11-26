@@ -77,6 +77,12 @@ namespace HacknetSharp.Server.Runnables
                     }
                 }
 
+
+                foreach (var user in users)
+                    Console.WriteLine($"{user.Key}:{(user.Admin ? "admin" : "regular")}");
+
+                if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
+
                 ctx.RemoveRange(users);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;

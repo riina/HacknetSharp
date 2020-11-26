@@ -238,5 +238,17 @@ namespace HacknetSharp
             Console.WriteLine();
             return ss;
         }
+
+        private static readonly HashSet<string> _yes = new HashSet<string>(new[]
+        {
+            "yes", "y", "sure", "absolutely", "sin duda", "do it", "yes please", "yes, please", "bingo", "come on",
+            "such"
+        });
+
+        public static bool Confirm(string mes)
+        {
+            Console.WriteLine(mes);
+            return _yes.Contains((Console.ReadLine() ?? "").ToLowerInvariant());
+        }
     }
 }

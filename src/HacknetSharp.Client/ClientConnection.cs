@@ -18,11 +18,11 @@ namespace HacknetSharp.Client
         public string Server { get; }
         public ushort Port { get; }
         public string User { get; }
-        public Action<ServerEvent> OnReceivedEvent { get; set; } = _ => { };
+        public Action<ServerEvent> OnReceivedEvent { get; set; } = null!;
+        public Action<ServerDisconnectEvent> OnDisconnect { get; set; } = null!;
         private string? _pass;
         private string? _registrationToken;
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly AutoResetEvent _lockInOp;
         private readonly AutoResetEvent _lockOutOp;
@@ -43,7 +43,6 @@ namespace HacknetSharp.Client
             _cancellationTokenSource = new CancellationTokenSource();
             _pass = pass;
             _registrationToken = registrationToken;
-            _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _lockInOp = new AutoResetEvent(true);
             _lockOutOp = new AutoResetEvent(true);
@@ -91,6 +90,11 @@ namespace HacknetSharp.Client
                     LoginFailEvent _ => throw new LoginException("Login failed."),
                     _ => throw new ProtocolException($"Unexpected event type {result?.GetType().FullName} received.")
                 };
+
+                OnReceivedEvent += e =>
+                {
+                    if (e is ServerDisconnectEvent ex) OnDisconnect(ex);
+                };
                 Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active,
                     ref _state);
                 return info;
@@ -118,39 +122,47 @@ namespace HacknetSharp.Client
         private async Task ExecuteReceive(SslStream stream, CancellationToken cancellationToken)
         {
             _connected = true;
-            _countdown.AddCount(1);
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    var evt = await stream.ReadEventAsync<ServerEvent>(cancellationToken).Caf();
-                    if (evt == null) return;
-                    OnReceivedEvent(evt);
-                    _lockInOp.WaitOne();
-                    _inEvents.Add(evt);
-                    _lockInOp.Set();
-                }
-            }
-            finally
-            {
-                Dispose();
-                _countdown.Signal();
+                var evt = await stream.ReadEventAsync<ServerEvent>(cancellationToken).Caf();
+                if (evt == null) return;
+                OnReceivedEvent(evt);
+                _lockInOp.WaitOne();
+                _inEvents.Add(evt);
+                _lockInOp.Set();
             }
 
             throw new TaskCanceledException();
         }
 
+        // No throws
         public async Task DisposeAsync()
         {
-            if (_state == LifecycleState.NotStarted)
+            switch (_state)
             {
-                _state = LifecycleState.Disposed;
-                return;
+                case LifecycleState.NotStarted:
+                    _state = LifecycleState.Disposed;
+                    return;
+                case LifecycleState.Dispose:
+                case LifecycleState.Disposed:
+                case LifecycleState.Failed:
+                    return;
             }
 
             _connected = false;
-            _cancellationTokenSource.Cancel();
+
+            try
+            {
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource.Dispose();
+            }
+            catch
+            {
+                // ignored
+            }
+
             while (_state == LifecycleState.Starting) await Task.Delay(100).Caf();
+
             try
             {
                 Dispose();
@@ -160,17 +172,7 @@ namespace HacknetSharp.Client
                 // ignored
             }
 
-            if (_state == LifecycleState.Failed) return;
-            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref _state);
-
-            await Task.Run(() =>
-            {
-                _op.WaitOne();
-                _countdown.Signal();
-                _op.Set();
-                _countdown.Wait();
-            }).Caf();
-            Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
+            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Disposed, ref _state);
         }
 
         private static bool ValidateServerCertificate(

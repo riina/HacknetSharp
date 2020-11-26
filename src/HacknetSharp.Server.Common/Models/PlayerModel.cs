@@ -7,6 +7,7 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class PlayerModel : Model<string>
     {
+        public readonly UserModel User = new UserModel();
         public virtual Guid ActiveWorld { get; set; }
         public virtual Guid DefaultSystem { get; set; }
         public virtual List<PersonModel> Identities { get; set; } = null!;
@@ -16,7 +17,11 @@ namespace HacknetSharp.Server.Common.Models
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
         public static void ConfigureModel(ModelBuilder builder) =>
-            builder.Entity<PlayerModel>(x => x.HasKey(v => v.Key));
+            builder.Entity<PlayerModel>(x =>
+            {
+                x.HasKey(v => v.Key);
+                x.HasMany(p => p!.Identities).WithOne(p => p.Player!).OnDelete(DeleteBehavior.Cascade);
+            });
 #pragma warning restore 1591
     }
 }

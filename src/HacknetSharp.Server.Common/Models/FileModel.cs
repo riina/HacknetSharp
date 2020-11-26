@@ -20,17 +20,10 @@ namespace HacknetSharp.Server.Common.Models
             Folder
         }
 
-    [ModelBuilderCallback]
+        [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder)
-        {
-            builder.Entity<FileModel>(x =>
-            {
-                x.HasKey(v => v.Key);
-                x.HasOne(x => x.Owner).WithMany(x => x.Files);
-            });
-        }
+        public static void ConfigureModel(ModelBuilder builder) => builder.Entity<FileModel>(x => x.HasKey(v => v.Key));
 #pragma warning restore 1591
     }
 }

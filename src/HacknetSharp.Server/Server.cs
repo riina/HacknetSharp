@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
+using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server
 {
     public class Server
     {
         private readonly HashSet<Type> _programTypes;
-        private readonly Dictionary<string, (Program, ProgramInfoAttribute)> _programs;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
@@ -25,13 +28,13 @@ namespace HacknetSharp.Server
         internal X509Certificate Cert { get; }
         internal AccessController AccessController { get; }
         public Dictionary<Guid, World> Worlds { get; }
-        public ServerDatabase Database { get; protected set; }
+        public World DefaultWorld { get; }
+        public Dictionary<string, (Program, ProgramInfoAttribute)> Programs { get; }
+        public TemplateGroup Templates { get; }
+        public ServerDatabase Database { get; }
 
         protected internal Server(ServerConfig config)
         {
-            var accessControllerType = config.AccessControllerType ??
-                                       throw new ArgumentException(
-                                           $"{nameof(ServerConfig.AccessControllerType)} not specified");
             var storageContextFactoryType = config.StorageContextFactoryType ??
                                             throw new ArgumentException(
                                                 $"{nameof(ServerConfig.StorageContextFactoryType)} not specified");
@@ -43,10 +46,19 @@ namespace HacknetSharp.Server
             Database = new ServerDatabase(context);
             AccessController = new AccessController(this);
             Worlds = new Dictionary<Guid, World>();
-            // TODO inject worlds
+            Templates = config.Templates;
+             World? defaultWorld = null;
+             foreach (var w in context.Set<WorldModel>())
+             {
+                 var world = new World(w, Database, Templates);
+                 Worlds[w.Key] = world;
+                 if (w.Name.Equals(config.DefaultWorld)) defaultWorld = world;
+             }
+            if (defaultWorld == null)
+                throw new ApplicationException("No world matching name found");
             _programTypes = new HashSet<Type>(ServerUtil.DefaultPrograms);
             _programTypes.UnionWith(config.Programs);
-            _programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
+            Programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
@@ -55,10 +67,9 @@ namespace HacknetSharp.Server
         }
 
 
-        private void RunConnectListener()
+        private async Task RunConnectListener()
         {
-            _connectListener.Start();
-            _connectTask = Task.Run(async () =>
+            try
             {
                 while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
                 {
@@ -67,12 +78,24 @@ namespace HacknetSharp.Server
                         var connection = new HostConnection(this, await _connectListener.AcceptTcpClientAsync().Caf());
                         _connections.TryAdd(connection.Id, connection);
                     }
+                    catch (IOException)
+                    {
+                        return;
+                    }
+                    catch (SocketException)
+                    {
+                        return;
+                    }
                     finally
                     {
                         Util.DecrementCountdown(_op, _countdown);
                     }
                 }
-            });
+            }
+            finally
+            {
+                Console.WriteLine("[[Connection listener is offline.]]");
+            }
         }
 
         public Task<Task> StartAsync()
@@ -89,7 +112,7 @@ namespace HacknetSharp.Server
                     var program = Activator.CreateInstance(type) as Program ??
                                   throw new ApplicationException(
                                       $"{type.FullName} supplied as program but could not be casted to {nameof(Program)}");
-                    _programs.Add(info.Name, (program, info));
+                    Programs.Add(info.Name, (program, info));
                 }
             }
             catch
@@ -100,7 +123,9 @@ namespace HacknetSharp.Server
             }
 
             Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active, ref _state);
-            RunConnectListener();
+
+            _connectListener.Start();
+            _connectTask = RunConnectListener();
             return Task.FromResult(UpdateAsync());
         }
 
@@ -134,10 +159,14 @@ namespace HacknetSharp.Server
             Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             while (_state != LifecycleState.Active) await Task.Delay(100).Caf();
             Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref _state);
-            _connectListener.Stop();
             var connectionIds = _connections.Keys;
+            _connectListener.Stop();
             foreach (var id in connectionIds)
-                DisconnectConnection(id);
+            {
+                Console.WriteLine($"Disconnecting {id}");
+                await DisconnectConnectionAsync(id);
+            }
+
             await Task.Run(() =>
             {
                 _op.WaitOne();
@@ -145,15 +174,27 @@ namespace HacknetSharp.Server
                 _op.Set();
                 _countdown.Wait();
             }).Caf();
+            await _connectTask!;
             Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
         }
 
         internal void SelfRemoveConnection(Guid id) => _connections.TryRemove(id, out _);
 
-        internal void DisconnectConnection(Guid id)
+        private async Task DisconnectConnectionAsync(Guid id)
         {
             if (_connections.TryRemove(id, out var connection))
-                connection.Dispose();
+            {
+                try
+                {
+                    connection.WriteEventSafe(new ServerDisconnectEvent {Reason = "Server shutting down."});
+                    await connection.FlushAsync();
+                    connection.Dispose();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
 
         internal bool TryIncrementCountdown(LifecycleState min, LifecycleState max) =>

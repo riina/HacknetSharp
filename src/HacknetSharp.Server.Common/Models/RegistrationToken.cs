@@ -1,8 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using HacknetSharp.Server.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.Common.Models
 {
     public class RegistrationToken : Model<string>
     {

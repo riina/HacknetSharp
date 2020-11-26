@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -26,6 +27,7 @@ namespace HacknetSharp.Server
         private BufferedStream? _bufferedStream;
         private bool _closed;
         private bool _connected;
+        private UserModel? _user;
 
         public HostConnection(Server server, TcpClient client)
         {
@@ -61,8 +63,8 @@ namespace HacknetSharp.Server
                 _sslStream.WriteTimeout = 10 * 1000;
                 _bufferedStream = new BufferedStream(_sslStream);
                 ClientEvent? evt;
-                UserModel? user = null;
-                while (!((evt = await _bufferedStream.ReadEventAsync<ClientEvent>(cancellationToken).Caf()) is
+                _user = null;
+                while (!((evt = await _sslStream.ReadEventAsync<ClientEvent>(cancellationToken).Caf()) is
                     ClientDisconnectEvent))
                 {
                     if (evt == null) return;
@@ -71,21 +73,21 @@ namespace HacknetSharp.Server
                         case LoginEvent login:
                         {
                             var op = login.Operation;
-                            if (user != null)
+                            if (_user != null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
                                 break;
                             }
 
                             if (login.RegistrationToken != null)
-                                user = await _server.AccessController
+                                _user = await _server.AccessController
                                     .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
                             else
-                                user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
-                            if (user == null)
+                                _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                            if (_user == null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
-                                WriteEvent(ServerDisconnectEvent.Singleton);
+                                WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
                                 await FlushAsync(cancellationToken).Caf();
                                 return;
                             }
@@ -95,7 +97,7 @@ namespace HacknetSharp.Server
 
                             // TODO check or generate / register player model
 
-                            WriteEvent(new UserInfoEvent {Operation = op, Admin = user.Admin});
+                            WriteEvent(new UserInfoEvent {Operation = op, Admin = _user.Admin});
                             WriteEvent(new OutputEvent {Text = "Welcome to ossu. Type \"exit\" to exit."});
                             break;
                         }
@@ -104,8 +106,8 @@ namespace HacknetSharp.Server
                             var op = forgeRequest.Operation;
                             var random = new Random();
                             var arr = new byte[32];
-                            if (user == null) continue;
-                            if (!user.Admin)
+                            if (_user == null) continue;
+                            if (!_user.Admin)
                             {
                                 WriteEvent(new AccessFailEvent {Operation = op});
                                 break;
@@ -118,7 +120,7 @@ namespace HacknetSharp.Server
                                 token = Convert.ToBase64String(arr);
                             } while (await _server.Database.GetAsync<string, RegistrationToken>(token).Caf() != null);
 
-                            var tokenModel = new RegistrationToken {Forger = user, Key = token};
+                            var tokenModel = new RegistrationToken {Forger = _user, Key = token};
                             _server.Database.Add(tokenModel);
                             await _server.Database.SyncAsync().Caf();
                             WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
@@ -127,12 +129,12 @@ namespace HacknetSharp.Server
                         case CommandEvent command:
                         {
                             var op = command.Operation;
-                            if (user == null) continue;
+                            if (_user == null) continue;
                             var line = Arguments.SplitCommandLine(command.Text);
                             // TODO operate on command based on context, this is temporary
                             if (line.Length > 0 && line[0].Equals("exit", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                WriteEvent(ServerDisconnectEvent.Singleton);
+                                WriteEvent(new ServerDisconnectEvent {Reason = "Shell closed."});
                                 await FlushAsync(cancellationToken).Caf();
                                 return;
                             }
@@ -174,7 +176,16 @@ namespace HacknetSharp.Server
 
             _connected = false;
             _closed = true;
-            _cancellationTokenSource.Cancel();
+
+            try
+            {
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource.Dispose();
+            }
+            catch
+            {
+                // ignored
+            }
 
             try
             {
@@ -212,15 +223,7 @@ namespace HacknetSharp.Server
         public void WriteEvents(IEnumerable<ServerEvent> events)
         {
             if (_closed || _bufferedStream == null) throw new InvalidOperationException();
-            _lockOutOp.WaitOne();
-            try
-            {
-                foreach (var evt in events) _bufferedStream.WriteEvent(evt);
-            }
-            finally
-            {
-                _lockOutOp.Set();
-            }
+            foreach (var evt in events) _bufferedStream.WriteEvent(evt);
         }
 
         public Task FlushAsync() => FlushAsync(CancellationToken.None);
@@ -229,11 +232,45 @@ namespace HacknetSharp.Server
         {
             if (_closed || _bufferedStream == null) throw new InvalidOperationException();
             _lockOutOp.WaitOne();
-            await _bufferedStream.FlushAsync(cancellationToken).Caf();
-            _lockOutOp.Set();
+            try
+            {
+                await _bufferedStream.FlushAsync(cancellationToken).Caf();
+            }
+            finally
+            {
+                _lockOutOp.Set();
+            }
         }
 
-        public PersonModel GetPerson(Guid world) => throw new NotImplementedException();
+        public PersonModel GetPerson(IWorld world)
+        {
+
+            /*var person = new PersonModel
+            {
+                Key = Guid.NewGuid(),
+                Player = _user.Player.,
+                Name = player.Key,
+                Systems = new List<SystemModel>(),
+                UserName = player.Key,
+                World = world.Model
+            };*/
+            throw new NotImplementedException();
+        }
+
+        /*public PersonModel GetPerson(IWorld world, string template)
+        {
+
+            var person = new PersonModel
+            {
+                Key = Guid.NewGuid(),
+                Player = ,
+                Name = player.Key,
+                Systems = new List<SystemModel>(),
+                UserName = player.Key,
+                World = world.Model
+            };
+            throw new NotImplementedException();
+        }*/
 
         public void WriteEventSafe(ServerEvent evt)
         {

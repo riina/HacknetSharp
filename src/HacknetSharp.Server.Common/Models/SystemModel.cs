@@ -14,14 +14,12 @@ namespace HacknetSharp.Server.Common.Models
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder)
-        {
+        public static void ConfigureModel(ModelBuilder builder) =>
             builder.Entity<SystemModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasOne(x => x.Owner).WithMany(x => x.Systems);
+                x.HasMany(x => x.Files).WithOne(x => x.Owner).OnDelete(DeleteBehavior.Cascade);
             });
-        }
 #pragma warning restore 1591
     }
 }
