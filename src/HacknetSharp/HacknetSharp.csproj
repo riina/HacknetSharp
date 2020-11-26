@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Ns\Ns.csproj" />
+    <PackageReference Include="Ns" Version="3.0.0" />
   </ItemGroup>
 
 </Project>
