@@ -1,12 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
 
-namespace HacknetSharp.Server.Common
+namespace HacknetSharp.Server
 {
-    public static class Spawn
+    public class Spawn : ISpawn
     {
-        public static PersonModel Person(System context, string name, string userName)
+        public PersonModel Person(Common.System context, string name, string userName)
         {
             return new PersonModel
             {
@@ -18,7 +19,7 @@ namespace HacknetSharp.Server.Common
             };
         }
 
-        public static SystemModel System(System context, PersonModel owner, string name, string template)
+        public SystemModel? System(Common.System context, PersonModel owner, string name, string template)
         {
             // TODO search for template and apply
             return new SystemModel
@@ -29,6 +30,12 @@ namespace HacknetSharp.Server.Common
                 Name = name,
                 Files = new List<FileModel>()
             };
+        }
+
+        public (WorldModel, List<PersonModel>, List<SystemModel>)? World(string name, string template)
+        {
+            // TODO search for template and apply
+            return (new WorldModel {Key = Guid.NewGuid(), Name = name}, new List<PersonModel>(), new List<SystemModel>());
         }
     }
 }

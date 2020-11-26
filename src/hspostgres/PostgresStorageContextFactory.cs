@@ -18,7 +18,7 @@ namespace hspostgres
         public static async Task<int> Main(string[] args)
         {
             _fromMain = true;
-            return await new Executor<PostgresStorageContextFactory>().Run(args);
+            return await new Executor<PostgresStorageContextFactory>().Execute(args);
         }
 
         /// <summary>

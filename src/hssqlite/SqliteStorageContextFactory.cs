@@ -18,7 +18,7 @@ namespace hssqlite
         public static async Task<int> Main(string[] args)
         {
             _fromMain = true;
-            return await new Executor<SqliteStorageContextFactory>().Run(args);
+            return await new Executor<SqliteStorageContextFactory>().Execute(args);
         }
 
         /// <summary>

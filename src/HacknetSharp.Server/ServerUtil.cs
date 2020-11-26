@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
+using YamlDotNet.Serialization;
 
 namespace HacknetSharp.Server
 {
@@ -94,5 +96,30 @@ namespace HacknetSharp.Server
 
             return false;
         }
+
+        public static (X509Store, X509Certificate2)? FindCertificate(string externalAddr,
+            IEnumerable<(StoreName name, StoreLocation location)> stores)
+        {
+            foreach ((StoreName name, StoreLocation location) in stores)
+            {
+                var store = new X509Store(name, location);
+                store.Open(OpenFlags.ReadOnly);
+                var certs = store.Certificates.Find(X509FindType.FindBySubjectName, externalAddr, false);
+                store.Close();
+                if (certs.Count <= 0) continue;
+                return (store, certs[0]);
+            }
+
+            return null;
+        }
+
+        internal static readonly (StoreName name, StoreLocation location)[] CertificateStores =
+        {
+            (StoreName.Root, StoreLocation.CurrentUser), (StoreName.My, StoreLocation.CurrentUser)
+        };
+
+
+        internal static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
+        internal static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
     }
 }

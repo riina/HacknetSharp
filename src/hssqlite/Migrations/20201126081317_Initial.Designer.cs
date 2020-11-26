@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hssqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201125094606_Initial")]
+    [Migration("20201126081317_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

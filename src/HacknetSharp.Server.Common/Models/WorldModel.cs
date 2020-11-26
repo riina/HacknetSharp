@@ -2,7 +2,7 @@
 
 namespace HacknetSharp.Server.Common.Models
 {
-    public abstract class WorldModel : Model<Guid>
+    public class WorldModel : Model<Guid>
     {
         public virtual string Name { get; set; } = null!;
         public virtual string SystemTemplate { get; set; } = null!;
