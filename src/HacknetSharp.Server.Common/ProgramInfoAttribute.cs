@@ -9,7 +9,7 @@ namespace HacknetSharp.Server.Common
     public class ProgramInfoAttribute : Attribute
     {
         /// <summary>
-        /// Program name.
+        /// Program codename, should be something unique like "core:ls" or "Ryazan:REconstruction".
         /// </summary>
         public string Name { get; set; }
 

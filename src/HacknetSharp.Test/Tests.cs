@@ -26,5 +26,21 @@ namespace HacknetSharp.Test
         private class SubModel : Model<int>
         {
         }
+
+        [Test]
+        public void Test_Paths()
+        {
+            Assert.AreEqual("/", Program.GetNormalized("/test/.."));
+            Assert.AreEqual("/test/path", Program.GetNormalized("/test/../test/path/"));
+            Assert.AreEqual("/test", Program.GetDirectoryName("/test/me"));
+            Assert.AreEqual("/test", Program.GetNormalized(Program.GetDirectoryName("/test/me/../harder")));
+            Assert.AreEqual(null, Program.GetDirectoryName("/"));
+            Assert.AreEqual("", Program.GetFileName("/"));
+            Assert.AreEqual("/", Program.Combine("/", ""));
+            Assert.AreEqual("/", Program.GetNormalized(Program.Combine("/", "")));
+            Assert.AreEqual(("/", ""), Server.Common.System.GetDirectoryAndName("/"));
+            Assert.AreEqual(("/", "shadow"), Server.Common.System.GetDirectoryAndName("/shadow"));
+            Assert.AreEqual(("/shadow", "absorber"), Server.Common.System.GetDirectoryAndName("/shadow/absorber"));
+        }
     }
 }

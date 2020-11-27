@@ -1,12 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
+using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server.Common
 {
-    public abstract class Program
+    public abstract partial class Program
     {
-        public abstract IEnumerator<YieldToken?> Invoke(System system);
+        public abstract IEnumerator<YieldToken?> Invoke(CommandContext context);
 
+        #region Utility methods
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static OutputEvent Output(string message) => new OutputEvent {Text = message};
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetNormalized(string path) => Path.TrimEndingDirectorySeparator(GetFullPath(path, "/"));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetFileName(string path) => Path.GetFileName(path);
+
+        #endregion
+
+        #region Yield tokens
 
         /// <summary>
         /// Creates a yield token with specified action and yield token. The action is evaluated on first yield.
@@ -185,5 +202,7 @@ namespace HacknetSharp.Server.Common
 
             public override bool Yield(IWorld world) => Condition();
         }
+
+        #endregion
     }
 }

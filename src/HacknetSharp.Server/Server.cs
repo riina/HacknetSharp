@@ -20,8 +20,8 @@ namespace HacknetSharp.Server
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
-        private readonly Queue<(World, IPersonContext, Guid, string[])> _inputQueue;
-        private readonly List<(World, IPersonContext, Guid, string[])> _inputProcessing;
+        private readonly Queue<CommandContext> _inputQueue;
+        private readonly List<CommandContext> _inputProcessing;
         private readonly AutoResetEvent _are;
         private double _initialTime;
         private LifecycleState _state;
@@ -71,8 +71,8 @@ namespace HacknetSharp.Server
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
             _connections = new ConcurrentDictionary<Guid, HostConnection>();
-            _inputQueue = new Queue<(World, IPersonContext, Guid, string[])>();
-            _inputProcessing = new List<(World, IPersonContext, Guid, string[])>();
+            _inputQueue = new Queue<CommandContext>();
+            _inputProcessing = new List<CommandContext>();
             _are = new AutoResetEvent(true);
             RegistrationSet = new List<object>();
             DirtySet = new List<object>();
@@ -154,8 +154,8 @@ namespace HacknetSharp.Server
                     _inputProcessing.AddRange(_inputQueue);
                     _inputQueue.Clear();
                     _are.Set();
-                    foreach ((var world, var person, Guid operationId, var args) in _inputProcessing)
-                        world.ExecuteCommand(person, operationId, args);
+                    foreach (var context in _inputProcessing)
+                        context.World.ExecuteCommand(context);
                     _inputProcessing.Clear();
                     foreach (var world in Worlds.Values)
                     {
@@ -193,7 +193,10 @@ namespace HacknetSharp.Server
                     DirtySet.Add(player);
                 }
 
-                _inputQueue.Enqueue((world, context, operationId, line));
+                _inputQueue.Enqueue(new CommandContext
+                {
+                    World = world, Person = context, OperationId = operationId, Argv = line
+                });
             }
             finally
             {

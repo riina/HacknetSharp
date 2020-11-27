@@ -1,7 +1,5 @@
-abstract class Considerations
-abstract methods for all core model types
-Execute() runs each method, makes sure you don't forget
-to do anything for any of the models
+pending sources:
+https://trenki2.github.io/blog/2018/12/28/activator-createinstance-faster-alternative/
 
 making pfx file (e.g. from LetsEncrypt):
 openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificate.crt

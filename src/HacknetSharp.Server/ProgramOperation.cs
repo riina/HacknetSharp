@@ -6,16 +6,15 @@ namespace HacknetSharp.Server
 {
     public class ProgramOperation
     {
-        public IPersonContext Context { get; }
+        public CommandContext Context { get; }
         public Guid OperationId { get; }
         private readonly IEnumerator<Program.YieldToken?> _enumerator;
         private Program.YieldToken? _currentToken;
 
-        public ProgramOperation(IPersonContext context, IEnumerator<Program.YieldToken?> enumerator, Guid operationId)
+        public ProgramOperation(CommandContext context, IEnumerator<Program.YieldToken?> enumerator)
         {
             Context = context;
             _enumerator = enumerator;
-            OperationId = operationId;
         }
 
         /// <summary>
