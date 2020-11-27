@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.Common
 {
     public class SystemTemplate
     {

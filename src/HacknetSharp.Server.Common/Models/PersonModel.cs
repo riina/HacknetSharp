@@ -10,6 +10,8 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string Name { get; set; } = null!;
         public virtual string UserName { get; set; } = null!;
         public virtual PlayerModel? Player { get; set; }
+        public virtual SystemModel DefaultSystem { get; set; } = null!;
+        public virtual SystemModel CurrentSystem { get; set; } = null!;
         public virtual List<SystemModel> Systems { get; set; } = null!;
 
         [ModelBuilderCallback]

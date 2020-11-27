@@ -1,4 +1,4 @@
-﻿namespace HacknetSharp.Server
+﻿namespace HacknetSharp.Server.Common
 {
     public class WorldTemplate
     {

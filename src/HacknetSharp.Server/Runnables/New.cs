@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CommandLine;
+using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.Runnables
 {
@@ -15,49 +16,75 @@ namespace HacknetSharp.Server.Runnables
             [Value(0, MetaName = "kind", HelpText = "Kind of template.", Required = true)]
             public string Kind { get; set; } = null!;
 
-            [Value(1, MetaName = "name", HelpText = "Name for template instance.", Required = true)]
-            public string Name { get; set; } = null!;
+            [Option('n', "name", MetaValue = "name", HelpText = "Force overwrite existing template.")]
+            public string? Name { get; set; } = null!;
 
             [Option('f', "force", HelpText = "Force overwrite existing template.")]
             public bool Force { get; set; }
+
+            [Option('e', "example", HelpText = "Use example instead of empty.")]
+            public bool Example { get; set; }
         }
 
-        private static readonly Dictionary<string, Func<Options, (string path, object result)>>
+        private static readonly
+            Dictionary<string, (bool nameRequired, Func<Options, (string path, object result)> action)>
             _templateGenerators =
-                new Dictionary<string, Func<Options, (string path, object result)>>
+                new Dictionary<string, (bool nameRequired, Func<Options, (string path, object result)> action)>
                 {
                     {
-                        "system", options => (
+                        "system", (true, options => (
                             Path.Combine(ServerConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
-                            (object)new SystemTemplate
-                            {
-                                OsName = "EncomOS",
-                                Users = new List<string>(new[] {"{u}+:{p}", "samwise:genshin"}),
-                                Filesystem = new List<string>(new[]
+                            (object)(options.Example
+                                ? new SystemTemplate
                                 {
-                                    "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
-                                    "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
-                                    "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
-                                    "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
-                                    "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
-                                    "prog:/bin/cd core:cd", "prog:/bin/ls core:ls"
-                                })
-                            })
+                                    OsName = "EncomOS",
+                                    Users = new List<string>(new[] {"{u}+:{p}", "samwise:genshin"}),
+                                    Filesystem = new List<string>(new[]
+                                    {
+                                        "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
+                                        "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
+                                        "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
+                                        "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
+                                        "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
+                                        "prog:/bin/cd core:cd", "prog:/bin/ls core:ls"
+                                    })
+                                }
+                                : new SystemTemplate()))
+                        )
                     },
                     {
-                        "world", options => (
+                        "world", (true, options => (
                             Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
-                            (object)new WorldTemplate {Name = options.Name})
+                            (object)(options.Example ? new WorldTemplate {Name = options.Name} : new WorldTemplate()))
+                        )
+                    },
+                    {
+                        "server", (false, options => (
+                            $"{options.Name ?? "server"}.yaml",
+                            (object)(options.Example
+                                ? new ServerYaml {ExternalAddr = "127.0.0.1", DefaultWorld = "main"}
+                                : new ServerYaml()))
+                        )
                     }
                 };
 
         private static Task<int> Start(Executor<TDatabaseFactory> executor, Options options)
         {
-            if (!_templateGenerators.TryGetValue(options.Kind.ToLowerInvariant(), out var action))
+            bool nameRequired;
+            Func<Options, (string path, object result)> action;
+            if (!_templateGenerators.TryGetValue(options.Kind.ToLowerInvariant(), out var res))
             {
                 Console.WriteLine("Unrecognized template type. Supported types:");
                 foreach (var key in _templateGenerators.Keys) Console.WriteLine(key);
                 return Task.FromResult(7);
+            }
+
+            (nameRequired, action) = res;
+
+            if (options.Name == null && nameRequired)
+            {
+                Console.WriteLine("A name is required");
+                return Task.FromResult(66);
             }
 
             (string? path, object? result) = action(options);
