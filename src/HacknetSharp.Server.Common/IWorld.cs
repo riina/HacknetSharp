@@ -9,6 +9,9 @@ namespace HacknetSharp.Server.Common
         WorldModel Model { get; }
         ISpawn Spawn { get; }
         IServerDatabase Database { get; }
+        SystemTemplate PlayerSystemTemplate { get; }
+        double Time { get; }
+        double PreviousTime { get; }
         void RegisterModel<T>(Model<T> model) where T : IEquatable<T>;
         void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>;
         void DirtyModel<T>(Model<T> model) where T : IEquatable<T>;

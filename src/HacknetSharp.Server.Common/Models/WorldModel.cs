@@ -11,9 +11,8 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string SystemTemplate { get; set; } = null!;
         public virtual string StartupProgram { get; set; } = null!;
         public virtual string StartupCommandLine { get; set; } = null!;
-        public virtual List<PersonModel> Persons { get; set; } = null!;
-        public virtual List<SystemModel> Systems { get; set; } = null!;
-        public virtual List<FileModel> Files { get; set; } = null!;
+        public virtual HashSet<PersonModel> Persons { get; set; } = null!;
+        public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -24,7 +23,6 @@ namespace HacknetSharp.Server.Common.Models
                 x.HasKey(v => v.Key);
                 x.HasMany(x => x.Persons).WithOne(x => x.World!).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(x => x.Systems).WithOne(x => x.World!).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(x => x.Files).WithOne(x => x.World!).OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

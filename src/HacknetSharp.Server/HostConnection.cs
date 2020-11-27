@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.IO;
+using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
@@ -18,16 +18,16 @@ namespace HacknetSharp.Server
     {
         public Guid Id { get; }
 
-        public Dictionary<Guid, PlayerModel> PlayerModels { get; }
+        public UserModel? User { get; private set; }
         private readonly Server _server;
         private readonly TcpClient _client;
         private readonly AutoResetEvent _lockOutOp;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private PlayerModel? _playerModel;
         private SslStream? _sslStream;
         private BufferedStream? _bufferedStream;
         private bool _closed;
         private bool _connected;
-        private UserModel? _user;
 
         public HostConnection(Server server, TcpClient client)
         {
@@ -36,7 +36,6 @@ namespace HacknetSharp.Server
             _client = client;
             _lockOutOp = new AutoResetEvent(true);
             _cancellationTokenSource = new CancellationTokenSource();
-            PlayerModels = new Dictionary<Guid, PlayerModel>();
             _ = Execute(_cancellationTokenSource.Token);
         }
 
@@ -63,7 +62,7 @@ namespace HacknetSharp.Server
                 _sslStream.WriteTimeout = 10 * 1000;
                 _bufferedStream = new BufferedStream(_sslStream);
                 ClientEvent? evt;
-                _user = null;
+                User = null;
                 while (!((evt = await _sslStream.ReadEventAsync<ClientEvent>(cancellationToken).Caf()) is
                     ClientDisconnectEvent))
                 {
@@ -73,18 +72,18 @@ namespace HacknetSharp.Server
                         case LoginEvent login:
                         {
                             var op = login.Operation;
-                            if (_user != null)
+                            if (User != null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
                                 break;
                             }
 
                             if (login.RegistrationToken != null)
-                                _user = await _server.AccessController
+                                User = await _server.AccessController
                                     .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
                             else
-                                _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
-                            if (_user == null)
+                                User = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                            if (User == null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
                                 WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
@@ -95,9 +94,7 @@ namespace HacknetSharp.Server
                             _sslStream.ReadTimeout = 100 * 1000;
                             _sslStream.WriteTimeout = 100 * 1000;
 
-                            // TODO check or generate / register player model
-
-                            WriteEvent(new UserInfoEvent {Operation = op, Admin = _user.Admin});
+                            WriteEvent(new UserInfoEvent {Operation = op, Admin = User.Admin});
                             WriteEvent(new OutputEvent {Text = "Welcome to ossu. Type \"exit\" to exit."});
                             break;
                         }
@@ -106,8 +103,8 @@ namespace HacknetSharp.Server
                             var op = forgeRequest.Operation;
                             var random = new Random();
                             var arr = new byte[32];
-                            if (_user == null) continue;
-                            if (!_user.Admin)
+                            if (User == null) continue;
+                            if (!User.Admin)
                             {
                                 WriteEvent(new AccessFailEvent {Operation = op});
                                 break;
@@ -120,7 +117,7 @@ namespace HacknetSharp.Server
                                 token = Convert.ToBase64String(arr);
                             } while (await _server.Database.GetAsync<string, RegistrationToken>(token).Caf() != null);
 
-                            var tokenModel = new RegistrationToken {Forger = _user, Key = token};
+                            var tokenModel = new RegistrationToken {Forger = User, Key = token};
                             _server.Database.Add(tokenModel);
                             await _server.Database.SyncAsync().Caf();
                             WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
@@ -129,19 +126,18 @@ namespace HacknetSharp.Server
                         case CommandEvent command:
                         {
                             var op = command.Operation;
-                            if (_user == null) continue;
+                            if (User == null) continue;
                             var line = Arguments.SplitCommandLine(command.Text);
-                            // TODO operate on command based on context, this is temporary
                             if (line.Length > 0 && line[0].Equals("exit", StringComparison.InvariantCultureIgnoreCase))
                             {
+                                WriteEvent(new OperationCompleteEvent {Operation = op});
                                 WriteEvent(new ServerDisconnectEvent {Reason = "Shell closed."});
                                 await FlushAsync(cancellationToken).Caf();
                                 return;
                             }
                             else
-                                WriteEvent(new OutputEvent {Text = "Shells are not yet implemented. Gomenasai."});
+                                _server.Execute(this, op, line);
 
-                            WriteEvent(new OperationCompleteEvent {Operation = op});
                             break;
                         }
                     }
@@ -244,39 +240,61 @@ namespace HacknetSharp.Server
 
         public PersonModel GetPerson(IWorld world)
         {
-
-            /*var person = new PersonModel
-            {
-                Key = Guid.NewGuid(),
-                Player = _user.Player.,
-                Name = player.Key,
-                Systems = new List<SystemModel>(),
-                UserName = player.Key,
-                World = world.Model
-            };*/
-            throw new NotImplementedException();
+            if (User == null) throw new InvalidOperationException();
+            var playerModel = GetPlayerModel();
+            var wId = world.Model.Key;
+            PersonModel? person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId);
+            if (person != null) return person;
+            (person, _) = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
+            _server.RegistrationSet.Add(person);
+            return person;
         }
 
-        /*public PersonModel GetPerson(IWorld world, string template)
+        private static (PersonModel, SystemModel) CreateAndRegisterNewPersonAndSystem(Server server, IWorld world,
+            PlayerModel player)
         {
+            var person = server.Spawn.Person(world, player.Key, player.Key);
+            var system = server.Spawn.System(world, person, $"{player.Key}_BASE", world.PlayerSystemTemplate);
+            return (person, system);
+        }
 
-            var person = new PersonModel
-            {
-                Key = Guid.NewGuid(),
-                Player = ,
-                Name = player.Key,
-                Systems = new List<SystemModel>(),
-                UserName = player.Key,
-                World = world.Model
-            };
-            throw new NotImplementedException();
-        }*/
+        public PlayerModel GetPlayerModel()
+        {
+            if (User == null) throw new InvalidOperationException();
+            if (_playerModel != null) return _playerModel;
+
+            _playerModel = _server.Database.GetAsync<string, PlayerModel>(User.Key).Result;
+            if (_playerModel != null) return _playerModel;
+
+            var world = _server.DefaultWorld;
+
+            _playerModel = _server.Spawn.Player(User);
+            _server.RegistrationSet.Add(_playerModel);
+
+            CreateAndRegisterNewPersonAndSystem(_server, world, _playerModel);
+            _server.DirtySet.Add(world.Model);
+
+            return _playerModel;
+        }
 
         public void WriteEventSafe(ServerEvent evt)
         {
             try
             {
                 WriteEvent(evt);
+            }
+            catch
+            {
+                // Ignored
+            }
+        }
+
+        public async Task FlushSafeAsync()
+        {
+            await Task.Yield();
+            try
+            {
+                await FlushAsync(CancellationToken.None);
             }
             catch
             {

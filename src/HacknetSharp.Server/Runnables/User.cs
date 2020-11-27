@@ -77,7 +77,6 @@ namespace HacknetSharp.Server.Runnables
                     }
                 }
 
-
                 foreach (var user in users)
                     Console.WriteLine($"{user.Key}:{(user.Admin ? "admin" : "regular")}");
 

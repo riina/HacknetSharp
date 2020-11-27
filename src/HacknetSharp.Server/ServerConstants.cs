@@ -11,6 +11,11 @@
         public const string Version = "0.1.0";
 
         /// <summary>
+        /// Default server YAML config file.
+        /// </summary>
+        public const string ServerYamlFile = "server.yaml";
+
+        /// <summary>
         /// Path to extensions folder.
         /// </summary>
         public const string ExtensionsFolder = "extensions";

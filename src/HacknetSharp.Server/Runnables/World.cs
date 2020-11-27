@@ -33,17 +33,15 @@ namespace HacknetSharp.Server.Runnables
                     return 0;
                 }
 
-                var spawned = new Spawn(ServerUtil.GetTemplates("")).World(Name, Template);
-                if (spawned == null)
+                var templates = ServerUtil.GetTemplates("");
+                if (!templates.WorldTemplates.TryGetValue(Template, out var template))
                 {
                     Console.WriteLine("Could not find a template with the specified name.");
                     return 89;
                 }
 
-                var (world, persons, systems) = spawned.Value;
+                var world = new Spawn().World(Name, template);
                 ctx.Add(world);
-                ctx.AddRange(persons);
-                ctx.AddRange(systems);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
             }

@@ -5,33 +5,185 @@ namespace HacknetSharp.Server.Common
 {
     public abstract class Program
     {
-        public abstract IEnumerator<Token?> Invoke(System system);
+        public abstract IEnumerator<YieldToken?> Invoke(System system);
 
-        public static DelayToken Delay(float delay) => new DelayToken(delay);
-        public static ConditionToken Condition(Func<bool> condition) => new ConditionToken(condition);
 
-        public abstract class Token
+        /// <summary>
+        /// Creates a yield token with specified action and yield token. The action is evaluated on first yield.
+        /// </summary>
+        /// <param name="action">One-off delegate.</param>
+        /// <param name="token">Embedded delegate.</param>
+        /// <returns>Yield token.</returns>
+        public static ActWaitYieldToken ActWait(Action action, YieldToken token) =>
+            new ActWaitYieldToken(action, token);
+
+        /// <summary>
+        /// Creates a yield token with the specified yield tokens. Once each yield token in turn has yielded, execution is resumed.
+        /// </summary>
+        /// <param name="tokens">Embedded yield tokens.</param>
+        /// <returns>Yield token.</returns>
+        public static SequenceYieldToken Sequence(IEnumerable<YieldToken> tokens) => new SequenceYieldToken(tokens);
+
+        /// <summary>
+        /// Creates a yield token with the specified yield tokens. Once all yield tokens have yielded, execution is resumed.
+        /// </summary>
+        /// <param name="tokens">Embedded yield tokens.</param>
+        /// <returns>Yield token.</returns>
+        public static AggregateYieldToken Aggregate(IEnumerable<YieldToken> tokens) => new AggregateYieldToken(tokens);
+
+        /// <summary>
+        /// Creates a yield token with the specified delay. Once the delay has completed (<see cref="DelayYieldToken.Delay"/> &gt; 0), execution is resumed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        /// <returns>Yield token.</returns>
+        public static DelayYieldToken Delay(float delay) => new DelayYieldToken(delay);
+
+        /// <summary>
+        /// Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.
+        /// </summary>
+        /// <param name="condition">Delegate, triggers execution once it returns true.</param>
+        /// <returns>Yield token.</returns>
+        public static ConditionYieldToken Condition(Func<bool> condition) => new ConditionYieldToken(condition);
+
+        /// <summary>
+        /// Represents a yield token that can be used to temporarily stop execution of a program.
+        /// </summary>
+        public abstract class YieldToken
         {
+            public abstract bool Yield(IWorld world);
         }
 
-        public class DelayToken : Token
+        /// <summary>
+        /// Represents a yield token that invokes a delegate only one time.
+        /// </summary>
+        public class ActWaitYieldToken : YieldToken
         {
-            public float Delay;
+            /// <summary>
+            /// One-off delegate.
+            /// </summary>
+            public Action Action { get; }
 
-            public DelayToken(float delay)
+            /// <summary>
+            /// Embedded delegate.
+            /// </summary>
+            public YieldToken Token { get; }
+
+            private bool _executed;
+
+            /// <summary>
+            /// Creates a yield token with specified action and yield token. The action is evaluated on first yield.
+            /// </summary>
+            /// <param name="action">One-off delegate.</param>
+            /// <param name="token">Embedded delegate.</param>
+            public ActWaitYieldToken(Action action, YieldToken token)
+            {
+                Action = action;
+                Token = token;
+            }
+
+            public override bool Yield(IWorld world)
+            {
+                if (!_executed)
+                    Action();
+                _executed = true;
+                return Token.Yield(world);
+            }
+        }
+
+        /// <summary>
+        /// Represents a yield token that evaluates embedded yield tokens in sequence.
+        /// </summary>
+        public class SequenceYieldToken : YieldToken
+        {
+            /// <summary>
+            /// Embedded yield tokens.
+            /// </summary>
+            public List<YieldToken> Tokens { get; }
+
+            /// <summary>
+            /// Creates a yield token with the specified yield tokens. Once each yield token in turn has yielded, execution is resumed.
+            /// </summary>
+            /// <param name="tokens">Embedded yield tokens.</param>
+            public SequenceYieldToken(IEnumerable<YieldToken> tokens)
+            {
+                Tokens = new List<YieldToken>(tokens);
+            }
+
+            public override bool Yield(IWorld world)
+            {
+                while (Tokens.Count > 0 && Tokens[0].Yield(world))
+                    Tokens.RemoveAt(0);
+                return Tokens.Count == 0;
+            }
+        }
+
+
+        /// <summary>
+        /// Represents a yield token that evaluates embedded yield tokens until all have yielded.
+        /// </summary>
+        public class AggregateYieldToken : YieldToken
+        {
+            /// <summary>
+            /// Embedded yield tokens.
+            /// </summary>
+            public HashSet<YieldToken> Tokens { get; }
+
+            /// <summary>
+            /// Creates a yield token with the specified yield tokens. Once all yield tokens have yielded, execution is resumed.
+            /// </summary>
+            /// <param name="tokens">Embedded yield tokens.</param>
+            public AggregateYieldToken(IEnumerable<YieldToken> tokens)
+            {
+                Tokens = new HashSet<YieldToken>(tokens);
+            }
+
+            public override bool Yield(IWorld world)
+            {
+                if (Tokens.Count == 0) return true;
+                Tokens.RemoveWhere(t => t.Yield(world));
+                return Tokens.Count == 0;
+            }
+        }
+
+        /// <summary>
+        /// Represents a delay-based yield token.
+        /// </summary>
+        public class DelayYieldToken : YieldToken
+        {
+            /// <summary>
+            /// Delay in seconds.
+            /// </summary>
+            public double Delay { get; set; }
+
+            /// <summary>
+            /// Creates a yield token with the specified delay. Once the delay has completed (<see cref="DelayYieldToken.Delay"/> &gt; 0), execution is resumed.
+            /// </summary>
+            /// <param name="delay">Delay in seconds.</param>
+            public DelayYieldToken(double delay)
             {
                 Delay = delay;
             }
+
+            public override bool Yield(IWorld world) => (Delay -= world.Time - world.PreviousTime) <= 0.0;
         }
 
-        public class ConditionToken : Token
+        /// <summary>
+        /// Represents a condition-based yield token.
+        /// </summary>
+        public class ConditionYieldToken : YieldToken
         {
-            public Func<bool> Condition;
+            public Func<bool> Condition { get; }
 
-            public ConditionToken(Func<bool> condition)
+            /// <summary>
+            /// Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.
+            /// </summary>
+            /// <param name="condition">Delegate, triggers execution once it returns true.</param>
+            public ConditionYieldToken(Func<bool> condition)
             {
                 Condition = condition;
             }
+
+            public override bool Yield(IWorld world) => Condition();
         }
     }
 }

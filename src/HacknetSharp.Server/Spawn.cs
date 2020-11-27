@@ -7,43 +7,47 @@ namespace HacknetSharp.Server
 {
     public class Spawn : ISpawn
     {
-        private readonly TemplateGroup _templates;
-
-        public Spawn(TemplateGroup templates)
+        public PlayerModel Player(UserModel context)
         {
-            _templates = templates;
+            return new PlayerModel {Key = context.Key, Identities = new HashSet<PersonModel>()};
         }
 
-        public PersonModel Person(Common.System context, string name, string userName)
+        public PersonModel Person(IWorld context, string name, string userName, PlayerModel? player = null)
         {
-            return new PersonModel
+            var person = new PersonModel
             {
                 Key = Guid.NewGuid(),
-                World = context.World.Model,
+                World = context.Model,
                 Name = name,
                 UserName = userName,
-                Systems = new List<SystemModel>()
+                Systems = new HashSet<SystemModel>()
             };
+            player?.Identities.Add(person);
+            context.Model.Persons.Add(person);
+            return person;
         }
 
-        public SystemModel? System(Common.System context, PersonModel owner, string name, string template)
+        public SystemModel System(IWorld context, PersonModel owner, string name, SystemTemplate template)
         {
-            // TODO search for template and apply
-            return new SystemModel
+            var system = new SystemModel
             {
                 Key = Guid.NewGuid(),
-                World = context.World.Model,
+                World = context.Model,
                 Owner = owner,
                 Name = name,
-                Files = new List<FileModel>()
+                Files = new HashSet<FileModel>()
             };
+            template.ApplyTemplate(system);
+            owner.Systems.Add(system);
+            context.Model.Systems.Add(system);
+            return system;
         }
 
-        public (WorldModel, List<PersonModel>, List<SystemModel>)? World(string name, string template)
+        public WorldModel World(string name, WorldTemplate template)
         {
-            // TODO search for template and apply
-            return (new WorldModel {Key = Guid.NewGuid(), Name = name}, new List<PersonModel>(),
-                new List<SystemModel>());
+            var world = new WorldModel {Key = Guid.NewGuid(), Name = name};
+            template.ApplyTemplate(world);
+            return world;
         }
     }
 }

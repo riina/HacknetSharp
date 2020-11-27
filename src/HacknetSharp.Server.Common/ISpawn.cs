@@ -5,10 +5,10 @@ namespace HacknetSharp.Server.Common
 {
     public interface ISpawn
     {
-        PersonModel Person(System context, string name, string userName);
+        PersonModel Person(IWorld context, string name, string userName, PlayerModel? player = null);
 
-        SystemModel? System(System context, PersonModel owner, string name, string template);
+        SystemModel System(IWorld context, PersonModel owner, string name, SystemTemplate template);
 
-        (WorldModel, List<PersonModel>, List<SystemModel>)? World(string name, string template);
+        WorldModel World(string name, WorldTemplate template);
     }
 }

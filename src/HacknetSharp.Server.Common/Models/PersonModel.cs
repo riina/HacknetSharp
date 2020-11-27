@@ -12,7 +12,7 @@ namespace HacknetSharp.Server.Common.Models
         public virtual PlayerModel? Player { get; set; }
         public virtual SystemModel DefaultSystem { get; set; } = null!;
         public virtual SystemModel CurrentSystem { get; set; } = null!;
-        public virtual List<SystemModel> Systems { get; set; } = null!;
+        public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

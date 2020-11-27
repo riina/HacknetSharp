@@ -9,7 +9,7 @@ namespace HacknetSharp.Server.Common.Models
     {
         public readonly UserModel User = new UserModel();
         public virtual Guid ActiveWorld { get; set; }
-        public virtual List<PersonModel> Identities { get; set; } = null!;
+        public virtual HashSet<PersonModel> Identities { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
