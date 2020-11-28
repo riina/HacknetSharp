@@ -54,42 +54,42 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: hsc-net5.0-osx-64
-        path: hsc/bin/Release/net5.0/osx-x64/publish/
+        path: src/hsc/bin/Release/net5.0/osx-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hsc-net5.0-linux-64
-        path: hsc/bin/Release/net5.0/linux-x64/publish/
+        path: src/hsc/bin/Release/net5.0/linux-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hsc-net5.0-win-64
-        path: hsc/bin/Release/net5.0/win-x64/publish/
+        path: src/hsc/bin/Release/net5.0/win-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hsc-net472
-        path: hsc/bin/Release/net472/publish/
+        path: src/hsc/bin/Release/net472/publish/
 
     - uses: actions/upload-artifact@v2
       with:
         name: hssqlite-net5.0-osx-64
-        path: hssqlite/bin/Release/net5.0/osx-x64/publish/
+        path: src/hssqlite/bin/Release/net5.0/osx-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hssqlite-net5.0-linux-64
-        path: hssqlite/bin/Release/net5.0/linux-x64/publish/
+        path: src/hssqlite/bin/Release/net5.0/linux-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hssqlite-net5.0-win-64
-        path: hssqlite/bin/Release/net5.0/win-x64/publish/
+        path: src/hssqlite/bin/Release/net5.0/win-x64/publish/
 
     - uses: actions/upload-artifact@v2
       with:
         name: hspostgres-net5.0-osx-64
-        path: hspostgres/bin/Release/net5.0/osx-x64/publish/
+        path: src/hspostgres/bin/Release/net5.0/osx-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hspostgres-net5.0-linux-64
-        path: hspostgres/bin/Release/net5.0/linux-x64/publish/
+        path: src/hspostgres/bin/Release/net5.0/linux-x64/publish/
     - uses: actions/upload-artifact@v2
       with:
         name: hspostgres-net5.0-win-64
-        path: hspostgres/bin/Release/net5.0/win-x64/publish/
+        path: src/hspostgres/bin/Release/net5.0/win-x64/publish/
