@@ -32,20 +32,24 @@ namespace HacknetSharp.Server
             return person;
         }
 
-        public SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, string base64Hash,
-            string base64Salt)
+        public SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash,
+            byte[] salt)
         {
             var system = new SystemModel
             {
-                Key = Guid.NewGuid(), World = context, Owner = owner, Files = new HashSet<FileModel>()
+                Key = Guid.NewGuid(),
+                World = context,
+                Owner = owner,
+                Files = new HashSet<FileModel>(),
+                Logins = new HashSet<LoginModel>()
             };
-            template.ApplyTemplate(this, system, owner, base64Hash, base64Salt);
+            template.ApplyTemplate(this, context, system, owner, hash, salt);
             owner.Systems.Add(system);
             context.Systems.Add(system);
             return system;
         }
 
-        public LoginModel Login(WorldModel context, SystemModel owner, string user, string pass,
+        public LoginModel Login(WorldModel context, SystemModel owner, string user, byte[] hash, byte[] salt,
             PersonModel? person = null)
         {
             var login = new LoginModel
@@ -54,7 +58,8 @@ namespace HacknetSharp.Server
                 World = context,
                 System = owner,
                 User = user,
-                Pass = pass,
+                Hash = hash,
+                Salt = salt,
                 Person = person
             };
             owner.Logins.Add(login);
@@ -63,9 +68,8 @@ namespace HacknetSharp.Server
 
         public FileModel Folder(WorldModel context, SystemModel owner, string name, string path)
         {
-            var (nPath, nName) = (path, name);
-            if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                throw new IOException("The specified file already exists.");
+            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -78,16 +82,41 @@ namespace HacknetSharp.Server
             owner.Files.Add(model);
 
             // Generate dependent folders
-            if (nPath != "/") Folder(context, owner, Program.GetDirectoryName(nPath)!, Program.GetFileName(nPath));
+            if (path == "/") return model;
+            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
+                Folder(context, owner, nName, nPath);
+            return model;
+        }
 
+        public FileModel FileFile(WorldModel context, SystemModel owner, string name, string path, string file)
+        {
+            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
+            var model = new FileModel
+            {
+                Key = Guid.NewGuid(),
+                Kind = FileModel.FileKind.FileFile,
+                Name = name,
+                Path = path,
+                System = owner,
+                World = context,
+                Content = file
+            };
+            owner.Files.Add(model);
+
+            // Generate dependent folders
+            if (path == "/") return model;
+            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
+                Folder(context, owner, nName, nPath);
             return model;
         }
 
         public FileModel TextFile(WorldModel context, SystemModel owner, string name, string path, string content)
         {
-            var (nPath, nName) = (path, name);
-            if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                throw new IOException("The specified file already exists.");
+            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -99,17 +128,19 @@ namespace HacknetSharp.Server
                 Content = content
             };
             owner.Files.Add(model);
-            // Generate dependent folders
-            if (nPath != "/") Folder(context, owner, Program.GetDirectoryName(nPath)!, Program.GetFileName(nPath));
 
+            // Generate dependent folders
+            if (path == "/") return model;
+            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
+                Folder(context, owner, nName, nPath);
             return model;
         }
 
         public FileModel ProgFile(WorldModel context, SystemModel owner, string name, string path, string progCode)
         {
-            var (nPath, nName) = (path, name);
-            if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                throw new IOException("The specified file already exists.");
+            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -123,16 +154,17 @@ namespace HacknetSharp.Server
             owner.Files.Add(model);
 
             // Generate dependent folders
-            if (nPath != "/") Folder(context, owner, Program.GetDirectoryName(nPath)!, Program.GetFileName(nPath));
-
+            if (path == "/") return model;
+            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
+                Folder(context, owner, nName, nPath);
             return model;
         }
 
         public FileModel Duplicate(WorldModel context, SystemModel owner, string name, string path, FileModel existing)
         {
-            var (nPath, nName) = (path, name);
-            if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                throw new IOException("The specified file already exists.");
+            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -146,14 +178,22 @@ namespace HacknetSharp.Server
             owner.Files.Add(model);
 
             // Generate dependent folders
-            if (nPath != "/") Folder(context, owner, Program.GetDirectoryName(nPath)!, Program.GetFileName(nPath));
-
+            if (path == "/") return model;
+            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
+                Folder(context, owner, nName, nPath);
             return model;
         }
 
         public WorldModel World(string name, TemplateGroup templates, WorldTemplate template)
         {
-            var world = new WorldModel {Key = Guid.NewGuid(), Name = name};
+            var world = new WorldModel
+            {
+                Key = Guid.NewGuid(),
+                Name = name,
+                Persons = new HashSet<PersonModel>(),
+                Systems = new HashSet<SystemModel>()
+            };
             template.ApplyTemplate(this, templates, world);
             return world;
         }

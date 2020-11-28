@@ -46,7 +46,9 @@ namespace HacknetSharp.Server
                     });
                     if (operation.Context.Disconnect)
                         operation.Context.Person.WriteEventSafe(new ServerDisconnectEvent
-                            {Reason = "Disconnected by server."});
+                        {
+                            Reason = "Disconnected by server."
+                        });
                     operation.Context.Person.FlushSafeAsync();
                 }
                 catch (Exception e)

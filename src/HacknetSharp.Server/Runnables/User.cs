@@ -38,8 +38,8 @@ namespace HacknetSharp.Server.Runnables
 
                 string? pass = Util.PromptPassword("Pass:");
                 if (pass == null) return 0;
-                var (salt, hash) = CommonUtil.Base64Password(pass);
-                ctx.Add(new UserModel {Admin = Admin, Base64Hash = hash, Base64Salt = salt, Key = Name});
+                var (salt, hash) = CommonUtil.HashPassword(pass);
+                ctx.Add(new UserModel {Admin = Admin, Hash = hash, Salt = salt, Key = Name});
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
             }

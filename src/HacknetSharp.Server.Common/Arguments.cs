@@ -7,12 +7,12 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.Common
 {
     /// <summary>
     /// Arguments class
     /// </summary>
-    internal class Arguments
+    public class Arguments
     {
         /// <summary>
         /// Splits the command line. When main(string[] args) is used escaped quotes (ie a path "c:\folder\")
@@ -211,7 +211,7 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Collections.ObjectModel.Collection&lt;T&gt;"/> with the specified parameter.
+        /// Gets the <see cref="Collection{T}"/> with the specified parameter.
         /// </summary>
         /// <value></value>
         public Collection<string>? this[string parameter]

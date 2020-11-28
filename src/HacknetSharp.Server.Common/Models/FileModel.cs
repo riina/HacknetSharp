@@ -12,11 +12,14 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string Name { get; set; } = null!;
         public virtual string Content { get; set; } = null!;
         public virtual FileKind Kind { get; set; }
+        public virtual bool AdminRead { get; set; }
+        public virtual bool AdminWrite { get; set; }
+        public virtual bool AdminExecute { get; set; }
 
         public enum FileKind : byte
         {
             TextFile,
-            BlobFile,
+            FileFile,
             ProgFile,
             Folder
         }

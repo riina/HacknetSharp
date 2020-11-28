@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\HacknetSharp.Server\HacknetSharp.Server.csproj" />
+      <ProjectReference Include="..\hssqlite\hssqlite.csproj" />
     </ItemGroup>
 
 </Project>

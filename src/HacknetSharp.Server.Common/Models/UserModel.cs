@@ -5,8 +5,8 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class UserModel : Model<string>
     {
-        public virtual string Base64Salt { get; set; } = null!;
-        public virtual string Base64Hash { get; set; } = null!;
+        public virtual byte[] Hash { get; set; } = null!;
+        public virtual byte[] Salt { get; set; } = null!;
         public virtual bool Admin { get; set; }
         public virtual PlayerModel Player { get; set; } = null!;
 

@@ -26,7 +26,7 @@ namespace HacknetSharp.Server.Common.Templates
             if (Usernames.Count == 0) throw new InvalidOperationException($"{nameof(Usernames)} is empty.");
             if (Passwords.Count == 0) throw new InvalidOperationException($"{nameof(Passwords)} is empty.");
             if (SystemTemplates.Count == 0) throw new InvalidOperationException($"{nameof(SystemTemplates)} is empty.");
-            if (FleetSystemTemplates.Count == 0)
+            if (FleetMin != 0 && FleetSystemTemplates.Count == 0)
                 throw new InvalidOperationException($"{nameof(FleetSystemTemplates)} is empty.");
             string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count];
             if (!templates.SystemTemplates.TryGetValue(systemTemplateName, out var systemTemplate))
@@ -35,7 +35,7 @@ namespace HacknetSharp.Server.Common.Templates
             string password = Passwords[Random.Next() % Passwords.Count];
 
             var person = spawn.Person(world, username, username);
-            var (salt, hash) = CommonUtil.Base64Password(password);
+            var (salt, hash) = CommonUtil.HashPassword(password);
             spawn.System(world, systemTemplate, person, hash, salt);
             int count = Random.Next(FleetMin, FleetMax + 1);
             for (int i = 0; i < count; i++)

@@ -76,6 +76,7 @@ namespace System.Text
                 EnsureCapacity(Length + 1);
                 _chars[Length] = '\0';
             }
+
             return ref MemoryMarshal.GetReference(_chars);
         }
 
@@ -109,6 +110,7 @@ namespace System.Text
                 EnsureCapacity(Length + 1);
                 _chars[Length] = '\0';
             }
+
             return _chars.Slice(0, _pos);
         }
 
@@ -189,7 +191,8 @@ namespace System.Text
             }
 
             int pos = _pos;
-            if (s.Length == 1 && (uint)pos < (uint)_chars.Length) // very common case, e.g. appending strings from NumberFormatInfo like separators, percent symbols, etc.
+            if (s.Length == 1 && (uint)pos < (uint)_chars.Length
+            ) // very common case, e.g. appending strings from NumberFormatInfo like separators, percent symbols, etc.
             {
                 _chars[pos] = s[0];
                 _pos = pos + 1;
@@ -224,6 +227,7 @@ namespace System.Text
             {
                 dst[i] = c;
             }
+
             _pos += count;
         }
 
@@ -240,6 +244,7 @@ namespace System.Text
             {
                 dst[i] = *value++;
             }
+
             _pos += length;
         }
 
@@ -287,10 +292,12 @@ namespace System.Text
         private void Grow(int additionalCapacityBeyondPos)
         {
             Debug.Assert(additionalCapacityBeyondPos > 0);
-            Debug.Assert(_pos > _chars.Length - additionalCapacityBeyondPos, "Grow called incorrectly, no resize is needed.");
+            Debug.Assert(_pos > _chars.Length - additionalCapacityBeyondPos,
+                "Grow called incorrectly, no resize is needed.");
 
             // Make sure to let Rent throw an exception if the caller has a bug and the desired capacity is negative
-            char[] poolArray = ArrayPool<char>.Shared.Rent((int)Math.Max((uint)(_pos + additionalCapacityBeyondPos), (uint)_chars.Length * 2));
+            char[] poolArray = ArrayPool<char>.Shared.Rent((int)Math.Max((uint)(_pos + additionalCapacityBeyondPos),
+                (uint)_chars.Length * 2));
 
             _chars.Slice(0, _pos).CopyTo(poolArray);
 

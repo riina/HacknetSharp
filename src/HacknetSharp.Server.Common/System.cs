@@ -35,7 +35,7 @@ namespace HacknetSharp.Server.Common
                 ? StringComparison.InvariantCultureIgnoreCase
                 : StringComparison.InvariantCulture;
             return Model.Files.Where(f =>
-                f.Path == nPath && f.Name.Equals(nName, comparison) && (f.Kind == FileModel.FileKind.BlobFile ||
+                f.Path == nPath && f.Name.Equals(nName, comparison) && (f.Kind == FileModel.FileKind.FileFile ||
                                                                         f.Kind == FileModel.FileKind.ProgFile ||
                                                                         f.Kind == FileModel.FileKind.TextFile)).Any();
         }

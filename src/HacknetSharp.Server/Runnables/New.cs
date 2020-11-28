@@ -10,16 +10,17 @@ namespace HacknetSharp.Server.Runnables
 {
     [Verb("new", HelpText = "Create template.")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    internal class New<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+    public class New<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
         where TDatabaseFactory : StorageContextFactoryBase
     {
-        private class Options
+        public class Options
         {
             [Value(0, MetaName = "kind", HelpText = "Kind of template.", Required = true)]
             public string Kind { get; set; } = null!;
 
             [Option('n', "name", MetaValue = "name", HelpText = "Force overwrite existing template.")]
-            public string? Name { get; set; } = null!;
+            public string? Name { get; set; }
 
             [Option('f', "force", HelpText = "Force overwrite existing template.")]
             public bool Force { get; set; }
@@ -39,8 +40,9 @@ namespace HacknetSharp.Server.Runnables
                             (object)(options.Example
                                 ? new SystemTemplate
                                 {
+                                    NameFormat = "{0}_HOMEBASE",
                                     OsName = "EncomOS",
-                                    Users = new List<string>(new[] {"{u}+:{p}", "samwise:genshin"}),
+                                    Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
                                     Filesystem = new List<string>(new[]
                                     {
                                         "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
@@ -55,9 +57,36 @@ namespace HacknetSharp.Server.Runnables
                         )
                     },
                     {
+                        "person", (true, options => (
+                            Path.Combine(ServerConstants.PersonTemplatesFolder, $"{options.Name}.yaml"),
+                            (object)(options.Example
+                                ? new PersonTemplate
+                                {
+                                    Usernames = new List<string> {"locke", "bacon", "hayleyk653"},
+                                    Passwords = new List<string> {"misterchef", "baconbacon", "isucklol"},
+                                    EmailProviders =
+                                        new List<string> {"hentaimail.net", "thisisnotaproblem.org", "fbiopenup.gov"},
+                                    SystemTemplates = new List<string> {"systemTemplate2"}
+                                }
+                                : new PersonTemplate()))
+                        )
+                    },
+                    {
                         "world", (true, options => (
                             Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
-                            (object)(options.Example ? new WorldTemplate {Label = options.Name} : new WorldTemplate()))
+                            (object)(options.Example
+                                ? new WorldTemplate
+                                {
+                                    Label = "Liyue kinda sux",
+                                    PlayerSystemTemplate = "playerTemplate",
+                                    StartupProgram = "wish",
+                                    StartupCommandLine = "echo \"Configuring system...\"",
+                                    Generators = new List<WorldTemplate.Generator>
+                                    {
+                                        new WorldTemplate.Generator {Count = 3, PersonTemplate = "personTemplate2"}
+                                    }
+                                }
+                                : new WorldTemplate()))
                         )
                     },
                     {

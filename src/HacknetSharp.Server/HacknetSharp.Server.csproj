@@ -16,8 +16,4 @@
     <ProjectReference Include="..\HacknetSharp\HacknetSharp.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Test" />
-  </ItemGroup>
-
 </Project>

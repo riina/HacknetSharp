@@ -18,8 +18,8 @@ namespace HacknetSharp.Server
         {
             var userModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (userModel == null) return null;
-            var (_, hash) = CommonUtil.Base64Password(pass, Convert.FromBase64String(userModel.Base64Salt));
-            return hash == userModel.Base64Hash ? userModel : null;
+            var (hash, _) = CommonUtil.HashPassword(pass, salt: userModel.Salt);
+            return hash.AsSpan().SequenceEqual(userModel.Hash) ? userModel : null;
         }
 
         public async Task<UserModel?> RegisterAsync(string user, string pass, string registrationToken)
@@ -29,8 +29,8 @@ namespace HacknetSharp.Server
             var token = await _db.GetAsync<string, RegistrationToken>(registrationToken).Caf();
             if (token == null) return null;
             _db.Delete(token);
-            var (salt, hash) = CommonUtil.Base64Password(pass);
-            userModel = new UserModel {Key = user, Base64Salt = salt, Base64Hash = hash};
+            var (hash, salt) = CommonUtil.HashPassword(pass);
+            userModel = new UserModel {Key = user, Hash = hash, Salt = salt};
             _db.Add(userModel);
             await _db.SyncAsync().Caf();
             return userModel;
@@ -38,7 +38,7 @@ namespace HacknetSharp.Server
 
         public async Task<bool> ChangePasswordAsync(UserModel userModel, string newPass)
         {
-            (userModel.Base64Hash, userModel.Base64Salt) = CommonUtil.Base64Password(newPass);
+            (userModel.Hash, userModel.Salt) = CommonUtil.HashPassword(newPass);
             _db.Edit(userModel);
             await _db.SyncAsync().Caf();
             return true;
@@ -49,7 +49,7 @@ namespace HacknetSharp.Server
             if (!userModel.Admin) return false;
             var targetUserModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (targetUserModel == null) return false;
-            (targetUserModel.Base64Hash, targetUserModel.Base64Salt) = CommonUtil.Base64Password(newPass);
+            (targetUserModel.Hash, targetUserModel.Salt) = CommonUtil.HashPassword(newPass);
             _db.Edit(targetUserModel);
             await _db.SyncAsync().Caf();
             return true;

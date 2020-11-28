@@ -254,8 +254,7 @@ namespace HacknetSharp.Server
             PlayerModel player)
         {
             var person = server.Spawn.Person(world.Model, player.Key, player.Key);
-            server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Base64Hash,
-                player.User.Base64Salt);
+            server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Hash, player.User.Salt);
             return person;
         }
 
