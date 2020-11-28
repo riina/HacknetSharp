@@ -25,9 +25,8 @@ It *should* work in Unity under the Mono runtime.
 
 `hssqlite` (SQLite backing database) and `hspostgres` (PostgreSQL
 backing database) are the main server programs. Their only difference
-is the database that supports the server.
-
-They support .NET 5 ([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).
+is the database that supports the server. They support .NET 5
+([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 [Read about how to use the server here.](meta/usage-server.md)
 
