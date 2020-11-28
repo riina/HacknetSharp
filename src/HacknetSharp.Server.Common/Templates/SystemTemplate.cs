@@ -62,6 +62,8 @@ namespace HacknetSharp.Server.Common.Templates
                             throw new ApplicationException($"Not enough arguments to file entry {file}");
                         fileModel = spawn.FileFile(world, model, name, path, args[1]);
                         break;
+                    case "blob":
+                        throw new NotImplementedException();
                     default:
                         throw new Exception($"Unknown file model type in file entry {file}");
                 }

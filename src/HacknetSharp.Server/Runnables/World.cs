@@ -79,6 +79,7 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
+        [Verb("list", HelpText = "List worlds.")]
         private class List : Executor<TDatabaseFactory>.ISelfRunnable
         {
             [Value(0, MetaName = "names", HelpText = "World names.")]

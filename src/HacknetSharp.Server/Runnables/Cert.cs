@@ -13,7 +13,7 @@ namespace HacknetSharp.Server.Runnables
         [Verb("search", HelpText = "Search for existing PKCS#12 X509 cert.")]
         private class Search : Executor<TDatabaseFactory>.ISelfRunnable
         {
-            [Value(0, HelpText = "External address to search for.", MetaName = "externalAddr")]
+            [Value(0, HelpText = "External address to search for.", MetaName = "externalAddr", Required = true)]
             public string ExternalAddr { get; set; } = null!;
 
 
@@ -33,9 +33,10 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
+        [Verb("install", HelpText = "Install PKCS#12 X509 cert.")]
         private class Register : Executor<TDatabaseFactory>.ISelfRunnable
         {
-            [Value(0, HelpText = "PKCS#12 X509 certificate to use.", MetaName = "cert")]
+            [Value(0, HelpText = "PKCS#12 X509 certificate to use.", MetaName = "cert", Required = true)]
             public string Certificate { get; set; } = null!;
 
             public Task<int> Run(Executor<TDatabaseFactory> executor)
@@ -74,9 +75,10 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
+        [Verb("remove", HelpText = "Remove existing PKCS#12 X509 cert.")]
         private class Deregister : Executor<TDatabaseFactory>.ISelfRunnable
         {
-            [Value(0, HelpText = "PKCS#12 X509 certificate to use.", MetaName = "cert")]
+            [Value(0, HelpText = "PKCS#12 X509 certificate to use.", MetaName = "cert", Required = true)]
             public string Certificate { get; set; } = null!;
 
             public Task<int> Run(Executor<TDatabaseFactory> executor)

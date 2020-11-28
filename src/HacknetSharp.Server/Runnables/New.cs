@@ -16,10 +16,10 @@ namespace HacknetSharp.Server.Runnables
     {
         public class Options
         {
-            [Value(0, MetaName = "kind", HelpText = "Kind of template.", Required = true)]
+            [Value(0, MetaName = "kind", HelpText = "Kind of template [system,person,world,server].", Required = true)]
             public string Kind { get; set; } = null!;
 
-            [Option('n', "name", MetaValue = "name", HelpText = "Force overwrite existing template.")]
+            [Option('n', "name", MetaValue = "name", HelpText = "Template name.")]
             public string? Name { get; set; }
 
             [Option('f', "force", HelpText = "Force overwrite existing template.")]
