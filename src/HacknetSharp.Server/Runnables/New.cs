@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 using CommandLine;
-using HacknetSharp.Server.Common;
+using HacknetSharp.Server.Common.Templates;
 
 namespace HacknetSharp.Server.Runnables
 {
     [Verb("new", HelpText = "Create template.")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal class New<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
         where TDatabaseFactory : StorageContextFactoryBase
     {
@@ -55,7 +57,7 @@ namespace HacknetSharp.Server.Runnables
                     {
                         "world", (true, options => (
                             Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
-                            (object)(options.Example ? new WorldTemplate {Name = options.Name} : new WorldTemplate()))
+                            (object)(options.Example ? new WorldTemplate {Label = options.Name} : new WorldTemplate()))
                         )
                     },
                     {
@@ -68,6 +70,7 @@ namespace HacknetSharp.Server.Runnables
                     }
                 };
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static Task<int> Start(Executor<TDatabaseFactory> executor, Options options)
         {
             bool nameRequired;

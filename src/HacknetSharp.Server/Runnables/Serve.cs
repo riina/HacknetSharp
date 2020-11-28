@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CommandLine;
 
 namespace HacknetSharp.Server.Runnables
 {
     [Verb("serve", HelpText = "Serve content.")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal class Serve<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
         where TDatabaseFactory : StorageContextFactoryBase
     {

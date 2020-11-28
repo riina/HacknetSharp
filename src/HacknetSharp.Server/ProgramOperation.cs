@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
@@ -7,7 +6,6 @@ namespace HacknetSharp.Server
     public class ProgramOperation
     {
         public CommandContext Context { get; }
-        public Guid OperationId { get; }
         private readonly IEnumerator<Program.YieldToken?> _enumerator;
         private Program.YieldToken? _currentToken;
 

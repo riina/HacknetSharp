@@ -52,6 +52,7 @@ namespace HacknetSharp.Server.Common
             if (end <= rootLength)
                 return -1;
 
+            // ReSharper disable once EmptyEmbeddedStatement
             while (end > rootLength && !PathInternal.IsDirectorySeparator(path[--end])) ;
 
             // Trim off any remaining separators (to deal with C:\foo\\bar)
@@ -128,6 +129,7 @@ namespace HacknetSharp.Server.Common
 
             for (int i = 0; i < paths.Length; i++)
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (paths[i] == null)
                 {
                     throw new ArgumentNullException(nameof(paths));
@@ -459,6 +461,7 @@ namespace HacknetSharp.Server.Common
             // and turns it into a full path, which we only want if fullCheck is true.
             string collapsedString = PathInternal.RemoveRelativeSegments(path, PathInternal.GetRootLength(path));
 
+            // ReSharper disable once RedundantToStringCall
             Debug.Assert(collapsedString.Length < path.Length || collapsedString.ToString() == path,
                 "Either we've removed characters, or the string should be unmodified from the input path.");
 

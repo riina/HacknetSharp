@@ -33,7 +33,7 @@ namespace HacknetSharp.Test
             Assert.AreEqual("/", Program.GetNormalized("/test/.."));
             Assert.AreEqual("/test/path", Program.GetNormalized("/test/../test/path/"));
             Assert.AreEqual("/test", Program.GetDirectoryName("/test/me"));
-            Assert.AreEqual("/test", Program.GetNormalized(Program.GetDirectoryName("/test/me/../harder")));
+            Assert.AreEqual("/test", Program.GetNormalized(Program.GetDirectoryName("/test/me/../harder")!));
             Assert.AreEqual(null, Program.GetDirectoryName("/"));
             Assert.AreEqual("", Program.GetFileName("/"));
             Assert.AreEqual("/", Program.Combine("/", ""));

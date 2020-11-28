@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
+using HacknetSharp.Server.Common.Templates;
 
 namespace HacknetSharp.Server
 {
@@ -14,12 +15,12 @@ namespace HacknetSharp.Server
             return new PlayerModel {Key = context.Key, Identities = new HashSet<PersonModel>()};
         }
 
-        public PersonModel Person(IWorld context, string name, string userName, PlayerModel? player = null)
+        public PersonModel Person(WorldModel context, string name, string userName, PlayerModel? player = null)
         {
             var person = new PersonModel
             {
                 Key = Guid.NewGuid(),
-                World = context.Model,
+                World = context,
                 Name = name,
                 UserName = userName,
                 Systems = new HashSet<SystemModel>(),
@@ -27,27 +28,40 @@ namespace HacknetSharp.Server
                 Player = player
             };
             player?.Identities.Add(person);
-            context.Model.Persons.Add(person);
+            context.Persons.Add(person);
             return person;
         }
 
-        public SystemModel System(IWorld context, PersonModel owner, string name, SystemTemplate template)
+        public SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, string base64Hash,
+            string base64Salt)
         {
             var system = new SystemModel
             {
-                Key = Guid.NewGuid(),
-                World = context.Model,
-                Owner = owner,
-                Name = name,
-                Files = new HashSet<FileModel>()
+                Key = Guid.NewGuid(), World = context, Owner = owner, Files = new HashSet<FileModel>()
             };
-            template.ApplyTemplate(system);
+            template.ApplyTemplate(this, system, owner, base64Hash, base64Salt);
             owner.Systems.Add(system);
-            context.Model.Systems.Add(system);
+            context.Systems.Add(system);
             return system;
         }
 
-        public FileModel Folder(IWorld context, SystemModel owner, string name, string path)
+        public LoginModel Login(WorldModel context, SystemModel owner, string user, string pass,
+            PersonModel? person = null)
+        {
+            var login = new LoginModel
+            {
+                Key = Guid.NewGuid(),
+                World = context,
+                System = owner,
+                User = user,
+                Pass = pass,
+                Person = person
+            };
+            owner.Logins.Add(login);
+            return login;
+        }
+
+        public FileModel Folder(WorldModel context, SystemModel owner, string name, string path)
         {
             var (nPath, nName) = (path, name);
             if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
@@ -58,8 +72,8 @@ namespace HacknetSharp.Server
                 Kind = FileModel.FileKind.Folder,
                 Name = name,
                 Path = path,
-                Owner = owner,
-                World = context.Model
+                System = owner,
+                World = context
             };
             owner.Files.Add(model);
 
@@ -69,7 +83,7 @@ namespace HacknetSharp.Server
             return model;
         }
 
-        public FileModel TextFile(IWorld context, SystemModel owner, string name, string path, string content)
+        public FileModel TextFile(WorldModel context, SystemModel owner, string name, string path, string content)
         {
             var (nPath, nName) = (path, name);
             if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
@@ -80,19 +94,18 @@ namespace HacknetSharp.Server
                 Kind = FileModel.FileKind.TextFile,
                 Name = name,
                 Path = path,
-                Owner = owner,
-                World = context.Model,
+                System = owner,
+                World = context,
                 Content = content
             };
             owner.Files.Add(model);
-
             // Generate dependent folders
             if (nPath != "/") Folder(context, owner, Program.GetDirectoryName(nPath)!, Program.GetFileName(nPath));
 
             return model;
         }
 
-        public FileModel ProgFile(IWorld context, SystemModel owner, string name, string path, string progCode)
+        public FileModel ProgFile(WorldModel context, SystemModel owner, string name, string path, string progCode)
         {
             var (nPath, nName) = (path, name);
             if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
@@ -103,8 +116,8 @@ namespace HacknetSharp.Server
                 Kind = FileModel.FileKind.ProgFile,
                 Name = name,
                 Path = path,
-                Owner = owner,
-                World = context.Model,
+                System = owner,
+                World = context,
                 Content = progCode
             };
             owner.Files.Add(model);
@@ -115,7 +128,7 @@ namespace HacknetSharp.Server
             return model;
         }
 
-        public FileModel Duplicate(IWorld context, SystemModel owner, string name, string path, FileModel existing)
+        public FileModel Duplicate(WorldModel context, SystemModel owner, string name, string path, FileModel existing)
         {
             var (nPath, nName) = (path, name);
             if (owner.Files.Any(f => f.Path == nPath && f.Name == nName))
@@ -126,8 +139,8 @@ namespace HacknetSharp.Server
                 Kind = existing.Kind,
                 Name = name,
                 Path = path,
-                Owner = owner,
-                World = context.Model,
+                System = owner,
+                World = context,
                 Content = existing.Content
             };
             owner.Files.Add(model);
@@ -138,10 +151,10 @@ namespace HacknetSharp.Server
             return model;
         }
 
-        public WorldModel World(string name, WorldTemplate template)
+        public WorldModel World(string name, TemplateGroup templates, WorldTemplate template)
         {
             var world = new WorldModel {Key = Guid.NewGuid(), Name = name};
-            template.ApplyTemplate(world);
+            template.ApplyTemplate(this, templates, world);
             return world;
         }
     }

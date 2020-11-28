@@ -8,7 +8,8 @@ namespace HacknetSharp.Server.Common.Models
     public class WorldModel : Model<Guid>
     {
         public virtual string Name { get; set; } = null!;
-        public virtual string SystemTemplate { get; set; } = null!;
+        public virtual string Label { get; set; } = null!;
+        public virtual string PlayerSystemTemplate { get; set; } = null!;
         public virtual string StartupProgram { get; set; } = null!;
         public virtual string StartupCommandLine { get; set; } = null!;
         public virtual HashSet<PersonModel> Persons { get; set; } = null!;
@@ -21,8 +22,8 @@ namespace HacknetSharp.Server.Common.Models
             builder.Entity<WorldModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasMany(x => x.Persons).WithOne(x => x.World!).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(x => x.Systems).WithOne(x => x.World!).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Persons).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Systems).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

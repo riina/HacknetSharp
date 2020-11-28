@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HacknetSharp.Server.Runnables
 {
     [Verb("world", HelpText = "Manage worlds.")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal class World<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
         where TDatabaseFactory : StorageContextFactoryBase
     {
@@ -40,7 +42,7 @@ namespace HacknetSharp.Server.Runnables
                     return 89;
                 }
 
-                var world = new Spawn().World(Name, template);
+                var world = new Spawn().World(Name, templates, template);
                 ctx.Add(world);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
@@ -64,10 +66,10 @@ namespace HacknetSharp.Server.Runnables
 
                 var worlds = await (All
                     ? ctx.Set<WorldModel>()
-                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
+                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Label))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
-                    Console.WriteLine($"{world.Name}:{world.Key}");
+                    Console.WriteLine($"{world.Label}:{world.Key}");
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
@@ -93,10 +95,10 @@ namespace HacknetSharp.Server.Runnables
 
                 var worlds = await (All
                     ? ctx.Set<WorldModel>()
-                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
+                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Label))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
-                    Console.WriteLine($"{world.Name}:{world.Key}");
+                    Console.WriteLine($"{world.Label}:{world.Key}");
                 return 0;
             }
         }

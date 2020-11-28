@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+// ReSharper disable once CheckNamespace
 namespace System.Text
 {
+    // ReSharper disable once PartialTypeWithSinglePart
     internal ref partial struct ValueStringBuilder
     {
         private char[]? _arrayToReturnToPool;

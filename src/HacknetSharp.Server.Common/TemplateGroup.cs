@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using HacknetSharp.Server.Common;
+using HacknetSharp.Server.Common.Templates;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.Common
 {
     public class TemplateGroup
     {

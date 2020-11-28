@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
+using HacknetSharp.Server.Common.Templates;
 
 namespace HacknetSharp.Server
 {
@@ -25,7 +26,7 @@ namespace HacknetSharp.Server
             Model = model;
             Spawn = spawn;
             Database = database;
-            PlayerSystemTemplate = server.Templates.SystemTemplates[model.SystemTemplate];
+            PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Operations = new HashSet<ProgramOperation>();
             _removeOperations = new HashSet<ProgramOperation>();
         }
@@ -37,14 +38,20 @@ namespace HacknetSharp.Server
                 {
                     if (!operation.Update(this)) continue;
                     _removeOperations.Add(operation);
+                    if (!operation.Context.Person.Connected) continue;
+
                     operation.Context.Person.WriteEventSafe(new OperationCompleteEvent
                     {
-                        Operation = operation.OperationId
+                        Operation = operation.Context.OperationId
                     });
+                    if (operation.Context.Disconnect)
+                        operation.Context.Person.WriteEventSafe(new ServerDisconnectEvent
+                            {Reason = "Disconnected by server."});
                     operation.Context.Person.FlushSafeAsync();
                 }
                 catch (Exception e)
                 {
+                    _removeOperations.Add(operation);
                     Console.WriteLine(e);
                 }
 

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Common.Models
 {
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class PersonModel : WorldMember<Guid>
     {
         public virtual string Name { get; set; } = null!;
@@ -22,7 +23,7 @@ namespace HacknetSharp.Server.Common.Models
             builder.Entity<PersonModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasMany(x => x.Systems).WithOne(x => x.Owner).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Systems).WithOne(z => z.Owner).OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

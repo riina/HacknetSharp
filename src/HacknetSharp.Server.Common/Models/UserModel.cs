@@ -6,7 +6,7 @@ namespace HacknetSharp.Server.Common.Models
     public class UserModel : Model<string>
     {
         public virtual string Base64Salt { get; set; } = null!;
-        public virtual string Base64Password { get; set; } = null!;
+        public virtual string Base64Hash { get; set; } = null!;
         public virtual bool Admin { get; set; }
         public virtual PlayerModel Player { get; set; } = null!;
 
@@ -17,7 +17,7 @@ namespace HacknetSharp.Server.Common.Models
             builder.Entity<UserModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasOne(x => x.Player).WithOne(x => x.User).OnDelete(DeleteBehavior.Cascade);
+                x.HasOne(y => y.Player).WithOne(z => z.User).OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

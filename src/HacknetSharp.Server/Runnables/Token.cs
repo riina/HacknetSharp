@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HacknetSharp.Server.Runnables
 {
     [Verb("token", HelpText = "Manage tokens.")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal class Token<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
         where TDatabaseFactory : StorageContextFactoryBase
     {

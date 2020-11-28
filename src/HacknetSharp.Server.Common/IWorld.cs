@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HacknetSharp.Server.Common.Models;
+using HacknetSharp.Server.Common.Templates;
 
 namespace HacknetSharp.Server.Common
 {

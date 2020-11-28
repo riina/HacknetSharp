@@ -6,7 +6,8 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class FileModel : WorldMember<Guid>
     {
-        public virtual SystemModel Owner { get; set; } = null!;
+        public virtual SystemModel System { get; set; } = null!;
+        public virtual LoginModel Owner { get; set; } = null!;
         public virtual string Path { get; set; } = null!;
         public virtual string Name { get; set; } = null!;
         public virtual string Content { get; set; } = null!;

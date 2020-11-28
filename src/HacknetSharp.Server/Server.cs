@@ -60,7 +60,7 @@ namespace HacknetSharp.Server
             {
                 var world = new World(this, w, Database, Spawn);
                 Worlds[w.Key] = world;
-                if (w.Name.Equals(config.DefaultWorld)) defaultWorld = world;
+                if (w.Label.Equals(config.DefaultWorld)) defaultWorld = world;
             }
 
             DefaultWorld = defaultWorld ?? throw new ApplicationException("No world matching name found");

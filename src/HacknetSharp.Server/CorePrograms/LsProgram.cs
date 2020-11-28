@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HacknetSharp.Events.Server;
+﻿using System.Collections.Generic;
 using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.CorePrograms

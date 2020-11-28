@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
+using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Runnables
 {
     [Verb("user", HelpText = "Manage users.")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal class User<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
         where TDatabaseFactory : StorageContextFactoryBase
     {
@@ -35,8 +38,8 @@ namespace HacknetSharp.Server.Runnables
 
                 string? pass = Util.PromptPassword("Pass:");
                 if (pass == null) return 0;
-                var (salt, hash) = AccessController.Base64Password(pass);
-                ctx.Add(new UserModel {Admin = Admin, Base64Password = hash, Base64Salt = salt, Key = Name});
+                var (salt, hash) = CommonUtil.Base64Password(pass);
+                ctx.Add(new UserModel {Admin = Admin, Base64Hash = hash, Base64Salt = salt, Key = Name});
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
             }

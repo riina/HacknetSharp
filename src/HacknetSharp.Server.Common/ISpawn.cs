@@ -1,15 +1,16 @@
 using HacknetSharp.Server.Common.Models;
+using HacknetSharp.Server.Common.Templates;
 
 namespace HacknetSharp.Server.Common
 {
     public interface ISpawn
     {
-        PersonModel Person(IWorld context, string name, string userName, PlayerModel? player = null);
+        PersonModel Person(WorldModel context, string name, string userName, PlayerModel? player = null);
 
-        SystemModel System(IWorld context, PersonModel owner, string name, SystemTemplate template);
+        SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, string base64Hash, string base64Salt);
 
-        FileModel Folder(IWorld context, SystemModel owner, string name, string path);
+        FileModel Folder(WorldModel context, SystemModel owner, string name, string path);
 
-        WorldModel World(string name, WorldTemplate template);
+        WorldModel World(string name, TemplateGroup templates, WorldTemplate template);
     }
 }

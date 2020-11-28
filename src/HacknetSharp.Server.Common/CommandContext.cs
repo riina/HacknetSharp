@@ -1,5 +1,4 @@
 ﻿using System;
-using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server.Common
 {
@@ -9,6 +8,7 @@ namespace HacknetSharp.Server.Common
         public  IPersonContext Person { get; set; } = null!;
         public  System System { get; set; } = null!;
         public  Guid OperationId { get; set; }
+        public  bool Disconnect { get; set; }
         public string[] Argv { get; set; } = null!;
     }
 }

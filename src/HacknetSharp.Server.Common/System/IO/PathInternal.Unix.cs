@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Diagnostics.CodeAnalysis;
 
+// ReSharper disable once CheckNamespace
 namespace System.IO
 {
     /// <summary>Contains internal path helpers that are shared between many projects.</summary>

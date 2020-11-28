@@ -245,17 +245,18 @@ namespace HacknetSharp.Server
             var wId = world.Model.Key;
             PersonModel? person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId);
             if (person != null) return person;
-            (person, _) = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
+            person = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
             _server.RegistrationSet.Add(person);
             return person;
         }
 
-        private static (PersonModel, SystemModel) CreateAndRegisterNewPersonAndSystem(Server server, IWorld world,
+        private static PersonModel CreateAndRegisterNewPersonAndSystem(Server server, IWorld world,
             PlayerModel player)
         {
-            var person = server.Spawn.Person(world, player.Key, player.Key);
-            var system = server.Spawn.System(world, person, $"{player.Key}_BASE", world.PlayerSystemTemplate);
-            return (person, system);
+            var person = server.Spawn.Person(world.Model, player.Key, player.Key);
+            server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Base64Hash,
+                player.User.Base64Salt);
+            return person;
         }
 
         public PlayerModel GetPlayerModel()
