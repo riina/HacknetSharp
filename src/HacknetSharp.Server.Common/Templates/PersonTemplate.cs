@@ -28,21 +28,21 @@ namespace HacknetSharp.Server.Common.Templates
             if (SystemTemplates.Count == 0) throw new InvalidOperationException($"{nameof(SystemTemplates)} is empty.");
             if (FleetMin != 0 && FleetSystemTemplates.Count == 0)
                 throw new InvalidOperationException($"{nameof(FleetSystemTemplates)} is empty.");
-            string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count];
+            string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count].ToLowerInvariant();
             if (!templates.SystemTemplates.TryGetValue(systemTemplateName, out var systemTemplate))
                 throw new KeyNotFoundException($"Unknown template {systemTemplateName}");
             string username = Usernames[Random.Next() % Usernames.Count];
             string password = Passwords[Random.Next() % Passwords.Count];
 
             var person = spawn.Person(world, username, username);
-            var (salt, hash) = CommonUtil.HashPassword(password);
+            var (hash, salt) = CommonUtil.HashPassword(password);
             var system = spawn.System(world, systemTemplate, person, hash, salt);
             person.CurrentSystem = system;
             person.DefaultSystem = system;
             int count = Random.Next(FleetMin, FleetMax + 1);
             for (int i = 0; i < count; i++)
             {
-                string fleetSystemTemplateName = FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count];
+                string fleetSystemTemplateName = FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count].ToLowerInvariant();
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
                 spawn.System(world, fleetSystemTemplate, person, hash, salt);

@@ -12,11 +12,14 @@ namespace HacknetSharp.Server
     {
         public PlayerModel Player(UserModel context)
         {
-            return new PlayerModel {Key = context.Key, Identities = new HashSet<PersonModel>()};
+            var player = new PlayerModel {User = context, Key = context.Key, Identities = new HashSet<PersonModel>()};
+            context.Player = player;
+            return player;
         }
 
         public PersonModel Person(WorldModel context, string name, string userName, PlayerModel? player = null)
         {
+            Console.WriteLine("Person spawned");
             var person = new PersonModel
             {
                 Key = Guid.NewGuid(),
@@ -83,7 +86,7 @@ namespace HacknetSharp.Server
 
             // Generate dependent folders
             if (path == "/") return model;
-            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
             if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                 Folder(context, owner, nName, nPath);
             return model;
@@ -107,7 +110,7 @@ namespace HacknetSharp.Server
 
             // Generate dependent folders
             if (path == "/") return model;
-            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
             if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                 Folder(context, owner, nName, nPath);
             return model;
@@ -131,7 +134,7 @@ namespace HacknetSharp.Server
 
             // Generate dependent folders
             if (path == "/") return model;
-            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
             if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                 Folder(context, owner, nName, nPath);
             return model;
@@ -155,7 +158,7 @@ namespace HacknetSharp.Server
 
             // Generate dependent folders
             if (path == "/") return model;
-            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
             if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                 Folder(context, owner, nName, nPath);
             return model;
@@ -179,7 +182,7 @@ namespace HacknetSharp.Server
 
             // Generate dependent folders
             if (path == "/") return model;
-            var (nPath, nName) = (Program.GetFileName(path), Program.GetDirectoryName(path)!);
+            var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
             if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                 Folder(context, owner, nName, nPath);
             return model;

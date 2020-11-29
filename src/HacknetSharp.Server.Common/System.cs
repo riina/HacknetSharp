@@ -49,11 +49,13 @@ namespace HacknetSharp.Server.Common
         public IEnumerable<FileModel> EnumerateDirectory(string path)
         {
             var (nPath, nName) = GetDirectoryAndName(path);
+            if (nPath == "/" && nName == "")
+                return Model.Files.Where(f => f.Path == nPath);
             string bPath = Program.Combine(nPath, nName);
             return Model.Files.Where(f => f.Path == nPath)
                 .Any(f => f.Name == nName && f.Kind == FileModel.FileKind.Folder)
                 ? Model.Files.Where(f => f.Path == bPath)
-                : throw new DirectoryNotFoundException();
+                : throw new DirectoryNotFoundException($"Directory {path} not found.");
         }
     }
 }

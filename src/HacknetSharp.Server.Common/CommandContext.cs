@@ -12,5 +12,12 @@ namespace HacknetSharp.Server.Common
         public Guid OperationId { get; set; }
         public bool Disconnect { get; set; }
         public string[] Argv { get; set; } = null!;
+        public InvocationType Type { get; set; }
+        public enum InvocationType
+        {
+            Standard,
+            Initial,
+            Boot
+        }
     }
 }

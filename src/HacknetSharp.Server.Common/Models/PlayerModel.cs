@@ -7,7 +7,8 @@ namespace HacknetSharp.Server.Common.Models
 {
     public class PlayerModel : Model<string>
     {
-        public readonly UserModel User = new UserModel();
+        public virtual UserModel User { get; set; } = null!;
+        public string UserForeignKey { get; set; } = null!;
         public virtual Guid ActiveWorld { get; set; }
         public virtual HashSet<PersonModel> Identities { get; set; } = null!;
 

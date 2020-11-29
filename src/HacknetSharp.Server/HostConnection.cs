@@ -23,6 +23,7 @@ namespace HacknetSharp.Server
         private readonly TcpClient _client;
         private readonly AutoResetEvent _lockOutOp;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly HashSet<Guid> _initializedWorlds;
         private PlayerModel? _playerModel;
         private SslStream? _sslStream;
         private BufferedStream? _bufferedStream;
@@ -36,6 +37,7 @@ namespace HacknetSharp.Server
             _client = client;
             _lockOutOp = new AutoResetEvent(true);
             _cancellationTokenSource = new CancellationTokenSource();
+            _initializedWorlds = new HashSet<Guid>();
             _ = Execute(_cancellationTokenSource.Token);
         }
 
@@ -95,7 +97,7 @@ namespace HacknetSharp.Server
                             _sslStream.WriteTimeout = 100 * 1000;
 
                             WriteEvent(new UserInfoEvent {Operation = op, Admin = User.Admin});
-                            WriteEvent(new OutputEvent {Text = "Welcome to ossu. Type \"exit\" to exit."});
+                            WriteEvent(new OutputEvent {Text = "<< LOGGED IN - INITIALIZING >>\n"});
                             break;
                         }
                         case RegistrationTokenForgeRequestEvent forgeRequest:
@@ -123,10 +125,27 @@ namespace HacknetSharp.Server
                             WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
                             break;
                         }
+                        case InitialCommandEvent command:
+                        {
+                            var op = command.Operation;
+                            if (User == null)
+                            {
+                                WriteEvent(new OperationCompleteEvent {Operation = op});
+                                break;
+                            }
+
+                            _server.QueueInitialCommand(this, op);
+                            break;
+                        }
                         case CommandEvent command:
                         {
                             var op = command.Operation;
-                            if (User == null) continue;
+                            if (User == null)
+                            {
+                                WriteEvent(new OperationCompleteEvent {Operation = op});
+                                break;
+                            }
+
                             var line = Arguments.SplitCommandLine(command.Text);
                             if (line.Length > 0 && line[0].Equals("exit", StringComparison.InvariantCultureIgnoreCase))
                             {
@@ -136,7 +155,7 @@ namespace HacknetSharp.Server
                                 return;
                             }
                             else
-                                _server.Execute(this, op, line);
+                                _server.QueueCommand(this, op, line);
 
                             break;
                         }
@@ -244,16 +263,27 @@ namespace HacknetSharp.Server
             var playerModel = GetPlayerModel();
             var wId = world.Model.Key;
             PersonModel? person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId);
-            if (person != null) return person;
-            person = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
-            _server.RegisterModel(person);
+            if (person == null)
+            {
+                person = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
+                _server.RegisterModel(person);
+            }
+
+            if (_initializedWorlds.Add(wId))
+            {
+                // Reset user state
+                person.CurrentSystem = person.DefaultSystem;
+                person.WorkingDirectory = "/";
+            }
+
+            person.CurrentLogin ??= person.CurrentSystem.Logins.FirstOrDefault(l => l.Person == person);
             return person;
         }
 
         private static PersonModel CreateAndRegisterNewPersonAndSystem(Server server, IWorld world,
             PlayerModel player)
         {
-            var person = server.Spawn.Person(world.Model, player.Key, player.Key);
+            var person = server.Spawn.Person(world.Model, player.Key, player.Key, player);
             var system = server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Hash,
                 player.User.Salt);
             person.DefaultSystem = system;
@@ -279,17 +309,9 @@ namespace HacknetSharp.Server
                 CreateAndRegisterNewPersonAndSystem(_server, world, _playerModel);
             }
 
-            // TODO additional set to recognize initialization per world, move reset logic
-
             // Reset to existing world if necessary
-            if (!_server.Worlds.TryGetValue(_playerModel.ActiveWorld, out var curWorld))
-                _playerModel.ActiveWorld = (curWorld = _server.DefaultWorld).Model.Key;
-
-            var person = GetPerson(curWorld);
-
-            // Reset user state
-            person.CurrentSystem = person.DefaultSystem;
-            person.WorkingDirectory = "/";
+            if (!_server.Worlds.ContainsKey(_playerModel.ActiveWorld))
+                _playerModel.ActiveWorld = _server.DefaultWorld.Model.Key;
 
             return _playerModel;
         }

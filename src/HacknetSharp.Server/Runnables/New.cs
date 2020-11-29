@@ -50,7 +50,7 @@ namespace HacknetSharp.Server.Runnables
                                         "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
                                         "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
                                         "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
-                                        "prog:/bin/cd core:cd", "prog:/bin/ls core:ls"
+                                        "prog:/bin/cd core:cd", "prog:/bin/ls core:ls", "prog:/bin/echo core:echo"
                                     })
                                 }
                                 : new SystemTemplate()))
@@ -128,7 +128,7 @@ namespace HacknetSharp.Server.Runnables
                 return Task.FromResult(3);
             }
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new ApplicationException());
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)) ?? throw new ApplicationException());
             using var tw = new StreamWriter(File.OpenWrite(path));
             ServerUtil.YamlSerializer.Serialize(tw, result);
             Console.WriteLine($"Template saved to:\n{path}");

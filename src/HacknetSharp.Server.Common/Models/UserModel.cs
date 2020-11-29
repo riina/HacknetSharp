@@ -17,7 +17,8 @@ namespace HacknetSharp.Server.Common.Models
             builder.Entity<UserModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasOne(y => y.Player).WithOne(z => z.User).OnDelete(DeleteBehavior.Cascade);
+                x.HasOne(y => y.Player).WithOne(z => z.User).HasForeignKey<PlayerModel>(p => p.UserForeignKey)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

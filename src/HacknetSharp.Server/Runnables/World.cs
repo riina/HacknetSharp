@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.Runnables
                 var factory = Activator.CreateInstance<TDatabaseFactory>();
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
 
-                var xizt = await ctx.FindAsync<WorldModel>(Name).Caf();
+                var xizt = ctx.Set<WorldModel>().FirstOrDefault(w => w.Name == Name);
                 if (xizt != null)
                 {
                     Console.WriteLine("A world with specified name already exists.");
@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.Runnables
                 }
 
                 var templates = ServerUtil.GetTemplates("");
-                if (!templates.WorldTemplates.TryGetValue(Template, out var template))
+                if (!templates.WorldTemplates.TryGetValue(Template.ToLowerInvariant(), out var template))
                 {
                     Console.WriteLine("Could not find a template with the specified name.");
                     return 89;
@@ -99,7 +99,7 @@ namespace HacknetSharp.Server.Runnables
                     : ctx.Set<WorldModel>().Where(u => names.Contains(u.Label))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
-                    Console.WriteLine($"{world.Label}:{world.Key}");
+                    Console.WriteLine($"{world.Name}:{world.Key} ({world.Label})");
                 return 0;
             }
         }

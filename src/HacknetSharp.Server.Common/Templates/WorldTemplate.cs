@@ -27,10 +27,13 @@ namespace HacknetSharp.Server.Common.Templates
                 StartupProgram ?? throw new InvalidOperationException($"{nameof(StartupProgram)} is null.");
             world.StartupCommandLine = StartupCommandLine ??
                                        throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
+            if (Generators == null) throw new InvalidOperationException($"{nameof(Generators)} is null.");
             foreach (var generator in Generators)
-                if (!templates.PersonTemplates.TryGetValue(
-                    generator.PersonTemplate ??
-                    throw new InvalidOperationException($"Null {nameof(Generator.PersonTemplate)}"), out var template))
+                if (!templates.PersonTemplates.TryGetValue((
+                        generator.PersonTemplate ??
+                        throw new InvalidOperationException($"Null {nameof(Generator.PersonTemplate)}"))
+                    .ToLowerInvariant(),
+                    out var template))
                     throw new KeyNotFoundException($"Unknown template {generator.PersonTemplate}");
                 else
                     for (int i = 0; i < generator.Count; i++)

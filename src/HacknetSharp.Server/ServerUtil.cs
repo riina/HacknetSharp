@@ -127,9 +127,9 @@ namespace HacknetSharp.Server
         public static TemplateGroup GetTemplates(string installDir)
         {
             var templates = new TemplateGroup();
-            if (Directory.Exists(ServerConstants.WorldTemplatesFolder))
-                foreach (var file in Directory.EnumerateFiles(Path.Combine(installDir,
-                    ServerConstants.WorldTemplatesFolder)))
+            string worlds = Path.Combine(installDir, ServerConstants.WorldTemplatesFolder);
+            if (Directory.Exists(worlds))
+                foreach (var file in Directory.EnumerateFiles(worlds))
                 {
                     try
                     {
@@ -142,9 +142,9 @@ namespace HacknetSharp.Server
                     }
                 }
 
-            if (Directory.Exists(ServerConstants.PersonTemplatesFolder))
-                foreach (var file in Directory.EnumerateFiles(Path.Combine(installDir,
-                    ServerConstants.PersonTemplatesFolder)))
+            string persons = Path.Combine(installDir, ServerConstants.PersonTemplatesFolder);
+            if (Directory.Exists(persons))
+                foreach (var file in Directory.EnumerateFiles(persons))
                 {
                     try
                     {
@@ -157,9 +157,9 @@ namespace HacknetSharp.Server
                     }
                 }
 
-            if (Directory.Exists(ServerConstants.SystemTemplatesFolder))
-                foreach (var file in Directory.EnumerateFiles(Path.Combine(installDir,
-                    ServerConstants.SystemTemplatesFolder)))
+            string systems = Path.Combine(installDir, ServerConstants.SystemTemplatesFolder);
+            if (Directory.Exists(systems))
+                foreach (var file in Directory.EnumerateFiles(systems))
                 {
                     try
                     {

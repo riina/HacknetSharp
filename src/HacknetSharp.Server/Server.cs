@@ -22,7 +22,8 @@ namespace HacknetSharp.Server
         private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
         private readonly Queue<CommandContext> _inputQueue;
         private readonly List<CommandContext> _inputProcessing;
-        private readonly AutoResetEvent _are;
+        private readonly AutoResetEvent _setOp;
+        private readonly AutoResetEvent _queueOp;
         private double _initialTime;
         private LifecycleState _state;
 
@@ -60,7 +61,7 @@ namespace HacknetSharp.Server
             {
                 var world = new World(this, w, Database, Spawn);
                 Worlds[w.Key] = world;
-                if (w.Label.Equals(config.DefaultWorld)) defaultWorld = world;
+                if (w.Name.Equals(config.DefaultWorld)) defaultWorld = world;
             }
 
             DefaultWorld = defaultWorld ?? throw new ApplicationException("No world matching name found");
@@ -73,7 +74,8 @@ namespace HacknetSharp.Server
             _connections = new ConcurrentDictionary<Guid, HostConnection>();
             _inputQueue = new Queue<CommandContext>();
             _inputProcessing = new List<CommandContext>();
-            _are = new AutoResetEvent(true);
+            _setOp = new AutoResetEvent(true);
+            _queueOp = new AutoResetEvent(true);
             _registrationSet = new List<object>();
             _dirtySet = new List<object>();
             _deregistrationSet = new List<object>();
@@ -146,14 +148,18 @@ namespace HacknetSharp.Server
 
         private async Task UpdateAsync()
         {
+            long ms = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            const int tickMs = 10;
+            const int ticksPerSave = 60 * 1000 / tickMs;
+            int ticks = 0;
             while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
             {
                 try
                 {
-                    _are.WaitOne();
+                    _queueOp.WaitOne();
                     _inputProcessing.AddRange(_inputQueue);
                     _inputQueue.Clear();
-                    _are.Set();
+                    _queueOp.Set();
                     foreach (var context in _inputProcessing)
                         context.World.ExecuteCommand(context);
                     _inputProcessing.Clear();
@@ -170,8 +176,16 @@ namespace HacknetSharp.Server
                     _dirtySet.Clear();
                     _registrationSet.Clear();
                     _deregistrationSet.Clear();
-                    await Database.SyncAsync().Caf();
-                    await Task.Delay(10).Caf();
+                    if (ticks == ticksPerSave)
+                    {
+                        await Database.SyncAsync().Caf();
+                        ticks = 0;
+                    }
+
+                    ticks++;
+                    long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                    await Task.Delay((int)Math.Max(tickMs, tickMs - (ms2 - ms))).Caf();
+                    ms = ms2;
                 }
                 finally
                 {
@@ -180,9 +194,9 @@ namespace HacknetSharp.Server
             }
         }
 
-        public void Execute(HostConnection context, Guid operationId, string[] line)
+        public void QueueInitialCommand(HostConnection context, Guid operationId)
         {
-            _are.WaitOne();
+            _queueOp.WaitOne();
             try
             {
                 var player = context.GetPlayerModel();
@@ -199,12 +213,42 @@ namespace HacknetSharp.Server
                     Person = context.GetPerson(world),
                     PersonContext = context,
                     OperationId = operationId,
-                    Argv = line
+                    Argv = Array.Empty<string>(),
+                    Type = CommandContext.InvocationType.Initial
                 });
             }
             finally
             {
-                _are.Set();
+                _queueOp.Set();
+            }
+        }
+
+        public void QueueCommand(HostConnection context, Guid operationId, string[] line)
+        {
+            _queueOp.WaitOne();
+            try
+            {
+                var player = context.GetPlayerModel();
+                if (!Worlds.TryGetValue(player.ActiveWorld, out var world))
+                {
+                    world = DefaultWorld;
+                    player.ActiveWorld = world.Model.Key;
+                    _dirtySet.Add(player);
+                }
+
+                _inputQueue.Enqueue(new CommandContext
+                {
+                    World = world,
+                    Person = context.GetPerson(world),
+                    PersonContext = context,
+                    OperationId = operationId,
+                    Argv = line,
+                    Type = CommandContext.InvocationType.Standard
+                });
+            }
+            finally
+            {
+                _queueOp.Set();
             }
         }
 
@@ -254,79 +298,79 @@ namespace HacknetSharp.Server
 
         public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
         {
-            _are.WaitOne();
+            _setOp.WaitOne();
             try
             {
                 _registrationSet.Add(model);
             }
             finally
             {
-                _are.Set();
+                _setOp.Set();
             }
         }
 
         public void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
-            _are.WaitOne();
+            _setOp.WaitOne();
             try
             {
                 _registrationSet.AddRange(models);
             }
             finally
             {
-                _are.Set();
+                _setOp.Set();
             }
         }
 
         public void DirtyModel<T>(Model<T> model) where T : IEquatable<T>
         {
-            _are.WaitOne();
+            _setOp.WaitOne();
             try
             {
                 _dirtySet.Add(model);
             }
             finally
             {
-                _are.Set();
+                _setOp.Set();
             }
         }
 
         public void DirtyModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
-            _are.WaitOne();
+            _setOp.WaitOne();
             try
             {
                 _dirtySet.AddRange(models);
             }
             finally
             {
-                _are.Set();
+                _setOp.Set();
             }
         }
 
         public void DeregisterModel<T>(Model<T> model) where T : IEquatable<T>
         {
-            _are.WaitOne();
+            _setOp.WaitOne();
             try
             {
                 _deregistrationSet.Add(model);
             }
             finally
             {
-                _are.Set();
+                _setOp.Set();
             }
         }
 
         public void DeregisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
-            _are.WaitOne();
+            _setOp.WaitOne();
             try
             {
                 _deregistrationSet.AddRange(models);
             }
             finally
             {
-                _are.Set();
+                _setOp.Set();
             }
         }
 

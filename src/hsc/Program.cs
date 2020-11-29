@@ -103,7 +103,7 @@ namespace hsc
             connection.OnReceivedEvent += e =>
             {
                 if (e is OutputEvent output)
-                    Console.WriteLine(output.Text);
+                    Console.Write(output.Text);
             };
             connection.OnDisconnect += e =>
             {
@@ -122,15 +122,20 @@ namespace hsc
             (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
             if (user == null) return resCode;
             ServerEvent? endEvt;
+            var operation = Guid.NewGuid();
+            connection.WriteEvent(new InitialCommandEvent {Operation = operation});
+            await connection.FlushAsync().Caf();
             do
             {
+                var operationLcl = operation;
+                endEvt = await connection.WaitForAsync(
+                    e => e is IOperation op && op.Operation == operationLcl, 10).Caf();
+                if (endEvt == null) break;
                 string command = Console.ReadLine() ?? throw new ApplicationException();
-                var operation = Guid.NewGuid();
+                operation = Guid.NewGuid();
                 connection.WriteEvent(new CommandEvent {Operation = operation, Text = command});
                 await connection.FlushAsync().Caf();
-                endEvt = await connection.WaitForAsync(
-                    e => e is IOperation op && op.Operation == operation, 10).Caf();
-            } while (endEvt != null);
+            } while (true);
 
             await connection.DisposeAsync();
             return 0;

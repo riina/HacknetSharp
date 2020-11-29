@@ -4,8 +4,8 @@ using HacknetSharp.Server.Common;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:ls", "list directory contents",
-        "list contents of specified directory\r\n" +
-        "or current working directory" +
+        "list contents of specified directory\n" +
+        "or current working directory\n\n" +
         "ls [directory]")]
     public class LsProgram : Program
     {
@@ -25,10 +25,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            foreach (var entry in system.EnumerateDirectory(path))
-            {
-                user.WriteEventSafe(Output(entry.Path == $"/{entry.Name}" ? "" : $"{entry.Path}/{entry.Name}"));
-            }
+            foreach (var entry in system.EnumerateDirectory(path)) user.WriteEventSafe(Output($"{entry.Name}\n"));
 
             user.FlushSafeAsync();
         }
