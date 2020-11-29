@@ -17,7 +17,9 @@ namespace HacknetSharp.Server.CorePrograms
             if (!user.Connected) yield break;
             var system = context.System;
             var argv = context.Argv;
-            string path = argv.Length > 1 ? argv[1] : context.Person.WorkingDirectory;
+            string path = argv.Length > 1
+                ? Combine(context.Person.WorkingDirectory, argv[1])
+                : context.Person.WorkingDirectory;
             if (!system.DirectoryExists(path))
             {
                 user.WriteEventSafe(Output($"ls: {path}: No such file or directory\n"));

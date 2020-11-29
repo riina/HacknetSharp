@@ -15,32 +15,38 @@ namespace hsc
     {
         private static async Task Main(string[] args)
             => await Parser.Default
-                .ParseArguments<ForgeTokenOptions, ConnectOptions
-                >(args)
-                .MapResult<ForgeTokenOptions, ConnectOptions, Task<int>>(
-                    RunForgeToken, RunConnect,
-                    errs => Task.FromResult(1)).Caf();
+                .ParseArguments<Options>(args)
+                .MapResult(Run, errs => Task.FromResult(1)).Caf();
 
         private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
         private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S]+)");
 
-        [Verb("forgetoken", HelpText = "make registration token on server")]
-        private class ForgeTokenOptions
+        private class Options
         {
+            [Option('f', "forgetoken", HelpText = "Make registration token on server.", SetName = "forgetoken")]
+            public bool ForgeToken { get; set; }
+
+            [Option('r', "register", HelpText = "Register on server (requires registration token).",
+                SetName = "register")]
+            public bool Register { get; set; }
+
             [Value(0, MetaName = "conString", HelpText = "Connection string (user@server[:port])", Required = true)]
             public string ConString { get; set; } = null!;
         }
 
-        private static async Task<int> RunForgeToken(ForgeTokenOptions options)
+        private static async Task<int> Run(Options options)
         {
-            var connection = GetConnection(options.ConString, false, out (int, string)? failReason);
-            if (connection == null)
-            {
-                if (!failReason.HasValue) return 0;
-                Console.WriteLine(failReason.Value.Item2);
-                return failReason.Value.Item1;
-            }
+            var connection = GetConnection(options.ConString, options.Register, out (int, string)? failReason);
+            if (connection != null)
+                return options.ForgeToken ? await ForgeToken(connection).Caf() : await ExecuteClient(connection).Caf();
 
+            if (!failReason.HasValue) return 0;
+            Console.WriteLine(failReason.Value.Item2);
+            return failReason.Value.Item1;
+        }
+
+        private static async Task<int> ForgeToken(ClientConnection connection)
+        {
             (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
             if (user == null) return resCode;
 
@@ -75,27 +81,6 @@ namespace hsc
                     Console.WriteLine($"Unexpected event {response.GetType().FullName}");
                     return 0x10101;
             }
-        }
-
-        [Verb("connect", HelpText = "connect to server")]
-        private class ConnectOptions
-        {
-            [Value(0, MetaName = "conString", HelpText = "Connection string (user@server[:port])", Required = true)]
-            public string ConString { get; set; } = null!;
-
-            [Option('r', "register", HelpText = "Register on server (requires registration token).")]
-            public bool Register { get; set; }
-        }
-
-        private static async Task<int> RunConnect(ConnectOptions options)
-        {
-            var connection = GetConnection(options.ConString, options.Register, out (int, string)? failReason);
-            if (connection != null)
-                return await ExecuteClient(connection).Caf();
-
-            if (!failReason.HasValue) return 0;
-            Console.WriteLine(failReason.Value.Item2);
-            return failReason.Value.Item1;
         }
 
         private static async Task<int> ExecuteClient(ClientConnection connection)

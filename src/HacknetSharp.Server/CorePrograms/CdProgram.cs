@@ -21,7 +21,7 @@ namespace HacknetSharp.Server.CorePrograms
             string path;
             try
             {
-                path = GetNormalized(argv[1]);
+                path = GetNormalized(Combine(context.Person.WorkingDirectory, argv[1]));
             }
             catch
             {
