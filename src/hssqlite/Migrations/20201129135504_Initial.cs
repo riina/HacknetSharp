@@ -16,10 +16,7 @@ namespace hssqlite.Migrations
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -32,10 +29,7 @@ namespace hssqlite.Migrations
                     StartupProgram = table.Column<string>(type: "TEXT", nullable: false),
                     StartupCommandLine = table.Column<string>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorldModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "PlayerModel",
@@ -85,9 +79,10 @@ namespace hssqlite.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
                     Kind = table.Column<byte>(type: "INTEGER", nullable: false),
-                    AdminRead = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AdminWrite = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AdminExecute = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Read = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Write = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Execute = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Hidden = table.Column<bool>(type: "INTEGER", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

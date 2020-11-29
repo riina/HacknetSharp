@@ -17,7 +17,8 @@ namespace HacknetSharp.Server.Common.Models
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) => builder.Entity<LoginModel>(x => x.HasKey(v => v.Key));
+        public static void ConfigureModel(ModelBuilder builder) =>
+            builder.Entity<LoginModel>(x => x.HasKey(v => v.Key));
 #pragma warning restore 1591
     }
 }

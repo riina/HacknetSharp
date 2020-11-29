@@ -12,7 +12,7 @@ probably a mistake to bother trying in the first place. If anything,
 hope this project gets going somewhat and a decent-ish server can
 be used to run one of these for all the WILLs.
 
-## SSL certificate
+## Obtaining SSL certificate
 
 The server program requires a valid SSL certificate in order for clients to validate the server.
 
@@ -82,8 +82,8 @@ with the username "alec" would produce "alec Home Server"
 * OsName(`string`): OS name
 * Users(`List<string>`): List of normal users in addition to the system's owner, formatted as "user:pass"
 * Filesystem(`List<string>`): List of filesystem entries, formatted as
-"`<type>`[permissions]:`<path>` `<args>`". Permissions are just 3 * or + for
-RWE, * -> everyone and + -> the owner can perform that operation.
+"`<type>`[permissions]:`<path>` `<args>`". Permissions are just 3 */^/+ for
+RWE, *:everyone/^:owner/+:admin can perform that operation.
   - fold: Folder.
   - prog: Program, arg[0] is the progCode of the program to execute.
   - text: Text content, arg[0] is the text to include. Unfortunately 

@@ -71,11 +71,19 @@ namespace HacknetSharp.Server.Common.Templates
                 if (match.Groups[2].Success)
                 {
                     string matchStr = match.Groups[2].Value;
-                    fileModel.AdminRead = matchStr[0] == '+';
-                    fileModel.AdminWrite = matchStr[1] == '+';
-                    fileModel.AdminExecute = matchStr[2] == '+';
+                    fileModel.Read = CharToAccessLevel(matchStr[0]);
+                    fileModel.Write = CharToAccessLevel(matchStr[1]);
+                    fileModel.Execute = CharToAccessLevel(matchStr[2]);
                 }
             }
         }
+
+        private static FileModel.AccessLevel CharToAccessLevel(char c) => c switch
+        {
+            '*' => FileModel.AccessLevel.Everyone,
+            '^' => FileModel.AccessLevel.Owner,
+            '+' => FileModel.AccessLevel.Admin,
+            _ => throw new ApplicationException($"Unknown access level character {c}")
+        };
     }
 }

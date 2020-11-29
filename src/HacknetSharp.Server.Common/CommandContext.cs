@@ -13,6 +13,7 @@ namespace HacknetSharp.Server.Common
         public bool Disconnect { get; set; }
         public string[] Argv { get; set; } = null!;
         public InvocationType Type { get; set; }
+
         public enum InvocationType
         {
             Standard,

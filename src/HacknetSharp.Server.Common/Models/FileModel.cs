@@ -12,9 +12,22 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string Name { get; set; } = null!;
         public virtual string Content { get; set; } = null!;
         public virtual FileKind Kind { get; set; }
-        public virtual bool AdminRead { get; set; }
-        public virtual bool AdminWrite { get; set; }
-        public virtual bool AdminExecute { get; set; }
+        public virtual AccessLevel Read { get; set; }
+        public virtual AccessLevel Write { get; set; }
+        public virtual AccessLevel Execute { get; set; }
+        public virtual bool Hidden { get; set; }
+
+        public bool CanRead(LoginModel login) =>
+            System.Owner == login.Person || Read == AccessLevel.Owner && Owner == login ||
+            Read == AccessLevel.Everyone;
+
+        public bool CanWrite(LoginModel login) =>
+            System.Owner == login.Person || Write == AccessLevel.Owner && Owner == login ||
+            Write == AccessLevel.Everyone;
+
+        public bool CanExecute(LoginModel login) =>
+            System.Owner == login.Person || Execute == AccessLevel.Owner && Owner == login ||
+            Execute == AccessLevel.Everyone;
 
         public enum FileKind : byte
         {
@@ -22,6 +35,13 @@ namespace HacknetSharp.Server.Common.Models
             FileFile,
             ProgFile,
             Folder
+        }
+
+        public enum AccessLevel : byte
+        {
+            Everyone,
+            Owner,
+            Admin
         }
 
         [ModelBuilderCallback]

@@ -42,7 +42,8 @@ namespace HacknetSharp.Server.Common.Templates
             int count = Random.Next(FleetMin, FleetMax + 1);
             for (int i = 0; i < count; i++)
             {
-                string fleetSystemTemplateName = FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count].ToLowerInvariant();
+                string fleetSystemTemplateName =
+                    FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count].ToLowerInvariant();
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
                 spawn.System(world, fleetSystemTemplate, person, hash, salt);

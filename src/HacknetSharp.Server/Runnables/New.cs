@@ -128,7 +128,8 @@ namespace HacknetSharp.Server.Runnables
                 return Task.FromResult(3);
             }
 
-            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)) ?? throw new ApplicationException());
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)) ??
+                                      throw new ApplicationException());
             using var tw = new StreamWriter(File.OpenWrite(path));
             ServerUtil.YamlSerializer.Serialize(tw, result);
             Console.WriteLine($"Template saved to:\n{path}");

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hssqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201129085229_Initial")]
+    [Migration("20201129135504_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,18 +24,15 @@ namespace hssqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("AdminExecute")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("AdminRead")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("AdminWrite")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<byte>("Execute")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Hidden")
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte>("Kind")
                         .HasColumnType("INTEGER");
@@ -51,11 +48,17 @@ namespace hssqlite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<byte>("Read")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("SystemKey")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("WorldKey")
                         .HasColumnType("TEXT");
+
+                    b.Property<byte>("Write")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Key");
 
