@@ -36,7 +36,9 @@ namespace HacknetSharp.Server.Common.Templates
 
             var person = spawn.Person(world, username, username);
             var (salt, hash) = CommonUtil.HashPassword(password);
-            spawn.System(world, systemTemplate, person, hash, salt);
+            var system = spawn.System(world, systemTemplate, person, hash, salt);
+            person.CurrentSystem = system;
+            person.DefaultSystem = system;
             int count = Random.Next(FleetMin, FleetMax + 1);
             for (int i = 0; i < count; i++)
             {

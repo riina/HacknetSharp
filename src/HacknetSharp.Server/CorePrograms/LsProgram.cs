@@ -13,11 +13,11 @@ namespace HacknetSharp.Server.CorePrograms
 
         private static IEnumerator<YieldToken?> InvokeStatic(CommandContext context)
         {
-            var system = context.System;
-            var user = context.Person;
-            var argv = context.Argv;
+            var user = context.PersonContext;
             if (!user.Connected) yield break;
-            string path = argv.Length > 1 ? argv[1] : user.GetPerson(context.World).WorkingDirectory;
+            var system = context.System;
+            var argv = context.Argv;
+            string path = argv.Length > 1 ? argv[1] : context.Person.WorkingDirectory;
             if (!system.DirectoryExists(path))
             {
                 user.WriteEventSafe(Output($"ls: {path}: No such file or directory\n"));

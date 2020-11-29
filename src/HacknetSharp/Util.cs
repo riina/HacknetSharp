@@ -59,10 +59,16 @@ namespace HacknetSharp
             (Command)await stream.ReadU32Async(cancellationToken).Caf();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Expect(this Stream stream, Command command, out Command actual)
+        public static void WriteUtf8StringNullable(this Stream stream, string? value)
         {
-            actual = (Command)stream.ReadU32();
-            return actual == command;
+            stream.WriteU8(value != null ? (byte)1 : (byte)0);
+            if (value != null) stream.WriteUtf8String(value);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string? ReadUtf8StringNullable(this Stream stream)
+        {
+            return stream.ReadU8() != 0 ? stream.ReadUtf8String() : null;
         }
 
         public static void TriggerState(AutoResetEvent resetEvent, LifecycleState min, LifecycleState max,

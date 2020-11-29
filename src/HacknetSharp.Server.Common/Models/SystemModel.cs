@@ -9,6 +9,7 @@ namespace HacknetSharp.Server.Common.Models
     {
         public virtual string Name { get; set; } = null!;
         public virtual string OsName { get; set; } = null!;
+        public virtual string Address { get; set; } = null!;
         public virtual PersonModel Owner { get; set; } = null!;
         public virtual HashSet<LoginModel> Logins { get; set; } = null!;
         public virtual HashSet<FileModel> Files { get; set; } = null!;

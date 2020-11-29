@@ -38,18 +38,20 @@ namespace HacknetSharp.Server
                 {
                     if (!operation.Update(this)) continue;
                     _removeOperations.Add(operation);
-                    if (!operation.Context.Person.Connected) continue;
+                    if (!operation.Context.PersonContext.Connected) continue;
 
-                    operation.Context.Person.WriteEventSafe(new OperationCompleteEvent
+                    operation.Context.PersonContext.WriteEventSafe(new OperationCompleteEvent
                     {
-                        Operation = operation.Context.OperationId
+                        Operation = operation.Context.OperationId,
+                        Address = operation.Context.System.Model.Address,
+                        Path = operation.Context.Person.WorkingDirectory
                     });
                     if (operation.Context.Disconnect)
-                        operation.Context.Person.WriteEventSafe(new ServerDisconnectEvent
+                        operation.Context.PersonContext.WriteEventSafe(new ServerDisconnectEvent
                         {
                             Reason = "Disconnected by server."
                         });
-                    operation.Context.Person.FlushSafeAsync();
+                    operation.Context.PersonContext.FlushSafeAsync();
                 }
                 catch (Exception e)
                 {
@@ -64,19 +66,19 @@ namespace HacknetSharp.Server
         {
             if (commandContext.Argv.Length > 0)
             {
-                var personModel = commandContext.Person.GetPerson(this);
+                var personModel = commandContext.Person;
                 var system = new Common.System(this, personModel.CurrentSystem);
                 commandContext.System = system;
                 if (!system.DirectoryExists("/bin"))
                 {
-                    commandContext.Person.WriteEventSafe(new OutputEvent {Text = "/bin not found"});
+                    commandContext.PersonContext.WriteEventSafe(new OutputEvent {Text = "/bin not found"});
                 }
                 else
                 {
                     string exe = $"/bin/{commandContext.Argv[0]}";
                     if (!system.FileExists(exe, true))
                     {
-                        commandContext.Person.WriteEventSafe(new OutputEvent
+                        commandContext.PersonContext.WriteEventSafe(new OutputEvent
                         {
                             Text = $"{commandContext.Argv[0]}: command not found"
                         });
@@ -95,38 +97,41 @@ namespace HacknetSharp.Server
                 }
             }
 
-            commandContext.Person.WriteEventSafe(new OperationCompleteEvent {Operation = commandContext.OperationId});
-            commandContext.Person.FlushSafeAsync();
+            commandContext.PersonContext.WriteEventSafe(new OperationCompleteEvent
+            {
+                Operation = commandContext.OperationId
+            });
+            commandContext.PersonContext.FlushSafeAsync();
         }
 
         public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
         {
-            Server.RegistrationSet.Add(model);
+            Server.RegisterModel(model);
         }
 
         public void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
-            Server.RegistrationSet.AddRange(models);
+            Server.RegisterModels(models);
         }
 
         public void DirtyModel<T>(Model<T> model) where T : IEquatable<T>
         {
-            Server.DirtySet.Add(model);
+            Server.DirtyModel(model);
         }
 
         public void DirtyModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
-            Server.DirtySet.AddRange(models);
+            Server.DirtyModels(models);
         }
 
         public void DeregisterModel<T>(Model<T> model) where T : IEquatable<T>
         {
-            Server.DeregistrationSet.Add(model);
+            Server.DeregisterModel(model);
         }
 
         public void DeregisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
         {
-            Server.DeregistrationSet.AddRange(models);
+            Server.DeregisterModels(models);
         }
     }
 }

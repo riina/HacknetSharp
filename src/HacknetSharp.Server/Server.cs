@@ -35,9 +35,9 @@ namespace HacknetSharp.Server
         public Dictionary<string, (Program, ProgramInfoAttribute)> Programs { get; }
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
-        public List<object> RegistrationSet { get; }
-        public List<object> DirtySet { get; }
-        public List<object> DeregistrationSet { get; }
+        private readonly List<object> _registrationSet;
+        private readonly List<object> _dirtySet;
+        private readonly List<object> _deregistrationSet;
         public Spawn Spawn { get; }
 
         protected internal Server(ServerConfig config)
@@ -74,9 +74,9 @@ namespace HacknetSharp.Server
             _inputQueue = new Queue<CommandContext>();
             _inputProcessing = new List<CommandContext>();
             _are = new AutoResetEvent(true);
-            RegistrationSet = new List<object>();
-            DirtySet = new List<object>();
-            DeregistrationSet = new List<object>();
+            _registrationSet = new List<object>();
+            _dirtySet = new List<object>();
+            _deregistrationSet = new List<object>();
             _state = LifecycleState.NotStarted;
         }
 
@@ -164,12 +164,12 @@ namespace HacknetSharp.Server
                         world.Tick();
                     }
 
-                    Database.EditBulk(DirtySet);
-                    Database.AddBulk(RegistrationSet);
-                    Database.DeleteBulk(DeregistrationSet);
-                    DirtySet.Clear();
-                    RegistrationSet.Clear();
-                    DeregistrationSet.Clear();
+                    Database.EditBulk(_dirtySet);
+                    Database.AddBulk(_registrationSet);
+                    Database.DeleteBulk(_deregistrationSet);
+                    _dirtySet.Clear();
+                    _registrationSet.Clear();
+                    _deregistrationSet.Clear();
                     await Database.SyncAsync().Caf();
                     await Task.Delay(10).Caf();
                 }
@@ -190,12 +190,16 @@ namespace HacknetSharp.Server
                 {
                     world = DefaultWorld;
                     player.ActiveWorld = world.Model.Key;
-                    DirtySet.Add(player);
+                    _dirtySet.Add(player);
                 }
 
                 _inputQueue.Enqueue(new CommandContext
                 {
-                    World = world, Person = context, OperationId = operationId, Argv = line
+                    World = world,
+                    Person = context.GetPerson(world),
+                    PersonContext = context,
+                    OperationId = operationId,
+                    Argv = line
                 });
             }
             finally
@@ -244,6 +248,85 @@ namespace HacknetSharp.Server
                 {
                     // ignored
                 }
+            }
+        }
+
+
+        public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
+        {
+            _are.WaitOne();
+            try
+            {
+                _registrationSet.Add(model);
+            }
+            finally
+            {
+                _are.Set();
+            }
+        }
+
+        public void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
+        {
+            _are.WaitOne();
+            try
+            {
+                _registrationSet.AddRange(models);
+            }
+            finally
+            {
+                _are.Set();
+            }
+        }
+
+        public void DirtyModel<T>(Model<T> model) where T : IEquatable<T>
+        {
+            _are.WaitOne();
+            try
+            {
+                _dirtySet.Add(model);
+            }
+            finally
+            {
+                _are.Set();
+            }
+        }
+
+        public void DirtyModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
+        {
+            _are.WaitOne();
+            try
+            {
+                _dirtySet.AddRange(models);
+            }
+            finally
+            {
+                _are.Set();
+            }
+        }
+
+        public void DeregisterModel<T>(Model<T> model) where T : IEquatable<T>
+        {
+            _are.WaitOne();
+            try
+            {
+                _deregistrationSet.Add(model);
+            }
+            finally
+            {
+                _are.Set();
+            }
+        }
+
+        public void DeregisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
+        {
+            _are.WaitOne();
+            try
+            {
+                _deregistrationSet.AddRange(models);
+            }
+            finally
+            {
+                _are.Set();
             }
         }
 

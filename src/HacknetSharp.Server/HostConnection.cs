@@ -246,7 +246,7 @@ namespace HacknetSharp.Server
             PersonModel? person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId);
             if (person != null) return person;
             person = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
-            _server.RegistrationSet.Add(person);
+            _server.RegisterModel(person);
             return person;
         }
 
@@ -254,25 +254,42 @@ namespace HacknetSharp.Server
             PlayerModel player)
         {
             var person = server.Spawn.Person(world.Model, player.Key, player.Key);
-            server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Hash, player.User.Salt);
+            var system = server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Hash,
+                player.User.Salt);
+            person.DefaultSystem = system;
+            person.CurrentSystem = system;
             return person;
         }
 
         public PlayerModel GetPlayerModel()
         {
             if (User == null) throw new InvalidOperationException();
+
+            // Get from connection
             if (_playerModel != null) return _playerModel;
 
             _playerModel = _server.Database.GetAsync<string, PlayerModel>(User.Key).Result;
-            if (_playerModel != null) return _playerModel;
+            if (_playerModel == null)
+            {
+                var world = _server.DefaultWorld;
 
-            var world = _server.DefaultWorld;
+                _playerModel = _server.Spawn.Player(User);
+                _server.RegisterModel(_playerModel);
 
-            _playerModel = _server.Spawn.Player(User);
-            _server.RegistrationSet.Add(_playerModel);
+                CreateAndRegisterNewPersonAndSystem(_server, world, _playerModel);
+            }
 
-            CreateAndRegisterNewPersonAndSystem(_server, world, _playerModel);
-            _server.DirtySet.Add(world.Model);
+            // TODO additional set to recognize initialization per world, move reset logic
+
+            // Reset to existing world if necessary
+            if (!_server.Worlds.TryGetValue(_playerModel.ActiveWorld, out var curWorld))
+                _playerModel.ActiveWorld = (curWorld = _server.DefaultWorld).Model.Key;
+
+            var person = GetPerson(curWorld);
+
+            // Reset user state
+            person.CurrentSystem = person.DefaultSystem;
+            person.WorkingDirectory = "/";
 
             return _playerModel;
         }

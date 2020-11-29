@@ -8,7 +8,6 @@ namespace HacknetSharp.Events.Server
     public class UserInfoEvent : ServerEvent, IOperation
     {
         public Guid Operation { get; set; }
-
         public bool Admin { get; set; }
 
         public override void Serialize(Stream stream)

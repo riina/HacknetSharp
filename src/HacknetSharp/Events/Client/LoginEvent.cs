@@ -18,8 +18,7 @@ namespace HacknetSharp.Events.Client
             stream.WriteGuid(Operation);
             stream.WriteUtf8String(User);
             stream.WriteUtf8String(Pass);
-            stream.WriteU8(RegistrationToken != null ? (byte)1 : (byte)0);
-            if (RegistrationToken != null) stream.WriteUtf8String(RegistrationToken);
+            stream.WriteUtf8StringNullable(RegistrationToken);
         }
 
         public override void Deserialize(Stream stream)
@@ -27,8 +26,7 @@ namespace HacknetSharp.Events.Client
             Operation = stream.ReadGuid();
             User = stream.ReadUtf8String();
             Pass = stream.ReadUtf8String();
-            if (stream.ReadU8() != 0)
-                RegistrationToken = stream.ReadUtf8String();
+            RegistrationToken = stream.ReadUtf8StringNullable();
         }
     }
 }
