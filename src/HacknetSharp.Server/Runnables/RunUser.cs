@@ -12,11 +12,10 @@ namespace HacknetSharp.Server.Runnables
 {
     [Verb("user", HelpText = "Manage users.")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    internal class User<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
-        where TDatabaseFactory : StorageContextFactoryBase
+    internal class RunUser : Executor.IRunnable
     {
         [Verb("create", HelpText = "Create user.")]
-        private class Create : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Create : Executor.ISelfRunnable
         {
             [Value(0, MetaName = "name", HelpText = "User name.", Required = true)]
             public string Name { get; set; } = null!;
@@ -24,9 +23,9 @@ namespace HacknetSharp.Server.Runnables
             [Option('a', "admin", HelpText = "Make user admin.")]
             public bool Admin { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
 
                 var xizt = await ctx.FindAsync<UserModel>(Name).Caf();
@@ -46,7 +45,7 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("remove", HelpText = "Remove users.")]
-        private class Remove : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Remove : Executor.ISelfRunnable
         {
             [Value(0, MetaName = "names", HelpText = "User names.", Required = true)]
             public IEnumerable<string> Names { get; set; } = null!;
@@ -54,9 +53,9 @@ namespace HacknetSharp.Server.Runnables
             [Option('a', "all", HelpText = "Remove all users.")]
             public bool All { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
 
@@ -92,7 +91,7 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("list", HelpText = "List users.")]
-        private class List : Executor<TDatabaseFactory>.ISelfRunnable
+        private class List : Executor.ISelfRunnable
         {
             [Value(0, MetaName = "names", HelpText = "User names.")]
             public IEnumerable<string> Names { get; set; } = null!;
@@ -100,9 +99,9 @@ namespace HacknetSharp.Server.Runnables
             [Option('a', "all", HelpText = "List all users.")]
             public bool All { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
 
@@ -116,9 +115,9 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
-        public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) =>
+        public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Create, Remove, List>(args)
-                .MapResult<Executor<TDatabaseFactory>.ISelfRunnable, Task<int>>(x => x.Run(executor),
+                .MapResult<Executor.ISelfRunnable, Task<int>>(x => x.Run(executor),
                     x => Task.FromResult(1)).Caf();
     }
 }

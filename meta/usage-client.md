@@ -1,8 +1,8 @@
-# Client Usage (hsc)
+# Client Usage (hsh)
 
-Clients can connect to a HacknetSharp server using the hsc client.
+Clients can connect to a HacknetSharp server using the hsh client.
 
-`hsc username@server[:port]`
+`hsh username@server[:port]`
 
 Don't include the port unless you know the server is running on
 a non-default port.
@@ -16,10 +16,10 @@ Once an administrator has provided a registration token, use `-r`,
 which will prompt for both your desired
 password and obtained registration token.
 
-`hsc -r username@server[:port]`
+`hsh -r username@server[:port]`
 
 ## Forging tokens (admin users only)
 
 Admin users can request registration tokens.
-`hsc -f username@server[:port]`
+`hsh -f username@server[:port]`
 

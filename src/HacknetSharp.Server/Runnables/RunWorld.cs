@@ -11,11 +11,10 @@ namespace HacknetSharp.Server.Runnables
 {
     [Verb("world", HelpText = "Manage worlds.")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    internal class World<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
-        where TDatabaseFactory : StorageContextFactoryBase
+    internal class RunWorld : Executor.IRunnable
     {
         [Verb("create", HelpText = "Create world.")]
-        private class Create : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Create : Executor.ISelfRunnable
         {
             [Value(0, MetaName = "name", HelpText = "World name.", Required = true)]
             public string Name { get; set; } = null!;
@@ -23,9 +22,9 @@ namespace HacknetSharp.Server.Runnables
             [Value(1, MetaName = "template", HelpText = "World template name.", Required = true)]
             public string Template { get; set; } = null!;
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
 
                 var xizt = ctx.Set<WorldModel>().FirstOrDefault(w => w.Name == Name);
@@ -50,7 +49,7 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("remove", HelpText = "Remove worlds.")]
-        private class Remove : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Remove : Executor.ISelfRunnable
         {
             [Value(0, MetaName = "names", HelpText = "World names.", Required = true)]
             public IEnumerable<string> Names { get; set; } = null!;
@@ -58,9 +57,9 @@ namespace HacknetSharp.Server.Runnables
             [Option('a', "all", HelpText = "Remove all worlds.")]
             public bool All { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
 
@@ -80,7 +79,7 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("list", HelpText = "List worlds.")]
-        private class List : Executor<TDatabaseFactory>.ISelfRunnable
+        private class List : Executor.ISelfRunnable
         {
             [Value(0, MetaName = "names", HelpText = "World names.")]
             public IEnumerable<string> Names { get; set; } = null!;
@@ -88,9 +87,9 @@ namespace HacknetSharp.Server.Runnables
             [Option('a', "all", HelpText = "List all worlds.")]
             public bool All { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
 
@@ -104,9 +103,9 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
-        public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) =>
+        public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Create, Remove, List>(args)
-                .MapResult<Executor<TDatabaseFactory>.ISelfRunnable, Task<int>>(x => x.Run(executor),
+                .MapResult<Executor.ISelfRunnable, Task<int>>(x => x.Run(executor),
                     x => Task.FromResult(1)).Caf();
     }
 }

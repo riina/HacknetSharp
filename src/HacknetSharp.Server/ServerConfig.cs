@@ -12,9 +12,9 @@ namespace HacknetSharp.Server
     public class ServerConfig
     {
         /// <summary>
-        /// Type for storage context factory.
+        /// Storage context factory.
         /// </summary>
-        public Type? StorageContextFactoryType { get; set; }
+        public StorageContextFactoryBase? StorageContextFactory { get; set; }
 
         /// <summary>
         /// Program types.
@@ -46,19 +46,18 @@ namespace HacknetSharp.Server
         /// </summary>
         public ServerConfig()
         {
-            StorageContextFactoryType = null;
             Programs = new HashSet<Type>();
             Templates = new TemplateGroup();
         }
 
         /// <summary>
-        /// Sets factory type.
+        /// Sets storage context factory.
         /// </summary>
-        /// <typeparam name="TFactory">Factory type.</typeparam>
+        /// <param name="storageContextFactory">Factory.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithStorageContextFactory<TFactory>() where TFactory : StorageContextFactoryBase
+        public ServerConfig WithStorageContextFactory(StorageContextFactoryBase storageContextFactory)
         {
-            StorageContextFactoryType = typeof(TFactory);
+            StorageContextFactory = storageContextFactory;
             return this;
         }
 

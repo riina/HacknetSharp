@@ -7,17 +7,16 @@ using CommandLine;
 namespace HacknetSharp.Server.Runnables
 {
     [Verb("cert", HelpText = "Manage server certificate.")]
-    internal class Cert<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
-        where TDatabaseFactory : StorageContextFactoryBase
+    internal class RunCert : Executor.IRunnable
     {
         [Verb("search", HelpText = "Search for existing PKCS#12 X509 cert.")]
-        private class Search : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Search : Executor.ISelfRunnable
         {
             [Value(0, HelpText = "External address to search for.", MetaName = "externalAddr", Required = true)]
             public string ExternalAddr { get; set; } = null!;
 
 
-            public Task<int> Run(Executor<TDatabaseFactory> executor)
+            public Task<int> Run(Executor executor)
             {
                 Console.WriteLine("Looking for cert...");
                 var cert = ServerUtil.FindCertificate(ExternalAddr, ServerUtil.CertificateStores);
@@ -34,12 +33,12 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("install", HelpText = "Install PKCS#12 X509 cert.")]
-        private class Register : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Register : Executor.ISelfRunnable
         {
             [Value(0, HelpText = "PKCS#12 X509 certificate to use.", MetaName = "cert", Required = true)]
             public string Certificate { get; set; } = null!;
 
-            public Task<int> Run(Executor<TDatabaseFactory> executor)
+            public Task<int> Run(Executor executor)
             {
                 X509Certificate2? nCert = null;
                 try
@@ -76,12 +75,12 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("remove", HelpText = "Remove existing PKCS#12 X509 cert.")]
-        private class Deregister : Executor<TDatabaseFactory>.ISelfRunnable
+        private class Deregister : Executor.ISelfRunnable
         {
             [Value(0, HelpText = "PKCS#12 X509 certificate to use.", MetaName = "cert", Required = true)]
             public string Certificate { get; set; } = null!;
 
-            public Task<int> Run(Executor<TDatabaseFactory> executor)
+            public Task<int> Run(Executor executor)
             {
                 X509Certificate2? nCert = null;
                 try
@@ -117,9 +116,9 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
-        public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) =>
+        public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Search, Register, Deregister>(args)
-                .MapResult<Executor<TDatabaseFactory>.ISelfRunnable, Task<int>>(x => x.Run(executor),
+                .MapResult<Executor.ISelfRunnable, Task<int>>(x => x.Run(executor),
                     x => Task.FromResult(1)).Caf();
     }
 }

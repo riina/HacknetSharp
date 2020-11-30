@@ -11,8 +11,7 @@ namespace HacknetSharp.Server.Runnables
 {
     [Verb("token", HelpText = "Manage tokens.")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    internal class Token<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
-        where TDatabaseFactory : StorageContextFactoryBase
+    internal class RunToken : Executor.IRunnable
     {
         private class CommonOptions
         {
@@ -21,14 +20,14 @@ namespace HacknetSharp.Server.Runnables
         }
 
         [Verb("remove", HelpText = "Remove entries.")]
-        private class Remove : CommonOptions, Executor<TDatabaseFactory>.ISelfRunnable
+        private class Remove : CommonOptions, Executor.ISelfRunnable
         {
             [Option('a', "all", HelpText = "Remove all tokens.")]
             public bool All { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
                 var tokens = await (All
@@ -46,14 +45,14 @@ namespace HacknetSharp.Server.Runnables
             }
         }
 
-        private class List : CommonOptions, Executor<TDatabaseFactory>.ISelfRunnable
+        private class List : CommonOptions, Executor.ISelfRunnable
         {
             [Option('a', "all", HelpText = "List all tokens.")]
             public bool All { get; set; }
 
-            public async Task<int> Run(Executor<TDatabaseFactory> executor)
+            public async Task<int> Run(Executor executor)
             {
-                var factory = Activator.CreateInstance<TDatabaseFactory>();
+                var factory = executor.StorageContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
                 var tokens = await (All
@@ -68,9 +67,9 @@ namespace HacknetSharp.Server.Runnables
         }
 
 
-        public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) =>
+        public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Remove, List>(args)
-                .MapResult<Executor<TDatabaseFactory>.ISelfRunnable, Task<int>>(x => x.Run(executor),
+                .MapResult<Executor.ISelfRunnable, Task<int>>(x => x.Run(executor),
                     x => Task.FromResult(1)).Caf();
     }
 }

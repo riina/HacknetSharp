@@ -1,10 +1,12 @@
 # HacknetSharp
  Like HacknetPlusPlus but C#
 
-Heavily inspired by the legendary game [Hacknet](http://hacknet-os.com/), this project aims to deliver a multiplayer Hacknet experience
+Heavily inspired by the legendary game [Hacknet](http://hacknet-os.com/),
+this project aims to deliver a multiplayer Hacknet experience
 to WILLs everywhere.
 
-This project was started purely because tarche created [HacknetPlusPlus](https://github.com/The-Council-of-Wills/HacknetPlusPlus). All the WILL homies are having fun making their own
+This project was started purely because tarche created [HacknetPlusPlus](https://github.com/The-Council-of-Wills/HacknetPlusPlus).
+All the WILL homies are having fun making their own
 Hacknet, it's almost like Hackerjam 3 except nobody wins this time.
 
 Server implementation hasn't been tested nor is it anywhere near
@@ -13,19 +15,15 @@ the standard "none." As a wise Jedi once said, "Don't try it."
 
 ## Client
 
-`hsc` is the main terminal client. It supports .NET Framework 4.7.2
+`hsh` is the main terminal client. It supports .NET Framework 4.7.2
 and .NET 5 ([install .NET 5 runtime here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 [Read about how to use the client here.](meta/usage-client.md)
 
-Note: the core `HacknetSharp.Client` library is .NET Standard 2.0.
-It *should* work in Unity under the Mono runtime.
-
 ## Server
 
-`hssqlite` (SQLite backing database) and `hspostgres` (PostgreSQL
-backing database) are the main server programs. Their only difference
-is the database that supports the server. They support .NET 5
+`hss` is the main server program. It can use a SQLite or PostgreSQL
+backing database. It supports .NET 5
 ([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 [Read about how to use the server here.](meta/usage-server.md)

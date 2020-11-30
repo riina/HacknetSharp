@@ -16,16 +16,6 @@ namespace HacknetSharp.Server
     /// </summary>
     public static class ServerUtil
     {
-        public static void Consideration(Action<FileModel?> files, Action<SystemModel?> systems,
-            Action<PersonModel?> persons, Action<PlayerModel?> players, Action<WorldModel?> worlds)
-        {
-            files(null);
-            systems(null);
-            persons(null);
-            players(null);
-            worlds(null);
-        }
-
         public static IEnumerable<Type> GetTypes(Type t, Assembly assembly) =>
             assembly.GetTypes().Where(type => IsSubclass(t, type) && !type.IsAbstract);
 
@@ -175,7 +165,7 @@ namespace HacknetSharp.Server
             return templates;
         }
 
-        internal static (string, T) ReadFromFile<T>(string file) => (
+        public static (string, T) ReadFromFile<T>(string file) => (
             Path.GetFileNameWithoutExtension(file).ToLowerInvariant(),
             YamlDeserializer.Deserialize<T>(File.ReadAllText(file)));
     }

@@ -8,7 +8,7 @@ using HacknetSharp.Client;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 
-namespace hsc
+namespace hsh
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     internal static class Program

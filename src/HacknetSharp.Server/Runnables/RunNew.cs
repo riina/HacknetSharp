@@ -11,10 +11,9 @@ namespace HacknetSharp.Server.Runnables
     [Verb("new", HelpText = "Create template.")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    public class New<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
-        where TDatabaseFactory : StorageContextFactoryBase
+    internal class RunNew : Executor.IRunnable
     {
-        public class Options
+        private class Options
         {
             [Value(0, MetaName = "kind", HelpText = "Kind of template [system,person,world,server].", Required = true)]
             public string Kind { get; set; } = null!;
@@ -94,14 +93,20 @@ namespace HacknetSharp.Server.Runnables
                         "server", (false, options => (
                             $"{options.Name ?? "server"}.yaml",
                             (object)(options.Example
-                                ? new ServerYaml {ExternalAddr = "127.0.0.1", DefaultWorld = "main"}
+                                ? new ServerYaml
+                                {
+                                    Host = "127.0.0.1",
+                                    DatabaseKind = "sqlite",
+                                    SqliteFile = "hakase",
+                                    DefaultWorld = "main"
+                                }
                                 : new ServerYaml()))
                         )
                     }
                 };
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static Task<int> Start(Executor<TDatabaseFactory> executor, Options options)
+        private static Task<int> Start(Executor executor, Options options)
         {
             bool nameRequired;
             Func<Options, (string path, object result)> action;
@@ -137,7 +142,7 @@ namespace HacknetSharp.Server.Runnables
             return Task.FromResult(0);
         }
 
-        public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) => await Parser
+        public async Task<int> Run(Executor executor, IEnumerable<string> args) => await Parser
             .Default.ParseArguments<Options>(args)
             .MapResult(x => Start(executor, x), x => Task.FromResult(1)).Caf();
     }

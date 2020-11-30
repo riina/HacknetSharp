@@ -43,13 +43,10 @@ namespace HacknetSharp.Server
 
         protected internal Server(ServerConfig config)
         {
-            var storageContextFactoryType = config.StorageContextFactoryType ??
-                                            throw new ArgumentException(
-                                                $"{nameof(ServerConfig.StorageContextFactoryType)} not specified");
             Cert = config.Certificate ?? throw new ArgumentException(
                 $"{nameof(ServerConfig.Certificate)} not specified");
-            var factory = (StorageContextFactoryBase)(Activator.CreateInstance(storageContextFactoryType) ??
-                                                      throw new ApplicationException());
+            var factory = config.StorageContextFactory ??
+                          throw new ArgumentException($"{nameof(ServerConfig.StorageContextFactory)} not specified");
             var context = factory.CreateDbContext(Array.Empty<string>());
             Database = new ServerDatabase(context);
             AccessController = new AccessController(this);
@@ -178,7 +175,9 @@ namespace HacknetSharp.Server
                     _deregistrationSet.Clear();
                     if (ticks == ticksPerSave)
                     {
+                        Console.WriteLine("Saving to database");
                         await Database.SyncAsync().Caf();
+                        Console.WriteLine("Saved");
                         ticks = 0;
                     }
 

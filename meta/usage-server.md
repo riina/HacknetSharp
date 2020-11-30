@@ -1,16 +1,7 @@
-# Server Usage (hssqlite/hspostgres)
-
-Note: hssqlite and hspostgres are identical save for what database
-is used during `<program> serve`. hssqlite should only be used during
-development / while testing world generation.
+# Server Usage (hss)
 
 All operations should be done inside the directory you intend to
 serve content from.
-
-This seems like a wall of text, right? That's because this was all
-probably a mistake to bother trying in the first place. If anything,
-hope this project gets going somewhat and a decent-ish server can
-be used to run one of these for all the WILLs.
 
 ## Obtaining SSL certificate
 
@@ -54,17 +45,17 @@ openssl pkcs12 -export -out cert.pfx -inkey server.key -in server.crt
   into your login keychain.
   - Ensure that in Get Info (Cmd+I), "Secure Sockets Layer (SSL)" is set to "Always Trust" under Trust.
 * Linux
-  - Use `hspostgres cert install <pfxFile>`. After a password prompt, the certificate / private key should be installed.
-  - Note: this can be reversed with `hspostgres cert remove <certFile>` and re-entering the export password.
+  - Use `hss cert install <pfxFile>`. After a password prompt, the certificate / private key should be installed.
+  - Note: this can be reversed with `hss cert remove <certFile>` and re-entering the export password.
 
 Ensure your certificate can be found from the domain or local address
 you intend to connect to.
 
-`hspostgres cert search <addrOrDomain>`
+`hss cert search <addrOrDomain>`
 
 ## Generating templates / server configuration
 
-Templates drive the main content. Use `hspostgres new` to create
+Templates drive the main content. Use `hss new` to create
 templates (`-e` to get an example instead of a bare file, `-n <name>`
 to specify the filename).
 
@@ -73,7 +64,7 @@ folder.
 
 ### System templates
 
-`hspostgres new system -n <templateName>`
+`hss new system -n <templateName>`
 
 * NameFormat(`string`): defines how name will be formatted based on a
 call to `string.Format(invariantCulture, NameFormat, playerName)` with
@@ -95,7 +86,7 @@ RWE, *:everyone/^:owner/+:admin can perform that operation.
 
 ### Person templates
 
-`hspostgres new person -n <templateName>`
+`hss new person -n <templateName>`
 
 * Usernames(`List<string>`): possible usernames to be selected
 * Passwords(`List<string>`): possible passwords to be selected
@@ -111,13 +102,12 @@ templates to be selected
 
 ### World templates
 
-`hspostgres new world -n <templateName>`
+`hss new world -n <templateName>`
 
 * Label(`string`): label to use on world (just name it your template's
-name, this is only for listing the worlds with `hspostrgres world
-list`).
+name, this is only for listing the worlds with `hss world list`).
 * PlayerSystemTemplate(`string`): template to use for players.
-* PlayerAddressRange(`string?`): CIDR range string for address pool
+* PlayerAddressRange(`string`): CIDR range string for address pool
 * StartupProgram(`string`): Initial program for clients to execute.
 * StartupCommandLine(`string`): Arguments to pass to StartupProgram.
 * Generators(`List<Generator>`): Person generators to populate world.
@@ -127,7 +117,7 @@ list`).
 
 ### Server configuration
 
-`hspostgres new server [-n <configName>]`
+`hss new server [-n <configName>]`
 
 * ExternalAddr(`string`): external hostname to bind to.
 * DefaultWorld(`string`): default world for new players to join.
@@ -135,14 +125,16 @@ list`).
 ## Database operations
 
 The program / EF Core migrations work with a database, and require a
-few environment variables to be configured.
+few environment variables or server.yaml properties to be configured.
 
-* hspostgres
+* PostgreSQL
+  - hndb_kind: must be set to "postgres"
   - hndb_host: hostname for PostgreSQL server.
   - hndb_name: name of PostgreSQL database to use.
   - hndb_user: username for PostgreSQL server.
   - hndb_pass: password for PostgreSQL server.
-* hssqlite
+* SQLite
+  - hndb_kind: must be set to "sqlite"
   - hndb_file: Path to SQL file to use.
 
 ## Creating initial database / migrating
@@ -157,23 +149,23 @@ Use the dotnet-ef tool
 (`dotnet tool update -g dotnet-ef`) to generate an SQL script that
 will migrate your database to the appropriate version.
 
-`dotnet ef database update -p <folder/containing/hspostgres.csproj> [[fromMigrationName] <toMigrationName>]`
+`dotnet ef database update -p <folder/containing/hss.Sqlite_or_hss.Postgres_csproj> [[fromMigrationName] <toMigrationName>]`
 
 ### Setting users / content up
 
 Set up an admin user or two. This creates an admin user (with
 password prompt):
 
-`hspostgres user create -a <username>`
+`hss user create -a <username>`
 
 Set up a world (and remember to add it to your config as the default
 world).
 
-`hspostgres world create <name> <templateName>`
+`hss world create <name> <templateName>`
 
 ## Running server
 
-`hspostgres serve`
+`hss serve`
 
 ## Command help
 

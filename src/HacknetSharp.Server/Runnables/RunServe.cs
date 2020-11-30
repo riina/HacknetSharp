@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Threading.Tasks;
 using CommandLine;
 
@@ -8,22 +9,24 @@ namespace HacknetSharp.Server.Runnables
 {
     [Verb("serve", HelpText = "Serve content.")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    internal class Serve<TDatabaseFactory> : Executor<TDatabaseFactory>.IRunnable
-        where TDatabaseFactory : StorageContextFactoryBase
+    internal class RunServe : Executor.IRunnable
     {
         private class Options
         {
-            [Option('c', "config", MetaValue = "configFile", HelpText = "Configuration file.")]
-            public string? Config { get; set; }
         }
 
-        private static async Task<int> Start(Executor<TDatabaseFactory> executor, Options options)
+        private static async Task<int> Start(Executor executor, Options options)
         {
-            string configFile = options.Config ?? ServerConstants.ServerYamlFile;
-            var (_, servConf) = ServerUtil.ReadFromFile<ServerYaml>(configFile);
-            if (servConf.ExternalAddr == null)
+            if (!File.Exists(ServerConstants.ServerYamlFile))
             {
-                Console.WriteLine($"Config has null {nameof(ServerYaml.ExternalAddr)}");
+                Console.WriteLine($"Could not find {ServerConstants.ServerYamlFile}");
+                return 8;
+            }
+
+            var (_, servConf) = ServerUtil.ReadFromFile<ServerYaml>(ServerConstants.ServerYamlFile);
+            if (servConf.Host == null)
+            {
+                Console.WriteLine($"Config has null {nameof(ServerYaml.Host)}");
                 return 69;
             }
 
@@ -34,7 +37,7 @@ namespace HacknetSharp.Server.Runnables
             }
 
             Console.WriteLine("Looking for cert...");
-            var cert = ServerUtil.FindCertificate(servConf.ExternalAddr, ServerUtil.CertificateStores);
+            var cert = ServerUtil.FindCertificate(servConf.Host, ServerUtil.CertificateStores);
             if (cert == null)
             {
                 Console.WriteLine("Failed to find certificate");
@@ -47,9 +50,9 @@ namespace HacknetSharp.Server.Runnables
 
             var conf = new ServerConfig()
                 .WithPrograms(executor.CustomPrograms)
-                .WithStorageContextFactory<TDatabaseFactory>()
+                .WithStorageContextFactory(executor.StorageContextFactory)
                 .WithDefaultWorld(servConf.DefaultWorld)
-                .WithPort(42069)
+                .WithPort(servConf.Port)
                 .WithTemplates(ServerUtil.GetTemplates(""))
                 .WithCertificate(cert.Value.Item2);
             var instance = conf.CreateInstance();
@@ -74,7 +77,7 @@ namespace HacknetSharp.Server.Runnables
             return 0;
         }
 
-        public async Task<int> Run(Executor<TDatabaseFactory> executor, IEnumerable<string> args) => await Parser
+        public async Task<int> Run(Executor executor, IEnumerable<string> args) => await Parser
             .Default.ParseArguments<Options>(args)
             .MapResult(x => Start(executor, x), x => Task.FromResult(1)).Caf();
     }

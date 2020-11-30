@@ -6,7 +6,7 @@ using HacknetSharp.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace hspostgres
+namespace hss.Postgres
 {
     /// <summary>
     /// Represents a factory for creating a Postgres-backed storage context.
@@ -14,11 +14,12 @@ namespace hspostgres
     public class PostgresStorageContextFactory : StorageContextFactoryBase
     {
         private static bool _fromMain;
+        private ServerYaml? ServerYaml { get; init; }
 
-        public static async Task<int> Main(string[] args)
+        public static async Task<int> Main(string[] args, ServerYaml? serverYaml)
         {
             _fromMain = true;
-            return await new Executor<PostgresStorageContextFactory>().Execute(args);
+            return await new Executor(new PostgresStorageContextFactory {ServerYaml = serverYaml}).Execute(args);
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace hspostgres
         /// <summary>
         /// Environment variable for postgres database name.
         /// </summary>
-        public virtual string EnvStorageName => "hndb_name";
+        public virtual string EnvStorageDatabase => "hndb_name";
 
         /// <summary>
         /// Environment variable for postgres username.
@@ -54,17 +55,18 @@ namespace hspostgres
         /// <inheritdoc />
         public override ServerStorageContext CreateDbContext(string[] args)
         {
-            string host = Environment.GetEnvironmentVariable(EnvStorageHost) ?? (
+            string host = Environment.GetEnvironmentVariable(EnvStorageHost) ?? ServerYaml?.PostgresHost ?? (
                 !_fromMain ? "kagura" : throw new ApplicationException($"ENV {EnvStorageHost} not set"));
-            string db = Environment.GetEnvironmentVariable(EnvStorageName) ?? (
-                !_fromMain ? "sakaki" : throw new ApplicationException($"ENV {EnvStorageName} not set"));
-            string user = Environment.GetEnvironmentVariable(EnvStorageUser) ?? (
+            string database = Environment.GetEnvironmentVariable(EnvStorageDatabase) ?? ServerYaml?.PostgresDatabase ??
+            (
+                !_fromMain ? "sakaki" : throw new ApplicationException($"ENV {EnvStorageDatabase} not set"));
+            string user = Environment.GetEnvironmentVariable(EnvStorageUser) ?? ServerYaml?.PostgresUser ?? (
                 !_fromMain ? "tomo" : throw new ApplicationException($"ENV {EnvStorageUser} not set"));
             string pass = Environment.GetEnvironmentVariable(EnvStoragePass) ?? (
                 !_fromMain ? "yomi" : throw new ApplicationException($"ENV {EnvStoragePass} not set"));
             var ob = new DbContextOptionsBuilder<ServerStorageContext>();
 
-            ob.UseNpgsql($"Host={host};Database={db};Username={user};Password={pass}",
+            ob.UseNpgsql($"Host={host};Database={database};Username={user};Password={pass}",
                 b => b.MigrationsAssembly(MigrationAssembly.FullName));
             if (LogToConsole)
                 ob.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));

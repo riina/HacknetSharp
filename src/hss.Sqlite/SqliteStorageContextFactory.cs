@@ -6,7 +6,7 @@ using HacknetSharp.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace hssqlite
+namespace hss.Sqlite
 {
     /// <summary>
     /// Represents a factory for creating a SQLite-backed storage context.
@@ -14,11 +14,12 @@ namespace hssqlite
     public class SqliteStorageContextFactory : StorageContextFactoryBase
     {
         private static bool _fromMain;
+        private ServerYaml? ServerYaml { get; init; }
 
-        public static async Task<int> Main(string[] args)
+        public static async Task<int> Main(string[] args, ServerYaml? serverYaml)
         {
             _fromMain = true;
-            return await new Executor<SqliteStorageContextFactory>().Execute(args);
+            return await new Executor(new SqliteStorageContextFactory {ServerYaml = serverYaml}).Execute(args);
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace hssqlite
         /// <inheritdoc />
         public override ServerStorageContext CreateDbContext(string[] args)
         {
-            string file = Environment.GetEnvironmentVariable(EnvStorageFile) ?? (
+            string file = Environment.GetEnvironmentVariable(EnvStorageFile) ?? ServerYaml?.SqliteFile ?? (
                 !_fromMain ? "hakase" : throw new ApplicationException($"ENV {EnvStorageFile} not set"));
             var ob = new DbContextOptionsBuilder<ServerStorageContext>();
 
