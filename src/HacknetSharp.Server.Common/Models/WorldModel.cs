@@ -12,6 +12,7 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string PlayerSystemTemplate { get; set; } = null!;
         public virtual string StartupProgram { get; set; } = null!;
         public virtual string StartupCommandLine { get; set; } = null!;
+        public virtual string PlayerAddressRange { get; set; } = null!;
         public virtual HashSet<PersonModel> Persons { get; set; } = null!;
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 

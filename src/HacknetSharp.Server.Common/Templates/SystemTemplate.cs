@@ -10,6 +10,7 @@ namespace HacknetSharp.Server.Common.Templates
     {
         public string? NameFormat { get; set; }
         public string? OsName { get; set; }
+        public string? AddressMask { get; set; }
         public List<string> Users { get; set; } = new List<string>();
         public List<string> Filesystem { get; set; } = new List<string>();
 

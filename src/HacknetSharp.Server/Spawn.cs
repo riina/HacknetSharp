@@ -19,7 +19,6 @@ namespace HacknetSharp.Server
 
         public PersonModel Person(WorldModel context, string name, string userName, PlayerModel? player = null)
         {
-            Console.WriteLine("Person spawned");
             var person = new PersonModel
             {
                 Key = Guid.NewGuid(),
@@ -35,11 +34,31 @@ namespace HacknetSharp.Server
             return person;
         }
 
+        private readonly Random _random = new Random();
+
+        public unsafe SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash,
+            byte[] salt, IPAddressRange range)
+        {
+            (uint host, uint subnetMask) = range.GetIPv4HostAndSubnetMask();
+            var systems = context.Systems.Where(s => ((s.Address & subnetMask) ^ host) == 0).Select(s => s.Address)
+                .ToHashSet();
+            if (range.PrefixBits != 0 && systems.Count >= 1 << (32 - range.PrefixBits))
+                throw new ApplicationException("Specified range has been saturated");
+
+            uint invSubnetMask = ~subnetMask;
+            uint gen;
+            Span<byte> span = new Span<byte>((byte*)&gen, 4);
+            do _random.NextBytes(span);
+            while (systems.Contains(gen & invSubnetMask));
+            return System(context, template, owner, hash, salt, (gen & invSubnetMask) ^ host);
+        }
+
         public SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash,
-            byte[] salt)
+            byte[] salt, uint address)
         {
             var system = new SystemModel
             {
+                Address = address,
                 Key = Guid.NewGuid(),
                 World = context,
                 Owner = owner,

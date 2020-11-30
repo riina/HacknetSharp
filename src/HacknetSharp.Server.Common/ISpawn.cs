@@ -7,7 +7,11 @@ namespace HacknetSharp.Server.Common
     {
         PersonModel Person(WorldModel context, string name, string userName, PlayerModel? player = null);
 
-        SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt);
+        SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt,
+            IPAddressRange range);
+
+        SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt,
+            uint address);
 
         LoginModel Login(WorldModel context, SystemModel owner, string user, byte[] hash, byte[] salt,
             PersonModel? person = null);

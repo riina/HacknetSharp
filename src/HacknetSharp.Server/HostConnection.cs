@@ -285,7 +285,7 @@ namespace HacknetSharp.Server
         {
             var person = server.Spawn.Person(world.Model, player.Key, player.Key, player);
             var system = server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Hash,
-                player.User.Salt);
+                player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
             person.DefaultSystem = system;
             person.CurrentSystem = system;
             return person;

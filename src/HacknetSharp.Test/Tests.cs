@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Templates;
@@ -85,6 +86,7 @@ namespace HacknetSharp.Test
                             PlayerSystemTemplate = "playerTemplate",
                             StartupProgram = "wish",
                             StartupCommandLine = "echo \"Configuring system...\"",
+                            PlayerAddressRange = Constants.DefaultAddressRange,
                             Generators = new List<WorldTemplate.Generator>
                             {
                                 new WorldTemplate.Generator {Count = 3, PersonTemplate = "personTemplate2"}
@@ -99,11 +101,11 @@ namespace HacknetSharp.Test
             var templates = new TemplateGroup();
             // Borrow sample template
             var system1Template = (SystemTemplate)_templates["system"];
-            templates.SystemTemplates.Add("systemTemplate1", system1Template);
-            templates.SystemTemplates.Add("systemTemplate2", system1Template);
+            templates.SystemTemplates.Add("systemTemplate1".ToLowerInvariant(), system1Template);
+            templates.SystemTemplates.Add("systemTemplate2".ToLowerInvariant(), system1Template);
 
             var personTemplate2 = (PersonTemplate)_templates["person"];
-            templates.PersonTemplates.Add("personTemplate2", personTemplate2);
+            templates.PersonTemplates.Add("personTemplate2".ToLowerInvariant(), personTemplate2);
 
             var worldTemplate = (WorldTemplate)_templates["world"];
             //templates.WorldTemplates.Add("worldTemplate", worldTemplate);
@@ -115,7 +117,8 @@ namespace HacknetSharp.Test
             var person1Model = spawn.Person(worldModel, "Jacob Keyes", "jacobkeyes");
             (byte[] person1Hash, byte[] person1Salt) = CommonUtil.HashPassword("miranda");
 
-            var system1Model = spawn.System(worldModel, system1Template, person1Model, person1Hash, person1Salt);
+            var system1Model = spawn.System(worldModel, system1Template, person1Model, person1Hash, person1Salt,
+                new IPAddressRange(Constants.DefaultAddressRange));
 
             // Initially have 3 systems from generator, add custom system
 
@@ -129,6 +132,20 @@ namespace HacknetSharp.Test
             Assert.AreEqual(1,
                 system1Model.Logins.Count(l => l.User == "samwise" && l.System == system1Model &&
                                                l.World == worldModel));
+        }
+
+
+        [Test]
+        public void TestCidr()
+        {
+            IPAddressRange range = new IPAddressRange("192.168.0.0/24");
+            Assert.IsTrue(range.Contains(IPAddress.Parse("192.168.0.1")));
+            Assert.IsFalse(range.Contains(IPAddress.Parse("192.168.1.0")));
+            IPAddressRange range2 = new IPAddressRange("192.168.0.0/23");
+            Assert.IsTrue(range2.Contains(IPAddress.Parse("192.168.0.1")));
+            Assert.IsTrue(range2.Contains(IPAddress.Parse("192.168.1.1")));
+            Assert.IsFalse(range2.Contains(IPAddress.Parse("192.168.2.1")));
+            Assert.AreEqual((0xc0_a8_00_00, 0xff_ff_ff_00), range.GetIPv4HostAndSubnetMask());
         }
     }
 }

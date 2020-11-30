@@ -81,6 +81,7 @@ namespace HacknetSharp.Server.Runnables
                                     PlayerSystemTemplate = "playerTemplate",
                                     StartupProgram = "wish",
                                     StartupCommandLine = "echo \"Configuring system...\"",
+                                    PlayerAddressRange = Constants.DefaultAddressRange,
                                     Generators = new List<WorldTemplate.Generator>
                                     {
                                         new WorldTemplate.Generator {Count = 3, PersonTemplate = "personTemplate2"}

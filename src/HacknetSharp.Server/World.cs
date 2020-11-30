@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
@@ -41,7 +42,7 @@ namespace HacknetSharp.Server
                     _removeOperations.Add(operation);
                     if (!context.PersonContext.Connected) continue;
 
-                    string addr = context.System.Model.Address;
+                    uint addr = context.System.Model.Address;
                     string path = context.Person.WorkingDirectory;
                     context.PersonContext.WriteEventSafe(new OperationCompleteEvent
                     {
@@ -66,7 +67,14 @@ namespace HacknetSharp.Server
         }
 
         private static OutputEvent CreatePromptEvent(PersonModel person) =>
-            new OutputEvent {Text = $"{person.CurrentSystem.Address}:{person.WorkingDirectory}> "};
+            new OutputEvent {Text = $"{UintToAddress(person.CurrentSystem.Address)}:{person.WorkingDirectory}> "};
+
+        private static string UintToAddress(uint value)
+        {
+            Span<byte> dst = stackalloc byte[4];
+            BinaryPrimitives.WriteUInt32BigEndian(dst, value);
+            return $"{dst[0]}.{dst[1]}.{dst[2]}.{dst[3]}";
+        }
 
         public void ExecuteCommand(CommandContext commandContext)
         {

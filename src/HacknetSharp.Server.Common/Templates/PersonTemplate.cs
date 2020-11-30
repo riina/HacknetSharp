@@ -11,6 +11,7 @@ namespace HacknetSharp.Server.Common.Templates
     {
         public List<string> Usernames { get; set; } = new List<string>();
         public List<string> Passwords { get; set; } = new List<string>();
+        public string? AddressRange { get; set; }
         public List<string> EmailProviders { get; set; } = new List<string>();
         public List<string> SystemTemplates { get; set; } = new List<string>();
         public int FleetMin { get; set; }
@@ -21,7 +22,7 @@ namespace HacknetSharp.Server.Common.Templates
 
         private static Random Random => _random ??= new Random();
 
-        public void Generate(ISpawn spawn, TemplateGroup templates, WorldModel world)
+        public void Generate(ISpawn spawn, TemplateGroup templates, WorldModel world, string? addressRange)
         {
             if (Usernames.Count == 0) throw new InvalidOperationException($"{nameof(Usernames)} is empty.");
             if (Passwords.Count == 0) throw new InvalidOperationException($"{nameof(Passwords)} is empty.");
@@ -34,9 +35,10 @@ namespace HacknetSharp.Server.Common.Templates
             string username = Usernames[Random.Next() % Usernames.Count];
             string password = Passwords[Random.Next() % Passwords.Count];
 
+            var range = new IPAddressRange(addressRange ?? AddressRange ?? Constants.DefaultAddressRange);
             var person = spawn.Person(world, username, username);
             var (hash, salt) = CommonUtil.HashPassword(password);
-            var system = spawn.System(world, systemTemplate, person, hash, salt);
+            var system = spawn.System(world, systemTemplate, person, hash, salt, range);
             person.CurrentSystem = system;
             person.DefaultSystem = system;
             int count = Random.Next(FleetMin, FleetMax + 1);
@@ -46,7 +48,7 @@ namespace HacknetSharp.Server.Common.Templates
                     FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count].ToLowerInvariant();
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
-                spawn.System(world, fleetSystemTemplate, person, hash, salt);
+                spawn.System(world, fleetSystemTemplate, person, hash, salt, range);
             }
         }
     }
