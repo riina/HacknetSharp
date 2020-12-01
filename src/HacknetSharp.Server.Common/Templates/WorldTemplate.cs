@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.Common.Templates
             public string? AddressRange { get; set; }
         }
 
-        public void ApplyTemplate(ISpawn spawn, TemplateGroup templates, WorldModel world)
+        public void ApplyTemplate(IServerDatabase database, ISpawn spawn, TemplateGroup templates, WorldModel world)
         {
             world.Label = Label ?? throw new InvalidOperationException($"{nameof(Label)} is null.");
             world.PlayerSystemTemplate =
@@ -40,7 +40,7 @@ namespace HacknetSharp.Server.Common.Templates
                     throw new KeyNotFoundException($"Unknown template {generator.PersonTemplate}");
                 else
                     for (int i = 0; i < generator.Count; i++)
-                        template.Generate(spawn, templates, world, generator.AddressRange);
+                        template.Generate(database, spawn, templates, world, generator.AddressRange);
         }
     }
 }

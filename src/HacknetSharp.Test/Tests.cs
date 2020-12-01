@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Templates;
@@ -95,6 +97,41 @@ namespace HacknetSharp.Test
                     }
                 };
 
+        private class DummyServerDatabase : IServerDatabase
+        {
+            public Task<TResult> GetAsync<TKey, TResult>(TKey key)
+                where TKey : IEquatable<TKey> where TResult : Model<TKey> => throw new NotSupportedException();
+
+            public Task<List<TResult>> GetBulkAsync<TKey, TResult>(ICollection<TKey> keys)
+                where TKey : IEquatable<TKey> where TResult : Model<TKey> => throw new NotSupportedException();
+
+            public void Add<TEntry>(TEntry entity) where TEntry : notnull
+            {
+            }
+
+            public void AddBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
+            {
+            }
+
+            public void Edit<TEntry>(TEntry entity) where TEntry : notnull
+            {
+            }
+
+            public void EditBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
+            {
+            }
+
+            public void Delete<TEntry>(TEntry entity) where TEntry : notnull
+            {
+            }
+
+            public void DeleteBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
+            {
+            }
+
+            public Task SyncAsync() => Task.CompletedTask;
+        }
+
         [Test]
         public void Test_Spawning()
         {
@@ -112,12 +149,15 @@ namespace HacknetSharp.Test
 
             var spawn = new Spawn();
 
-            var worldModel = spawn.World("za warudo", templates, worldTemplate);
+            IServerDatabase database = new DummyServerDatabase();
 
-            var person1Model = spawn.Person(worldModel, "Jacob Keyes", "jacobkeyes");
+            var worldModel = spawn.World(database, "za warudo", templates, worldTemplate);
+
+            var person1Model = spawn.Person(database, worldModel, "Jacob Keyes", "jacobkeyes");
             (byte[] person1Hash, byte[] person1Salt) = CommonUtil.HashPassword("miranda");
 
-            var system1Model = spawn.System(worldModel, system1Template, person1Model, person1Hash, person1Salt,
+            var system1Model = spawn.System(database, worldModel, system1Template, person1Model, person1Hash,
+                person1Salt,
                 new IPAddressRange(Constants.DefaultAddressRange));
 
             // Initially have 3 systems from generator, add custom system

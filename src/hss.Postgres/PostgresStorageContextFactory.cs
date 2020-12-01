@@ -19,7 +19,10 @@ namespace hss.Postgres
         public static async Task<int> Main(string[] args, ServerYaml? serverYaml)
         {
             _fromMain = true;
-            return await new Executor(new PostgresStorageContextFactory {ServerYaml = serverYaml}).Execute(args);
+            return await new Executor(new PostgresStorageContextFactory
+            {
+                ServerYaml = serverYaml, LogToConsole = serverYaml?.EnableLogging ?? false
+            }).Execute(args);
         }
 
         /// <summary>

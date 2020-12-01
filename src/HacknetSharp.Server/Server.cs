@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server
 {
@@ -147,7 +148,7 @@ namespace HacknetSharp.Server
         {
             long ms = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             const int tickMs = 10;
-            const int ticksPerSave = 60 * 1000 / tickMs;
+            const int ticksPerSave = 5 * 1000 / tickMs;
             int ticks = 0;
             while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
             {
@@ -167,12 +168,17 @@ namespace HacknetSharp.Server
                         world.Tick();
                     }
 
-                    Database.EditBulk(_dirtySet);
-                    Database.AddBulk(_registrationSet);
-                    Database.DeleteBulk(_deregistrationSet);
+                    _setOp.WaitOne();
+                    if (_dirtySet.Count != 0)
+                        Database.EditBulk(_dirtySet);
+                    if (_registrationSet.Count != 0)
+                        Database.AddBulk(_registrationSet);
+                    if (_deregistrationSet.Count != 0)
+                        Database.DeleteBulk(_deregistrationSet);
                     _dirtySet.Clear();
                     _registrationSet.Clear();
                     _deregistrationSet.Clear();
+                    _setOp.Set();
                     if (ticks == ticksPerSave)
                     {
                         Console.WriteLine("Saving to database");
@@ -185,6 +191,29 @@ namespace HacknetSharp.Server
                     long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     await Task.Delay((int)Math.Max(tickMs, tickMs - (ms2 - ms))).Caf();
                     ms = ms2;
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    Console.WriteLine(e);
+                    foreach (var x in e.Entries)
+                    {
+                        Console.WriteLine($"{x.Entity}");
+                        switch (x.Entity)
+                        {
+                            case FileModel y:
+                                Console.WriteLine($"[{y.Path}] [{y.Name}]");
+                                Console.WriteLine("Current:");
+                                foreach (var z in x.CurrentValues.Properties)
+                                {
+                                    Console.WriteLine(
+                                        $"{z.Name} // {z} // [{x.CurrentValues[z]}] vs [{x.OriginalValues[z]}]");
+                                }
+
+                                break;
+                        }
+                    }
+
+                    throw;
                 }
                 finally
                 {
@@ -203,7 +232,7 @@ namespace HacknetSharp.Server
                 {
                     world = DefaultWorld;
                     player.ActiveWorld = world.Model.Key;
-                    _dirtySet.Add(player);
+                    DirtyModel(player);
                 }
 
                 _inputQueue.Enqueue(new CommandContext
@@ -232,7 +261,8 @@ namespace HacknetSharp.Server
                 {
                     world = DefaultWorld;
                     player.ActiveWorld = world.Model.Key;
-                    _dirtySet.Add(player);
+                    DirtyModel(player);
+                    ;
                 }
 
                 _inputQueue.Enqueue(new CommandContext

@@ -5,27 +5,35 @@ namespace HacknetSharp.Server.Common
 {
     public interface ISpawn
     {
-        PersonModel Person(WorldModel context, string name, string userName, PlayerModel? player = null);
+        PersonModel Person(IServerDatabase database, WorldModel context, string name, string userName,
+            PlayerModel? player = null);
 
-        SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt,
+        SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template, PersonModel owner,
+            byte[] hash, byte[] salt,
             IPAddressRange range);
 
-        SystemModel System(WorldModel context, SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt,
+        SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template, PersonModel owner,
+            byte[] hash, byte[] salt,
             uint address);
 
-        LoginModel Login(WorldModel context, SystemModel owner, string user, byte[] hash, byte[] salt,
+        LoginModel Login(IServerDatabase database, WorldModel context, SystemModel owner, string user, byte[] hash,
+            byte[] salt,
             PersonModel? person = null);
 
-        FileModel FileFile(WorldModel context, SystemModel owner, string name, string path, string file);
+        FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
+            string file);
 
-        FileModel Folder(WorldModel context, SystemModel owner, string name, string path);
+        FileModel Folder(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path);
 
-        FileModel TextFile(WorldModel context, SystemModel owner, string name, string path, string content);
+        FileModel TextFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
+            string content);
 
-        FileModel ProgFile(WorldModel context, SystemModel owner, string name, string path, string progCode);
+        FileModel ProgFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
+            string progCode);
 
-        public FileModel Duplicate(WorldModel context, SystemModel owner, string name, string path, FileModel existing);
+        public FileModel Duplicate(IServerDatabase database, WorldModel context, SystemModel owner, string name,
+            string path, FileModel existing);
 
-        WorldModel World(string name, TemplateGroup templates, WorldTemplate template);
+        WorldModel World(IServerDatabase database, string name, TemplateGroup templates, WorldTemplate template);
     }
 }

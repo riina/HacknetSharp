@@ -17,19 +17,20 @@ namespace HacknetSharp.Server.Common.Templates
         private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+):([\S\s]+)");
         private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*+]{3})?:([\S\s]+)");
 
-        public void ApplyTemplate(ISpawn spawn, WorldModel world, SystemModel model, PersonModel owner, byte[] hash,
+        public void ApplyTemplate(IServerDatabase database, ISpawn spawn, WorldModel world, SystemModel model,
+            PersonModel owner, byte[] hash,
             byte[] salt)
         {
             model.Name = string.Format(CultureInfo.InvariantCulture,
                 NameFormat ?? throw new InvalidOperationException($"{nameof(NameFormat)} is null."), owner.UserName);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
-            spawn.Login(world, model, owner.UserName, hash, salt);
+            spawn.Login(database, world, model, owner.UserName, hash, salt);
             foreach (var user in Users)
             {
                 var match = _userRegex.Match(user);
                 if (!match.Success) throw new ApplicationException($"Failed to parse user:pass for {user}");
                 var (hashSub, saltSub) = CommonUtil.HashPassword(match.Groups[1].Value);
-                spawn.Login(world, model, match.Groups[1].Value.ToLowerInvariant(), hashSub, saltSub);
+                spawn.Login(database, world, model, match.Groups[1].Value.ToLowerInvariant(), hashSub, saltSub);
             }
 
             foreach (var file in Filesystem)
@@ -46,22 +47,22 @@ namespace HacknetSharp.Server.Common.Templates
                 switch (match.Groups[1].Value.ToLowerInvariant())
                 {
                     case "fold":
-                        fileModel = spawn.Folder(world, model, name, path);
+                        fileModel = spawn.Folder(database, world, model, name, path);
                         break;
                     case "prog":
                         if (args.Length < 2)
                             throw new ApplicationException($"Not enough arguments to file entry {file}");
-                        fileModel = spawn.ProgFile(world, model, name, path, args[1]);
+                        fileModel = spawn.ProgFile(database, world, model, name, path, args[1]);
                         break;
                     case "text":
                         if (args.Length < 2)
                             throw new ApplicationException($"Not enough arguments to file entry {file}");
-                        fileModel = spawn.TextFile(world, model, name, path, args[1]);
+                        fileModel = spawn.TextFile(database, world, model, name, path, args[1]);
                         break;
                     case "file":
                         if (args.Length < 2)
                             throw new ApplicationException($"Not enough arguments to file entry {file}");
-                        fileModel = spawn.FileFile(world, model, name, path, args[1]);
+                        fileModel = spawn.FileFile(database, world, model, name, path, args[1]);
                         break;
                     case "blob":
                         throw new NotImplementedException();

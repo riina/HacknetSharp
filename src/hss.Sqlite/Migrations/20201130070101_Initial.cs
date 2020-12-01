@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace hss.Postgres.Migrations
+namespace hss.Sqlite.Migrations
 {
     public partial class Initial : Migration
     {
@@ -11,40 +11,34 @@ namespace hss.Postgres.Migrations
                 name: "UserModel",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "text", nullable: false),
-                    Hash = table.Column<byte[]>(type: "bytea", nullable: false),
-                    Salt = table.Column<byte[]>(type: "bytea", nullable: false),
-                    Admin = table.Column<bool>(type: "boolean", nullable: false)
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Hash = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Label = table.Column<string>(type: "text", nullable: false),
-                    PlayerSystemTemplate = table.Column<string>(type: "text", nullable: false),
-                    StartupProgram = table.Column<string>(type: "text", nullable: false),
-                    StartupCommandLine = table.Column<string>(type: "text", nullable: false),
-                    PlayerAddressRange = table.Column<string>(type: "text", nullable: false)
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Label = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayerSystemTemplate = table.Column<string>(type: "TEXT", nullable: false),
+                    StartupProgram = table.Column<string>(type: "TEXT", nullable: false),
+                    StartupCommandLine = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorldModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "PlayerModel",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "text", nullable: false),
-                    UserForeignKey = table.Column<string>(type: "text", nullable: false),
-                    ActiveWorld = table.Column<Guid>(type: "uuid", nullable: false)
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    UserForeignKey = table.Column<string>(type: "TEXT", nullable: false),
+                    ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,8 +55,8 @@ namespace hss.Postgres.Migrations
                 name: "RegistrationToken",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "text", nullable: false),
-                    ForgerKey = table.Column<string>(type: "text", nullable: true)
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    ForgerKey = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,18 +73,18 @@ namespace hss.Postgres.Migrations
                 name: "FileModel",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "uuid", nullable: false),
-                    SystemKey = table.Column<Guid>(type: "uuid", nullable: false),
-                    OwnerKey = table.Column<Guid>(type: "uuid", nullable: true),
-                    Path = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
-                    Kind = table.Column<byte>(type: "smallint", nullable: false),
-                    Read = table.Column<byte>(type: "smallint", nullable: false),
-                    Write = table.Column<byte>(type: "smallint", nullable: false),
-                    Execute = table.Column<byte>(type: "smallint", nullable: false),
-                    Hidden = table.Column<bool>(type: "boolean", nullable: false),
-                    WorldKey = table.Column<Guid>(type: "uuid", nullable: true)
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    OwnerKey = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Path = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    Kind = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Read = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Write = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Execute = table.Column<byte>(type: "INTEGER", nullable: false),
+                    Hidden = table.Column<bool>(type: "INTEGER", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,13 +101,13 @@ namespace hss.Postgres.Migrations
                 name: "LoginModel",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorldKey = table.Column<Guid>(type: "uuid", nullable: true),
-                    SystemKey = table.Column<Guid>(type: "uuid", nullable: false),
-                    PersonForeignKey = table.Column<Guid>(type: "uuid", nullable: false),
-                    User = table.Column<string>(type: "text", nullable: false),
-                    Hash = table.Column<byte[]>(type: "bytea", nullable: false),
-                    Salt = table.Column<byte[]>(type: "bytea", nullable: false)
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true),
+                    SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PersonForeignKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    User = table.Column<string>(type: "TEXT", nullable: false),
+                    Hash = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    Salt = table.Column<byte[]>(type: "BLOB", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,13 +124,13 @@ namespace hss.Postgres.Migrations
                 name: "SystemModel",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    OsName = table.Column<string>(type: "text", nullable: false),
-                    Address = table.Column<long>(type: "bigint", nullable: false),
-                    InitialProgram = table.Column<string>(type: "text", nullable: true),
-                    OwnerKey = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorldKey = table.Column<Guid>(type: "uuid", nullable: false)
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    OsName = table.Column<string>(type: "TEXT", nullable: false),
+                    Address = table.Column<uint>(type: "INTEGER", nullable: false),
+                    InitialProgram = table.Column<string>(type: "TEXT", nullable: true),
+                    OwnerKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,14 +147,14 @@ namespace hss.Postgres.Migrations
                 name: "PersonModel",
                 columns: table => new
                 {
-                    Key = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    UserName = table.Column<string>(type: "text", nullable: false),
-                    PlayerKey = table.Column<string>(type: "text", nullable: true),
-                    DefaultSystemKey = table.Column<Guid>(type: "uuid", nullable: true),
-                    CurrentSystemKey = table.Column<Guid>(type: "uuid", nullable: true),
-                    WorkingDirectory = table.Column<string>(type: "text", nullable: false),
-                    WorldKey = table.Column<Guid>(type: "uuid", nullable: false)
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayerKey = table.Column<string>(type: "TEXT", nullable: true),
+                    DefaultSystemKey = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CurrentSystemKey = table.Column<Guid>(type: "TEXT", nullable: true),
+                    WorkingDirectory = table.Column<string>(type: "TEXT", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

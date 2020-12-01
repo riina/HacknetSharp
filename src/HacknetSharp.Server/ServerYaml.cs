@@ -10,5 +10,6 @@
         public string? PostgresDatabase { get; set; }
         public string? PostgresUser { get; set; }
         public string? DefaultWorld { get; set; }
+        public bool? EnableLogging { get; set; }
     }
 }

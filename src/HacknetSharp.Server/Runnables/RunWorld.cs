@@ -41,9 +41,10 @@ namespace HacknetSharp.Server.Runnables
                     return 89;
                 }
 
-                var world = new Spawn().World(Name, templates, template);
-                ctx.Add(world);
-                await ctx.SaveChangesAsync().Caf();
+                var database = new ServerDatabase(ctx);
+
+                new Spawn().World(database, Name, templates, template);
+                await database.SyncAsync().Caf();
                 return 0;
             }
         }
@@ -65,10 +66,10 @@ namespace HacknetSharp.Server.Runnables
 
                 var worlds = await (All
                     ? ctx.Set<WorldModel>()
-                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Label))).ToListAsync().Caf();
+                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
-                    Console.WriteLine($"{world.Label}:{world.Key}");
+                    Console.WriteLine($"{world.Name}:{world.Key} ({world.Name})");
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
@@ -95,7 +96,7 @@ namespace HacknetSharp.Server.Runnables
 
                 var worlds = await (All
                     ? ctx.Set<WorldModel>()
-                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Label))).ToListAsync().Caf();
+                    : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
                     Console.WriteLine($"{world.Name}:{world.Key} ({world.Label})");

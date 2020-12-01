@@ -283,9 +283,13 @@ namespace HacknetSharp.Server
         private static PersonModel CreateAndRegisterNewPersonAndSystem(Server server, IWorld world,
             PlayerModel player)
         {
-            var person = server.Spawn.Person(world.Model, player.Key, player.Key, player);
-            var system = server.Spawn.System(world.Model, world.PlayerSystemTemplate, person, player.User.Hash,
+            var person = server.Spawn.Person(server.Database, world.Model, player.Key, player.Key, player);
+            var system = server.Spawn.System(server.Database, world.Model, world.PlayerSystemTemplate, person,
+                player.User.Hash,
                 player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
+            //server.RegisterModel(system);
+            //server.RegisterModels(system.Files);
+            server.RegisterModel(person);
             person.DefaultSystem = system;
             person.CurrentSystem = system;
             return person;
@@ -303,7 +307,7 @@ namespace HacknetSharp.Server
             {
                 var world = _server.DefaultWorld;
 
-                _playerModel = _server.Spawn.Player(User);
+                _playerModel = _server.Spawn.Player(_server.Database, User);
                 _server.RegisterModel(_playerModel);
 
                 CreateAndRegisterNewPersonAndSystem(_server, world, _playerModel);

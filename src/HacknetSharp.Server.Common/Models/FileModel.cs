@@ -10,7 +10,7 @@ namespace HacknetSharp.Server.Common.Models
         public virtual LoginModel Owner { get; set; } = null!;
         public virtual string Path { get; set; } = null!;
         public virtual string Name { get; set; } = null!;
-        public virtual string Content { get; set; } = null!;
+        public virtual string? Content { get; set; }
         public virtual FileKind Kind { get; set; }
         public virtual AccessLevel Read { get; set; }
         public virtual AccessLevel Write { get; set; }

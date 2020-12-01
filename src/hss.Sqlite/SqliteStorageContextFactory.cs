@@ -19,7 +19,10 @@ namespace hss.Sqlite
         public static async Task<int> Main(string[] args, ServerYaml? serverYaml)
         {
             _fromMain = true;
-            return await new Executor(new SqliteStorageContextFactory {ServerYaml = serverYaml}).Execute(args);
+            return await new Executor(new SqliteStorageContextFactory
+            {
+                ServerYaml = serverYaml, LogToConsole = serverYaml?.EnableLogging ?? false
+            }).Execute(args);
         }
 
         /// <summary>

@@ -62,7 +62,7 @@ namespace HacknetSharp.Server
 
         /// <inheritdoc />
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseLazyLoadingProxies();
+            => options.UseLazyLoadingProxies().EnableSensitiveDataLogging();
 
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder builder)
