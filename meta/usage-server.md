@@ -72,6 +72,7 @@ the system owner's name. For example, "{0} Home Server" for a person
 with the username "alec" would produce "alec Home Server"
 * OsName(`string`): OS name
 * AddressRange(`string?`): CIDR range string for address pool
+* InitialCommandLine(`string?`): Default command to execute on shell connect
 * Users(`List<string>`): List of normal users in addition to the system's owner, formatted as "user:pass"
 * Filesystem(`List<string>`): List of filesystem entries, formatted as
 "`<type>`[permissions]:`<path>` `<args>`". Permissions are just 3 */^/+ for

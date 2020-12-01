@@ -9,16 +9,13 @@ namespace HacknetSharp.Server.Common
             PlayerModel? player = null);
 
         SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template, PersonModel owner,
-            byte[] hash, byte[] salt,
-            IPAddressRange range);
+            byte[] hash, byte[] salt, IPAddressRange range);
 
         SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template, PersonModel owner,
-            byte[] hash, byte[] salt,
-            uint address);
+            byte[] hash, byte[] salt, uint address);
 
         LoginModel Login(IServerDatabase database, WorldModel context, SystemModel owner, string user, byte[] hash,
-            byte[] salt,
-            PersonModel? person = null);
+            byte[] salt, PersonModel? person = null);
 
         FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
             string file);

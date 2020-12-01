@@ -36,20 +36,24 @@ namespace HacknetSharp.Server.Common.Templates
             string username = Usernames[Random.Next() % Usernames.Count];
             string password = Passwords[Random.Next() % Passwords.Count];
 
-            var range = new IPAddressRange(addressRange ?? AddressRange ?? Constants.DefaultAddressRange);
+            var range = new IPAddressRange(addressRange ??
+                                           AddressRange ?? systemTemplate.AddressRange ??
+                                           Constants.DefaultAddressRange);
             var person = spawn.Person(database, world, username, username);
             var (hash, salt) = CommonUtil.HashPassword(password);
             var system = spawn.System(database, world, systemTemplate, person, hash, salt, range);
             person.CurrentSystem = system.Key;
             person.DefaultSystem = system.Key;
             int count = Random.Next(FleetMin, FleetMax + 1);
+            bool fixedRange = addressRange != null || AddressRange != null;
             for (int i = 0; i < count; i++)
             {
                 string fleetSystemTemplateName =
                     FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count].ToLowerInvariant();
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
-                spawn.System(database, world, fleetSystemTemplate, person, hash, salt, range);
+                spawn.System(database, world, fleetSystemTemplate, person, hash, salt,
+                    fixedRange ? range : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange));
             }
         }
     }

@@ -163,10 +163,32 @@ namespace HacknetSharp.Server
 
             var system = new Common.System(this, systemModel);
             commandContext.System = system;
-            if (Server.Programs.TryGetValue(system.Model.InitialProgram ?? "heathcliff", out var res))
+            commandContext.Argv = Arguments.SplitCommandLine(system.Model.InitialCommandLine ?? "heathcliff");
+            if (!system.DirectoryExists("/bin"))
             {
-                Operations.Add(new ProgramOperation(commandContext, res.Item1.Invoke(commandContext)));
-                return;
+                commandContext.PersonContext.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
+            }
+            else
+            {
+                string exe = $"/bin/{commandContext.Argv[0]}";
+                if (!system.FileExists(exe, true))
+                {
+                    commandContext.PersonContext.WriteEventSafe(new OutputEvent
+                    {
+                        Text = $"{commandContext.Argv[0]}: command not found\n"
+                    });
+                }
+                else
+                {
+                    if (Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                        out var res))
+                    {
+                        Operations.Add(new ProgramOperation(commandContext, res.Item1.Invoke(commandContext)));
+                        return;
+                    }
+
+                    // If a program with a matching progCode isn't found, just return operation complete.
+                }
             }
 
             // If a program with a matching progCode isn't found, just return operation complete.

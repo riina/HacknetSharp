@@ -114,7 +114,7 @@ namespace hss.Sqlite.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     OsName = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<uint>(type: "INTEGER", nullable: false),
-                    InitialProgram = table.Column<string>(type: "TEXT", nullable: true),
+                    InitialCommandLine = table.Column<string>(type: "TEXT", nullable: true),
                     OwnerKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },

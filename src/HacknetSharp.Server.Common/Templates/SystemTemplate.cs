@@ -10,7 +10,8 @@ namespace HacknetSharp.Server.Common.Templates
     {
         public string? NameFormat { get; set; }
         public string? OsName { get; set; }
-        public string? AddressMask { get; set; }
+        public string? AddressRange { get; set; }
+        public string? InitialCommandLine { get; set; }
         public List<string> Users { get; set; } = new List<string>();
         public List<string> Filesystem { get; set; } = new List<string>();
 
@@ -18,12 +19,12 @@ namespace HacknetSharp.Server.Common.Templates
         private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*+]{3})?:([\S\s]+)");
 
         public void ApplyTemplate(IServerDatabase database, ISpawn spawn, WorldModel world, SystemModel model,
-            PersonModel owner, byte[] hash,
-            byte[] salt)
+            PersonModel owner, byte[] hash, byte[] salt)
         {
             model.Name = string.Format(CultureInfo.InvariantCulture,
                 NameFormat ?? throw new InvalidOperationException($"{nameof(NameFormat)} is null."), owner.UserName);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
+            model.InitialCommandLine = InitialCommandLine;
             spawn.Login(database, world, model, owner.UserName, hash, salt, owner);
             foreach (var user in Users)
             {

@@ -62,8 +62,7 @@ namespace HacknetSharp.Server
         }
 
         public SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template,
-            PersonModel owner, byte[] hash,
-            byte[] salt, uint address)
+            PersonModel owner, byte[] hash, byte[] salt, uint address)
         {
             var system = new SystemModel
             {

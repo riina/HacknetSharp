@@ -97,7 +97,7 @@ namespace HacknetSharp.Server
                             _sslStream.WriteTimeout = 100 * 1000;
 
                             WriteEvent(new UserInfoEvent {Operation = op, Admin = User.Admin});
-                            WriteEvent(new OutputEvent {Text = "<< LOGGED IN - INITIALIZING >>\n"});
+                            WriteEvent(new OutputEvent {Text = "<< LOGGED IN >>\n"});
                             break;
                         }
                         case RegistrationTokenForgeRequestEvent forgeRequest:

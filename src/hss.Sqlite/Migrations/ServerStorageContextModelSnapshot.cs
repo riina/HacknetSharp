@@ -190,7 +190,7 @@ namespace hss.Sqlite.Migrations
                     b.Property<uint>("Address")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("InitialProgram")
+                    b.Property<string>("InitialCommandLine")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
