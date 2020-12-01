@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201130070101_Initial")]
+    [Migration("20201201111641_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,7 @@ namespace hss.Sqlite.Migrations
                         .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.Property<Guid>("PersonForeignKey")
+                    b.Property<Guid>("Person")
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Salt")
@@ -99,9 +99,6 @@ namespace hss.Sqlite.Migrations
 
                     b.HasKey("Key");
 
-                    b.HasIndex("PersonForeignKey")
-                        .IsUnique();
-
                     b.HasIndex("SystemKey");
 
                     b.HasIndex("WorldKey");
@@ -115,10 +112,13 @@ namespace hss.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CurrentSystemKey")
+                    b.Property<Guid>("CurrentLogin")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("DefaultSystemKey")
+                    b.Property<Guid>("CurrentSystem")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("DefaultSystem")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -140,10 +140,6 @@ namespace hss.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Key");
-
-                    b.HasIndex("CurrentSystemKey");
-
-                    b.HasIndex("DefaultSystemKey");
 
                     b.HasIndex("PlayerKey");
 
@@ -303,12 +299,6 @@ namespace hss.Sqlite.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.LoginModel", b =>
                 {
-                    b.HasOne("HacknetSharp.Server.Common.Models.PersonModel", "Person")
-                        .WithOne("CurrentLogin")
-                        .HasForeignKey("HacknetSharp.Server.Common.Models.LoginModel", "PersonForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "System")
                         .WithMany("Logins")
                         .HasForeignKey("SystemKey")
@@ -319,8 +309,6 @@ namespace hss.Sqlite.Migrations
                         .WithMany()
                         .HasForeignKey("WorldKey");
 
-                    b.Navigation("Person");
-
                     b.Navigation("System");
 
                     b.Navigation("World");
@@ -328,14 +316,6 @@ namespace hss.Sqlite.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PersonModel", b =>
                 {
-                    b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "CurrentSystem")
-                        .WithMany()
-                        .HasForeignKey("CurrentSystemKey");
-
-                    b.HasOne("HacknetSharp.Server.Common.Models.SystemModel", "DefaultSystem")
-                        .WithMany()
-                        .HasForeignKey("DefaultSystemKey");
-
                     b.HasOne("HacknetSharp.Server.Common.Models.PlayerModel", "Player")
                         .WithMany("Identities")
                         .HasForeignKey("PlayerKey")
@@ -346,10 +326,6 @@ namespace hss.Sqlite.Migrations
                         .HasForeignKey("WorldKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CurrentSystem");
-
-                    b.Navigation("DefaultSystem");
 
                     b.Navigation("Player");
 
@@ -397,8 +373,6 @@ namespace hss.Sqlite.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Common.Models.PersonModel", b =>
                 {
-                    b.Navigation("CurrentLogin");
-
                     b.Navigation("Systems");
                 });
 

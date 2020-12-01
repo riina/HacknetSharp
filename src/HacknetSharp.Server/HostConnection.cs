@@ -262,21 +262,34 @@ namespace HacknetSharp.Server
             if (User == null) throw new InvalidOperationException();
             var playerModel = GetPlayerModel();
             var wId = world.Model.Key;
-            PersonModel? person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId);
-            if (person == null)
-            {
-                person = CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
-                _server.RegisterModel(person);
-            }
+            PersonModel person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId) ??
+                                 CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
 
             if (_initializedWorlds.Add(wId))
             {
                 // Reset user state
                 person.CurrentSystem = person.DefaultSystem;
                 person.WorkingDirectory = "/";
+
+                var systemModelKey = person.CurrentSystem;
+                var systemModel = world.Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
+                if (systemModel == null)
+                {
+                    // TODO handle missing system
+                    throw new ApplicationException("Missing system");
+                }
+
+                var pk = person.Key;
+                var login = systemModel.Logins.FirstOrDefault(l => l.Person == pk);
+                if (login == null)
+                {
+                    // TODO handle missing login
+                    throw new ApplicationException("Missing login");
+                }
+
+                person.CurrentLogin = login.Key;
             }
 
-            person.CurrentLogin ??= person.CurrentSystem.Logins.FirstOrDefault(l => l.Person == person);
             return person;
         }
 
@@ -287,11 +300,8 @@ namespace HacknetSharp.Server
             var system = server.Spawn.System(server.Database, world.Model, world.PlayerSystemTemplate, person,
                 player.User.Hash,
                 player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
-            //server.RegisterModel(system);
-            //server.RegisterModels(system.Files);
-            server.RegisterModel(person);
-            person.DefaultSystem = system;
-            person.CurrentSystem = system;
+            person.DefaultSystem = system.Key;
+            person.CurrentSystem = system.Key;
             return person;
         }
 

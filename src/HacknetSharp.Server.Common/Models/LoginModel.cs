@@ -8,8 +8,7 @@ namespace HacknetSharp.Server.Common.Models
     {
         public virtual WorldModel World { get; set; } = null!;
         public virtual SystemModel System { get; set; } = null!;
-        public virtual PersonModel? Person { get; set; }
-        public Guid PersonForeignKey { get; set; }
+        public virtual Guid Person { get; set; }
         public virtual string User { get; set; } = null!;
         public virtual byte[] Hash { get; set; } = null!;
         public virtual byte[] Salt { get; set; } = null!;

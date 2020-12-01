@@ -18,15 +18,15 @@ namespace HacknetSharp.Server.Common.Models
         public virtual bool Hidden { get; set; }
 
         public bool CanRead(LoginModel login) =>
-            System.Owner == login.Person || Read == AccessLevel.Owner && Owner == login ||
+            System.Owner.Key == login.Person || Read == AccessLevel.Owner && Owner == login ||
             Read == AccessLevel.Everyone;
 
         public bool CanWrite(LoginModel login) =>
-            System.Owner == login.Person || Write == AccessLevel.Owner && Owner == login ||
+            System.Owner.Key == login.Person || Write == AccessLevel.Owner && Owner == login ||
             Write == AccessLevel.Everyone;
 
         public bool CanExecute(LoginModel login) =>
-            System.Owner == login.Person || Execute == AccessLevel.Owner && Owner == login ||
+            System.Owner.Key == login.Person || Execute == AccessLevel.Owner && Owner == login ||
             Execute == AccessLevel.Everyone;
 
         public enum FileKind : byte

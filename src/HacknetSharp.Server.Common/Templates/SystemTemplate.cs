@@ -24,7 +24,7 @@ namespace HacknetSharp.Server.Common.Templates
             model.Name = string.Format(CultureInfo.InvariantCulture,
                 NameFormat ?? throw new InvalidOperationException($"{nameof(NameFormat)} is null."), owner.UserName);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
-            spawn.Login(database, world, model, owner.UserName, hash, salt);
+            spawn.Login(database, world, model, owner.UserName, hash, salt, owner);
             foreach (var user in Users)
             {
                 var match = _userRegex.Match(user);

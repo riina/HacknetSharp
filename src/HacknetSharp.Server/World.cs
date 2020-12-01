@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Linq;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
@@ -54,7 +55,7 @@ namespace HacknetSharp.Server
                             Reason = "Disconnected by server."
                         });
                     else
-                        context.PersonContext.WriteEventSafe(CreatePromptEvent(context.Person));
+                        context.PersonContext.WriteEventSafe(CreatePromptEvent(context.System.Model, context.Person));
                     operation.Context.PersonContext.FlushSafeAsync();
                 }
                 catch (Exception e)
@@ -66,8 +67,8 @@ namespace HacknetSharp.Server
             Operations.ExceptWith(_removeOperations);
         }
 
-        private static OutputEvent CreatePromptEvent(PersonModel person) =>
-            new OutputEvent {Text = $"{UintToAddress(person.CurrentSystem.Address)}:{person.WorkingDirectory}> "};
+        private static OutputEvent CreatePromptEvent(SystemModel system, PersonModel person) =>
+            new OutputEvent {Text = $"{UintToAddress(system.Address)}:{person.WorkingDirectory}> "};
 
         private static string UintToAddress(uint value)
         {
@@ -101,9 +102,17 @@ namespace HacknetSharp.Server
         private void ExecuteStandardCommand(CommandContext commandContext)
         {
             var personModel = commandContext.Person;
+            var systemModelKey = personModel.CurrentSystem;
+            var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
+            if (systemModel == null)
+            {
+                // TODO handle missing system
+                throw new ApplicationException("Missing system");
+            }
+
             if (commandContext.Argv.Length > 0)
             {
-                var system = new Common.System(this, personModel.CurrentSystem);
+                var system = new Common.System(this, systemModel);
                 commandContext.System = system;
                 if (!system.DirectoryExists("/bin"))
                 {
@@ -133,7 +142,7 @@ namespace HacknetSharp.Server
                 }
             }
 
-            commandContext.PersonContext.WriteEventSafe(CreatePromptEvent(personModel));
+            commandContext.PersonContext.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
             commandContext.PersonContext.WriteEventSafe(new OperationCompleteEvent
             {
                 Operation = commandContext.OperationId
@@ -144,7 +153,15 @@ namespace HacknetSharp.Server
         private void ExecuteInitialCommand(CommandContext commandContext)
         {
             var personModel = commandContext.Person;
-            var system = new Common.System(this, personModel.CurrentSystem);
+            var systemModelKey = personModel.CurrentSystem;
+            var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
+            if (systemModel == null)
+            {
+                // TODO handle missing system
+                throw new ApplicationException("Missing system");
+            }
+
+            var system = new Common.System(this, systemModel);
             commandContext.System = system;
             if (Server.Programs.TryGetValue(system.Model.InitialProgram ?? "heathcliff", out var res))
             {
@@ -154,7 +171,7 @@ namespace HacknetSharp.Server
 
             // If a program with a matching progCode isn't found, just return operation complete.
 
-            commandContext.PersonContext.WriteEventSafe(CreatePromptEvent(personModel));
+            commandContext.PersonContext.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
             commandContext.PersonContext.WriteEventSafe(new OperationCompleteEvent
             {
                 Operation = commandContext.OperationId

@@ -89,7 +89,7 @@ namespace HacknetSharp.Server
                 User = user,
                 Hash = hash,
                 Salt = salt,
-                Person = person
+                Person = person?.Key ?? Guid.Empty
             };
             owner.Logins.Add(login);
             database.Add(login);

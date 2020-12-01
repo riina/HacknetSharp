@@ -11,9 +11,9 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string Name { get; set; } = null!;
         public virtual string UserName { get; set; } = null!;
         public virtual PlayerModel? Player { get; set; }
-        public virtual SystemModel DefaultSystem { get; set; } = null!;
-        public virtual SystemModel CurrentSystem { get; set; } = null!;
-        public virtual LoginModel? CurrentLogin { get; set; }
+        public virtual Guid DefaultSystem { get; set; }
+        public virtual Guid CurrentSystem { get; set; }
+        public virtual Guid CurrentLogin { get; set; }
         public virtual string WorkingDirectory { get; set; } = null!;
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
@@ -25,8 +25,6 @@ namespace HacknetSharp.Server.Common.Models
             {
                 x.HasKey(v => v.Key);
                 x.HasMany(y => y.Systems).WithOne(z => z.Owner).OnDelete(DeleteBehavior.Cascade);
-                x.HasOne(y => y.CurrentLogin).WithOne(z => z!.Person!)
-                    .HasForeignKey<LoginModel>(a => a.PersonForeignKey);
             });
 #pragma warning restore 1591
     }
