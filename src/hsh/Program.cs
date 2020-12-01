@@ -106,19 +106,18 @@ namespace hsh
             };
             (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
             if (user == null) return resCode;
-            ServerEvent? endEvt;
             var operation = Guid.NewGuid();
-            connection.WriteEvent(new InitialCommandEvent {Operation = operation});
+            connection.WriteEvent(new InitialCommandEvent {Operation = operation, ConWidth = Console.WindowWidth});
             await connection.FlushAsync().Caf();
             do
             {
                 var operationLcl = operation;
-                endEvt = await connection.WaitForAsync(
+                ServerEvent? endEvt = await connection.WaitForAsync(
                     e => e is IOperation op && op.Operation == operationLcl, 10).Caf();
                 if (endEvt == null) break;
                 string command = Console.ReadLine() ?? throw new ApplicationException();
                 operation = Guid.NewGuid();
-                connection.WriteEvent(new CommandEvent {Operation = operation, Text = command});
+                connection.WriteEvent(new CommandEvent {Operation = operation, ConWidth = Console.WindowWidth, Text = command});
                 await connection.FlushAsync().Caf();
             } while (true);
 

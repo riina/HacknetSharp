@@ -222,7 +222,7 @@ namespace HacknetSharp.Server
             }
         }
 
-        public void QueueInitialCommand(HostConnection context, Guid operationId)
+        public void QueueInitialCommand(HostConnection context, Guid operationId, int conWidth)
         {
             _queueOp.WaitOne();
             try
@@ -242,7 +242,8 @@ namespace HacknetSharp.Server
                     PersonContext = context,
                     OperationId = operationId,
                     Argv = Array.Empty<string>(),
-                    Type = CommandContext.InvocationType.Initial
+                    Type = CommandContext.InvocationType.Initial,
+                    ConWidth = conWidth
                 });
             }
             finally
@@ -251,7 +252,7 @@ namespace HacknetSharp.Server
             }
         }
 
-        public void QueueCommand(HostConnection context, Guid operationId, string[] line)
+        public void QueueCommand(HostConnection context, Guid operationId, int conWidth, string[] line)
         {
             _queueOp.WaitOne();
             try
@@ -262,7 +263,6 @@ namespace HacknetSharp.Server
                     world = DefaultWorld;
                     player.ActiveWorld = world.Model.Key;
                     DirtyModel(player);
-                    ;
                 }
 
                 _inputQueue.Enqueue(new CommandContext
@@ -272,7 +272,8 @@ namespace HacknetSharp.Server
                     PersonContext = context,
                     OperationId = operationId,
                     Argv = line,
-                    Type = CommandContext.InvocationType.Standard
+                    Type = CommandContext.InvocationType.Standard,
+                    ConWidth = conWidth
                 });
             }
             finally

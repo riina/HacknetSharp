@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.CorePrograms
@@ -27,7 +31,30 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            foreach (var entry in system.EnumerateDirectory(path)) user.WriteEventSafe(Output($"{entry.Name}\n"));
+            StringBuilder sb = new StringBuilder();
+
+            var fileList = new List<string>(system.EnumerateDirectory(path).Select(f => f.Name));
+            int conWidth = context.ConWidth;
+            fileList.Sort(StringComparer.InvariantCulture);
+            int max = Math.Min(fileList.Select(e => Path.GetFileName(e.AsSpan()).Length).Max() + 1,
+                Math.Max(10, conWidth));
+            int pos = 0;
+            foreach (string x in fileList)
+            {
+                ReadOnlySpan<char> fn = Path.GetFileName(x.AsSpan());
+                if (pos + max >= conWidth)
+                {
+                    sb.Append('\n');
+                    pos = 0;
+                }
+
+                sb.Append(fn);
+                sb.Append(' ', max - fn.Length);
+                pos += max;
+            }
+
+            sb.Append('\n');
+            user.WriteEventSafe(Output(sb.ToString()));
 
             user.FlushSafeAsync();
         }

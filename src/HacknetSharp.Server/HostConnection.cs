@@ -134,7 +134,7 @@ namespace HacknetSharp.Server
                                 break;
                             }
 
-                            _server.QueueInitialCommand(this, op);
+                            _server.QueueInitialCommand(this, op, command.ConWidth);
                             break;
                         }
                         case CommandEvent command:
@@ -155,7 +155,7 @@ namespace HacknetSharp.Server
                                 return;
                             }
                             else
-                                _server.QueueCommand(this, op, line);
+                                _server.QueueCommand(this, op, command.ConWidth, line);
 
                             break;
                         }
