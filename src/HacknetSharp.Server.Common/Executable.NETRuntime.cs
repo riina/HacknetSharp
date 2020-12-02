@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HacknetSharp.Server.Common
 {
-    public partial class Program
+    public partial class Executable<TExecutableContext> where TExecutableContext : ExecutableContext
     {
         /*
          * Code pulled from https://github.com/dotnet/runtime

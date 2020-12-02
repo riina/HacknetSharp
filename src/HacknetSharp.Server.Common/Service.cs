@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server.Common
 {
-    public abstract class Program : Executable<ProgramContext>
+    public abstract class Service : Executable<ServiceContext>
     {
         #region Utility methods
 

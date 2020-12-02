@@ -28,14 +28,21 @@ namespace HacknetSharp.Server
             new HashSet<Type>(GetTypes(typeof(Program), typeof(Program).Assembly)
                 .Concat(GetTypes(typeof(Program), typeof(ServerUtil).Assembly)));
 
+        internal static readonly HashSet<Type> DefaultServices =
+            new HashSet<Type>(GetTypes(typeof(Service), typeof(Service).Assembly)
+                .Concat(GetTypes(typeof(Service), typeof(ServerUtil).Assembly)));
+
         /// <summary>
-        /// Load program types from a folder
+        /// Load types from a folder
         /// </summary>
         /// <param name="folder">Search folder</param>
-        /// <returns>Set of type arrays</returns>
-        public static HashSet<Type[]> LoadProgramTypesFromFolder(string folder)
+        /// <param name="types">Types to search</param>
+        /// <returns>List of lists of types</returns>
+        public static List<List<Type>> LoadTypesFromFolder(string folder, IReadOnlyList<Type> types)
         {
-            HashSet<Type[]> ret = new HashSet<Type[]>();
+            List<List<Type>> ret = new List<List<Type>>();
+            for (int i = 0; i < types.Count; i++)
+                ret.Add(new List<Type>());
             if (!Directory.Exists(folder)) return ret;
             var opts = new EnumerationOptions {MatchCasing = MatchCasing.CaseInsensitive};
             try
@@ -46,11 +53,10 @@ namespace HacknetSharp.Server
                     {
                         string tarName = Path.GetFileName(d);
                         string? fDll = Directory.GetFiles(d, $"{tarName}.dll", opts).FirstOrDefault();
-                        if (fDll != null)
-                        {
-                            var assembly = Assembly.LoadFrom(fDll);
-                            ret.Add(GetTypes(typeof(Program), assembly).ToArray());
-                        }
+                        if (fDll == null) continue;
+                        var assembly = Assembly.LoadFrom(fDll);
+                        for (int i = 0; i < types.Count; i++)
+                            ret[i].AddRange(GetTypes(types[i], assembly));
                     }
                     catch (Exception e)
                     {

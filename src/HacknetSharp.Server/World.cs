@@ -18,8 +18,8 @@ namespace HacknetSharp.Server
         public SystemTemplate PlayerSystemTemplate { get; }
         public double Time { get; set; }
         public double PreviousTime { get; set; }
-        public HashSet<ProgramOperation> Operations { get; }
-        private readonly HashSet<ProgramOperation> _removeOperations;
+        public HashSet<ExecutableOperation> Operations { get; }
+        private readonly HashSet<ExecutableOperation> _removeOperations;
 
 
         internal World(Server server, WorldModel model, IServerDatabase database, Spawn spawn)
@@ -29,8 +29,8 @@ namespace HacknetSharp.Server
             Spawn = spawn;
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate.ToLowerInvariant()];
-            Operations = new HashSet<ProgramOperation>();
-            _removeOperations = new HashSet<ProgramOperation>();
+            Operations = new HashSet<ExecutableOperation>();
+            _removeOperations = new HashSet<ExecutableOperation>();
         }
 
         public void Tick()
@@ -38,25 +38,9 @@ namespace HacknetSharp.Server
             foreach (var operation in Operations)
                 try
                 {
-                    var context = operation.Context;
                     if (!operation.Update(this)) continue;
                     _removeOperations.Add(operation);
-                    if (!context.User.Connected) continue;
-
-                    uint addr = context.System.Model.Address;
-                    string path = context.Person.WorkingDirectory;
-                    context.User.WriteEventSafe(new OperationCompleteEvent
-                    {
-                        Operation = context.OperationId, Address = addr, Path = path,
-                    });
-                    if (context.Disconnect)
-                        context.User.WriteEventSafe(new ServerDisconnectEvent
-                        {
-                            Reason = "Disconnected by server."
-                        });
-                    else
-                        context.User.WriteEventSafe(CreatePromptEvent(context.System.Model, context.Person));
-                    operation.Context.User.FlushSafeAsync();
+                    operation.Complete();
                 }
                 catch (Exception e)
                 {
@@ -67,7 +51,7 @@ namespace HacknetSharp.Server
             Operations.ExceptWith(_removeOperations);
         }
 
-        private static OutputEvent CreatePromptEvent(SystemModel system, PersonModel person) =>
+        internal static OutputEvent CreatePromptEvent(SystemModel system, PersonModel person) =>
             new OutputEvent {Text = $"{UintToAddress(system.Address)}:{person.WorkingDirectory}> "};
 
         private static string UintToAddress(uint value)
@@ -77,31 +61,28 @@ namespace HacknetSharp.Server
             return $"{dst[0]}.{dst[1]}.{dst[2]}.{dst[3]}";
         }
 
-        public void ExecuteCommand(CommandContext commandContext)
+        public void ExecuteCommand(ProgramContext programContext)
         {
-            switch (commandContext.Type)
+            switch (programContext.Type)
             {
-                case CommandContext.InvocationType.Standard:
-                    ExecuteStandardCommand(commandContext);
+                case ProgramContext.InvocationType.Standard:
+                    ExecuteStandardCommand(programContext);
                     return;
-                case CommandContext.InvocationType.Initial:
-                    ExecuteInitialCommand(commandContext);
+                case ProgramContext.InvocationType.Initial:
+                    ExecuteInitialCommand(programContext);
                     return;
-                case CommandContext.InvocationType.Boot:
+                case ProgramContext.InvocationType.Boot:
                     // TODO boot program implementation
                     break;
             }
 
-            commandContext.User.WriteEventSafe(new OperationCompleteEvent
-            {
-                Operation = commandContext.OperationId
-            });
-            commandContext.User.FlushSafeAsync();
+            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+            programContext.User.FlushSafeAsync();
         }
 
-        private void ExecuteStandardCommand(CommandContext commandContext)
+        private void ExecuteStandardCommand(ProgramContext programContext)
         {
-            var personModel = commandContext.Person;
+            var personModel = programContext.Person;
             var systemModelKey = personModel.CurrentSystem;
             var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
             if (systemModel == null)
@@ -118,23 +99,23 @@ namespace HacknetSharp.Server
                 throw new ApplicationException("Missing login");
             }
 
-            if (commandContext.Argv.Length > 0)
+            if (programContext.Argv.Length > 0)
             {
                 var system = new Common.System(this, systemModel);
-                commandContext.System = system;
-                commandContext.Login = loginModel;
+                programContext.System = system;
+                programContext.Login = loginModel;
                 if (!system.DirectoryExists("/bin"))
                 {
-                    commandContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
+                    programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
                 }
                 else
                 {
-                    string exe = $"/bin/{commandContext.Argv[0]}";
+                    string exe = $"/bin/{programContext.Argv[0]}";
                     if (!system.FileExists(exe, true))
                     {
-                        commandContext.User.WriteEventSafe(new OutputEvent
+                        programContext.User.WriteEventSafe(new OutputEvent
                         {
-                            Text = $"{commandContext.Argv[0]}: command not found\n"
+                            Text = $"{programContext.Argv[0]}: command not found\n"
                         });
                     }
                     else
@@ -142,7 +123,7 @@ namespace HacknetSharp.Server
                         if (Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                             out var res))
                         {
-                            Operations.Add(new ProgramOperation(commandContext, res.Item1.Invoke(commandContext)));
+                            Operations.Add(new ProgramOperation(programContext, res.Item1));
                             return;
                         }
 
@@ -151,17 +132,14 @@ namespace HacknetSharp.Server
                 }
             }
 
-            commandContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
-            commandContext.User.WriteEventSafe(new OperationCompleteEvent
-            {
-                Operation = commandContext.OperationId
-            });
-            commandContext.User.FlushSafeAsync();
+            programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
+            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+            programContext.User.FlushSafeAsync();
         }
 
-        private void ExecuteInitialCommand(CommandContext commandContext)
+        private void ExecuteInitialCommand(ProgramContext programContext)
         {
-            var personModel = commandContext.Person;
+            var personModel = programContext.Person;
             var systemModelKey = personModel.CurrentSystem;
             var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
             if (systemModel == null)
@@ -179,21 +157,21 @@ namespace HacknetSharp.Server
             }
 
             var system = new Common.System(this, systemModel);
-            commandContext.System = system;
-            commandContext.Login = loginModel;
-            commandContext.Argv = Arguments.SplitCommandLine(system.Model.InitialCommandLine ?? "heathcliff");
+            programContext.System = system;
+            programContext.Login = loginModel;
+            programContext.Argv = Arguments.SplitCommandLine(system.Model.InitialCommandLine ?? "heathcliff");
             if (!system.DirectoryExists("/bin"))
             {
-                commandContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
+                programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
             }
             else
             {
-                string exe = $"/bin/{commandContext.Argv[0]}";
+                string exe = $"/bin/{programContext.Argv[0]}";
                 if (!system.FileExists(exe, true))
                 {
-                    commandContext.User.WriteEventSafe(new OutputEvent
+                    programContext.User.WriteEventSafe(new OutputEvent
                     {
-                        Text = $"{commandContext.Argv[0]}: command not found\n"
+                        Text = $"{programContext.Argv[0]}: command not found\n"
                     });
                 }
                 else
@@ -201,7 +179,7 @@ namespace HacknetSharp.Server
                     if (Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                         out var res))
                     {
-                        Operations.Add(new ProgramOperation(commandContext, res.Item1.Invoke(commandContext)));
+                        Operations.Add(new ProgramOperation(programContext, res.Item1));
                         return;
                     }
 
@@ -211,12 +189,9 @@ namespace HacknetSharp.Server
 
             // If a program with a matching progCode isn't found, just return operation complete.
 
-            commandContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
-            commandContext.User.WriteEventSafe(new OperationCompleteEvent
-            {
-                Operation = commandContext.OperationId
-            });
-            commandContext.User.FlushSafeAsync();
+            programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
+            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+            programContext.User.FlushSafeAsync();
         }
 
 

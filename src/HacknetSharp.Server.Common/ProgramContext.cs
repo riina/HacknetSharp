@@ -3,16 +3,13 @@ using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server.Common
 {
-    public class CommandContext
+    public class ProgramContext : ExecutableContext
     {
-        public IWorld World { get; set; } = null!;
         public IPersonContext User { get; set; } = null!;
         public PersonModel Person { get; set; } = null!;
-        public System System { get; set; } = null!;
         public LoginModel Login { get; set; } = null!;
         public Guid OperationId { get; set; }
         public bool Disconnect { get; set; }
-        public string[] Argv { get; set; } = null!;
         public InvocationType Type { get; set; }
         public int ConWidth { get; set; } = -1;
 

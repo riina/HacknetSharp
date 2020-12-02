@@ -24,9 +24,9 @@ namespace HacknetSharp.Server
         /// Creates a new instance of <see cref="ServerStorageContext"/> with the given database options and components.
         /// </summary>
         /// <param name="options">The options for this context.</param>
-        /// <param name="programs">The program types to initialize.</param>
+        /// <param name="executables">The executable types to initialize.</param>
         /// <param name="models">Additional model types to initialize.</param>
-        public ServerStorageContext(DbContextOptions options, IEnumerable<Type> programs, IEnumerable<Type> models) :
+        public ServerStorageContext(DbContextOptions options, IEnumerable<Type> executables, IEnumerable<Type> models) :
             base(options)
         {
             _configureList = new List<ModelBuilderDelegate>();
@@ -47,7 +47,7 @@ namespace HacknetSharp.Server
 
             AddDepTypes(ServerUtil.DefaultModels.Concat(models));
 
-            foreach (var type in programs)
+            foreach (var type in executables)
             {
                 if (!programSet.Add(type)) continue;
                 foreach (var dep in type.GetCustomAttributes(typeof(StorageDependenciesAttribute)))

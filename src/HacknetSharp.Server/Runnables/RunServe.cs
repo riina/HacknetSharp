@@ -56,7 +56,7 @@ namespace HacknetSharp.Server.Runnables
                 .WithTemplates(ServerUtil.GetTemplates(""))
                 .WithCertificate(cert.Value.Item2);
             var instance = conf.CreateInstance();
-            await instance.StartAsync().Caf();
+            _ = instance.Start();
 
             // Block the program until it is closed.
             Console.WriteLine("Press Ctrl-C to terminate.");

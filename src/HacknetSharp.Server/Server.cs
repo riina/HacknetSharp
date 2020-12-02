@@ -21,8 +21,8 @@ namespace HacknetSharp.Server
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
-        private readonly Queue<CommandContext> _inputQueue;
-        private readonly List<CommandContext> _inputProcessing;
+        private readonly Queue<ProgramContext> _inputQueue;
+        private readonly List<ProgramContext> _inputProcessing;
         private readonly AutoResetEvent _setOp;
         private readonly AutoResetEvent _queueOp;
         private double _initialTime;
@@ -70,8 +70,8 @@ namespace HacknetSharp.Server
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
             _connections = new ConcurrentDictionary<Guid, HostConnection>();
-            _inputQueue = new Queue<CommandContext>();
-            _inputProcessing = new List<CommandContext>();
+            _inputQueue = new Queue<ProgramContext>();
+            _inputProcessing = new List<ProgramContext>();
             _setOp = new AutoResetEvent(true);
             _queueOp = new AutoResetEvent(true);
             _registrationSet = new List<object>();
@@ -112,7 +112,7 @@ namespace HacknetSharp.Server
             }
         }
 
-        public Task<Task> StartAsync()
+        public Task Start()
         {
             Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
                 ref _state);
@@ -141,7 +141,7 @@ namespace HacknetSharp.Server
             _connectListener.Start();
             _connectTask = RunConnectListener();
             _initialTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            return Task.FromResult(UpdateAsync());
+            return UpdateAsync();
         }
 
         private async Task UpdateAsync()
@@ -164,7 +164,7 @@ namespace HacknetSharp.Server
                     foreach (var world in Worlds.Values)
                     {
                         world.PreviousTime = world.Time;
-                        world.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000.0 - _initialTime;
+                        world.Time = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _initialTime) / 1000.0;
                         world.Tick();
                     }
 
@@ -235,14 +235,14 @@ namespace HacknetSharp.Server
                     DirtyModel(player);
                 }
 
-                _inputQueue.Enqueue(new CommandContext
+                _inputQueue.Enqueue(new ProgramContext
                 {
                     World = world,
                     Person = context.GetPerson(world),
                     User = context,
                     OperationId = operationId,
                     Argv = Array.Empty<string>(),
-                    Type = CommandContext.InvocationType.Initial,
+                    Type = ProgramContext.InvocationType.Initial,
                     ConWidth = conWidth
                 });
             }
@@ -265,14 +265,14 @@ namespace HacknetSharp.Server
                     DirtyModel(player);
                 }
 
-                _inputQueue.Enqueue(new CommandContext
+                _inputQueue.Enqueue(new ProgramContext
                 {
                     World = world,
                     Person = context.GetPerson(world),
                     User = context,
                     OperationId = operationId,
                     Argv = line,
-                    Type = CommandContext.InvocationType.Standard,
+                    Type = ProgramContext.InvocationType.Standard,
                     ConWidth = conWidth
                 });
             }

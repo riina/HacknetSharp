@@ -1,25 +1,23 @@
 ﻿using System.Collections.Generic;
+using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server
 {
-    public class ProgramOperation
+    public class ProgramOperation : ExecutableOperation
     {
-        public CommandContext Context { get; }
-        private readonly IEnumerator<Program.YieldToken?> _enumerator;
-        private Program.YieldToken? _currentToken;
+        private readonly ProgramContext _context;
+        private readonly IEnumerator<YieldToken?> _enumerator;
+        private YieldToken? _currentToken;
+        private bool _cleaned;
 
-        public ProgramOperation(CommandContext context, IEnumerator<Program.YieldToken?> enumerator)
+        public ProgramOperation(ProgramContext context, Program program)
         {
-            Context = context;
-            _enumerator = enumerator;
+            _context = context;
+            _enumerator = program.Run(context);
         }
 
-        /// <summary>
-        /// Update current operation.
-        /// </summary>
-        /// <returns>True when operation is complete.</returns>
-        public bool Update(IWorld world)
+        public override bool Update(IWorld world)
         {
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
@@ -28,6 +26,24 @@ namespace HacknetSharp.Server
             if (!_enumerator.MoveNext()) return true;
             _currentToken = _enumerator.Current;
             return false;
+        }
+
+        public override void Complete()
+        {
+            if (_cleaned) return;
+            _cleaned = true;
+            if (!_context.User.Connected) return;
+            uint addr = _context.System.Model.Address;
+            string path = _context.Person.WorkingDirectory;
+            _context.User.WriteEventSafe(new OperationCompleteEvent
+            {
+                Operation = _context.OperationId, Address = addr, Path = path,
+            });
+            if (_context.Disconnect)
+                _context.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
+            else
+                _context.User.WriteEventSafe(World.CreatePromptEvent(_context.System.Model, _context.Person));
+            _context.User.FlushSafeAsync();
         }
     }
 }

@@ -9,9 +9,9 @@ namespace HacknetSharp.Server.CorePrograms
         "cd [directory]")]
     public class CdProgram : Program
     {
-        public override IEnumerator<YieldToken?> Invoke(CommandContext context) => InvokeStatic(context);
+        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
-        private static IEnumerator<YieldToken?> InvokeStatic(CommandContext context)
+        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
         {
             var user = context.User;
             if (!user.Connected) yield break;
