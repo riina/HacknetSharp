@@ -21,6 +21,59 @@ namespace HacknetSharp.Server.Common
         public static (string, string) GetDirectoryAndName(string path) => (
             Program.GetNormalized(Program.GetDirectoryName(path) ?? "/"), Program.GetFileName(path));
 
+        private static (string, string) GetDirectoryAndNameInternal(string path) => (
+            Program.GetDirectoryName(path) ?? "/", Program.GetFileName(path));
+
+
+        public bool CanRead(string path, LoginModel login)
+        {
+            var (nPath, nName) = GetDirectoryAndName(path);
+            if (nPath == "/" && nName == "") return true;
+            var entry = Model.Files.Where(f => f.Hidden == false && f.Path == nPath && f.Name == nName)
+                .FirstOrDefault();
+            var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
+            return CanReadInternal(pPath, pName, login) && (entry != null
+                ? entry!.CanRead(login)
+                : throw new FileNotFoundException($"{path} not found."));
+        }
+
+        public bool CanWrite(string path, LoginModel login)
+        {
+            var (nPath, nName) = GetDirectoryAndName(path);
+            if (nPath == "/" && nName == "") return true;
+            var entry = Model.Files.Where(f => f.Hidden == false && f.Path == nPath && f.Name == nName)
+                .FirstOrDefault();
+            var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
+            return CanReadInternal(pPath, pName, login) && (entry != null
+                ? entry!.CanWrite(login)
+                : throw new FileNotFoundException($"{path} not found."));
+        }
+
+        public bool CanExecute(string path, LoginModel login)
+        {
+            var (nPath, nName) = GetDirectoryAndName(path);
+            if (nPath == "/" && nName == "") return true;
+            var entry = Model.Files.Where(f => f.Hidden == false && f.Path == nPath && f.Name == nName)
+                .FirstOrDefault();
+            var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
+            return CanReadInternal(pPath, pName, login) && (entry != null
+                ? entry!.CanExecute(login)
+                : throw new FileNotFoundException($"{path} not found."));
+        }
+
+        private bool CanReadInternal(string nPath, string nName, LoginModel login)
+        {
+            if (nPath == "/" && nName == "") return true;
+            if (nPath != "/")
+            {
+                var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
+                if (!CanReadInternal(pPath, pName, login)) return false;
+            }
+
+            return Model.Files.Where(f => f.Hidden == false && f.Path == nPath && f.Name == nName)
+                .FirstOrDefault()?.CanRead(login) ?? false;
+        }
+
         public bool DirectoryExists(string path, bool hidden = false)
         {
             var (nPath, nName) = GetDirectoryAndName(path);

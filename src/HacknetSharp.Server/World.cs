@@ -41,22 +41,22 @@ namespace HacknetSharp.Server
                     var context = operation.Context;
                     if (!operation.Update(this)) continue;
                     _removeOperations.Add(operation);
-                    if (!context.PersonContext.Connected) continue;
+                    if (!context.User.Connected) continue;
 
                     uint addr = context.System.Model.Address;
                     string path = context.Person.WorkingDirectory;
-                    context.PersonContext.WriteEventSafe(new OperationCompleteEvent
+                    context.User.WriteEventSafe(new OperationCompleteEvent
                     {
                         Operation = context.OperationId, Address = addr, Path = path,
                     });
                     if (context.Disconnect)
-                        context.PersonContext.WriteEventSafe(new ServerDisconnectEvent
+                        context.User.WriteEventSafe(new ServerDisconnectEvent
                         {
                             Reason = "Disconnected by server."
                         });
                     else
-                        context.PersonContext.WriteEventSafe(CreatePromptEvent(context.System.Model, context.Person));
-                    operation.Context.PersonContext.FlushSafeAsync();
+                        context.User.WriteEventSafe(CreatePromptEvent(context.System.Model, context.Person));
+                    operation.Context.User.FlushSafeAsync();
                 }
                 catch (Exception e)
                 {
@@ -92,11 +92,11 @@ namespace HacknetSharp.Server
                     break;
             }
 
-            commandContext.PersonContext.WriteEventSafe(new OperationCompleteEvent
+            commandContext.User.WriteEventSafe(new OperationCompleteEvent
             {
                 Operation = commandContext.OperationId
             });
-            commandContext.PersonContext.FlushSafeAsync();
+            commandContext.User.FlushSafeAsync();
         }
 
         private void ExecuteStandardCommand(CommandContext commandContext)
@@ -110,20 +110,29 @@ namespace HacknetSharp.Server
                 throw new ApplicationException("Missing system");
             }
 
+            var personModelKey = personModel.Key;
+            var loginModel = systemModel.Logins.FirstOrDefault(l => l.Person == personModelKey);
+            if (loginModel == null)
+            {
+                //TODO handle missing login
+                throw new ApplicationException("Missing login");
+            }
+
             if (commandContext.Argv.Length > 0)
             {
                 var system = new Common.System(this, systemModel);
                 commandContext.System = system;
+                commandContext.Login = loginModel;
                 if (!system.DirectoryExists("/bin"))
                 {
-                    commandContext.PersonContext.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
+                    commandContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
                 }
                 else
                 {
                     string exe = $"/bin/{commandContext.Argv[0]}";
                     if (!system.FileExists(exe, true))
                     {
-                        commandContext.PersonContext.WriteEventSafe(new OutputEvent
+                        commandContext.User.WriteEventSafe(new OutputEvent
                         {
                             Text = $"{commandContext.Argv[0]}: command not found\n"
                         });
@@ -142,12 +151,12 @@ namespace HacknetSharp.Server
                 }
             }
 
-            commandContext.PersonContext.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
-            commandContext.PersonContext.WriteEventSafe(new OperationCompleteEvent
+            commandContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
+            commandContext.User.WriteEventSafe(new OperationCompleteEvent
             {
                 Operation = commandContext.OperationId
             });
-            commandContext.PersonContext.FlushSafeAsync();
+            commandContext.User.FlushSafeAsync();
         }
 
         private void ExecuteInitialCommand(CommandContext commandContext)
@@ -161,19 +170,28 @@ namespace HacknetSharp.Server
                 throw new ApplicationException("Missing system");
             }
 
+            var personModelKey = personModel.Key;
+            var loginModel = systemModel.Logins.FirstOrDefault(l => l.Person == personModelKey);
+            if (loginModel == null)
+            {
+                //TODO handle missing login
+                throw new ApplicationException("Missing login");
+            }
+
             var system = new Common.System(this, systemModel);
             commandContext.System = system;
+            commandContext.Login = loginModel;
             commandContext.Argv = Arguments.SplitCommandLine(system.Model.InitialCommandLine ?? "heathcliff");
             if (!system.DirectoryExists("/bin"))
             {
-                commandContext.PersonContext.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
+                commandContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
             }
             else
             {
                 string exe = $"/bin/{commandContext.Argv[0]}";
                 if (!system.FileExists(exe, true))
                 {
-                    commandContext.PersonContext.WriteEventSafe(new OutputEvent
+                    commandContext.User.WriteEventSafe(new OutputEvent
                     {
                         Text = $"{commandContext.Argv[0]}: command not found\n"
                     });
@@ -193,12 +211,12 @@ namespace HacknetSharp.Server
 
             // If a program with a matching progCode isn't found, just return operation complete.
 
-            commandContext.PersonContext.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
-            commandContext.PersonContext.WriteEventSafe(new OperationCompleteEvent
+            commandContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
+            commandContext.User.WriteEventSafe(new OperationCompleteEvent
             {
                 Operation = commandContext.OperationId
             });
-            commandContext.PersonContext.FlushSafeAsync();
+            commandContext.User.FlushSafeAsync();
         }
 
 

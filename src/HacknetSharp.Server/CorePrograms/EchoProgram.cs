@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.CorePrograms
 
         private static IEnumerator<YieldToken?> InvokeStatic(CommandContext context)
         {
-            var user = context.PersonContext;
+            var user = context.User;
             if (!user.Connected) yield break;
             user.WriteEventSafe(new OutputEvent
             {

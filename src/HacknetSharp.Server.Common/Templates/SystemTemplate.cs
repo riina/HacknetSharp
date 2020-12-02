@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.Common.Templates
         public List<string> Filesystem { get; set; } = new List<string>();
 
         private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+):([\S\s]+)");
-        private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*+]{3})?:([\S\s]+)");
+        private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
         public void ApplyTemplate(IServerDatabase database, ISpawn spawn, WorldModel world, SystemModel model,
             PersonModel owner, byte[] hash, byte[] salt)

@@ -13,7 +13,7 @@ namespace HacknetSharp.Server.CorePrograms
 
         private static IEnumerator<YieldToken?> InvokeStatic(CommandContext context)
         {
-            var user = context.PersonContext;
+            var user = context.User;
             if (!user.Connected) yield break;
             var system = context.System;
             var argv = context.Argv;
@@ -25,6 +25,13 @@ namespace HacknetSharp.Server.CorePrograms
             }
             catch
             {
+                yield break;
+            }
+
+            if (!system.CanRead(path, context.Login))
+            {
+                user.WriteEventSafe(Output($"cd: {path}: Permission denied\n"));
+                user.FlushSafeAsync();
                 yield break;
             }
 

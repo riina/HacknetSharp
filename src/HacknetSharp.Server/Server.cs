@@ -239,7 +239,7 @@ namespace HacknetSharp.Server
                 {
                     World = world,
                     Person = context.GetPerson(world),
-                    PersonContext = context,
+                    User = context,
                     OperationId = operationId,
                     Argv = Array.Empty<string>(),
                     Type = CommandContext.InvocationType.Initial,
@@ -269,7 +269,7 @@ namespace HacknetSharp.Server
                 {
                     World = world,
                     Person = context.GetPerson(world),
-                    PersonContext = context,
+                    User = context,
                     OperationId = operationId,
                     Argv = line,
                     Type = CommandContext.InvocationType.Standard,
