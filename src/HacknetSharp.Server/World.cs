@@ -94,7 +94,7 @@ namespace HacknetSharp.Server
                 var system = new Common.System(this, systemModel);
                 programContext.System = system;
                 programContext.Login = loginModel;
-                if (!system.DirectoryExists("/bin"))
+                if (programContext.Type != ProgramContext.InvocationType.StartUp && !system.DirectoryExists("/bin"))
                 {
                     if (programContext.Type == ProgramContext.InvocationType.Standard)
                         programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
@@ -102,15 +102,8 @@ namespace HacknetSharp.Server
                 else
                 {
                     string exe = $"/bin/{programContext.Argv[0]}";
-                    if (!system.FileExists(exe, true))
-                    {
-                        if (programContext.Type == ProgramContext.InvocationType.Standard)
-                            programContext.User.WriteEventSafe(new OutputEvent
-                            {
-                                Text = $"{programContext.Argv[0]}: command not found\n"
-                            });
-                    }
-                    else
+                    if (system.FileExists(exe, true) || programContext.Type == ProgramContext.InvocationType.StartUp &&
+                        system.FileExists(exe, true, true))
                     {
                         var fse = system.GetFileSystemEntry(exe);
                         if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
@@ -122,6 +115,14 @@ namespace HacknetSharp.Server
                         }
 
                         // If a program with a matching progCode isn't found, just return operation complete.
+                    }
+                    else
+                    {
+                        if (programContext.Type == ProgramContext.InvocationType.Standard)
+                            programContext.User.WriteEventSafe(new OutputEvent
+                            {
+                                Text = $"{programContext.Argv[0]}: command not found\n"
+                            });
                     }
                 }
             }
