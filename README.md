@@ -1,11 +1,13 @@
 # HacknetSharp
- Like HacknetPlusPlus but C#
+
+![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)
 
 Heavily inspired by the legendary game [Hacknet](http://hacknet-os.com/),
 this project aims to deliver a multiplayer Hacknet experience
 to WILLs everywhere.
 
-This project was started purely because tarche created [HacknetPlusPlus](https://github.com/The-Council-of-Wills/HacknetPlusPlus).
+This project was started purely because tarche created
+[HacknetPlusPlus](https://github.com/The-Council-of-Wills/HacknetPlusPlus).
 All the WILL homies are having fun making their own
 Hacknet, it's almost like Hackerjam 3 except nobody wins this time.
 
