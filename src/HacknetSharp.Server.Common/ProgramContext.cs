@@ -12,6 +12,7 @@ namespace HacknetSharp.Server.Common
         public bool Disconnect { get; set; }
         public InvocationType Type { get; set; }
         public int ConWidth { get; set; } = -1;
+        public bool IsAI { get; set; }
 
         public enum InvocationType
         {

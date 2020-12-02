@@ -100,9 +100,9 @@ namespace HacknetSharp.Server
         }
 
         public FileModel Folder(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path)
+            string path, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -111,15 +111,16 @@ namespace HacknetSharp.Server
                 Name = name,
                 Path = path,
                 System = owner,
-                World = context
+                World = context,
+                Hidden = hidden
             };
 
             // Generate dependent folders
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath);
+                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, owner, nName, nPath, hidden);
             }
 
             owner.Files.Add(model);
@@ -128,9 +129,9 @@ namespace HacknetSharp.Server
         }
 
         public FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, string file)
+            string path, string file, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -140,15 +141,16 @@ namespace HacknetSharp.Server
                 Path = path,
                 System = owner,
                 World = context,
-                Content = file
+                Content = file,
+                Hidden = hidden
             };
 
             // Generate dependent folders
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath);
+                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, owner, nName, nPath, hidden);
             }
 
             owner.Files.Add(model);
@@ -157,9 +159,9 @@ namespace HacknetSharp.Server
         }
 
         public FileModel TextFile(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, string content)
+            string path, string content, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -169,15 +171,16 @@ namespace HacknetSharp.Server
                 Path = path,
                 System = owner,
                 World = context,
-                Content = content
+                Content = content,
+                Hidden = hidden
             };
 
             // Generate dependent folders
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath);
+                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, owner, nName, nPath, hidden);
             }
 
             owner.Files.Add(model);
@@ -186,9 +189,9 @@ namespace HacknetSharp.Server
         }
 
         public FileModel ProgFile(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, string progCode)
+            string path, string progCode, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -198,15 +201,16 @@ namespace HacknetSharp.Server
                 Path = path,
                 System = owner,
                 World = context,
-                Content = progCode
+                Content = progCode,
+                Hidden = hidden
             };
 
             // Generate dependent folders
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath);
+                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, owner, nName, nPath, hidden);
             }
 
             owner.Files.Add(model);
@@ -215,9 +219,9 @@ namespace HacknetSharp.Server
         }
 
         public FileModel Duplicate(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, FileModel existing)
+            string path, FileModel existing, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Path == path && f.Name == name))
+            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -227,15 +231,16 @@ namespace HacknetSharp.Server
                 Path = path,
                 System = owner,
                 World = context,
-                Content = existing.Content
+                Content = existing.Content,
+                Hidden = hidden
             };
 
             // Generate dependent folders
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath);
+                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, owner, nName, nPath, hidden);
             }
 
             owner.Files.Add(model);

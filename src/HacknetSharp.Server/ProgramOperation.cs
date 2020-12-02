@@ -33,6 +33,8 @@ namespace HacknetSharp.Server
         {
             if (_cleaned) return;
             _cleaned = true;
+            if (_context.IsAI)
+                return;
             if (_context.Type == ProgramContext.InvocationType.StartUp)
                 _context.Person.StartedUp = true;
             if (!_context.User.Connected) return;
@@ -64,7 +66,7 @@ namespace HacknetSharp.Server
 
             if (_context.Disconnect)
                 _context.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
-            else if(_context.Type != ProgramContext.InvocationType.StartUp)
+            else if (_context.Type != ProgramContext.InvocationType.StartUp)
                 _context.User.WriteEventSafe(World.CreatePromptEvent(_context.System.Model, _context.Person));
             _context.User.FlushSafeAsync();
         }

@@ -13,6 +13,8 @@ namespace HacknetSharp.Server.Common
         SystemTemplate PlayerSystemTemplate { get; }
         double Time { get; }
         double PreviousTime { get; }
+        void StartAICommand(PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
+        void StartDaemon(SystemModel systemModel, string line);
         void ExecuteCommand(ProgramContext programContext);
         void RegisterModel<T>(Model<T> model) where T : IEquatable<T>;
         void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>;

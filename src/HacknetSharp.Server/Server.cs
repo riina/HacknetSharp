@@ -18,6 +18,7 @@ namespace HacknetSharp.Server
     public class Server
     {
         private readonly HashSet<Type> _programTypes;
+        private readonly HashSet<Type> _serviceTypes;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
@@ -35,6 +36,7 @@ namespace HacknetSharp.Server
         public Dictionary<Guid, World> Worlds { get; }
         public World DefaultWorld { get; }
         public Dictionary<string, (Program, ProgramInfoAttribute)> Programs { get; }
+        public Dictionary<string, Service> Services { get; }
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
         private readonly List<object> _registrationSet;
@@ -65,7 +67,10 @@ namespace HacknetSharp.Server
             DefaultWorld = defaultWorld ?? throw new ApplicationException("No world matching name found");
             _programTypes = new HashSet<Type>(ServerUtil.DefaultPrograms);
             _programTypes.UnionWith(config.Programs);
+            _serviceTypes = new HashSet<Type>(ServerUtil.DefaultServices);
+            _serviceTypes.UnionWith(config.Services);
             Programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
+            Services = new Dictionary<string, Service>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
@@ -127,6 +132,17 @@ namespace HacknetSharp.Server
                                   throw new ApplicationException(
                                       $"{type.FullName} supplied as program but could not be casted to {nameof(Program)}");
                     Programs.Add(info.Name, (program, info));
+                }
+
+                foreach (var type in _serviceTypes)
+                {
+                    var info = type.GetCustomAttribute(typeof(ServiceInfoAttribute)) as ServiceInfoAttribute ??
+                               throw new ApplicationException(
+                                   $"{type.FullName} supplied as service but did not have {nameof(ServiceInfoAttribute)}");
+                    var service = Activator.CreateInstance(type) as Service ??
+                                  throw new ApplicationException(
+                                      $"{type.FullName} supplied as service but could not be casted to {nameof(Service)}");
+                    Services.Add(info.Name, service);
                 }
             }
             catch
@@ -309,6 +325,8 @@ namespace HacknetSharp.Server
                 _countdown.Wait();
             }).Caf();
             await _connectTask!;
+            Console.WriteLine("Committing database...");
+            await Database.SyncAsync();
             Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
         }
 

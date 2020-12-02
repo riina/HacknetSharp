@@ -61,6 +61,47 @@ namespace HacknetSharp.Server
             return $"{dst[0]}.{dst[1]}.{dst[2]}.{dst[3]}";
         }
 
+        public void StartAICommand(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
+            string line)
+        {
+            var programContext = new ProgramContext
+            {
+                World = this,
+                Person = personModel,
+                User = new AIPersonContext(personModel),
+                OperationId = Guid.Empty,
+                Argv = Arguments.SplitCommandLine(line),
+                Type = ProgramContext.InvocationType.Standard,
+                ConWidth = -1
+            };
+
+            personModel.CurrentSystem = systemModel.Key;
+            var system = new Common.System(this, systemModel);
+            programContext.System = system;
+            programContext.Login = loginModel;
+            if (!system.DirectoryExists("/bin")) return;
+            string exe = $"/bin/{programContext.Argv[0]}";
+            if (!system.FileExists(exe, true)) return;
+            var fse = system.GetFileSystemEntry(exe);
+            if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
+                Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                    out var res)) Operations.Add(new ProgramOperation(programContext, res.Item1));
+        }
+
+        public void StartDaemon(SystemModel systemModel, string line)
+        {
+            var serviceContext = new ServiceContext{World = this, Argv = Arguments.SplitCommandLine(line)};
+            var system = new Common.System(this, systemModel);
+            serviceContext.System = system;
+            if (!system.DirectoryExists("/bin")) return;
+            string exe = $"/bin/{serviceContext.Argv[0]}";
+            if (!system.FileExists(exe, true)) return;
+            var fse = system.GetFileSystemEntry(exe);
+            if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
+                Server.Services.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                    out var res)) Operations.Add(new ServiceOperation(serviceContext, res));
+        }
+
         public void ExecuteCommand(ProgramContext programContext)
         {
             var personModel = programContext.Person;
@@ -96,7 +137,7 @@ namespace HacknetSharp.Server
                 programContext.Login = loginModel;
                 if (programContext.Type != ProgramContext.InvocationType.StartUp && !system.DirectoryExists("/bin"))
                 {
-                    if (programContext.Type == ProgramContext.InvocationType.Standard)
+                    if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAI)
                         programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
                 }
                 else
@@ -118,7 +159,7 @@ namespace HacknetSharp.Server
                     }
                     else
                     {
-                        if (programContext.Type == ProgramContext.InvocationType.Standard)
+                        if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAI)
                             programContext.User.WriteEventSafe(new OutputEvent
                             {
                                 Text = $"{programContext.Argv[0]}: command not found\n"
@@ -127,11 +168,13 @@ namespace HacknetSharp.Server
                 }
             }
 
-            programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
-            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
-            programContext.User.FlushSafeAsync();
+            if (!programContext.IsAI)
+            {
+                programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
+                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+                programContext.User.FlushSafeAsync();
+            }
         }
-
 
         public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
         {

@@ -22,6 +22,11 @@ namespace HacknetSharp.Server
         public HashSet<Type> Programs { get; set; }
 
         /// <summary>
+        /// Service types.
+        /// </summary>
+        public HashSet<Type> Services { get; set; }
+
+        /// <summary>
         /// Default world.
         /// </summary>
         public string? DefaultWorld { get; set; }
@@ -47,6 +52,7 @@ namespace HacknetSharp.Server
         public ServerConfig()
         {
             Programs = new HashSet<Type>();
+            Services = new HashSet<Type>();
             Templates = new TemplateGroup();
         }
 
@@ -69,6 +75,17 @@ namespace HacknetSharp.Server
         public ServerConfig WithPrograms(IEnumerable<Type> programs)
         {
             Programs.UnionWith(programs);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds services.
+        /// </summary>
+        /// <param name="services">Service types.</param>
+        /// <returns>This config.</returns>
+        public ServerConfig WithServices(IEnumerable<Type> services)
+        {
+            Services.UnionWith(services);
             return this;
         }
 

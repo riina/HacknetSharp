@@ -147,7 +147,7 @@ namespace HacknetSharp.Server.Common
         {
             var (nPath, nName) = GetDirectoryAndName(path);
             if (nPath == "/" && nName == "")
-                return Model.Files.Where(f => f.Path == nPath);
+                return Model.Files.Where(f => f.Hidden == hidden && f.Path == nPath);
             string bPath = Program.Combine(nPath, nName);
             return Model.Files.Where(f => f.Hidden == hidden && f.Path == nPath)
                 .Any(f => f.Name == nName && f.Kind == FileModel.FileKind.Folder)

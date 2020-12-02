@@ -18,18 +18,19 @@ namespace HacknetSharp.Server.Common
             byte[] salt, PersonModel? person = null);
 
         FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
-            string file);
+            string file, bool hidden = false);
 
-        FileModel Folder(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path);
+        FileModel Folder(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
+            bool hidden = false);
 
         FileModel TextFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
-            string content);
+            string content, bool hidden = false);
 
         FileModel ProgFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
-            string progCode);
+            string progCode, bool hidden = false);
 
         public FileModel Duplicate(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, FileModel existing);
+            string path, FileModel existing, bool hidden = false);
 
         WorldModel World(IServerDatabase database, string name, TemplateGroup templates, WorldTemplate template);
     }
