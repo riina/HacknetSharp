@@ -16,8 +16,8 @@ namespace HacknetSharp.Server.Common
         public enum InvocationType
         {
             Standard,
-            Initial,
-            Boot
+            Connect,
+            StartUp
         }
     }
 }

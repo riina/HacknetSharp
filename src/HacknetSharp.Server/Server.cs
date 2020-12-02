@@ -181,9 +181,8 @@ namespace HacknetSharp.Server
                     _setOp.Set();
                     if (ticks == ticksPerSave)
                     {
-                        Console.WriteLine("Saving to database");
+                        Console.WriteLine($"[Database saving {DateTime.Now}]");
                         await Database.SyncAsync().Caf();
-                        Console.WriteLine("Saved");
                         ticks = 0;
                     }
 
@@ -222,7 +221,7 @@ namespace HacknetSharp.Server
             }
         }
 
-        public void QueueInitialCommand(HostConnection context, Guid operationId, int conWidth)
+        public void QueueConnectCommand(HostConnection context, Guid operationId, int conWidth)
         {
             _queueOp.WaitOne();
             try
@@ -235,14 +234,18 @@ namespace HacknetSharp.Server
                     DirtyModel(player);
                 }
 
+                var person = context.GetPerson(world);
+
                 _inputQueue.Enqueue(new ProgramContext
                 {
                     World = world,
-                    Person = context.GetPerson(world),
+                    Person = person,
                     User = context,
                     OperationId = operationId,
                     Argv = Array.Empty<string>(),
-                    Type = ProgramContext.InvocationType.Initial,
+                    Type = person.StartedUp
+                        ? ProgramContext.InvocationType.Connect
+                        : ProgramContext.InvocationType.StartUp,
                     ConWidth = conWidth
                 });
             }

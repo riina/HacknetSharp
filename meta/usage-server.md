@@ -72,7 +72,7 @@ the system owner's name. For example, "{0} Home Server" for a person
 with the username "alec" would produce "alec Home Server"
 * OsName(`string`): OS name
 * AddressRange(`string?`): CIDR range string for address pool
-* InitialCommandLine(`string?`): Default command to execute on shell connect
+* ConnectCommandLine(`string?`): Default command to execute on shell connect
 * Users(`List<string>`): List of normal users in addition to the system's owner, formatted as "user:pass"
 * Filesystem(`List<string>`): List of filesystem entries, formatted as
 "`<type>`[permissions]:`<path>` `<args>`". Permissions are just 3 */^/+ for
@@ -109,8 +109,7 @@ templates to be selected
 name, this is only for listing the worlds with `hss world list`).
 * PlayerSystemTemplate(`string`): template to use for players.
 * PlayerAddressRange(`string`): CIDR range string for address pool
-* StartupProgram(`string`): Initial program for clients to execute.
-* StartupCommandLine(`string`): Arguments to pass to StartupProgram.
+* StartupCommandLine(`string`): Initial command for clients to execute.
 * Generators(`List<Generator>`): Person generators to populate world.
   - Count(`int`): Number of persons to generate with this template.
   - PersonTemplate(`string`): Person template to generate with.

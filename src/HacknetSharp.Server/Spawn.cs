@@ -120,8 +120,8 @@ namespace HacknetSharp.Server
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                     Folder(database, context, owner, nName, nPath);
-
             }
+
             owner.Files.Add(model);
             database.Add(model);
             return model;
@@ -149,8 +149,8 @@ namespace HacknetSharp.Server
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                     Folder(database, context, owner, nName, nPath);
-
             }
+
             owner.Files.Add(model);
             database.Add(model);
             return model;
@@ -178,8 +178,8 @@ namespace HacknetSharp.Server
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                     Folder(database, context, owner, nName, nPath);
-
             }
+
             owner.Files.Add(model);
             database.Add(model);
             return model;
@@ -207,8 +207,8 @@ namespace HacknetSharp.Server
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                     Folder(database, context, owner, nName, nPath);
-
             }
+
             owner.Files.Add(model);
             database.Add(model);
             return model;
@@ -236,8 +236,8 @@ namespace HacknetSharp.Server
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!owner.Files.Any(f => f.Path == nPath && f.Name == nName))
                     Folder(database, context, owner, nName, nPath);
-
             }
+
             owner.Files.Add(model);
             database.Add(model);
             return model;

@@ -86,8 +86,7 @@ namespace HacknetSharp.Test
                         {
                             Label = "Liyue kinda sux",
                             PlayerSystemTemplate = "playerTemplate",
-                            StartupProgram = "wish",
-                            StartupCommandLine = "echo \"Configuring system...\"",
+                            StartupCommandLine = "echo \"Starting shell...\"",
                             PlayerAddressRange = Constants.DefaultAddressRange,
                             Generators = new List<WorldTemplate.Generator>
                             {

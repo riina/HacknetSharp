@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
 
@@ -32,16 +33,38 @@ namespace HacknetSharp.Server
         {
             if (_cleaned) return;
             _cleaned = true;
+            if (_context.Type == ProgramContext.InvocationType.StartUp)
+                _context.Person.StartedUp = true;
             if (!_context.User.Connected) return;
             uint addr = _context.System.Model.Address;
             string path = _context.Person.WorkingDirectory;
-            _context.User.WriteEventSafe(new OperationCompleteEvent
+            switch (_context.Type)
             {
-                Operation = _context.OperationId, Address = addr, Path = path,
-            });
+                case ProgramContext.InvocationType.Standard:
+                    _context.User.WriteEventSafe(new OperationCompleteEvent
+                    {
+                        Operation = _context.OperationId, Address = addr, Path = path
+                    });
+                    break;
+                case ProgramContext.InvocationType.Connect:
+                    _context.User.WriteEventSafe(new InitialCommandCompleteEvent
+                    {
+                        Operation = _context.OperationId, Address = addr, Path = path, NeedsRetry = false
+                    });
+                    break;
+                case ProgramContext.InvocationType.StartUp:
+                    _context.User.WriteEventSafe(new InitialCommandCompleteEvent
+                    {
+                        Operation = _context.OperationId, Address = addr, Path = path, NeedsRetry = true
+                    });
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             if (_context.Disconnect)
                 _context.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
-            else
+            else if(_context.Type != ProgramContext.InvocationType.StartUp)
                 _context.User.WriteEventSafe(World.CreatePromptEvent(_context.System.Model, _context.Person));
             _context.User.FlushSafeAsync();
         }

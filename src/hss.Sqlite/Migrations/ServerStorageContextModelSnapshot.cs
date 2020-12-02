@@ -126,6 +126,9 @@ namespace hss.Sqlite.Migrations
                     b.Property<string>("PlayerKey")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("StartedUp")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -190,7 +193,7 @@ namespace hss.Sqlite.Migrations
                     b.Property<uint>("Address")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("InitialCommandLine")
+                    b.Property<string>("ConnectCommandLine")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -260,10 +263,6 @@ namespace hss.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("StartupCommandLine")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StartupProgram")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

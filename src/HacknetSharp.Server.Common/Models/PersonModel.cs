@@ -14,6 +14,7 @@ namespace HacknetSharp.Server.Common.Models
         public virtual Guid DefaultSystem { get; set; }
         public virtual Guid CurrentSystem { get; set; }
         public virtual Guid CurrentLogin { get; set; }
+        public virtual bool StartedUp { get; set; }
         public virtual string WorkingDirectory { get; set; } = null!;
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 

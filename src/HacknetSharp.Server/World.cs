@@ -63,25 +63,6 @@ namespace HacknetSharp.Server
 
         public void ExecuteCommand(ProgramContext programContext)
         {
-            switch (programContext.Type)
-            {
-                case ProgramContext.InvocationType.Standard:
-                    ExecuteStandardCommand(programContext);
-                    return;
-                case ProgramContext.InvocationType.Initial:
-                    ExecuteInitialCommand(programContext);
-                    return;
-                case ProgramContext.InvocationType.Boot:
-                    // TODO boot program implementation
-                    break;
-            }
-
-            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
-            programContext.User.FlushSafeAsync();
-        }
-
-        private void ExecuteStandardCommand(ProgramContext programContext)
-        {
             var personModel = programContext.Person;
             var systemModelKey = personModel.CurrentSystem;
             var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
@@ -99,6 +80,15 @@ namespace HacknetSharp.Server
                 throw new ApplicationException("Missing login");
             }
 
+            programContext.Argv = programContext.Type switch
+            {
+                ProgramContext.InvocationType.Connect => systemModel.ConnectCommandLine != null
+                    ? Arguments.SplitCommandLine(systemModel.ConnectCommandLine)
+                    : Array.Empty<string>(),
+                ProgramContext.InvocationType.StartUp => Arguments.SplitCommandLine(Model.StartupCommandLine),
+                _ => programContext.Argv
+            };
+
             if (programContext.Argv.Length > 0)
             {
                 var system = new Common.System(this, systemModel);
@@ -106,22 +96,26 @@ namespace HacknetSharp.Server
                 programContext.Login = loginModel;
                 if (!system.DirectoryExists("/bin"))
                 {
-                    programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
+                    if (programContext.Type == ProgramContext.InvocationType.Standard)
+                        programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
                 }
                 else
                 {
                     string exe = $"/bin/{programContext.Argv[0]}";
                     if (!system.FileExists(exe, true))
                     {
-                        programContext.User.WriteEventSafe(new OutputEvent
-                        {
-                            Text = $"{programContext.Argv[0]}: command not found\n"
-                        });
+                        if (programContext.Type == ProgramContext.InvocationType.Standard)
+                            programContext.User.WriteEventSafe(new OutputEvent
+                            {
+                                Text = $"{programContext.Argv[0]}: command not found\n"
+                            });
                     }
                     else
                     {
-                        if (Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                            out var res))
+                        var fse = system.GetFileSystemEntry(exe);
+                        if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
+                            Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                                out var res))
                         {
                             Operations.Add(new ProgramOperation(programContext, res.Item1));
                             return;
@@ -131,63 +125,6 @@ namespace HacknetSharp.Server
                     }
                 }
             }
-
-            programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
-            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
-            programContext.User.FlushSafeAsync();
-        }
-
-        private void ExecuteInitialCommand(ProgramContext programContext)
-        {
-            var personModel = programContext.Person;
-            var systemModelKey = personModel.CurrentSystem;
-            var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
-            if (systemModel == null)
-            {
-                // TODO handle missing system
-                throw new ApplicationException("Missing system");
-            }
-
-            var personModelKey = personModel.Key;
-            var loginModel = systemModel.Logins.FirstOrDefault(l => l.Person == personModelKey);
-            if (loginModel == null)
-            {
-                //TODO handle missing login
-                throw new ApplicationException("Missing login");
-            }
-
-            var system = new Common.System(this, systemModel);
-            programContext.System = system;
-            programContext.Login = loginModel;
-            programContext.Argv = Arguments.SplitCommandLine(system.Model.InitialCommandLine ?? "heathcliff");
-            if (!system.DirectoryExists("/bin"))
-            {
-                programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
-            }
-            else
-            {
-                string exe = $"/bin/{programContext.Argv[0]}";
-                if (!system.FileExists(exe, true))
-                {
-                    programContext.User.WriteEventSafe(new OutputEvent
-                    {
-                        Text = $"{programContext.Argv[0]}: command not found\n"
-                    });
-                }
-                else
-                {
-                    if (Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                        out var res))
-                    {
-                        Operations.Add(new ProgramOperation(programContext, res.Item1));
-                        return;
-                    }
-
-                    // If a program with a matching progCode isn't found, just return operation complete.
-                }
-            }
-
-            // If a program with a matching progCode isn't found, just return operation complete.
 
             programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
             programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});

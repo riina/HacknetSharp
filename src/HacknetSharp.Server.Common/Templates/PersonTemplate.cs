@@ -53,7 +53,9 @@ namespace HacknetSharp.Server.Common.Templates
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
                 spawn.System(database, world, fleetSystemTemplate, person, hash, salt,
-                    fixedRange ? range : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange));
+                    fixedRange
+                        ? range
+                        : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange));
             }
         }
     }

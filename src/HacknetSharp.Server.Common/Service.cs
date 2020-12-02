@@ -9,6 +9,7 @@ namespace HacknetSharp.Server.Common
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static OutputEvent Output(string message) => new OutputEvent {Text = message};
+
         #endregion
     }
 }

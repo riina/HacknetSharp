@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server.Common
@@ -10,6 +9,7 @@ namespace HacknetSharp.Server.Common
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static OutputEvent Output(string message) => new OutputEvent {Text = message};
+
         #endregion
     }
 }

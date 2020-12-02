@@ -115,9 +115,19 @@ namespace hsh
                 ServerEvent? endEvt = await connection.WaitForAsync(
                     e => e is IOperation op && op.Operation == operationLcl, 10).Caf();
                 if (endEvt == null) break;
-                string command = Console.ReadLine() ?? throw new ApplicationException();
                 operation = Guid.NewGuid();
-                connection.WriteEvent(new CommandEvent {Operation = operation, ConWidth = Console.WindowWidth, Text = command});
+                if (endEvt is InitialCommandCompleteEvent icc && icc.NeedsRetry)
+                    connection.WriteEvent(new InitialCommandEvent
+                    {
+                        Operation = operation, ConWidth = Console.WindowWidth
+                    });
+                else
+                    connection.WriteEvent(new CommandEvent
+                    {
+                        Operation = operation, ConWidth = Console.WindowWidth,
+                        Text = Console.ReadLine() ?? throw new ApplicationException()
+                    });
+
                 await connection.FlushAsync().Caf();
             } while (true);
 

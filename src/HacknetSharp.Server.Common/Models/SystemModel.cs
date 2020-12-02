@@ -10,7 +10,7 @@ namespace HacknetSharp.Server.Common.Models
         public virtual string Name { get; set; } = null!;
         public virtual string OsName { get; set; } = null!;
         public virtual uint Address { get; set; }
-        public virtual string? InitialCommandLine { get; set; }
+        public virtual string? ConnectCommandLine { get; set; }
         public virtual PersonModel Owner { get; set; } = null!;
         public virtual HashSet<LoginModel> Logins { get; set; } = null!;
         public virtual HashSet<FileModel> Files { get; set; } = null!;
