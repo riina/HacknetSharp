@@ -326,8 +326,15 @@ namespace HacknetSharp.Server
             }).Caf();
             await _connectTask!;
             Console.WriteLine("Committing database...");
-            await Database.SyncAsync();
-            Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed, ref _state);
+            try
+            {
+                await Database.SyncAsync();
+            }
+            finally
+            {
+                Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed,
+                    ref _state);
+            }
         }
 
         internal void SelfRemoveConnection(Guid id) => _connections.TryRemove(id, out _);
