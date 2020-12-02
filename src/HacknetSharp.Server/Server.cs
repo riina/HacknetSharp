@@ -148,8 +148,8 @@ namespace HacknetSharp.Server
         {
             long ms = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             const int tickMs = 10;
-            const int ticksPerSave = 5 * 1000 / tickMs;
-            int ticks = 0;
+            const int saveDelayMs = 10 * 1000;
+            long lastSave = ms;
             while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
             {
                 try
@@ -179,17 +179,20 @@ namespace HacknetSharp.Server
                     _registrationSet.Clear();
                     _deregistrationSet.Clear();
                     _setOp.Set();
-                    if (ticks == ticksPerSave)
+                    long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                    long ms3;
+                    if (lastSave + saveDelayMs < ms2)
                     {
                         Console.WriteLine($"[Database saving {DateTime.Now}]");
+                        lastSave = ms2;
                         await Database.SyncAsync().Caf();
-                        ticks = 0;
+                        ms3 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
+                    else
+                        ms3 = ms2;
 
-                    ticks++;
-                    long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                    await Task.Delay((int)Math.Max(tickMs, tickMs - (ms2 - ms))).Caf();
-                    ms = ms2;
+                    await Task.Delay((int)Math.Max(tickMs, tickMs - (ms3 - ms))).Caf();
+                    ms = ms3;
                 }
                 catch (DbUpdateConcurrencyException e)
                 {
