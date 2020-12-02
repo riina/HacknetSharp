@@ -43,22 +43,33 @@ namespace HacknetSharp.Server
             PersonModel owner, byte[] hash, byte[] salt, IPAddressRange range)
         {
             (uint host, uint subnetMask) = range.GetIPv4HostAndSubnetMask();
+            uint resAddr;
             var systems = context.Systems.Where(s => ((s.Address & subnetMask) ^ host) == 0).Select(s => s.Address)
                 .ToHashSet();
-            if (range.PrefixBits != 0 && systems.Count >= 1 << (32 - range.PrefixBits))
-                throw new ApplicationException("Specified range has been saturated");
+            if (range.PrefixBits != 0)
+            {
+                if (systems.Count >= 1 << (32 - range.PrefixBits))
+                    throw new ApplicationException("Specified range has been saturated");
 
-            uint invSubnetMask = ~subnetMask;
-            uint gen;
-            Span<byte> span = new Span<byte>((byte*)&gen, 4);
-            int i = -1;
-            do _random.NextBytes(span);
-            while (++i < 10 && systems.Contains(gen & invSubnetMask));
-            if (i == 10)
-                for (uint j = 0; j <= invSubnetMask && systems.Contains(gen); j++)
-                    gen = j;
+                uint invSubnetMask = ~subnetMask;
+                uint gen;
+                Span<byte> span = new Span<byte>((byte*)&gen, 4);
+                int i = -1;
+                do _random.NextBytes(span);
+                while (++i < 10 && systems.Contains(gen & invSubnetMask));
+                if (i == 10)
+                    for (uint j = 0; j <= invSubnetMask && systems.Contains(gen); j++)
+                        gen = j;
+                resAddr = (gen & invSubnetMask) ^ host;
+            }
+            else
+            {
+                if (systems.Count >= 1)
+                    throw new ApplicationException("System with target address already exists");
+                resAddr = host;
+            }
 
-            return System(database, context, template, owner, hash, salt, (gen & invSubnetMask) ^ host);
+            return System(database, context, template, owner, hash, salt, resAddr);
         }
 
         public SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template,
