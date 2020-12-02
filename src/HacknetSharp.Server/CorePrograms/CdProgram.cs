@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HacknetSharp.Server.Common;
+using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -28,29 +29,35 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!system.CanRead(path, context.Login))
-            {
-                user.WriteEventSafe(Output($"cd: {path}: Permission denied\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
-
-            if (system.FileExists(path))
-            {
-                user.WriteEventSafe(Output($"cd: {path}: Is a file\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
-
-            if (!system.DirectoryExists(path))
-            {
-                user.WriteEventSafe(Output($"cd: {path}: No such file or directory\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
-
-            context.Person.WorkingDirectory = path;
-            user.FlushSafeAsync();
+            if (path == "/")
+                context.Person.WorkingDirectory = "/";
+            else if (system.TryGetWithAccess(path, context.Login, out var result, out var closest))
+                switch (closest.Kind)
+                {
+                    case FileModel.FileKind.TextFile:
+                    case FileModel.FileKind.FileFile:
+                    case FileModel.FileKind.ProgFile:
+                        user.WriteEventSafe(Output($"cd: {path}: Is a file\n"));
+                        user.FlushSafeAsync();
+                        yield break;
+                    case FileModel.FileKind.Folder:
+                        context.Person.WorkingDirectory = path;
+                        yield break;
+                }
+            else
+                switch (result)
+                {
+                    case Common.System.ReadAccessResult.Readable:
+                        break;
+                    case Common.System.ReadAccessResult.NotReadable:
+                        user.WriteEventSafe(Output($"cd: {path}: Permission denied\n"));
+                        user.FlushSafeAsync();
+                        yield break;
+                    case Common.System.ReadAccessResult.NoExist:
+                        user.WriteEventSafe(Output($"cd: {path}: No such file or directory\n"));
+                        user.FlushSafeAsync();
+                        yield break;
+                }
         }
     }
 }

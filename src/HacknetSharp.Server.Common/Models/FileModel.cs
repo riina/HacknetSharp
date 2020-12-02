@@ -29,6 +29,8 @@ namespace HacknetSharp.Server.Common.Models
             System.Owner.Key == login.Person || Execute == AccessLevel.Owner && Owner == login ||
             Execute == AccessLevel.Everyone;
 
+        public string FullPath => Program.Combine(Path, Name);
+
         public enum FileKind : byte
         {
             TextFile,

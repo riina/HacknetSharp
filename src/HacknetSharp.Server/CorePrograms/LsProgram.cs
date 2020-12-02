@@ -33,19 +33,20 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!system.DirectoryExists(path))
-            {
-                user.WriteEventSafe(Output($"ls: {path}: No such file or directory\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
-
-            if (!system.CanRead(path, context.Login))
-            {
-                user.WriteEventSafe(Output($"ls: {path}: Permission denied\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
+            if (path != "/" && !system.TryGetWithAccess(path, context.Login, out var result, out _))
+                switch (result)
+                {
+                    case Common.System.ReadAccessResult.Readable:
+                        break;
+                    case Common.System.ReadAccessResult.NotReadable:
+                        user.WriteEventSafe(Output($"ls: {path}: Permission denied\n"));
+                        user.FlushSafeAsync();
+                        yield break;
+                    case Common.System.ReadAccessResult.NoExist:
+                        user.WriteEventSafe(Output($"ls: {path}: No such file or directory\n"));
+                        user.FlushSafeAsync();
+                        yield break;
+                }
 
             StringBuilder sb = new StringBuilder();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using HacknetSharp.Server.Common.Models;
@@ -15,7 +16,6 @@ namespace HacknetSharp.Server.Common
         {
             World = world;
             Model = model;
-            // TODO establish access control
         }
 
         public static (string, string) GetDirectoryAndName(string path) => (
@@ -94,6 +94,47 @@ namespace HacknetSharp.Server.Common
                 (f.Kind == FileModel.FileKind.FileFile ||
                  f.Kind == FileModel.FileKind.ProgFile ||
                  f.Kind == FileModel.FileKind.TextFile)).Any();
+        }
+
+
+        public enum ReadAccessResult
+        {
+            Readable,
+            NotReadable,
+            NoExist
+        }
+
+        public bool TryGetWithAccess(string path, LoginModel login, out ReadAccessResult result,
+            [NotNullWhen(true)] out FileModel? closest)
+        {
+            closest = GetClosestWithReadableParent(path, login);
+            result = !closest?.CanRead(login) ?? false ? ReadAccessResult.NotReadable :
+                closest == null || closest.FullPath != path ? ReadAccessResult.NoExist : ReadAccessResult.Readable;
+            return result == ReadAccessResult.Readable;
+        }
+
+        public FileModel? GetClosestWithReadableParent(string path, LoginModel login)
+        {
+            var (nPath, nName) = GetDirectoryAndName(path);
+            return GetClosestWithReadableParentInternal(nPath, nName, login);
+        }
+
+        private FileModel? GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login)
+        {
+            if (nPath == "/" && nName == "") return null;
+            FileModel? top;
+            if (nPath != "/")
+            {
+                var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
+                top = GetClosestWithReadableParentInternal(pPath, pName, login);
+            }
+            else
+                top = null;
+
+            var self = Model.Files
+                .Where(f => f.Hidden == false && f.Path == nPath && f.Name == nName)
+                .FirstOrDefault();
+            return self != null && (top == null || top.CanRead(login) && top.FullPath == nPath) ? self : top;
         }
 
         public FileModel? GetFileSystemEntry(string path, bool hidden = false)
