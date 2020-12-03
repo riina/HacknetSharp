@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp.Events.Client;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
 
@@ -10,9 +13,12 @@ namespace HacknetSharp.Server
     {
         private readonly PersonModel _person;
 
+        public ConcurrentDictionary<Guid, InputResponseEvent> Inputs { get; }
+
         public AIPersonContext(PersonModel person)
         {
             _person = person;
+            Inputs = new ConcurrentDictionary<Guid, InputResponseEvent>();
         }
 
         public bool Connected => true;

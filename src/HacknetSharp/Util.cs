@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ns;
@@ -183,10 +184,8 @@ namespace HacknetSharp
             evt.Serialize(stream);
         }
 
-        public static string? PromptPassword(string mes)
+        public static string? ReadPassword()
         {
-            Console.Write(mes);
-
             var ss = new StringBuilder();
             while (true)
             {
@@ -212,14 +211,11 @@ namespace HacknetSharp
         }
 
         /// <summary>
-        /// Prompt user for SecureString password
+        /// Read SecureString password
         /// </summary>
-        /// <param name="mes">Prompt message</param>
         /// <returns>Password or null if terminated</returns>
-        public static SecureString? PromptSecureString(string mes)
+        public static SecureString? ReadSecureString()
         {
-            Console.Write(mes);
-
             var ss = new SecureString();
             while (true)
             {
@@ -255,6 +251,39 @@ namespace HacknetSharp
         {
             Console.WriteLine(mes);
             return _yes.Contains((Console.ReadLine() ?? "").ToLowerInvariant());
+        }
+
+        private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
+        private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S]+)");
+
+        public static bool TryParseConString(string conString, ushort defaultPort, out string? name, out string? host,
+            out ushort port, out string? error)
+        {
+            name = null;
+            host = null;
+            port = defaultPort;
+            error = null;
+            var conStringMatch = _conStringRegex.Match(conString);
+            if (!conStringMatch.Success)
+            {
+                error = "Invalid conString, must be user@server[:port]";
+                return false;
+            }
+
+            name = conStringMatch.Groups[1].Value;
+            host = conStringMatch.Groups[2].Value;
+            if (!host.Contains(":")) return true;
+
+            var serverPortMatch = _serverPortRegex.Match(host);
+            if (!serverPortMatch.Success || !ushort.TryParse(serverPortMatch.Groups[2].Value, out port))
+            {
+                error = "Invalid host/port, must be user@server[:port]";
+                return false;
+            }
+
+            host = serverPortMatch.Groups[1].Value;
+
+            return true;
         }
     }
 }

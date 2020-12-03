@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using HacknetSharp.Events.Client;
+using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server.Common
 {
@@ -57,6 +59,20 @@ namespace HacknetSharp.Server.Common
         /// <param name="condition">Delegate, triggers execution once it returns true.</param>
         /// <returns>Yield token.</returns>
         public static ConditionYieldToken Condition(Func<bool> condition) => new ConditionYieldToken(condition);
+
+        /// <summary>
+        /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+        /// </summary>
+        /// <param name="context">Context to check for messages in.</param>
+        /// <param name="hidden">Use hidden input (passwords).</param>
+        /// <returns>Yield token.</returns>
+        public static InputYieldToken Input(IPersonContext context, bool hidden)
+        {
+            var opGuid = Guid.NewGuid();
+            context.WriteEventSafe(new InputRequestEvent {Operation = opGuid, Hidden = hidden});
+            context.FlushSafeAsync();
+            return new InputYieldToken(context, opGuid);
+        }
 
         /// <summary>
         /// Represents a yield token that invokes a delegate only one time.
@@ -189,6 +205,47 @@ namespace HacknetSharp.Server.Common
             }
 
             public override bool Yield(IWorld world) => Condition();
+        }
+
+        /// <summary>
+        /// Represents an input-dependent yield token.
+        /// </summary>
+        public class InputYieldToken : YieldToken
+        {
+            /// <summary>
+            /// Context.
+            /// </summary>
+            public IPersonContext Context { get; }
+
+            /// <summary>
+            /// Operation ID.
+            /// </summary>
+            public Guid Operation { get; }
+
+            /// <summary>
+            /// Input response.
+            /// </summary>
+            public InputResponseEvent? Input { get; set; }
+
+            /// <summary>
+            /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+            /// </summary>
+            /// <param name="context">Context to check for messages in.</param>
+            /// <param name="operation">Operation ID to check for.</param>
+            /// <returns>Yield token.</returns>
+            public InputYieldToken(IPersonContext context, Guid operation)
+            {
+                Context = context;
+                Operation = operation;
+            }
+
+            public override bool Yield(IWorld world)
+            {
+                if (Input != null) return true;
+                if (!Context.Inputs.TryRemove(Operation, out var input)) return false;
+                Input = input;
+                return true;
+            }
         }
 
         #endregion

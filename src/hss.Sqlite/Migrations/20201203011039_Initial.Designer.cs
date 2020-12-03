@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201202052239_Initial")]
+    [Migration("20201203011039_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,12 +110,6 @@ namespace hss.Sqlite.Migrations
                 {
                     b.Property<Guid>("Key")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CurrentLogin")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CurrentSystem")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("DefaultSystem")

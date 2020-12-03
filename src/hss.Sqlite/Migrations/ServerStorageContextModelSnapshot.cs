@@ -110,12 +110,6 @@ namespace hss.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CurrentLogin")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CurrentSystem")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("DefaultSystem")
                         .HasColumnType("TEXT");
 

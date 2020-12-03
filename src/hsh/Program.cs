@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
@@ -17,9 +16,6 @@ namespace hsh
             => await Parser.Default
                 .ParseArguments<Options>(args)
                 .MapResult(Run, errs => Task.FromResult(1)).Caf();
-
-        private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
-        private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S]+)");
 
         private class Options
         {
@@ -87,8 +83,19 @@ namespace hsh
         {
             connection.OnReceivedEvent += e =>
             {
-                if (e is OutputEvent output)
-                    Console.Write(output.Text);
+                switch (e)
+                {
+                    case OutputEvent output:
+                        Console.Write(output.Text);
+                        break;
+                    case InputRequestEvent inputRequest:
+                        connection.WriteEvent(new InputResponseEvent
+                        {
+                            Operation = inputRequest.Operation, Input = Util.ReadPassword() ?? ""
+                        });
+                        connection.FlushAsync();
+                        break;
+                }
             };
             connection.OnDisconnect += e =>
             {
@@ -124,7 +131,8 @@ namespace hsh
                 else
                     connection.WriteEvent(new CommandEvent
                     {
-                        Operation = operation, ConWidth = Console.WindowWidth,
+                        Operation = operation,
+                        ConWidth = Console.WindowWidth,
                         Text = Console.ReadLine() ?? throw new ApplicationException()
                     });
 
@@ -166,31 +174,25 @@ namespace hsh
             out (int, string)? failReason)
         {
             failReason = null;
-            var conStringMatch = _conStringRegex.Match(conString);
-            if (!conStringMatch.Success)
+            if (!Util.TryParseConString(conString, Constants.DefaultPort, out string? user, out string? server,
+                out ushort port, out string? error))
             {
-                failReason = (0x80801, "Invalid constring, must be user@server[:port]");
+                failReason = (101, error ?? "");
                 return null;
             }
 
-            string user = conStringMatch.Groups[1].Value;
-            string server = conStringMatch.Groups[2].Value;
-            ushort port = Constants.DefaultPort;
-            if (server.Contains(":"))
+            Console.Write("Pass:");
+            string? pass = Util.ReadPassword();
+            string? registrationToken;
+            if (askRegistrationToken)
             {
-                var serverPortMatch = _serverPortRegex.Match(server);
-                if (!serverPortMatch.Success || !ushort.TryParse(serverPortMatch.Groups[2].Value, out port))
-                {
-                    failReason = (0x80802, "Invalid server/port, must be user@server[:port]");
-                    return null;
-                }
-
-                server = serverPortMatch.Groups[1].Value;
+                Console.Write("Registration Token:");
+                registrationToken = Util.ReadPassword();
             }
+            else
+                registrationToken = null;
 
-            string? pass = Util.PromptPassword("Pass:");
-            string? registrationToken = askRegistrationToken ? Util.PromptPassword("Registration Token:") : null;
-            return pass != null ? new ClientConnection(server, port, user, pass, registrationToken) : null;
+            return pass != null ? new ClientConnection(server!, port, user!, pass, registrationToken) : null;
         }
     }
 }

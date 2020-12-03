@@ -90,7 +90,7 @@ namespace HacknetSharp.Server
 
         public void StartDaemon(SystemModel systemModel, string line)
         {
-            var serviceContext = new ServiceContext{World = this, Argv = Arguments.SplitCommandLine(line)};
+            var serviceContext = new ServiceContext {World = this, Argv = Arguments.SplitCommandLine(line)};
             var system = new Common.System(this, systemModel);
             serviceContext.System = system;
             if (!system.DirectoryExists("/bin")) return;
@@ -109,16 +109,23 @@ namespace HacknetSharp.Server
             var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
             if (systemModel == null)
             {
-                // TODO handle missing system
-                throw new ApplicationException("Missing system");
+                Console.WriteLine($"Command tried to execute on missing system {systemModelKey} - ignoring request");
+                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+                programContext.User.FlushSafeAsync();
+                return;
             }
 
             var personModelKey = personModel.Key;
-            var loginModel = systemModel.Logins.FirstOrDefault(l => l.Person == personModelKey);
+            var activeLoginKey = personModel.CurrentLogin;
+            var loginModel =
+                systemModel.Logins.FirstOrDefault(l => l.Person == personModelKey || l.Key == activeLoginKey);
             if (loginModel == null)
             {
-                //TODO handle missing login
-                throw new ApplicationException("Missing login");
+                Console.WriteLine(
+                    $"Command tried to execute on system {systemModelKey} without matching login for person {personModelKey} or active login {personModel.CurrentLogin} - ignoring request");
+                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+                programContext.User.FlushSafeAsync();
+                return;
             }
 
             programContext.Argv = programContext.Type switch

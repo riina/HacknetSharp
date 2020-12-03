@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,9 @@ namespace HacknetSharp.Server
     public class HostConnection : IPersonContext
     {
         public Guid Id { get; }
+        public ConcurrentDictionary<Guid, InputResponseEvent> Inputs { get; }
 
-        public UserModel? User { get; private set; }
+        private UserModel? _user;
         private readonly Server _server;
         private readonly TcpClient _client;
         private readonly AutoResetEvent _lockOutOp;
@@ -36,6 +38,7 @@ namespace HacknetSharp.Server
             _server = server;
             _client = client;
             _lockOutOp = new AutoResetEvent(true);
+            Inputs = new ConcurrentDictionary<Guid, InputResponseEvent>();
             _cancellationTokenSource = new CancellationTokenSource();
             _initializedWorlds = new HashSet<Guid>();
             _ = Execute(_cancellationTokenSource.Token);
@@ -64,7 +67,7 @@ namespace HacknetSharp.Server
                 _sslStream.WriteTimeout = 10 * 1000;
                 _bufferedStream = new BufferedStream(_sslStream);
                 ClientEvent? evt;
-                User = null;
+                _user = null;
                 while (!((evt = await _sslStream.ReadEventAsync<ClientEvent>(cancellationToken).Caf()) is
                     ClientDisconnectEvent))
                 {
@@ -74,18 +77,18 @@ namespace HacknetSharp.Server
                         case LoginEvent login:
                         {
                             var op = login.Operation;
-                            if (User != null)
+                            if (_user != null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
                                 break;
                             }
 
                             if (login.RegistrationToken != null)
-                                User = await _server.AccessController
+                                _user = await _server.AccessController
                                     .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
                             else
-                                User = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
-                            if (User == null)
+                                _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                            if (_user == null)
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
                                 WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
@@ -96,7 +99,7 @@ namespace HacknetSharp.Server
                             _sslStream.ReadTimeout = 100 * 1000;
                             _sslStream.WriteTimeout = 100 * 1000;
 
-                            WriteEvent(new UserInfoEvent {Operation = op, Admin = User.Admin});
+                            WriteEvent(new UserInfoEvent {Operation = op, Admin = _user.Admin});
                             WriteEvent(new OutputEvent {Text = "<< LOGGED IN >>\n"});
                             break;
                         }
@@ -105,8 +108,8 @@ namespace HacknetSharp.Server
                             var op = forgeRequest.Operation;
                             var random = new Random();
                             var arr = new byte[32];
-                            if (User == null) continue;
-                            if (!User.Admin)
+                            if (_user == null) continue;
+                            if (!_user.Admin)
                             {
                                 WriteEvent(new AccessFailEvent {Operation = op});
                                 break;
@@ -119,7 +122,7 @@ namespace HacknetSharp.Server
                                 token = Convert.ToBase64String(arr);
                             } while (await _server.Database.GetAsync<string, RegistrationToken>(token).Caf() != null);
 
-                            var tokenModel = new RegistrationToken {Forger = User, Key = token};
+                            var tokenModel = new RegistrationToken {Forger = _user, Key = token};
                             _server.Database.Add(tokenModel);
                             await _server.Database.SyncAsync().Caf();
                             WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
@@ -128,7 +131,7 @@ namespace HacknetSharp.Server
                         case InitialCommandEvent command:
                         {
                             var op = command.Operation;
-                            if (User == null)
+                            if (_user == null)
                             {
                                 WriteEvent(new OperationCompleteEvent {Operation = op});
                                 break;
@@ -140,7 +143,7 @@ namespace HacknetSharp.Server
                         case CommandEvent command:
                         {
                             var op = command.Operation;
-                            if (User == null)
+                            if (_user == null)
                             {
                                 WriteEvent(new OperationCompleteEvent {Operation = op});
                                 break;
@@ -157,6 +160,11 @@ namespace HacknetSharp.Server
                             else
                                 _server.QueueCommand(this, op, command.ConWidth, line);
 
+                            break;
+                        }
+                        case InputResponseEvent response:
+                        {
+                            Inputs.AddOrUpdate(response.Operation, response, (id, e) => e);
                             break;
                         }
                     }
@@ -259,11 +267,11 @@ namespace HacknetSharp.Server
 
         public PersonModel GetPerson(IWorld world)
         {
-            if (User == null) throw new InvalidOperationException();
+            if (_user == null) throw new InvalidOperationException();
             var playerModel = GetPlayerModel();
             var wId = world.Model.Key;
             PersonModel person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId) ??
-                                 CreateAndRegisterNewPersonAndSystem(_server, world, playerModel);
+                                 RegisterNewPerson(_server, world, playerModel);
 
             if (_initializedWorlds.Add(wId))
             {
@@ -272,55 +280,47 @@ namespace HacknetSharp.Server
                 person.WorkingDirectory = "/";
 
                 var systemModelKey = person.CurrentSystem;
-                var systemModel = world.Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
-                if (systemModel == null)
-                {
-                    // TODO handle missing system
-                    throw new ApplicationException("Missing system");
-                }
-
-                var pk = person.Key;
-                var login = systemModel.Logins.FirstOrDefault(l => l.Person == pk);
-                if (login == null)
-                {
-                    // TODO handle missing login
-                    throw new ApplicationException("Missing login");
-                }
-
-                person.CurrentLogin = login.Key;
+                if (world.Model.Systems.All(x => x.Key != systemModelKey))
+                    RegisterNewSystem(_server, world, playerModel, person);
             }
 
             return person;
         }
 
-        private static PersonModel CreateAndRegisterNewPersonAndSystem(Server server, IWorld world,
+        private static PersonModel RegisterNewPerson(Server server, IWorld world,
             PlayerModel player)
         {
             var person = server.Spawn.Person(server.Database, world.Model, player.Key, player.Key, player);
+            RegisterNewSystem(server, world, player, person);
+            return person;
+        }
+
+        private static SystemModel RegisterNewSystem(Server server, IWorld world, PlayerModel player,
+            PersonModel person)
+        {
             var system = server.Spawn.System(server.Database, world.Model, world.PlayerSystemTemplate, person,
-                player.User.Hash,
-                player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
+                player.User.Hash, player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
             person.DefaultSystem = system.Key;
             person.CurrentSystem = system.Key;
-            return person;
+            return system;
         }
 
         public PlayerModel GetPlayerModel()
         {
-            if (User == null) throw new InvalidOperationException();
+            if (_user == null) throw new InvalidOperationException();
 
             // Get from connection
             if (_playerModel != null) return _playerModel;
 
-            _playerModel = _server.Database.GetAsync<string, PlayerModel>(User.Key).Result;
+            _playerModel = _server.Database.GetAsync<string, PlayerModel>(_user.Key).Result;
             if (_playerModel == null)
             {
                 var world = _server.DefaultWorld;
 
-                _playerModel = _server.Spawn.Player(_server.Database, User);
+                _playerModel = _server.Spawn.Player(_server.Database, _user);
                 _server.RegisterModel(_playerModel);
 
-                CreateAndRegisterNewPersonAndSystem(_server, world, _playerModel);
+                RegisterNewPerson(_server, world, _playerModel);
             }
 
             // Reset to existing world if necessary

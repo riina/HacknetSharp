@@ -43,7 +43,9 @@ namespace HacknetSharp.Server.Runnables
                 X509Certificate2? nCert = null;
                 try
                 {
-                    var ss = Util.PromptSecureString("Pfx/p12 export password:");
+
+                    Console.Write("Pfx/p12 export password:");
+                    var ss = Util.ReadSecureString();
                     if (ss == null)
                         return Task.FromResult(0);
                     try
@@ -85,7 +87,8 @@ namespace HacknetSharp.Server.Runnables
                 X509Certificate2? nCert = null;
                 try
                 {
-                    var ss = Util.PromptSecureString("Pfx/p12 export password:");
+                    Console.Write("Pfx/p12 export password:");
+                    var ss = Util.ReadSecureString();
                     if (ss == null)
                         return Task.FromResult(0);
                     try

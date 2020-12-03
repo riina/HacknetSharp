@@ -7,6 +7,7 @@
         CS_InitialCommand = 0x40_00_00_02,
         CS_Command = 0x40_00_00_03,
         CS_RegistrationTokenForgeRequest = 0x40_00_00_04,
+        CS_InputResponse = 0x40_00_00_05,
 
         SC_Disconnect = 0x80_00_00_00,
         SC_LoginFail = 0x80_00_00_01,
@@ -17,5 +18,6 @@
         SC_RegistrationTokenForgeResponse = 0x80_00_00_06,
         SC_OperationComplete = 0x80_00_00_07,
         SC_InitialCommandComplete = 0x80_00_00_08,
+        SC_InputRequest = 0x80_00_00_09,
     }
 }

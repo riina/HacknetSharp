@@ -83,8 +83,6 @@ namespace hss.Sqlite.Migrations
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
                     PlayerKey = table.Column<string>(type: "TEXT", nullable: true),
                     DefaultSystem = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CurrentSystem = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CurrentLogin = table.Column<Guid>(type: "TEXT", nullable: false),
                     StartedUp = table.Column<bool>(type: "INTEGER", nullable: false),
                     WorkingDirectory = table.Column<string>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)

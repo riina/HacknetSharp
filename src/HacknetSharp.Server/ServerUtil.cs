@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using HacknetSharp.Server.Common;
-using HacknetSharp.Server.Common.Models;
 using HacknetSharp.Server.Common.Templates;
 using YamlDotNet.Serialization;
 
