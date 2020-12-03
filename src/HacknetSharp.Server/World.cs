@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
-using System.Linq;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Common;
 using HacknetSharp.Server.Common.Models;
@@ -75,10 +74,15 @@ namespace HacknetSharp.Server
                 ConWidth = -1
             };
 
-            personModel.CurrentSystem = systemModel.Key;
             var system = new Common.System(this, systemModel);
             programContext.System = system;
             programContext.Login = loginModel;
+            if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
+            {
+                Operations.Add(new ProgramOperation(programContext, intrinsicRes.Item1));
+                return;
+            }
+
             if (!system.DirectoryExists("/bin")) return;
             string exe = $"/bin/{programContext.Argv[0]}";
             if (!system.FileExists(exe, true)) return;
@@ -105,28 +109,19 @@ namespace HacknetSharp.Server
         public void ExecuteCommand(ProgramContext programContext)
         {
             var personModel = programContext.Person;
-            var systemModelKey = personModel.CurrentSystem;
-            var systemModel = Model.Systems.FirstOrDefault(x => x.Key == systemModelKey);
-            if (systemModel == null)
+
+            var personModelKey = personModel.Key;
+            var loginModel = personModel.LoginChain.Count != 0 ? personModel.LoginChain[^1] : null;
+            if (loginModel == null)
             {
-                Console.WriteLine($"Command tried to execute on missing system {systemModelKey} - ignoring request");
+                Console.WriteLine(
+                    $"Command tried to execute without an active login login for person {personModelKey} - ignoring request");
                 programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
                 programContext.User.FlushSafeAsync();
                 return;
             }
 
-            var personModelKey = personModel.Key;
-            var activeLoginKey = personModel.CurrentLogin;
-            var loginModel =
-                systemModel.Logins.FirstOrDefault(l => l.Person == personModelKey || l.Key == activeLoginKey);
-            if (loginModel == null)
-            {
-                Console.WriteLine(
-                    $"Command tried to execute on system {systemModelKey} without matching login for person {personModelKey} or active login {personModel.CurrentLogin} - ignoring request");
-                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
-                programContext.User.FlushSafeAsync();
-                return;
-            }
+            var systemModel = loginModel.System;
 
             programContext.Argv = programContext.Type switch
             {
@@ -142,7 +137,14 @@ namespace HacknetSharp.Server
                 var system = new Common.System(this, systemModel);
                 programContext.System = system;
                 programContext.Login = loginModel;
-                if (programContext.Type != ProgramContext.InvocationType.StartUp && !system.DirectoryExists("/bin"))
+                if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
+                {
+                    Operations.Add(new ProgramOperation(programContext, intrinsicRes.Item1));
+                    return;
+                }
+
+                if (programContext.Type != ProgramContext.InvocationType.StartUp &&
+                    !system.DirectoryExists("/bin"))
                 {
                     if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAI)
                         programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
@@ -150,9 +152,11 @@ namespace HacknetSharp.Server
                 else
                 {
                     string exe = $"/bin/{programContext.Argv[0]}";
+                        Console.WriteLine($"Looking for {exe}...");
                     if (system.FileExists(exe, true) || programContext.Type == ProgramContext.InvocationType.StartUp &&
                         system.FileExists(exe, true, true))
                     {
+                        Console.WriteLine($"Found {exe}...");
                         var fse = system.GetFileSystemEntry(exe);
                         if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
                             Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",

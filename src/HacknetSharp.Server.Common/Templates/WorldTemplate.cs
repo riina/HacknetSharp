@@ -10,7 +10,7 @@ namespace HacknetSharp.Server.Common.Templates
         public string? PlayerSystemTemplate { get; set; }
         public string? PlayerAddressRange { get; set; }
         public string? StartupCommandLine { get; set; }
-        public List<Generator> Generators { get; set; } = new List<Generator>();
+        public List<Generator>? Generators { get; set; }
 
         public class Generator
         {
@@ -27,7 +27,7 @@ namespace HacknetSharp.Server.Common.Templates
             world.StartupCommandLine = StartupCommandLine ??
                                        throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
-            if (Generators == null) throw new InvalidOperationException($"{nameof(Generators)} is null.");
+            if (Generators == null) return;
             foreach (var generator in Generators)
                 if (!templates.PersonTemplates.TryGetValue(generator.PersonTemplate ??
                                                            throw new InvalidOperationException(

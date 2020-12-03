@@ -73,8 +73,8 @@ with the username "alec" would produce "alec Home Server"
 * OsName(`string`): OS name
 * AddressRange(`string?`): CIDR range string for address pool
 * ConnectCommandLine(`string?`): Default command to execute on shell connect
-* Users(`List<string>`): List of normal users in addition to the system's owner, formatted as "user:pass"
-* Filesystem(`List<string>`): List of filesystem entries, formatted as
+* Users(`List<string>?`): List of normal users in addition to the system's owner, formatted as "user:pass"
+* Filesystem(`List<string>?`): List of filesystem entries, formatted as
 "`<type>`[permissions]:`<path>` `<args>`". Permissions are just 3 */^/+ for
 RWE, *:everyone/^:owner/+:admin can perform that operation.
   - fold: Folder.
@@ -96,9 +96,9 @@ RWE, *:everyone/^:owner/+:admin can perform that operation.
 selected
 * SystemTemplates(`List<string>`): possible primary system templates 
 to be selected
-* FleetMin(`int`): Minimum number of additional systems
-* FleetMax(`int`): Maximum number of additional systems
-* FleetSystemTemplates(`List<string>`): possible fleet system
+* FleetMin(`int?`): Minimum number of additional systems
+* FleetMax(`int?`): Maximum number of additional systems
+* FleetSystemTemplates(`List<string>?`): possible fleet system
 templates to be selected
 
 ### World templates
@@ -110,7 +110,7 @@ name, this is only for listing the worlds with `hss world list`).
 * PlayerSystemTemplate(`string`): template to use for players.
 * PlayerAddressRange(`string`): CIDR range string for address pool
 * StartupCommandLine(`string`): Initial command for clients to execute.
-* Generators(`List<Generator>`): Person generators to populate world.
+* Generators(`List<Generator>?`): Person generators to populate world.
   - Count(`int`): Number of persons to generate with this template.
   - PersonTemplate(`string`): Person template to generate with.
   - AddressRange(`string?`): CIDR range string for address pool

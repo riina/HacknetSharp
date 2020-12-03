@@ -4,10 +4,10 @@ using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.CorePrograms
 {
-    [ProgramInfo("core:ssh", "connect to remote machine",
+    [ProgramInfo("core:ssh", "ssh", "connect to remote machine",
         "opens an authenticated connection\n" +
-        "to a remote machine and opens a shell\n\n" +
-        "ssh username@server")]
+        "to a remote machine and opens a shell:",
+        "ssh username@server", false)]
     public class SshProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
@@ -44,12 +44,19 @@ namespace HacknetSharp.Server.CorePrograms
             var system = context.World.Model.Systems.FirstOrDefault(s => s.Address == hostUint);
             if (system == null)
             {
-                user.WriteEventSafe(Output($"ssh: No route to host\n"));
+                user.WriteEventSafe(Output("ssh: No route to host\n"));
                 yield break;
             }
 
-            // TODO attempt login with credentials
+            var login = system.Logins.FirstOrDefault(l => l.User == name);
+            if (login == null || !ServerUtil.ValidatePassword(input.Input!.Input, login.Hash, login.Salt))
+            {
+                user.WriteEventSafe(Output("ssh: Invalid credentials\n"));
+                yield break;
+            }
 
+            context.System = new Common.System(context.World, system);
+            context.Person.LoginChain.Add(login);
             user.FlushSafeAsync();
         }
     }

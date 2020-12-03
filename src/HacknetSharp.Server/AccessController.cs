@@ -18,8 +18,7 @@ namespace HacknetSharp.Server
         {
             var userModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (userModel == null) return null;
-            var (hash, _) = CommonUtil.HashPassword(pass, salt: userModel.Salt);
-            return hash.AsSpan().SequenceEqual(userModel.Hash) ? userModel : null;
+            return ServerUtil.ValidatePassword(pass, userModel.Hash, userModel.Salt) ? userModel : null;
         }
 
         public async Task<UserModel?> RegisterAsync(string user, string pass, string registrationToken)

@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.Common.Templates
         public List<string> SystemTemplates { get; set; } = new List<string>();
         public int FleetMin { get; set; }
         public int FleetMax { get; set; }
-        public List<string> FleetSystemTemplates { get; set; } = new List<string>();
+        public List<string>? FleetSystemTemplates { get; set; } = new List<string>();
 
         [ThreadStatic] private static Random? _random;
 
@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.Common.Templates
             if (Usernames.Count == 0) throw new InvalidOperationException($"{nameof(Usernames)} is empty.");
             if (Passwords.Count == 0) throw new InvalidOperationException($"{nameof(Passwords)} is empty.");
             if (SystemTemplates.Count == 0) throw new InvalidOperationException($"{nameof(SystemTemplates)} is empty.");
-            if (FleetMin != 0 && FleetSystemTemplates.Count == 0)
+            if (FleetMin != 0 && (FleetSystemTemplates?.Count ?? 0) == 0)
                 throw new InvalidOperationException($"{nameof(FleetSystemTemplates)} is empty.");
             string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count];
             if (!templates.SystemTemplates.TryGetValue(systemTemplateName, out var systemTemplate))
@@ -42,8 +42,8 @@ namespace HacknetSharp.Server.Common.Templates
             var person = spawn.Person(database, world, username, username);
             var (hash, salt) = CommonUtil.HashPassword(password);
             var system = spawn.System(database, world, systemTemplate, person, hash, salt, range);
-            person.CurrentSystem = system.Key;
             person.DefaultSystem = system.Key;
+            if (FleetSystemTemplates == null) return;
             int count = Random.Next(FleetMin, FleetMax + 1);
             bool fixedRange = addressRange != null || AddressRange != null;
             for (int i = 0; i < count; i++)

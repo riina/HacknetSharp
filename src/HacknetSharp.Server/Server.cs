@@ -36,6 +36,7 @@ namespace HacknetSharp.Server
         public Dictionary<Guid, World> Worlds { get; }
         public World DefaultWorld { get; }
         public Dictionary<string, (Program, ProgramInfoAttribute)> Programs { get; }
+        public Dictionary<string, (Program, ProgramInfoAttribute)> IntrinsicPrograms { get; }
         public Dictionary<string, Service> Services { get; }
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
@@ -70,6 +71,7 @@ namespace HacknetSharp.Server
             _serviceTypes = new HashSet<Type>(ServerUtil.DefaultServices);
             _serviceTypes.UnionWith(config.Services);
             Programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
+            IntrinsicPrograms = new Dictionary<string, (Program, ProgramInfoAttribute)>();
             Services = new Dictionary<string, Service>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
@@ -131,7 +133,9 @@ namespace HacknetSharp.Server
                     var program = Activator.CreateInstance(type) as Program ??
                                   throw new ApplicationException(
                                       $"{type.FullName} supplied as program but could not be casted to {nameof(Program)}");
-                    Programs.Add(info.Name, (program, info));
+                    Programs.Add(info.ProgCode, (program, info));
+                    if (info.Intrinsic)
+                        IntrinsicPrograms.Add(info.Name, (program, info));
                 }
 
                 foreach (var type in _serviceTypes)

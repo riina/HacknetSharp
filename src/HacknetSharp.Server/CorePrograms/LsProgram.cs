@@ -7,10 +7,10 @@ using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.CorePrograms
 {
-    [ProgramInfo("core:ls", "list directory contents",
+    [ProgramInfo("core:ls", "ls", "list directory contents",
         "list contents of specified directory\n" +
-        "or current working directory\n\n" +
-        "ls [directory]")]
+        "or current working directory",
+        "[directory]", false)]
     public class LsProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);

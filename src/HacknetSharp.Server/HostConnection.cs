@@ -149,16 +149,7 @@ namespace HacknetSharp.Server
                                 break;
                             }
 
-                            var line = Arguments.SplitCommandLine(command.Text);
-                            if (line.Length > 0 && line[0].Equals("exit", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                WriteEvent(new OperationCompleteEvent {Operation = op});
-                                WriteEvent(new ServerDisconnectEvent {Reason = "Shell closed."});
-                                await FlushAsync(cancellationToken).Caf();
-                                return;
-                            }
-                            else
-                                _server.QueueCommand(this, op, command.ConWidth, line);
+                            _server.QueueCommand(this, op, command.ConWidth, Arguments.SplitCommandLine(command.Text));
 
                             break;
                         }
@@ -270,18 +261,21 @@ namespace HacknetSharp.Server
             if (_user == null) throw new InvalidOperationException();
             var playerModel = GetPlayerModel();
             var wId = world.Model.Key;
-            PersonModel person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId) ??
-                                 RegisterNewPerson(_server, world, playerModel);
+            PersonModel person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId)
+                                 ?? RegisterNewPerson(_server, world, playerModel);
 
             if (_initializedWorlds.Add(wId))
             {
                 // Reset user state
-                person.CurrentSystem = person.DefaultSystem;
+                var systemModelKey = person.DefaultSystem;
+                var system = world.Model.Systems.FirstOrDefault(x => x.Key == systemModelKey)
+                             ?? RegisterNewSystem(_server, world, playerModel, person);
                 person.WorkingDirectory = "/";
-
-                var systemModelKey = person.CurrentSystem;
-                if (world.Model.Systems.All(x => x.Key != systemModelKey))
-                    RegisterNewSystem(_server, world, playerModel, person);
+                var pk = person.Key;
+                var login = system.Logins.FirstOrDefault(l => l.Person == pk)
+                            ?? world.Spawn.Login(world.Database, world.Model, system, person.UserName,
+                                playerModel.User.Hash, playerModel.User.Salt, person);
+                person.LoginChain.Add(login);
             }
 
             return person;
@@ -301,7 +295,6 @@ namespace HacknetSharp.Server
             var system = server.Spawn.System(server.Database, world.Model, world.PlayerSystemTemplate, person,
                 player.User.Hash, player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
             person.DefaultSystem = system.Key;
-            person.CurrentSystem = system.Key;
             return system;
         }
 

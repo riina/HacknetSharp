@@ -171,5 +171,11 @@ namespace HacknetSharp.Server
         public static bool TryParseConString(string conString, ushort defaultPort, [NotNullWhen(true)] out string? name,
             [NotNullWhen(true)] out string? host, out ushort port, [NotNullWhen(false)] out string? error) =>
             Util.TryParseConString(conString, defaultPort, out name!, out host!, out port, out error!);
+
+        public static bool ValidatePassword(string pass, byte[] hash, byte[] salt)
+        {
+            var (genHash, _) = CommonUtil.HashPassword(pass, salt: salt);
+            return genHash.AsSpan().SequenceEqual(hash);
+        }
     }
 }

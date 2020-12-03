@@ -6,9 +6,9 @@ using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
-    [ProgramInfo("core:cat", "concatenate and print files",
-        "print provided files sequentially in command-line order\n" +
-        "cat [files...]")]
+    [ProgramInfo("core:cat", "cat", "concatenate and print files",
+        "print provided files sequentially in command-line order",
+        "[files...]", false)]
     public class CatProgram : Program
     {
         private static readonly OutputEvent _newlineOutput = new OutputEvent {Text = "\n"};

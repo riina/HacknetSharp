@@ -4,10 +4,9 @@ using HacknetSharp.Server.Common.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
-    [ProgramInfo("core:cd", "change working directory",
+    [ProgramInfo("core:cd", "cd", "change working directory",
         "change current working directory to\n" +
-        "specified directory or home directory\n\n" +
-        "cd [directory]")]
+        "specified directory or home directory", "[directory]", false)]
     public class CdProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
