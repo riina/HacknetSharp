@@ -17,7 +17,8 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var chain = context.Person.LoginChain;
-            chain.RemoveAt(chain.Count - 1);
+            if (chain.Count != 0)
+                chain.RemoveAt(chain.Count - 1);
             if (chain.Count == 0)
                 context.Disconnect = true;
             else
