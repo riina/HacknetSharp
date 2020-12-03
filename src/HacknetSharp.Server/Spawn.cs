@@ -42,11 +42,12 @@ namespace HacknetSharp.Server
         public unsafe SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template,
             PersonModel owner, byte[] hash, byte[] salt, IPAddressRange range)
         {
-            (uint host, uint subnetMask) = range.GetIPv4HostAndSubnetMask();
+            if (!range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask))
+                throw new ApplicationException("Address range is not IPv4");
             uint resAddr;
             var systems = context.Systems.Where(s => ((s.Address & subnetMask) ^ host) == 0).Select(s => s.Address)
                 .ToHashSet();
-            if (range.PrefixBits != 0)
+            if (range.PrefixBits < 32)
             {
                 if (systems.Count >= 1 << (32 - range.PrefixBits))
                     throw new ApplicationException("Specified range has been saturated");

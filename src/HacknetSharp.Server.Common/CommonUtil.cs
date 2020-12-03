@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
@@ -28,5 +29,7 @@ namespace HacknetSharp.Server.Common
 
             return (hash, salt);
         }
+
+        public static IPAddressRange AsRange(IPAddress address) => new IPAddressRange(address);
     }
 }

@@ -137,11 +137,11 @@ namespace HacknetSharp.Test
             var templates = new TemplateGroup();
             // Borrow sample template
             var system1Template = (SystemTemplate)_templates["system"];
-            templates.SystemTemplates.Add("systemTemplate1".ToLowerInvariant(), system1Template);
-            templates.SystemTemplates.Add("systemTemplate2".ToLowerInvariant(), system1Template);
+            templates.SystemTemplates.Add("systemTemplate1", system1Template);
+            templates.SystemTemplates.Add("systemTemplate2", system1Template);
 
             var personTemplate2 = (PersonTemplate)_templates["person"];
-            templates.PersonTemplates.Add("personTemplate2".ToLowerInvariant(), personTemplate2);
+            templates.PersonTemplates.Add("personTemplate2", personTemplate2);
 
             var worldTemplate = (WorldTemplate)_templates["world"];
             //templates.WorldTemplates.Add("worldTemplate", worldTemplate);
@@ -184,7 +184,9 @@ namespace HacknetSharp.Test
             Assert.IsTrue(range2.Contains(IPAddress.Parse("192.168.0.1")));
             Assert.IsTrue(range2.Contains(IPAddress.Parse("192.168.1.1")));
             Assert.IsFalse(range2.Contains(IPAddress.Parse("192.168.2.1")));
-            Assert.AreEqual((0xc0_a8_00_00, 0xff_ff_ff_00), range.GetIPv4HostAndSubnetMask());
+            Assert.IsTrue(range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask));
+            Assert.AreEqual(0xc0_a8_00_00, host);
+            Assert.AreEqual(0xff_ff_ff_00, subnetMask);
         }
     }
 }

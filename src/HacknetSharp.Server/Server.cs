@@ -207,7 +207,7 @@ namespace HacknetSharp.Server
                     else
                         ms3 = ms2;
 
-                    await Task.Delay((int)Math.Max(tickMs, tickMs - (ms3 - ms))).Caf();
+                    await Task.Delay((int)Math.Min(tickMs, Math.Max(0, tickMs - (ms3 - ms)))).Caf();
                     ms = ms3;
                 }
                 catch (DbUpdateConcurrencyException e)

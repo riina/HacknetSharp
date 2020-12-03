@@ -29,10 +29,9 @@ namespace HacknetSharp.Server.Common.Templates
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
             if (Generators == null) throw new InvalidOperationException($"{nameof(Generators)} is null.");
             foreach (var generator in Generators)
-                if (!templates.PersonTemplates.TryGetValue((
-                        generator.PersonTemplate ??
-                        throw new InvalidOperationException($"Null {nameof(Generator.PersonTemplate)}"))
-                    .ToLowerInvariant(),
+                if (!templates.PersonTemplates.TryGetValue(generator.PersonTemplate ??
+                                                           throw new InvalidOperationException(
+                                                               $"Null {nameof(Generator.PersonTemplate)}"),
                     out var template))
                     throw new KeyNotFoundException($"Unknown template {generator.PersonTemplate}");
                 else

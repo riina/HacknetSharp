@@ -28,7 +28,7 @@ namespace HacknetSharp.Server
             Model = model;
             Spawn = spawn;
             Database = database;
-            PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate.ToLowerInvariant()];
+            PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Operations = new HashSet<ExecutableOperation>();
             _removeOperations = new HashSet<ExecutableOperation>();
         }

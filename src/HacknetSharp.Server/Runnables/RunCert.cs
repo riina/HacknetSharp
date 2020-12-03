@@ -43,7 +43,6 @@ namespace HacknetSharp.Server.Runnables
                 X509Certificate2? nCert = null;
                 try
                 {
-
                     Console.Write("Pfx/p12 export password:");
                     var ss = Util.ReadSecureString();
                     if (ss == null)

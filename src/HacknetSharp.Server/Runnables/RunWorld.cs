@@ -35,7 +35,7 @@ namespace HacknetSharp.Server.Runnables
                 }
 
                 var templates = ServerUtil.GetTemplates("");
-                if (!templates.WorldTemplates.TryGetValue(Template.ToLowerInvariant(), out var template))
+                if (!templates.WorldTemplates.TryGetValue(Template, out var template))
                 {
                     Console.WriteLine("Could not find a template with the specified name.");
                     return 89;

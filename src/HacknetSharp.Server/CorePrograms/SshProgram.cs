@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.CorePrograms
@@ -22,18 +23,33 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!Util.TryParseConString(argv[1], 22, out string? name, out string? host, out ushort port,
+            if (!ServerUtil.TryParseConString(argv[1], 22, out string? name, out string? host, out ushort port,
                 out string? error))
             {
                 user.WriteEventSafe(Output($"ssh: {error}\n"));
                 yield break;
             }
 
+            if (!IPAddressRange.TryParse(host, false, out var range) ||
+                !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
+            {
+                user.WriteEventSafe(Output($"ssh: Invalid host {host}\n"));
+                yield break;
+            }
+
             user.WriteEventSafe(Output("Password:"));
             var input = Input(user, true);
             yield return input;
-            // TODO test remote connection with credentials
             user.WriteEventSafe(Output("Connecting...\n"));
+            var system = context.World.Model.Systems.FirstOrDefault(s => s.Address == hostUint);
+            if (system == null)
+            {
+                user.WriteEventSafe(Output($"ssh: No route to host\n"));
+                yield break;
+            }
+
+            // TODO attempt login with credentials
+
             user.FlushSafeAsync();
         }
     }

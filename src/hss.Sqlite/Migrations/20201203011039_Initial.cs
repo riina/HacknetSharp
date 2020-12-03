@@ -16,10 +16,7 @@ namespace hss.Sqlite.Migrations
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -32,10 +29,7 @@ namespace hss.Sqlite.Migrations
                     StartupCommandLine = table.Column<string>(type: "TEXT", nullable: false),
                     PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorldModel", x => x.Key);
-                });
+                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
 
             migrationBuilder.CreateTable(
                 name: "PlayerModel",

@@ -30,7 +30,7 @@ namespace HacknetSharp.Server.Common.Templates
             if (SystemTemplates.Count == 0) throw new InvalidOperationException($"{nameof(SystemTemplates)} is empty.");
             if (FleetMin != 0 && FleetSystemTemplates.Count == 0)
                 throw new InvalidOperationException($"{nameof(FleetSystemTemplates)} is empty.");
-            string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count].ToLowerInvariant();
+            string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count];
             if (!templates.SystemTemplates.TryGetValue(systemTemplateName, out var systemTemplate))
                 throw new KeyNotFoundException($"Unknown template {systemTemplateName}");
             string username = Usernames[Random.Next() % Usernames.Count];
@@ -49,7 +49,7 @@ namespace HacknetSharp.Server.Common.Templates
             for (int i = 0; i < count; i++)
             {
                 string fleetSystemTemplateName =
-                    FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count].ToLowerInvariant();
+                    FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count];
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
                 spawn.System(database, world, fleetSystemTemplate, person, hash, salt,

@@ -44,7 +44,7 @@ namespace HacknetSharp.Server.Common
         {
             int location = cidrString.LastIndexOf('/');
             IPAddress? address;
-            int prefix;
+            int prefixBits;
             Span<byte> addrBytes = stackalloc byte[16];
             if (location == -1)
             {
@@ -59,7 +59,7 @@ namespace HacknetSharp.Server.Common
                     throw new ArgumentException("Failed to write address bytes");
 
                 // Get prefix length
-                prefix = addrLen;
+                prefixBits = addrLen * 8;
             }
             else
             {
@@ -74,21 +74,122 @@ namespace HacknetSharp.Server.Common
                     throw new ArgumentException("Failed to write address bytes");
 
                 // get prefix length
-                if (!int.TryParse(cidrString.AsSpan(location + 1), out prefix))
+                if (!int.TryParse(cidrString.AsSpan(location + 1), out prefixBits))
                     throw new ArgumentException(
                         $"cidr string routing parse failed, input string: {cidrString.Substring(location + 1)}");
-                if (addrLen * 8 < prefix) throw new ArgumentException("Mask length exceeded address bit length");
+                if (addrLen * 8 < prefixBits) throw new ArgumentException("Mask length exceeded address bit length");
             }
 
-            AddressFamily = address.AddressFamily;
-            PrefixBits = prefix;
-            int prefixBytes = prefix / 8;
-            PrefixBitmask = (byte)(0xff << (8 - prefix % 8));
+            PrefixBits = prefixBits;
+            int prefixBytes = prefixBits / 8;
+            PrefixBitmask = (byte)(0xff << (8 - prefixBits % 8));
             fixed (byte* pp = _prefix)
                 addrBytes.Slice(0, prefixBytes).CopyTo(new Span<byte>(pp, 16));
             if (PrefixBitmask != 0)
                 _prefix[prefixBytes] = (byte)(PrefixBitmask & addrBytes[prefixBytes]);
             AddressFamily = address.AddressFamily;
+        }
+
+        public IPAddressRange(IPAddress address)
+        {
+            int prefixBits;
+            Span<byte> addrBytes = stackalloc byte[16];
+
+            // Single IP address
+
+            // Get address bytes
+            if (!address.TryWriteBytes(addrBytes, out int addrLen))
+                throw new ArgumentException("Failed to write address bytes");
+
+            // Get prefix length
+            prefixBits = addrLen * 8;
+
+            PrefixBits = prefixBits;
+            int prefixBytes = prefixBits / 8;
+            PrefixBitmask = (byte)(0xff << (8 - prefixBits % 8));
+            fixed (byte* pp = _prefix)
+                addrBytes.Slice(0, prefixBytes).CopyTo(new Span<byte>(pp, 16));
+            if (PrefixBitmask != 0)
+                _prefix[prefixBytes] = (byte)(PrefixBitmask & addrBytes[prefixBytes]);
+            AddressFamily = address.AddressFamily;
+        }
+
+        private IPAddressRange(Span<byte> prefix, AddressFamily addressFamily, int prefixBits, byte prefixBitmask)
+        {
+            fixed (byte* pp = _prefix) prefix.CopyTo(new Span<byte>(pp, 16));
+            AddressFamily = addressFamily;
+            PrefixBits = prefixBits;
+            PrefixBitmask = prefixBitmask;
+        }
+
+        public static bool TryParse(string cidrString, bool allowRange, out IPAddressRange value)
+        {
+            int location = cidrString.LastIndexOf('/');
+            IPAddress? address;
+            int prefixBits;
+            Span<byte> addrBytes = stackalloc byte[16];
+            if (location == -1)
+            {
+                // Single IP address
+
+                // Parse address
+                if (!IPAddress.TryParse(cidrString, out address))
+                {
+                    value = default;
+                    return false;
+                }
+
+                // Get address bytes
+                if (!address.TryWriteBytes(addrBytes, out int addrLen))
+                {
+                    value = default;
+                    return false;
+                }
+
+                // Get prefix length
+                prefixBits = addrLen * 8;
+            }
+            else
+            {
+                // CIDR address range
+                if (!allowRange)
+                {
+                    value = default;
+                    return false;
+                }
+
+                // Parse address
+                if (!IPAddress.TryParse(cidrString.AsSpan(0, location), out address))
+                {
+                    value = default;
+                    return false;
+                }
+
+                // Get address bytes
+                if (!address.TryWriteBytes(addrBytes, out int addrLen))
+                {
+                    value = default;
+                    return false;
+                }
+
+                // get prefix length
+                if (!int.TryParse(cidrString.AsSpan(location + 1), out prefixBits) || addrLen * 8 < prefixBits)
+                {
+                    value = default;
+                    return false;
+                }
+            }
+
+            int prefixBytes = prefixBits / 8;
+            byte prefixBitmask = (byte)(0xff << (8 - prefixBits % 8));
+            Span<byte> prefix = stackalloc byte[16];
+            addrBytes.Slice(0, prefixBytes).CopyTo(prefix);
+            if (prefixBitmask != 0)
+                prefix[prefixBytes] = (byte)(prefixBitmask & addrBytes[prefixBytes]);
+            var addressFamily = address.AddressFamily;
+
+            value = new IPAddressRange(prefix, addressFamily, prefixBits, prefixBitmask);
+            return true;
         }
 
         public bool Contains(IPAddress address)
@@ -105,16 +206,17 @@ namespace HacknetSharp.Server.Common
             return PrefixBitmask == 0 || _prefix[prefixBytes] == (PrefixBitmask & addrBytes[prefixBytes]);
         }
 
-        public (uint host, uint subnetMask) GetIPv4HostAndSubnetMask()
+        public bool TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask)
         {
-            if (AddressFamily != AddressFamily.InterNetwork) throw new InvalidOperationException();
-            uint netMask = ~(uint)0 << (32 - PrefixBits);
+            host = 0;
+            subnetMask = 0;
+            if (AddressFamily != AddressFamily.InterNetwork) return false;
+            subnetMask = ~(uint)0 << (32 - PrefixBits);
             if (PrefixBitmask != 0)
-                netMask |= (uint)(PrefixBitmask << (24 - PrefixBits));
-            uint host;
+                subnetMask |= (uint)(PrefixBitmask << (24 - PrefixBits));
             fixed (byte* pp = _prefix)
                 host = BinaryPrimitives.ReadUInt32BigEndian(new Span<byte>(pp, 4));
-            return (host, netMask);
+            return true;
         }
     }
 }
