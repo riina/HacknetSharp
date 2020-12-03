@@ -152,11 +152,9 @@ namespace HacknetSharp.Server
                 else
                 {
                     string exe = $"/bin/{programContext.Argv[0]}";
-                        Console.WriteLine($"Looking for {exe}...");
                     if (system.FileExists(exe, true) || programContext.Type == ProgramContext.InvocationType.StartUp &&
                         system.FileExists(exe, true, true))
                     {
-                        Console.WriteLine($"Found {exe}...");
                         var fse = system.GetFileSystemEntry(exe);
                         if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
                             Server.Programs.TryGetValue(system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",

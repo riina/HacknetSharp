@@ -6,7 +6,7 @@ using HacknetSharp.Server.Common;
 
 namespace HacknetSharp.Server.CorePrograms
 {
-    [ProgramInfo("core:echo", "echo","write arguments",
+    [ProgramInfo("core:echo", "echo", "write arguments",
         "write specified arguments separated by\n" +
         "single spaces followed by newline",
         "[arguments]", false)]
