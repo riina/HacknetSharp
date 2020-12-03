@@ -20,6 +20,8 @@ namespace HacknetSharp.Server
 
         public override bool Update(IWorld world)
         {
+            // TODO check system and login are still valid, system is up, and user is logged in (non-login -> no output in Complete)
+            if (!_context.User.Connected) return true;
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
                 else _currentToken = null;

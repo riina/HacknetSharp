@@ -18,6 +18,7 @@ namespace HacknetSharp.Server
 
         public override bool Update(IWorld world)
         {
+            // TODO check system is still valid and is up
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
                 else _currentToken = null;
