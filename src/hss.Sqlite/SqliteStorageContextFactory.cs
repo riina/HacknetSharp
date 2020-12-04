@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using HacknetSharp.Server;
+using hss.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

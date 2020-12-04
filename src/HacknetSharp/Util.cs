@@ -285,5 +285,11 @@ namespace HacknetSharp
 
             return true;
         }
+
+        private static readonly Regex _replacementRegex = new Regex(@"{((?:[^{}\\]|\\.)*)}");
+
+        public static string ApplyReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
+            _replacementRegex.Replace(str,
+                m => replacements.TryGetValue(m.Groups[1].Value, out var rep) ? rep : m.Value);
     }
 }

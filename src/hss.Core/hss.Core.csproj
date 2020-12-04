@@ -2,16 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
+    <LangVersion>9.0</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
   </ItemGroup>
-  
+
   <ItemGroup>
+    <ProjectReference Include="..\HacknetSharp.Server\HacknetSharp.Server.csproj" />
     <ProjectReference Include="..\HacknetSharp\HacknetSharp.csproj" />
   </ItemGroup>
+
 </Project>

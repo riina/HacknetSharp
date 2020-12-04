@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using HacknetSharp;
-using HacknetSharp.Server;
+using hss.Core;
 using hss.Postgres;
 using hss.Sqlite;
 

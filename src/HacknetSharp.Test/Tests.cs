@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HacknetSharp.Server;
-using HacknetSharp.Server.Common;
-using HacknetSharp.Server.Common.Templates;
+using HacknetSharp.Server.Templates;
+using hss.Core;
 using NUnit.Framework;
 
 namespace HacknetSharp.Test
@@ -43,9 +43,10 @@ namespace HacknetSharp.Test
             Assert.AreEqual("", Program.GetFileName("/"));
             Assert.AreEqual("/", Program.Combine("/", ""));
             Assert.AreEqual("/", Program.GetNormalized(Program.Combine("/", "")));
-            Assert.AreEqual(("/", ""), Server.Common.System.GetDirectoryAndName("/"));
-            Assert.AreEqual(("/", "shadow"), Server.Common.System.GetDirectoryAndName("/shadow"));
-            Assert.AreEqual(("/shadow", "absorber"), Server.Common.System.GetDirectoryAndName("/shadow/absorber"));
+            Assert.AreEqual(("/", ""), HacknetSharp.Server.System.GetDirectoryAndName("/"));
+            Assert.AreEqual(("/", "shadow"), HacknetSharp.Server.System.GetDirectoryAndName("/shadow"));
+            Assert.AreEqual(("/shadow", "absorber"),
+                HacknetSharp.Server.System.GetDirectoryAndName("/shadow/absorber"));
         }
 
         private readonly Dictionary<string, object>
@@ -187,6 +188,19 @@ namespace HacknetSharp.Test
             Assert.IsTrue(range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask));
             Assert.AreEqual(0xc0_a8_00_00, host);
             Assert.AreEqual(0xff_ff_ff_00, subnetMask);
+        }
+
+        [Test]
+        public void TestReplacements()
+        {
+            var dict = new Dictionary<string, string>();
+            string str = "daisy johnson {skye}";
+            Assert.AreEqual(str, str.ApplyReplacements(dict));
+            dict["skye"] = "quake";
+            Assert.AreEqual("daisy johnson quake", str.ApplyReplacements(dict));
+            dict["blergh1"] = "shots";
+            dict["blergh2"] = "fired";
+            Assert.AreEqual("shots fired", "{blergh1} {blergh2}".ApplyReplacements(dict));
         }
     }
 }

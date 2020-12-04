@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server", "HacknetSharp.Server\HacknetSharp.Server.csproj", "{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss.Core", "hss.Core\hss.Core.csproj", "{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Client", "HacknetSharp.Client\HacknetSharp.Client.csproj", "{84D24E95-8795-4CA2-B48F-90B9F2395618}"
 EndProject
@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss.Sqlite", "hss.Sqlite\hs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp", "HacknetSharp\HacknetSharp.csproj", "{E98CEC64-E865-40DD-81B2-A0355277EED0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Common", "HacknetSharp.Server.Common\HacknetSharp.Server.Common.csproj", "{C8C17A42-B058-4480-952C-F4431DC67D25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server", "HacknetSharp.Server\HacknetSharp.Server.csproj", "{C8C17A42-B058-4480-952C-F4431DC67D25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss", "hss\hss.csproj", "{2DC78B5A-02E3-47AD-BCFC-AA55AEC227E2}"
 EndProject
