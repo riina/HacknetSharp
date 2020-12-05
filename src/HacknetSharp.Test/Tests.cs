@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HacknetSharp.Server;
+using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using hss.Core;
 using NUnit.Framework;
@@ -43,10 +44,10 @@ namespace HacknetSharp.Test
             Assert.AreEqual("", Program.GetFileName("/"));
             Assert.AreEqual("/", Program.Combine("/", ""));
             Assert.AreEqual("/", Program.GetNormalized(Program.Combine("/", "")));
-            Assert.AreEqual(("/", ""), HacknetSharp.Server.System.GetDirectoryAndName("/"));
-            Assert.AreEqual(("/", "shadow"), HacknetSharp.Server.System.GetDirectoryAndName("/shadow"));
+            Assert.AreEqual(("/", ""), SystemModel.GetDirectoryAndName("/"));
+            Assert.AreEqual(("/", "shadow"), SystemModel.GetDirectoryAndName("/shadow"));
             Assert.AreEqual(("/shadow", "absorber"),
-                HacknetSharp.Server.System.GetDirectoryAndName("/shadow/absorber"));
+                SystemModel.GetDirectoryAndName("/shadow/absorber"));
         }
 
         private readonly Dictionary<string, object>

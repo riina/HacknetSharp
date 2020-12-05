@@ -3,7 +3,7 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
-    public class ProgramContext : ExecutableContext
+    public class ProgramContext : ProcessContext
     {
         public IPersonContext User { get; set; } = null!;
         public PersonModel Person { get; set; } = null!;

@@ -83,7 +83,8 @@ namespace hss.Core
                 World = context,
                 Owner = owner,
                 Files = new HashSet<FileModel>(),
-                Logins = new HashSet<LoginModel>()
+                Logins = new HashSet<LoginModel>(),
+                BootTime = context.Now.Subtract(TimeSpan.FromSeconds(10))
             };
             template.ApplyTemplate(database, this, context, system, owner, hash, salt);
             owner.Systems.Add(system);

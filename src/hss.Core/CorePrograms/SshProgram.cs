@@ -55,8 +55,8 @@ namespace hss.Core.CorePrograms
                 yield break;
             }
 
-            context.System = new HacknetSharp.Server.System(context.World, system);
-            context.Person.LoginChain.Add(login);
+            context.System = system;
+            context.World.StartShell(context.Person, context.System, context.Login, "");
             user.FlushSafeAsync();
         }
     }

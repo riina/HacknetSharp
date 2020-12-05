@@ -3,14 +3,14 @@ using HacknetSharp.Server;
 
 namespace hss.Core
 {
-    public class ServiceOperation : ExecutableOperation
+    public class ServiceProcess : Process
     {
         private readonly ServiceContext _context;
         private readonly IEnumerator<YieldToken?> _enumerator;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
-        public ServiceOperation(ServiceContext context, Service service)
+        public ServiceProcess(ServiceContext context, Service service) : base(context)
         {
             _context = context;
             _enumerator = service.Run(context);
@@ -18,17 +18,26 @@ namespace hss.Core
 
         public override bool Update(IWorld world)
         {
-            // TODO check system is still valid and is up
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
                 else _currentToken = null;
 
-            if (!_enumerator.MoveNext()) return true;
+            if (!_enumerator.MoveNext())
+            {
+                Clean();
+                return true;
+            }
+
             _currentToken = _enumerator.Current;
             return false;
         }
 
-        public override void Complete()
+        public override void Kill()
+        {
+            Clean();
+        }
+
+        private void Clean()
         {
             if (_cleaned) return;
             _cleaned = true;

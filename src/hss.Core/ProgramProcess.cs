@@ -5,14 +5,14 @@ using HacknetSharp.Server;
 
 namespace hss.Core
 {
-    public class ProgramOperation : ExecutableOperation
+    public class ProgramProcess : Process
     {
         private readonly ProgramContext _context;
         private readonly IEnumerator<YieldToken?> _enumerator;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
-        public ProgramOperation(ProgramContext context, Program program)
+        public ProgramProcess(ProgramContext context, Program program) : base(context)
         {
             _context = context;
             _enumerator = program.Run(context);
@@ -20,18 +20,27 @@ namespace hss.Core
 
         public override bool Update(IWorld world)
         {
-            // TODO check system and login are still valid, system is up, and user is logged in (non-login -> no output in Complete)
             if (!_context.User.Connected) return true;
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
                 else _currentToken = null;
 
-            if (!_enumerator.MoveNext()) return true;
+            if (!_enumerator.MoveNext())
+            {
+                Clean();
+                return true;
+            }
             _currentToken = _enumerator.Current;
             return false;
         }
 
-        public override void Complete()
+        public override void Kill()
+        {
+            // TODO implement kill procedure
+            Clean();
+        }
+
+        private void Clean()
         {
             if (_cleaned) return;
             _cleaned = true;
@@ -40,7 +49,7 @@ namespace hss.Core
             if (_context.Type == ProgramContext.InvocationType.StartUp)
                 _context.Person.StartedUp = true;
             if (!_context.User.Connected) return;
-            uint addr = _context.System.Model.Address;
+            uint addr = _context.System.Address;
             string path = _context.Person.WorkingDirectory;
             switch (_context.Type)
             {
@@ -68,8 +77,8 @@ namespace hss.Core
 
             if (_context.Disconnect)
                 _context.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
-            else if (_context.Type != ProgramContext.InvocationType.StartUp)
-                _context.User.WriteEventSafe(World.CreatePromptEvent(_context.System.Model, _context.Person));
+            else if (_context.Type != ProgramContext.InvocationType.StartUp) // TODO this needs to be done elsewhere
+                _context.User.WriteEventSafe(World.CreatePromptEvent(_context.System, _context.Person));
             _context.User.FlushSafeAsync();
         }
     }

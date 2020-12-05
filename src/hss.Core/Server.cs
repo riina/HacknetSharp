@@ -185,7 +185,9 @@ namespace hss.Core
                     foreach (var world in Worlds.Values)
                     {
                         world.PreviousTime = world.Time;
-                        world.Time = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _initialTime) / 1000.0;
+                        var now = DateTimeOffset.Now;
+                        world.Model.Now = now.DateTime;
+                        world.Time = (now.ToUnixTimeMilliseconds() - _initialTime) / 1000.0;
                         world.Tick();
                     }
 

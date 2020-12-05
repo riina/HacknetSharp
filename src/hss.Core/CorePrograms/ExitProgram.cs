@@ -15,13 +15,13 @@ namespace hss.Core.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var chain = context.Person.LoginChain;
+            var chain = context.Person.ShellChain;
             if (chain.Count != 0)
                 chain.RemoveAt(chain.Count - 1);
             if (chain.Count == 0)
                 context.Disconnect = true;
             else
-                context.System = new HacknetSharp.Server.System(context.World, chain[^1].System);
+                context.System = chain[^1].Context.System;
         }
     }
 }

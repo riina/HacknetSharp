@@ -7,7 +7,7 @@ using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server
 {
-    public abstract partial class Executable<TExecutableContext> where TExecutableContext : ExecutableContext
+    public abstract partial class Executable<TExecutableContext> where TExecutableContext : ProcessContext
     {
         public abstract IEnumerator<YieldToken?> Run(TExecutableContext context);
 
