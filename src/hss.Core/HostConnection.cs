@@ -271,12 +271,11 @@ namespace hss.Core
                 var systemModelKey = person.DefaultSystem;
                 var system = world.Model.Systems.FirstOrDefault(x => x.Key == systemModelKey)
                              ?? RegisterNewSystem(_server, world, playerModel, person);
-                person.WorkingDirectory = "/";
                 var pk = person.Key;
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
                             ?? world.Spawn.Login(world.Database, world.Model, system, person.UserName,
                                 playerModel.User.Hash, playerModel.User.Salt, person);
-                world.StartShell(person, system, login, "");
+                world.StartShell(this, person, system, login, "");
             }
 
             return person;

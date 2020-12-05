@@ -3,6 +3,7 @@
     public abstract class Process
     {
         public ProcessContext Context { get; }
+        public CompletionKind? Completed { get; set; }
 
         protected Process(ProcessContext context)
         {
@@ -17,8 +18,17 @@
 
 
         /// <summary>
-        /// Kill operation
+        /// Complete operation
         /// </summary>
-        public abstract void Kill();
+        /// <param name="completionKind">Completion kind</param>
+        public abstract void Complete(CompletionKind completionKind);
+
+        public enum CompletionKind
+        {
+            Normal,
+            KillLocal,
+            KillRemote
+
+        }
     }
 }

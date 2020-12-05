@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Linq;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
@@ -18,8 +18,11 @@ namespace hss.Core
         public double Time { get; set; }
         public double PreviousTime { get; set; }
 
-        public HashSet<Process> Processes { get; }
+        private readonly HashSet<Process> _processes;
         private readonly HashSet<Process> _removeProcesses;
+
+        private readonly HashSet<ShellProcess> _shellProcesses;
+        private readonly HashSet<ShellProcess> _removeShellProcesses;
 
 
         internal World(Server server, WorldModel model, IServerDatabase database, Spawn spawn)
@@ -29,71 +32,104 @@ namespace hss.Core
             Spawn = spawn;
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
-            Processes = new HashSet<Process>();
+            _processes = new HashSet<Process>();
             _removeProcesses = new HashSet<Process>();
+            _shellProcesses = new HashSet<ShellProcess>();
+            _removeShellProcesses = new HashSet<ShellProcess>();
         }
 
         public void Tick()
         {
-            foreach (var operation in Processes)
+            TickSet(_processes, _removeProcesses);
+            TickSet(_shellProcesses, _removeShellProcesses);
+        }
+
+        private void TickSet<T>(HashSet<T> processes, HashSet<T> removeProcesses) where T : Process
+        {
+            foreach (var operation in processes)
+            {
                 try
                 {
-                    // TODO check system and login are still valid, system is up, and user is logged in (non-login -> no output in Complete)
-                    if (operation.Context.System.BootTime > Model.Now)
+                    if (!operation.Completed.HasValue)
                     {
-                        // TODO abrupt process end... writing needs to be done from world
+                        bool fail = operation.Context is ProgramContext pc0 && !pc0.User.Connected;
+                        fail = fail || operation.Context.System.BootTime > Model.Now;
+                        fail = fail || !Model.Systems.Contains(operation.Context.System);
+                        fail = fail || operation.Context is ProgramContext pc1 &&
+                            !operation.Context.System.Logins.Contains(pc1.Login);
+                        fail = fail || operation.Context is ProgramContext pc2 &&
+                            !pc2.Person.ShellChain.Contains(pc2.Shell);
+                        if (fail)
+                        {
+                            try
+                            {
+                                CompleteRecurse(operation, Process.CompletionKind.KillRemote);
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+                        else if (!operation.Update(this)) continue;
                     }
-                    else if (!operation.Update(this)) continue;
 
-                    _removeProcesses.Add(operation);
+                    removeProcesses.Add(operation);
                 }
                 catch (Exception e)
                 {
-                    _removeProcesses.Add(operation);
+                    Console.WriteLine(e);
+                    removeProcesses.Add(operation);
                     try
                     {
-                        operation.Kill();
+                        CompleteRecurse(operation, Process.CompletionKind.KillRemote);
                     }
                     catch
                     {
                         // ignored
                     }
-
-                    Console.WriteLine(e);
                 }
+            }
 
-            Processes.ExceptWith(_removeProcesses);
+            processes.ExceptWith(removeProcesses);
         }
 
-        internal static OutputEvent CreatePromptEvent(SystemModel system, PersonModel person) =>
-            new OutputEvent {Text = $"{UintToAddress(system.Address)}:{person.WorkingDirectory}> "};
-
-        private static string UintToAddress(uint value)
+        public void CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
-            Span<byte> dst = stackalloc byte[4];
-            BinaryPrimitives.WriteUInt32BigEndian(dst, value);
-            return $"{dst[0]}.{dst[1]}.{dst[2]}.{dst[3]}";
+            var processes = process.Context.System.Processes;
+            uint pid = process.Context.Pid;
+            bool removed = processes.Remove(pid);
+            if (process.Context is ProgramContext pc)
+            {
+                pc.Person.ShellChain.RemoveAll(p => p == process);
+                uint shellPid = pc.Shell.ProgramContext.Pid;
+                /*Console.WriteLine($"Testing {shellPid} {removed}...");
+                foreach (var proc in processes)
+                {
+                    Console.WriteLine($"{proc.Value} {proc.Value.Context.ParentPid} {proc.Value.Context.Pid}");
+                }*/
+
+                if (removed && processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid))
+                {
+                    pc.User.WriteEventSafe(CommonUtil.CreatePromptEvent(pc.Shell));
+                    pc.User.FlushSafeAsync();
+                }
+            }
+
+            process.Complete(completionKind);
+            process.Completed = completionKind;
+            var toKill = processes.Values.Where(p => p.Context.ParentPid == pid).ToList();
+            foreach (var p in toKill)
+                CompleteRecurse(p, completionKind);
         }
 
-        public void Kill(Process process)
-        {
-            // TODO implement
-            throw new NotImplementedException();
-        }
-
-        public void ForceReboot(DateTime rebootTime)
-        {
-            // TODO implement
-            throw new NotImplementedException();
-        }
-
-        public void StartShell(PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line)
+        public void StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
+            LoginModel loginModel, string line)
         {
             var programContext = new ProgramContext
             {
                 World = this,
                 Person = personModel,
-                User = new AIPersonContext(personModel),
+                User = personContext,
                 OperationId = Guid.Empty,
                 Argv = Arguments.SplitCommandLine(line),
                 Type = ProgramContext.InvocationType.Standard,
@@ -105,8 +141,10 @@ namespace hss.Core
             if (pid == null) return;
             programContext.Pid = pid.Value;
             var process = new ShellProcess(programContext);
+            programContext.Shell = process;
             systemModel.Processes.Add(pid.Value, process);
             personModel.ShellChain.Add(process);
+            _shellProcesses.Add(process);
         }
 
         public void StartAICommand(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
@@ -127,7 +165,7 @@ namespace hss.Core
 
             if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
             {
-                Processes.Add(new ProgramProcess(programContext, intrinsicRes.Item1));
+                _processes.Add(new ProgramProcess(programContext, intrinsicRes.Item1));
                 return;
             }
 
@@ -137,20 +175,22 @@ namespace hss.Core
             var fse = systemModel.GetFileSystemEntry(exe);
             if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
                 Server.Programs.TryGetValue(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                    out var res)) Processes.Add(new ProgramProcess(programContext, res.Item1));
+                    out var res)) _processes.Add(new ProgramProcess(programContext, res.Item1));
         }
 
         public void StartDaemon(SystemModel systemModel, string line)
         {
-            var serviceContext = new ServiceContext {World = this, Argv = Arguments.SplitCommandLine(line)};
-            serviceContext.System = systemModel;
+            var serviceContext = new ServiceContext
+            {
+                World = this, Argv = Arguments.SplitCommandLine(line), System = systemModel
+            };
             if (!systemModel.DirectoryExists("/bin")) return;
             string exe = $"/bin/{serviceContext.Argv[0]}";
             if (!systemModel.FileExists(exe, true)) return;
             var fse = systemModel.GetFileSystemEntry(exe);
             if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
                 Server.Services.TryGetValue(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                    out var res)) Processes.Add(new ServiceProcess(serviceContext, res));
+                    out var res)) _processes.Add(new ServiceProcess(serviceContext, res));
         }
 
         public void ExecuteCommand(ProgramContext programContext)
@@ -183,12 +223,13 @@ namespace hss.Core
             if (programContext.Argv.Length > 0 && (pid = systemModel.GetAvailablePid()).HasValue)
             {
                 programContext.System = systemModel;
+                programContext.Shell = shell;
                 programContext.Login = shell.ProgramContext.Login;
                 programContext.ParentPid = shell.ProgramContext.Pid;
                 programContext.Pid = pid.Value;
                 if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
                 {
-                    Processes.Add(new ProgramProcess(programContext, intrinsicRes.Item1));
+                    _processes.Add(new ProgramProcess(programContext, intrinsicRes.Item1));
                     return;
                 }
 
@@ -210,7 +251,9 @@ namespace hss.Core
                             Server.Programs.TryGetValue(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                                 out var res))
                         {
-                            Processes.Add(new ProgramProcess(programContext, res.Item1));
+                            var process = new ProgramProcess(programContext, res.Item1);
+                            _processes.Add(process);
+                            systemModel.Processes.Add(pid.Value, process);
                             return;
                         }
 
@@ -229,7 +272,7 @@ namespace hss.Core
 
             if (!programContext.IsAI)
             {
-                programContext.User.WriteEventSafe(CreatePromptEvent(systemModel, personModel));
+                programContext.User.WriteEventSafe(CommonUtil.CreatePromptEvent(programContext.Shell));
                 programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
                 programContext.User.FlushSafeAsync();
             }

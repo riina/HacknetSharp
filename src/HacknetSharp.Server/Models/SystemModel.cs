@@ -13,7 +13,7 @@ namespace HacknetSharp.Server.Models
         public virtual string OsName { get; set; } = null!;
         public virtual uint Address { get; set; }
         public virtual string? ConnectCommandLine { get; set; }
-        public virtual DateTime BootTime { get; set; }
+        public virtual double BootTime { get; set; }
         public virtual PersonModel Owner { get; set; } = null!;
         public virtual HashSet<LoginModel> Logins { get; set; } = null!;
         public virtual HashSet<FileModel> Files { get; set; } = null!;
@@ -31,10 +31,15 @@ namespace HacknetSharp.Server.Models
                 x.Ignore(y => y.Processes);
             });
 #pragma warning restore 1591
-        public IEnumerable<Process> Ps(SystemModel system, LoginModel? loginModel) =>
-            loginModel == null
-                ? Processes.Values
-                : Processes.Values.Where(p => p.Context is ProgramContext pc && pc.Login == loginModel);
+        public IEnumerable<Process> Ps(LoginModel? loginModel, uint? pid, uint? parentPid)
+        {
+            var src = loginModel != null
+                ? Processes.Values.Where(p => p.Context is ProgramContext pc && pc.Login == loginModel)
+                : Processes.Values;
+            src = pid.HasValue ? src.Where(p => p.Context.Pid == pid.Value) : src;
+            src = parentPid.HasValue ? src.Where(p => p.Context.ParentPid == parentPid.Value) : src;
+            return src;
+        }
 
         public static (string, string) GetDirectoryAndName(string path) => (
             Program.GetNormalized(Program.GetDirectoryName(path) ?? "/"), Program.GetFileName(path));

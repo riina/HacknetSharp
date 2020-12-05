@@ -28,7 +28,6 @@ namespace hss.Core
                 Name = name,
                 UserName = userName,
                 Systems = new HashSet<SystemModel>(),
-                WorkingDirectory = "/",
                 Player = player
             };
             player?.Identities.Add(person);
@@ -84,7 +83,7 @@ namespace hss.Core
                 Owner = owner,
                 Files = new HashSet<FileModel>(),
                 Logins = new HashSet<LoginModel>(),
-                BootTime = context.Now.Subtract(TimeSpan.FromSeconds(10))
+                BootTime = context.Now
             };
             template.ApplyTemplate(database, this, context, system, owner, hash, salt);
             owner.Systems.Add(system);

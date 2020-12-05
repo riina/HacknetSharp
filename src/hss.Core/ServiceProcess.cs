@@ -24,7 +24,7 @@ namespace hss.Core
 
             if (!_enumerator.MoveNext())
             {
-                Clean();
+                world.CompleteRecurse(this, CompletionKind.Normal);
                 return true;
             }
 
@@ -32,7 +32,7 @@ namespace hss.Core
             return false;
         }
 
-        public override void Kill()
+        public override void Complete(CompletionKind completionKind)
         {
             Clean();
         }

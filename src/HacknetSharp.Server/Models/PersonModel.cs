@@ -14,7 +14,6 @@ namespace HacknetSharp.Server.Models
         public virtual Guid DefaultSystem { get; set; }
         public List<ShellProcess> ShellChain { get; set; } = new List<ShellProcess>();
         public virtual bool StartedUp { get; set; }
-        public virtual string WorkingDirectory { get; set; } = null!;
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
         [ModelBuilderCallback]

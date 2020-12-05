@@ -13,9 +13,8 @@ namespace HacknetSharp.Server
         SystemTemplate PlayerSystemTemplate { get; }
         double Time { get; }
         double PreviousTime { get; }
-        void Kill(Process process);
-        void ForceReboot(DateTime rebootTime);
-        void StartShell(PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
+        void CompleteRecurse(Process process, Process.CompletionKind completionKind);
+        void StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
         void StartAICommand(PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
         void StartDaemon(SystemModel systemModel, string line);
         void ExecuteCommand(ProgramContext programContext);

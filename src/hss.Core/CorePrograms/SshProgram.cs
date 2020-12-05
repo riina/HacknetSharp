@@ -55,8 +55,7 @@ namespace hss.Core.CorePrograms
                 yield break;
             }
 
-            context.System = system;
-            context.World.StartShell(context.Person, context.System, context.Login, "");
+            context.World.StartShell(user, context.Person, system, login, "");
             user.FlushSafeAsync();
         }
     }

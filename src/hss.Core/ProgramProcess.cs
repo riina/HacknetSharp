@@ -27,16 +27,22 @@ namespace hss.Core
 
             if (!_enumerator.MoveNext())
             {
-                Clean();
+                world.CompleteRecurse(this, CompletionKind.Normal);
                 return true;
             }
+
             _currentToken = _enumerator.Current;
             return false;
         }
 
-        public override void Kill()
+        public override void Complete(CompletionKind completionKind)
         {
-            // TODO implement kill procedure
+            if (completionKind != CompletionKind.Normal)
+            {
+                _context.User.WriteEventSafe(Program.Output("[Process terminated]"));
+                _context.User.FlushSafeAsync();
+            }
+
             Clean();
         }
 
@@ -49,8 +55,11 @@ namespace hss.Core
             if (_context.Type == ProgramContext.InvocationType.StartUp)
                 _context.Person.StartedUp = true;
             if (!_context.User.Connected) return;
-            uint addr = _context.System.Address;
-            string path = _context.Person.WorkingDirectory;
+            var shellChain = _context.Person.ShellChain;
+            uint addr = 0;
+            if (shellChain.Count != 0)
+                addr = shellChain[^1].ProgramContext.System.Address;
+            string path = _context.Shell.WorkingDirectory;
             switch (_context.Type)
             {
                 case ProgramContext.InvocationType.Standard:
@@ -75,10 +84,6 @@ namespace hss.Core
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (_context.Disconnect)
-                _context.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
-            else if (_context.Type != ProgramContext.InvocationType.StartUp) // TODO this needs to be done elsewhere
-                _context.User.WriteEventSafe(World.CreatePromptEvent(_context.System, _context.Person));
             _context.User.FlushSafeAsync();
         }
     }

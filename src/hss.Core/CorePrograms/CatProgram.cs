@@ -30,7 +30,7 @@ namespace hss.Core.CorePrograms
 
             foreach (var file in argv.Skip(1))
             {
-                string path = GetNormalized(Combine(context.Person.WorkingDirectory, file));
+                string path = GetNormalized(Combine(context.Shell.WorkingDirectory, file));
                 if (path == "/")
                 {
                     user.WriteEventSafe(Output($"cat: {path}: Is a directory\n"));

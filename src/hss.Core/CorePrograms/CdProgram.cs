@@ -21,7 +21,7 @@ namespace hss.Core.CorePrograms
             string path;
             try
             {
-                path = GetNormalized(Combine(context.Person.WorkingDirectory, argv[1]));
+                path = GetNormalized(Combine(context.Shell.WorkingDirectory, argv[1]));
             }
             catch
             {
@@ -29,7 +29,7 @@ namespace hss.Core.CorePrograms
             }
 
             if (path == "/")
-                context.Person.WorkingDirectory = "/";
+                context.Shell.WorkingDirectory = "/";
             else if (system.TryGetWithAccess(path, context.Login, out var result, out var closest))
                 switch (closest.Kind)
                 {
@@ -40,7 +40,7 @@ namespace hss.Core.CorePrograms
                         user.FlushSafeAsync();
                         yield break;
                     case FileModel.FileKind.Folder:
-                        context.Person.WorkingDirectory = path;
+                        context.Shell.WorkingDirectory = path;
                         yield break;
                 }
             else

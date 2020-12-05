@@ -16,7 +16,10 @@ namespace hss.Sqlite.Migrations
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -27,9 +30,13 @@ namespace hss.Sqlite.Migrations
                     Label = table.Column<string>(type: "TEXT", nullable: false),
                     PlayerSystemTemplate = table.Column<string>(type: "TEXT", nullable: false),
                     StartupCommandLine = table.Column<string>(type: "TEXT", nullable: false),
-                    PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false)
+                    PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false),
+                    Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "PlayerModel",
@@ -78,7 +85,6 @@ namespace hss.Sqlite.Migrations
                     PlayerKey = table.Column<string>(type: "TEXT", nullable: true),
                     DefaultSystem = table.Column<Guid>(type: "TEXT", nullable: false),
                     StartedUp = table.Column<bool>(type: "INTEGER", nullable: false),
-                    WorkingDirectory = table.Column<string>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -107,6 +113,7 @@ namespace hss.Sqlite.Migrations
                     OsName = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<uint>(type: "INTEGER", nullable: false),
                     ConnectCommandLine = table.Column<string>(type: "TEXT", nullable: true),
+                    BootTime = table.Column<double>(type: "REAL", nullable: false),
                     OwnerKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },

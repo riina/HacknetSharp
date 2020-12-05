@@ -1,5 +1,8 @@
+using System;
+using System.Buffers.Binary;
 using System.Net;
 using System.Security.Cryptography;
+using HacknetSharp.Events.Server;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace HacknetSharp.Server
@@ -31,5 +34,15 @@ namespace HacknetSharp.Server
         }
 
         public static IPAddressRange AsRange(IPAddress address) => new IPAddressRange(address);
+
+        public static OutputEvent CreatePromptEvent(ShellProcess shell) =>
+            new OutputEvent {Text = $"{UintToAddress(shell.ProgramContext.System.Address)}:{shell.WorkingDirectory}> "};
+
+        private static string UintToAddress(uint value)
+        {
+            Span<byte> dst = stackalloc byte[4];
+            BinaryPrimitives.WriteUInt32BigEndian(dst, value);
+            return $"{dst[0]}.{dst[1]}.{dst[2]}.{dst[3]}";
+        }
     }
 }

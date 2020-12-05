@@ -14,7 +14,7 @@ namespace HacknetSharp.Server.Models
         public virtual string PlayerAddressRange { get; set; } = null!;
         public virtual HashSet<PersonModel> Persons { get; set; } = null!;
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
-        public DateTime Now { get; set; }
+        public virtual double Now { get; set; }
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -25,7 +25,6 @@ namespace HacknetSharp.Server.Models
                 x.HasKey(v => v.Key);
                 x.HasMany(y => y.Persons).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(y => y.Systems).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
-                x.Ignore(y => y.Now);
             });
 #pragma warning restore 1591
     }

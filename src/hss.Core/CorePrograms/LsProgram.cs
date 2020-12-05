@@ -25,8 +25,8 @@ namespace hss.Core.CorePrograms
             try
             {
                 path = argv.Length > 1
-                    ? Combine(context.Person.WorkingDirectory, argv[1])
-                    : context.Person.WorkingDirectory;
+                    ? Combine(context.Shell.WorkingDirectory, argv[1])
+                    : context.Shell.WorkingDirectory;
             }
             catch
             {

@@ -184,10 +184,10 @@ namespace hss.Core
                     _inputProcessing.Clear();
                     foreach (var world in Worlds.Values)
                     {
-                        world.PreviousTime = world.Time;
-                        var now = DateTimeOffset.Now;
-                        world.Model.Now = now.DateTime;
-                        world.Time = (now.ToUnixTimeMilliseconds() - _initialTime) / 1000.0;
+                        world.PreviousTime = world.Model.Now;
+                        world.Time = world.PreviousTime +
+                                     (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _initialTime) / 1000.0;
+                        world.Model.Now = world.Time;
                         world.Tick();
                     }
 
