@@ -28,7 +28,6 @@
             Normal,
             KillLocal,
             KillRemote
-
         }
     }
 }

@@ -14,7 +14,10 @@ namespace HacknetSharp.Server
         double Time { get; }
         double PreviousTime { get; }
         void CompleteRecurse(Process process, Process.CompletionKind completionKind);
-        void StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
+
+        void StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
+            LoginModel loginModel, string line);
+
         void StartAICommand(PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
         void StartDaemon(SystemModel systemModel, string line);
         void ExecuteCommand(ProgramContext programContext);

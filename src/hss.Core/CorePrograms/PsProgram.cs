@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
+using HacknetSharp.Server.Models;
 
 namespace hss.Core.CorePrograms
 {
@@ -22,25 +23,31 @@ namespace hss.Core.CorePrograms
             bool all = false;
             foreach (var arg in argv)
             {
-                switch (arg.ToLowerInvariant())
-                {
-                    case "-e":
-                        all = true;
-                        break;
-                }
+                if (arg.StartsWith('-'))
+                    foreach (char c in arg[1..])
+                        switch (char.ToLowerInvariant(c))
+                        {
+                            case 'e':
+                                all = true;
+                                break;
+                        }
             }
+
+            LoginModel? login = context.Login.Person == context.System.Owner.Key ? null : context.Login;
 
             user.WriteEventSafe(new OutputEvent
             {
                 Text = new StringBuilder()
-                    .Append(" ACC    PID   PPID LINE\n").AppendJoin("\n",
-                        context.System.Ps(context.Login, null, all ? (uint?)null : context.ParentPid)
+                    .Append("     ACC    PID   PPID LINE\n").AppendJoin("\n",
+                        context.System.Ps(login, null, all ? (uint?)null : context.ParentPid)
                             .Select(proc =>
                             {
                                 var c = proc.Context;
                                 string owner = c is ProgramContext pc ? pc.Login.User : "SVCH";
+                                if (owner.Length > 8)
+                                    owner = owner.Substring(0, 8);
                                 return
-                                    $"{owner,4} {c.Pid,6:D} {c.ParentPid,6:D} {new StringBuilder().AppendJoin(' ', c.Argv)}";
+                                    $"{owner,8} {c.Pid,6:D} {c.ParentPid,6:D} {new StringBuilder().AppendJoin(' ', c.Argv)}";
                             }))
                     .Append('\n')
                     .ToString()
