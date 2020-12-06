@@ -250,7 +250,7 @@ namespace hss.Core
             lock (_writeEventQueue)
                 while (_writeEventQueue.TryDequeue(out var evt))
                     ms.WriteEvent(evt);
-            Debug.Assert(ms.TryGetBuffer(out ArraySegment<byte> buf));
+            ms.TryGetBuffer(out ArraySegment<byte> buf);
 
             _writeQueue.Enqueue(buf);
 
