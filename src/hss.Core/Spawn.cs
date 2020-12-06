@@ -83,6 +83,9 @@ namespace hss.Core
                 Owner = owner,
                 Files = new HashSet<FileModel>(),
                 Logins = new HashSet<LoginModel>(),
+                KnownSystems = new HashSet<KnownSystemModel>(),
+                KnowingSystems = new HashSet<KnownSystemModel>(),
+                Vulnerabilities = new HashSet<VulnerabilityModel>(),
                 BootTime = context.Now
             };
             template.ApplyTemplate(database, this, context, system, owner, hash, salt);
@@ -90,6 +93,23 @@ namespace hss.Core
             context.Systems.Add(system);
             database.Add(system);
             return system;
+        }
+
+        public KnownSystemModel Connection(IServerDatabase database, SystemModel from, SystemModel to)
+        {
+            var c = new KnownSystemModel {From = from, FromKey = from.Key, To = to, ToKey = to.Key};
+            from.KnownSystems.Add(c);
+            to.KnowingSystems.Add(c);
+            database.Add(c);
+            return c;
+        }
+
+        public VulnerabilityModel Vulnerability(IServerDatabase database, WorldModel context, SystemModel system)
+        {
+            var vuln = new VulnerabilityModel {Key = Guid.NewGuid(), World = context, System = system};
+            system.Vulnerabilities.Add(vuln);
+            database.Add(vuln);
+            return vuln;
         }
 
         public LoginModel Login(IServerDatabase database, WorldModel context, SystemModel owner, string user,

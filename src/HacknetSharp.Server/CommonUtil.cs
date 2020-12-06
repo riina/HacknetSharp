@@ -38,7 +38,7 @@ namespace HacknetSharp.Server
         public static OutputEvent CreatePromptEvent(ShellProcess shell) =>
             new OutputEvent {Text = $"{UintToAddress(shell.ProgramContext.System.Address)}:{shell.WorkingDirectory}> "};
 
-        private static string UintToAddress(uint value)
+        public static string UintToAddress(uint value)
         {
             Span<byte> dst = stackalloc byte[4];
             BinaryPrimitives.WriteUInt32BigEndian(dst, value);

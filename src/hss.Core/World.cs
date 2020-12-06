@@ -110,8 +110,11 @@ namespace hss.Core
 
                 if (removed && processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid))
                 {
-                    pc.User.WriteEventSafe(CommonUtil.CreatePromptEvent(pc.Shell));
-                    pc.User.FlushSafeAsync();
+                    if (pc.Person.ShellChain.Count != 0)
+                    {
+                        pc.User.WriteEventSafe(CommonUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
+                        pc.User.FlushSafeAsync();
+                    }
                 }
             }
 
@@ -219,11 +222,12 @@ namespace hss.Core
                 _ => programContext.Argv
             };
 
+            programContext.Shell = shell;
             uint? pid;
-            if (programContext.Argv.Length > 0 && (pid = systemModel.GetAvailablePid()).HasValue)
+            if (programContext.Argv.Length > 0 && !string.IsNullOrWhiteSpace(programContext.Argv[0]) &&
+                (pid = systemModel.GetAvailablePid()).HasValue)
             {
                 programContext.System = systemModel;
-                programContext.Shell = shell;
                 programContext.Login = shell.ProgramContext.Login;
                 programContext.ParentPid = shell.ProgramContext.Pid;
                 programContext.Pid = pid.Value;

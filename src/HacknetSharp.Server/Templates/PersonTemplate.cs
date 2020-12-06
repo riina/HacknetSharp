@@ -42,6 +42,7 @@ namespace HacknetSharp.Server.Templates
             var person = spawn.Person(database, world, username, username);
             var (hash, salt) = CommonUtil.HashPassword(password);
             var system = spawn.System(database, world, systemTemplate, person, hash, salt, range);
+            var systems = new List<SystemModel> {system};
             person.DefaultSystem = system.Key;
             if (FleetSystemTemplates == null) return;
             int count = Random.Next(FleetMin, FleetMax + 1);
@@ -52,10 +53,17 @@ namespace HacknetSharp.Server.Templates
                     FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count];
                 if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                     throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
-                spawn.System(database, world, fleetSystemTemplate, person, hash, salt,
+                systems.Add(spawn.System(database, world, fleetSystemTemplate, person, hash, salt,
                     fixedRange
                         ? range
-                        : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange));
+                        : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange)));
+            }
+
+            for (int i = 0; i < systems.Count; i++)
+            for (int j = i + 1; j < systems.Count; j++)
+            {
+                spawn.Connection(database, systems[i], systems[j]);
+                spawn.Connection(database, systems[j], systems[i]);
             }
         }
     }

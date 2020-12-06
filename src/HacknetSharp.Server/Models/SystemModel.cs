@@ -17,6 +17,9 @@ namespace HacknetSharp.Server.Models
         public virtual PersonModel Owner { get; set; } = null!;
         public virtual HashSet<LoginModel> Logins { get; set; } = null!;
         public virtual HashSet<FileModel> Files { get; set; } = null!;
+        public virtual HashSet<VulnerabilityModel> Vulnerabilities { get; set; } = null!;
+        public virtual HashSet<KnownSystemModel> KnownSystems { get; set; } = null!;
+        public virtual HashSet<KnownSystemModel> KnowingSystems { get; set; } = null!;
         public Dictionary<uint, Process> Processes { get; set; } = new Dictionary<uint, Process>();
 
         [ModelBuilderCallback]
@@ -28,6 +31,7 @@ namespace HacknetSharp.Server.Models
                 x.HasKey(v => v.Key);
                 x.HasMany(y => y.Files).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(y => y.Logins).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Vulnerabilities).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(y => y.Processes);
             });
 #pragma warning restore 1591

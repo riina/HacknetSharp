@@ -16,7 +16,10 @@ namespace hss.Sqlite.Migrations
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -30,7 +33,10 @@ namespace hss.Sqlite.Migrations
                     PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false),
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "PlayerModel",
@@ -129,16 +135,41 @@ namespace hss.Sqlite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "KnownSystemModel",
+                columns: table => new
+                {
+                    FromKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ToKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KnownSystemModel", x => new { x.FromKey, x.ToKey });
+                    table.ForeignKey(
+                        name: "FK_KnownSystemModel_SystemModel_FromKey",
+                        column: x => x.FromKey,
+                        principalTable: "SystemModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_KnownSystemModel_SystemModel_ToKey",
+                        column: x => x.ToKey,
+                        principalTable: "SystemModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LoginModel",
                 columns: table => new
                 {
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true),
                     SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     Person = table.Column<Guid>(type: "TEXT", nullable: false),
                     User = table.Column<string>(type: "TEXT", nullable: false),
                     Hash = table.Column<byte[]>(type: "BLOB", nullable: false),
-                    Salt = table.Column<byte[]>(type: "BLOB", nullable: false)
+                    Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,6 +182,33 @@ namespace hss.Sqlite.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LoginModel_WorldModel_WorldKey",
+                        column: x => x.WorldKey,
+                        principalTable: "WorldModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VulnerabilityModel",
+                columns: table => new
+                {
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EntryPoint = table.Column<string>(type: "TEXT", nullable: false),
+                    Cve = table.Column<string>(type: "TEXT", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VulnerabilityModel", x => x.Key);
+                    table.ForeignKey(
+                        name: "FK_VulnerabilityModel_SystemModel_SystemKey",
+                        column: x => x.SystemKey,
+                        principalTable: "SystemModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VulnerabilityModel_WorldModel_WorldKey",
                         column: x => x.WorldKey,
                         principalTable: "WorldModel",
                         principalColumn: "Key",
@@ -213,6 +271,11 @@ namespace hss.Sqlite.Migrations
                 column: "WorldKey");
 
             migrationBuilder.CreateIndex(
+                name: "IX_KnownSystemModel_ToKey",
+                table: "KnownSystemModel",
+                column: "ToKey");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LoginModel_SystemKey",
                 table: "LoginModel",
                 column: "SystemKey");
@@ -252,6 +315,16 @@ namespace hss.Sqlite.Migrations
                 name: "IX_SystemModel_WorldKey",
                 table: "SystemModel",
                 column: "WorldKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VulnerabilityModel_SystemKey",
+                table: "VulnerabilityModel",
+                column: "SystemKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VulnerabilityModel_WorldKey",
+                table: "VulnerabilityModel",
+                column: "WorldKey");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -260,7 +333,13 @@ namespace hss.Sqlite.Migrations
                 name: "FileModel");
 
             migrationBuilder.DropTable(
+                name: "KnownSystemModel");
+
+            migrationBuilder.DropTable(
                 name: "RegistrationToken");
+
+            migrationBuilder.DropTable(
+                name: "VulnerabilityModel");
 
             migrationBuilder.DropTable(
                 name: "LoginModel");

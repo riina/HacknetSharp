@@ -9,7 +9,7 @@ using hss.Core;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerStorageContext))]
-    [Migration("20201205074751_Initial")]
+    [Migration("20201206021331_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,24 @@ namespace hss.Sqlite.Migrations
                     b.HasIndex("WorldKey");
 
                     b.ToTable("FileModel");
+                });
+
+            modelBuilder.Entity("HacknetSharp.Server.Models.KnownSystemModel", b =>
+                {
+                    b.Property<Guid>("FromKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ToKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Key")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("FromKey", "ToKey");
+
+                    b.HasIndex("ToKey");
+
+                    b.ToTable("KnownSystemModel");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.LoginModel", b =>
@@ -235,6 +253,35 @@ namespace hss.Sqlite.Migrations
                     b.ToTable("UserModel");
                 });
 
+            modelBuilder.Entity("HacknetSharp.Server.Models.VulnerabilityModel", b =>
+                {
+                    b.Property<Guid>("Key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Cve")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntryPoint")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SystemKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("WorldKey")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Key");
+
+                    b.HasIndex("SystemKey");
+
+                    b.HasIndex("WorldKey");
+
+                    b.ToTable("VulnerabilityModel");
+                });
+
             modelBuilder.Entity("HacknetSharp.Server.Models.WorldModel", b =>
                 {
                     b.Property<Guid>("Key")
@@ -290,6 +337,25 @@ namespace hss.Sqlite.Migrations
                     b.Navigation("System");
 
                     b.Navigation("World");
+                });
+
+            modelBuilder.Entity("HacknetSharp.Server.Models.KnownSystemModel", b =>
+                {
+                    b.HasOne("HacknetSharp.Server.Models.SystemModel", "From")
+                        .WithMany("KnownSystems")
+                        .HasForeignKey("FromKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HacknetSharp.Server.Models.SystemModel", "To")
+                        .WithMany("KnowingSystems")
+                        .HasForeignKey("ToKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("From");
+
+                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.LoginModel", b =>
@@ -366,6 +432,23 @@ namespace hss.Sqlite.Migrations
                     b.Navigation("World");
                 });
 
+            modelBuilder.Entity("HacknetSharp.Server.Models.VulnerabilityModel", b =>
+                {
+                    b.HasOne("HacknetSharp.Server.Models.SystemModel", "System")
+                        .WithMany("Vulnerabilities")
+                        .HasForeignKey("SystemKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HacknetSharp.Server.Models.WorldModel", "World")
+                        .WithMany()
+                        .HasForeignKey("WorldKey");
+
+                    b.Navigation("System");
+
+                    b.Navigation("World");
+                });
+
             modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b =>
                 {
                     b.Navigation("Systems");
@@ -380,7 +463,13 @@ namespace hss.Sqlite.Migrations
                 {
                     b.Navigation("Files");
 
+                    b.Navigation("KnowingSystems");
+
+                    b.Navigation("KnownSystems");
+
                     b.Navigation("Logins");
+
+                    b.Navigation("Vulnerabilities");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.UserModel", b =>

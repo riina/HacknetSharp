@@ -30,7 +30,7 @@ namespace hss.Core
         private readonly HashSet<Guid> _initializedWorlds;
         private PlayerModel? _playerModel;
         private SslStream? _sslStream;
-        private readonly ConcurrentQueue<ServerEvent> _writeEventQueue;
+        private readonly Queue<ServerEvent> _writeEventQueue;
         private readonly ConcurrentQueue<ReadOnlyMemory<byte>> _writeQueue;
         private bool _closed;
         private bool _connected;
@@ -44,7 +44,7 @@ namespace hss.Core
             Inputs = new ConcurrentDictionary<Guid, InputResponseEvent>();
             _cancellationTokenSource = new CancellationTokenSource();
             _initializedWorlds = new HashSet<Guid>();
-            _writeEventQueue = new ConcurrentQueue<ServerEvent>();
+            _writeEventQueue = new Queue<ServerEvent>();
             _writeQueue = new ConcurrentQueue<ReadOnlyMemory<byte>>();
             _ = Execute(_cancellationTokenSource.Token);
         }
@@ -227,13 +227,16 @@ namespace hss.Core
         public void WriteEvent(ServerEvent evt)
         {
             if (_closed || _sslStream == null) throw new InvalidOperationException();
-            _writeEventQueue.Enqueue(evt);
+            lock (_writeEventQueue)
+                _writeEventQueue.Enqueue(evt);
         }
 
         public void WriteEvents(IEnumerable<ServerEvent> events)
         {
             if (_closed || _sslStream == null) throw new InvalidOperationException();
-            foreach (var evt in events) _writeEventQueue.Enqueue(evt);
+            lock (_writeEventQueue)
+                foreach (var evt in events)
+                    _writeEventQueue.Enqueue(evt);
         }
 
         public Task FlushAsync() => FlushAsync(CancellationToken.None);
@@ -244,7 +247,9 @@ namespace hss.Core
             await Task.Yield();
 
             var ms = new MemoryStream();
-            while (_writeEventQueue.TryDequeue(out var evt)) ms.WriteEvent(evt);
+            lock (_writeEventQueue)
+                while (_writeEventQueue.TryDequeue(out var evt))
+                    ms.WriteEvent(evt);
             Debug.Assert(ms.TryGetBuffer(out ArraySegment<byte> buf));
 
             _writeQueue.Enqueue(buf);

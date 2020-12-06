@@ -14,6 +14,10 @@ namespace HacknetSharp.Server
         SystemModel System(IServerDatabase database, WorldModel context, SystemTemplate template, PersonModel owner,
             byte[] hash, byte[] salt, uint address);
 
+        KnownSystemModel Connection(IServerDatabase database, SystemModel from, SystemModel to);
+
+        VulnerabilityModel Vulnerability(IServerDatabase database, WorldModel context, SystemModel system);
+
         LoginModel Login(IServerDatabase database, WorldModel context, SystemModel owner, string user, byte[] hash,
             byte[] salt, PersonModel? person = null);
 

@@ -35,7 +35,7 @@ namespace HacknetSharp.Client
         private bool _closed;
         private TcpClient? _client;
         private SslStream? _sslStream;
-        private readonly ConcurrentQueue<ClientEvent> _writeEventQueue;
+        private readonly Queue<ClientEvent> _writeEventQueue;
         private readonly ConcurrentQueue<ArraySegment<byte>> _writeQueue;
 
         public ClientConnection(string server, ushort port, string user, string pass, string? registrationToken = null)
@@ -51,7 +51,7 @@ namespace HacknetSharp.Client
             _lockOutOp = new AutoResetEvent(true);
             _state = LifecycleState.NotStarted;
             _inEvents = new List<ServerEvent>();
-            _writeEventQueue = new ConcurrentQueue<ClientEvent>();
+            _writeEventQueue = new Queue<ClientEvent>();
             _writeQueue = new ConcurrentQueue<ArraySegment<byte>>();
         }
 
@@ -246,13 +246,16 @@ namespace HacknetSharp.Client
         public void WriteEvent(ClientEvent evt)
         {
             if (_closed || _sslStream == null) throw new InvalidOperationException();
-            _writeEventQueue.Enqueue(evt);
+            lock (_writeEventQueue)
+                _writeEventQueue.Enqueue(evt);
         }
 
         public void WriteEvents(IEnumerable<ClientEvent> events)
         {
             if (_closed || _sslStream == null) throw new InvalidOperationException();
-            foreach (var evt in events) _writeEventQueue.Enqueue(evt);
+            lock (_writeEventQueue)
+                foreach (var evt in events)
+                    _writeEventQueue.Enqueue(evt);
         }
 
         public Task FlushAsync() => FlushAsync(CancellationToken.None);
@@ -263,7 +266,9 @@ namespace HacknetSharp.Client
             await Task.Yield();
 
             var ms = new MemoryStream();
-            while (_writeEventQueue.TryDequeue(out var evt)) ms.WriteEvent(evt);
+            lock (_writeEventQueue)
+                while (_writeEventQueue.Count != 0)
+                    ms.WriteEvent(_writeEventQueue.Dequeue());
             Debug.Assert(ms.TryGetBuffer(out ArraySegment<byte> buf));
 
             _writeQueue.Enqueue(buf);
