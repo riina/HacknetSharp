@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
@@ -29,7 +30,8 @@ namespace hss.Core
         private readonly HashSet<Guid> _initializedWorlds;
         private PlayerModel? _playerModel;
         private SslStream? _sslStream;
-        private BufferedStream? _bufferedStream;
+        private readonly ConcurrentQueue<ServerEvent> _writeEventQueue;
+        private readonly ConcurrentQueue<ReadOnlyMemory<byte>> _writeQueue;
         private bool _closed;
         private bool _connected;
 
@@ -42,6 +44,8 @@ namespace hss.Core
             Inputs = new ConcurrentDictionary<Guid, InputResponseEvent>();
             _cancellationTokenSource = new CancellationTokenSource();
             _initializedWorlds = new HashSet<Guid>();
+            _writeEventQueue = new ConcurrentQueue<ServerEvent>();
+            _writeQueue = new ConcurrentQueue<ReadOnlyMemory<byte>>();
             _ = Execute(_cancellationTokenSource.Token);
         }
 
@@ -66,7 +70,6 @@ namespace hss.Core
                 _connected = true;
                 _sslStream.ReadTimeout = 10 * 1000;
                 _sslStream.WriteTimeout = 10 * 1000;
-                _bufferedStream = new BufferedStream(_sslStream);
                 ClientEvent? evt;
                 _user = null;
                 while (!((evt = await _sslStream.ReadEventAsync<ClientEvent>(cancellationToken).Caf()) is
@@ -223,33 +226,37 @@ namespace hss.Core
 
         public void WriteEvent(ServerEvent evt)
         {
-            if (_closed || _bufferedStream == null) throw new InvalidOperationException();
-            _lockOutOp.WaitOne();
-            try
-            {
-                _bufferedStream.WriteEvent(evt);
-            }
-            finally
-            {
-                _lockOutOp.Set();
-            }
+            if (_closed || _sslStream == null) throw new InvalidOperationException();
+            _writeEventQueue.Enqueue(evt);
         }
 
         public void WriteEvents(IEnumerable<ServerEvent> events)
         {
-            if (_closed || _bufferedStream == null) throw new InvalidOperationException();
-            foreach (var evt in events) _bufferedStream.WriteEvent(evt);
+            if (_closed || _sslStream == null) throw new InvalidOperationException();
+            foreach (var evt in events) _writeEventQueue.Enqueue(evt);
         }
 
         public Task FlushAsync() => FlushAsync(CancellationToken.None);
 
         public async Task FlushAsync(CancellationToken cancellationToken)
         {
-            if (_closed || _bufferedStream == null) throw new InvalidOperationException();
+            if (_closed || _sslStream == null) throw new InvalidOperationException();
+            await Task.Yield();
+
+            var ms = new MemoryStream();
+            while (_writeEventQueue.TryDequeue(out var evt)) ms.WriteEvent(evt);
+            Debug.Assert(ms.TryGetBuffer(out ArraySegment<byte> buf));
+
+            _writeQueue.Enqueue(buf);
+
             _lockOutOp.WaitOne();
             try
             {
-                await _bufferedStream.FlushAsync(cancellationToken).Caf();
+                while (_writeQueue.TryDequeue(out var buf2))
+                {
+                    await _sslStream.WriteAsync(buf2, cancellationToken).Caf();
+                    await _sslStream.FlushAsync(cancellationToken).Caf();
+                }
             }
             finally
             {
