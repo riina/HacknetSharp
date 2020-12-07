@@ -20,7 +20,7 @@ namespace hss.Runnables
             public Task<int> Run(Executor executor)
             {
                 Console.WriteLine("Looking for cert...");
-                var cert = ServerUtil.FindCertificate(ExternalAddr, ServerUtil.CertificateStores);
+                var cert = HssUtil.FindCertificate(ExternalAddr, HssUtil.CertificateStores);
                 if (cert == null)
                 {
                     Console.WriteLine("Failed to find certificate");
@@ -57,7 +57,7 @@ namespace hss.Runnables
                         ss.Dispose();
                     }
 
-                    foreach ((StoreName name, StoreLocation location) in ServerUtil.CertificateStores)
+                    foreach ((StoreName name, StoreLocation location) in HssUtil.CertificateStores)
                     {
                         Console.WriteLine($"Registering to {location}:{name}...");
                         var nStore = new X509Store(name, location);
@@ -100,7 +100,7 @@ namespace hss.Runnables
                         ss.Dispose();
                     }
 
-                    foreach ((StoreName name, StoreLocation location) in ServerUtil.CertificateStores)
+                    foreach ((StoreName name, StoreLocation location) in HssUtil.CertificateStores)
                     {
                         Console.WriteLine($"Removing from {location}:{name}...");
                         var nStore = new X509Store(name, location);

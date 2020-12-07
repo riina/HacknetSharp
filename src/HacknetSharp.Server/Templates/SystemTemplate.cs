@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.Templates
                 {
                     var match = _userRegex.Match(user);
                     if (!match.Success) throw new ApplicationException($"Failed to parse user:pass for {user}");
-                    var (hashSub, saltSub) = CommonUtil.HashPassword(match.Groups[1].Value);
+                    var (hashSub, saltSub) = ServerUtil.HashPassword(match.Groups[1].Value);
                     spawn.Login(database, world, model, match.Groups[1].Value.ToLowerInvariant(), hashSub, saltSub);
                 }
 

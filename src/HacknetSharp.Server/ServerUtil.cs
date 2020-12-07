@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace HacknetSharp.Server
 {
-    public static class CommonUtil
+    public static class ServerUtil
     {
-        static CommonUtil()
+        static ServerUtil()
         {
-            var types = LoadTypesFromFolder(CommonConstants.ExtensionsFolder,
+            var types = LoadTypesFromFolder(ServerConstants.ExtensionsFolder,
                 new[] {typeof(Program), typeof(Service)});
             _customPrograms = new HashSet<Type>(types[1]);
             _customServices = new HashSet<Type>(types[0]);

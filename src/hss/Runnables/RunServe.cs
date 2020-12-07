@@ -20,13 +20,13 @@ namespace hss.Runnables
 
         private static async Task<int> Start(Executor executor, Options options)
         {
-            if (!File.Exists(ServerConstants.ServerYamlFile))
+            if (!File.Exists(HssConstants.ServerYamlFile))
             {
-                Console.WriteLine($"Could not find {ServerConstants.ServerYamlFile}");
+                Console.WriteLine($"Could not find {HssConstants.ServerYamlFile}");
                 return 8;
             }
 
-            var (_, servConf) = ServerUtil.ReadFromFile<ServerSettings>(ServerConstants.ServerYamlFile);
+            var (_, servConf) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
             if (servConf.Host == null)
             {
                 Console.WriteLine($"Config has null {nameof(ServerSettings.Host)}");
@@ -40,7 +40,7 @@ namespace hss.Runnables
             }
 
             Console.WriteLine("Looking for cert...");
-            var cert = ServerUtil.FindCertificate(servConf.Host, ServerUtil.CertificateStores);
+            var cert = HssUtil.FindCertificate(servConf.Host, HssUtil.CertificateStores);
             if (cert == null)
             {
                 Console.WriteLine("Failed to find certificate");
@@ -57,7 +57,7 @@ namespace hss.Runnables
                 .WithStorageContextFactory(executor.ServerDatabaseContextFactory)
                 .WithDefaultWorld(servConf.DefaultWorld)
                 .WithPort(servConf.Port)
-                .WithTemplates(ServerUtil.GetTemplates(""))
+                .WithTemplates(HssUtil.GetTemplates(""))
                 .WithCertificate(cert.Value.Item2);
             var instance = conf.CreateInstance();
             _ = instance.Start();

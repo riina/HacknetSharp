@@ -11,7 +11,7 @@ namespace hss
     /// <summary>
     /// Contains utility methods.
     /// </summary>
-    public static class ServerUtil
+    public static class HssUtil
     {
         public static (X509Store, X509Certificate2)? FindCertificate(string externalAddr,
             IEnumerable<(StoreName name, StoreLocation location)> stores)
@@ -42,15 +42,15 @@ namespace hss
         public static TemplateGroup GetTemplates(string installDir)
         {
             var templates = new TemplateGroup();
-            string worlds = Path.Combine(installDir, ServerConstants.WorldTemplatesFolder);
+            string worlds = Path.Combine(installDir, HssConstants.WorldTemplatesFolder);
             if (Directory.Exists(worlds))
                 LoadTree(worlds, templates.WorldTemplates, ".yaml");
 
-            string persons = Path.Combine(installDir, ServerConstants.PersonTemplatesFolder);
+            string persons = Path.Combine(installDir, HssConstants.PersonTemplatesFolder);
             if (Directory.Exists(persons))
                 LoadTree(persons, templates.PersonTemplates, ".yaml");
 
-            string systems = Path.Combine(installDir, ServerConstants.SystemTemplatesFolder);
+            string systems = Path.Combine(installDir, HssConstants.SystemTemplatesFolder);
             if (Directory.Exists(systems))
                 LoadTree(systems, templates.SystemTemplates, ".yaml");
 

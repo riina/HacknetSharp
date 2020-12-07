@@ -36,7 +36,7 @@ namespace hss.Runnables
                     return 0;
                 }
 
-                var templates = ServerUtil.GetTemplates("");
+                var templates = HssUtil.GetTemplates("");
                 if (!templates.WorldTemplates.TryGetValue(Template, out var template))
                 {
                     Console.WriteLine("Could not find a template with the specified name.");

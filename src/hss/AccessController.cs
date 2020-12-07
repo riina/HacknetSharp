@@ -18,7 +18,7 @@ namespace hss
         {
             var userModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (userModel == null) return null;
-            return CommonUtil.ValidatePassword(pass, userModel.Hash, userModel.Salt) ? userModel : null;
+            return ServerUtil.ValidatePassword(pass, userModel.Hash, userModel.Salt) ? userModel : null;
         }
 
         public async Task<UserModel?> RegisterAsync(string user, string pass, string registrationToken)
@@ -28,7 +28,7 @@ namespace hss
             var token = await _db.GetAsync<string, RegistrationToken>(registrationToken).Caf();
             if (token == null) return null;
             _db.Delete(token);
-            var (hash, salt) = CommonUtil.HashPassword(pass);
+            var (hash, salt) = ServerUtil.HashPassword(pass);
             userModel = new UserModel {Key = user, Hash = hash, Salt = salt};
             _db.Add(userModel);
             await _db.SyncAsync().Caf();
@@ -37,7 +37,7 @@ namespace hss
 
         public async Task<bool> ChangePasswordAsync(UserModel userModel, string newPass)
         {
-            (userModel.Hash, userModel.Salt) = CommonUtil.HashPassword(newPass);
+            (userModel.Hash, userModel.Salt) = ServerUtil.HashPassword(newPass);
             _db.Edit(userModel);
             await _db.SyncAsync().Caf();
             return true;
@@ -48,7 +48,7 @@ namespace hss
             if (!userModel.Admin) return false;
             var targetUserModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (targetUserModel == null) return false;
-            (targetUserModel.Hash, targetUserModel.Salt) = CommonUtil.HashPassword(newPass);
+            (targetUserModel.Hash, targetUserModel.Salt) = ServerUtil.HashPassword(newPass);
             _db.Edit(targetUserModel);
             await _db.SyncAsync().Caf();
             return true;

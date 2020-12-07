@@ -112,7 +112,7 @@ namespace hss
                 {
                     if (pc.Person.ShellChain.Count != 0)
                     {
-                        pc.User.WriteEventSafe(CommonUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
+                        pc.User.WriteEventSafe(ServerUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
                         pc.User.FlushSafeAsync();
                     }
                 }
@@ -276,7 +276,7 @@ namespace hss
 
             if (!programContext.IsAI)
             {
-                programContext.User.WriteEventSafe(CommonUtil.CreatePromptEvent(programContext.Shell));
+                programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(programContext.Shell));
                 programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
                 programContext.User.FlushSafeAsync();
             }

@@ -3,13 +3,8 @@
     /// <summary>
     /// Provides common constants.
     /// </summary>
-    public static class ServerConstants
+    public static class HssConstants
     {
-        /// <summary>
-        /// Assembly version string.
-        /// </summary>
-        public const string Version = "0.1.0";
-
         /// <summary>
         /// Default server YAML config file.
         /// </summary>

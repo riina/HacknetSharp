@@ -40,7 +40,7 @@ namespace HacknetSharp.Server.Templates
                                            AddressRange ?? systemTemplate.AddressRange ??
                                            Constants.DefaultAddressRange);
             var person = spawn.Person(database, world, username, username);
-            var (hash, salt) = CommonUtil.HashPassword(password);
+            var (hash, salt) = ServerUtil.HashPassword(password);
             var system = spawn.System(database, world, systemTemplate, person, hash, salt, range);
             var systems = new List<SystemModel> {system};
             person.DefaultSystem = system.Key;

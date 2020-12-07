@@ -39,7 +39,7 @@ namespace hss.Runnables
                 Console.Write("Pass:");
                 string? pass = Util.ReadPassword();
                 if (pass == null) return 0;
-                var (hash, salt) = CommonUtil.HashPassword(pass);
+                var (hash, salt) = ServerUtil.HashPassword(pass);
                 ctx.Add(new UserModel {Admin = Admin, Hash = hash, Salt = salt, Key = Name});
                 await ctx.SaveChangesAsync().Caf();
                 return 0;

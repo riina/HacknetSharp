@@ -21,12 +21,12 @@ namespace HacknetSharp.Test
         [Test]
         public void Test_UtilSubclass()
         {
-            Assert.IsTrue(CommonUtil.IsSubclass(typeof(Model<>), typeof(SubModel)));
-            Assert.IsFalse(CommonUtil.IsSubclass(typeof(Model<>), typeof(int)));
-            Assert.IsFalse(CommonUtil.IsSubclass(typeof(int), typeof(int)));
-            Assert.IsFalse(CommonUtil.IsSubclass(typeof(Model<>), typeof(Model<>)));
-            Assert.IsTrue(CommonUtil.IsSubclass(typeof(object), typeof(string)));
-            Assert.IsTrue(CommonUtil.IsSubclass(typeof(object), typeof(List<int>)));
+            Assert.IsTrue(ServerUtil.IsSubclass(typeof(Model<>), typeof(SubModel)));
+            Assert.IsFalse(ServerUtil.IsSubclass(typeof(Model<>), typeof(int)));
+            Assert.IsFalse(ServerUtil.IsSubclass(typeof(int), typeof(int)));
+            Assert.IsFalse(ServerUtil.IsSubclass(typeof(Model<>), typeof(Model<>)));
+            Assert.IsTrue(ServerUtil.IsSubclass(typeof(object), typeof(string)));
+            Assert.IsTrue(ServerUtil.IsSubclass(typeof(object), typeof(List<int>)));
         }
 
         private class SubModel : Model<int>
@@ -155,7 +155,7 @@ namespace HacknetSharp.Test
             var worldModel = spawn.World(database, "za warudo", templates, worldTemplate);
 
             var person1Model = spawn.Person(database, worldModel, "Jacob Keyes", "jacobkeyes");
-            (byte[] person1Hash, byte[] person1Salt) = CommonUtil.HashPassword("miranda");
+            (byte[] person1Hash, byte[] person1Salt) = ServerUtil.HashPassword("miranda");
 
             var system1Model = spawn.System(database, worldModel, system1Template, person1Model, person1Hash,
                 person1Salt,

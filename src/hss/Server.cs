@@ -67,9 +67,9 @@ namespace hss
             }
 
             DefaultWorld = defaultWorld ?? throw new ApplicationException("No world matching name found");
-            _programTypes = new HashSet<Type>(CommonUtil.DefaultPrograms);
+            _programTypes = new HashSet<Type>(ServerUtil.DefaultPrograms);
             _programTypes.UnionWith(config.Programs);
-            _serviceTypes = new HashSet<Type>(CommonUtil.DefaultServices);
+            _serviceTypes = new HashSet<Type>(ServerUtil.DefaultServices);
             _serviceTypes.UnionWith(config.Services);
             Programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
             IntrinsicPrograms = new Dictionary<string, (Program, ProgramInfoAttribute)>();

@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.CorePrograms
             foreach (var s in system.KnownSystems)
             {
                 sb.Append(s.To.BootTime > curTime ? "DOWN" : "UP  ")
-                    .Append($"{CommonUtil.UintToAddress(s.To.Address),16}")
+                    .Append($"{ServerUtil.UintToAddress(s.To.Address),16}")
                     .Append(' ')
                     .Append(s.To.Name)
                     .Append('\n');

@@ -26,17 +26,17 @@ namespace hss.Sqlite
         }
 
         public override IEnumerable<Type> Programs =>
-            CommonUtil.DefaultPrograms.Concat(CustomPrograms.SelectMany(e => e));
+            ServerUtil.DefaultPrograms.Concat(CustomPrograms.SelectMany(e => e));
 
         public override IEnumerable<Type> Services =>
-            CommonUtil.DefaultServices.Concat(CustomServices.SelectMany(e => e));
+            ServerUtil.DefaultServices.Concat(CustomServices.SelectMany(e => e));
 
         public override IEnumerable<Type> Models =>
-            CommonUtil.DefaultModels.Concat(CustomModels.SelectMany(e => e));
+            ServerUtil.DefaultModels.Concat(CustomModels.SelectMany(e => e));
 
-        protected override IEnumerable<IEnumerable<Type>> CustomPrograms => new[] {CommonUtil.CustomPrograms};
+        protected override IEnumerable<IEnumerable<Type>> CustomPrograms => new[] {ServerUtil.CustomPrograms};
 
-        protected override IEnumerable<IEnumerable<Type>> CustomServices => new[] {CommonUtil.CustomServices};
+        protected override IEnumerable<IEnumerable<Type>> CustomServices => new[] {ServerUtil.CustomServices};
 
         protected override IEnumerable<IEnumerable<Type>> CustomModels => Enumerable.Empty<IEnumerable<Type>>();
 

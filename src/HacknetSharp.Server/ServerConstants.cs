@@ -1,6 +1,6 @@
 namespace HacknetSharp.Server
 {
-    public class CommonConstants
+    public class ServerConstants
     {
         /// <summary>
         /// Path to extensions folder.

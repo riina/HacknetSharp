@@ -24,8 +24,8 @@ namespace hss
         private static async Task<int> Main(string[] args)
         {
             ServerSettings? serverYaml = null;
-            if (File.Exists(ServerConstants.ServerYamlFile))
-                (_, serverYaml) = ServerUtil.ReadFromFile<ServerSettings>(ServerConstants.ServerYamlFile);
+            if (File.Exists(HssConstants.ServerYamlFile))
+                (_, serverYaml) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
             string kind = Environment.GetEnvironmentVariable(EnvStorageKind) ?? serverYaml?.DatabaseKind ??
                 throw new ApplicationException($"ENV {EnvStorageKind} not set");
             return await new Executor(kind.ToLowerInvariant() switch

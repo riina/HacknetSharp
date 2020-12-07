@@ -37,7 +37,7 @@ namespace hss.Runnables
                 {
                     {
                         "system", (true, options => (
-                            Path.Combine(ServerConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
+                            Path.Combine(HssConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
                             (object)(options.Example
                                 ? new SystemTemplate
                                 {
@@ -59,7 +59,7 @@ namespace hss.Runnables
                     },
                     {
                         "person", (true, options => (
-                            Path.Combine(ServerConstants.PersonTemplatesFolder, $"{options.Name}.yaml"),
+                            Path.Combine(HssConstants.PersonTemplatesFolder, $"{options.Name}.yaml"),
                             (object)(options.Example
                                 ? new PersonTemplate
                                 {
@@ -74,7 +74,7 @@ namespace hss.Runnables
                     },
                     {
                         "world", (true, options => (
-                            Path.Combine(ServerConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
+                            Path.Combine(HssConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
                             (object)(options.Example
                                 ? new WorldTemplate
                                 {
@@ -138,7 +138,7 @@ namespace hss.Runnables
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)) ??
                                       throw new ApplicationException());
             using var tw = new StreamWriter(File.OpenWrite(path));
-            ServerUtil.YamlSerializer.Serialize(tw, result);
+            HssUtil.YamlSerializer.Serialize(tw, result);
             Console.WriteLine($"Template saved to:\n{path}");
             return Task.FromResult(0);
         }

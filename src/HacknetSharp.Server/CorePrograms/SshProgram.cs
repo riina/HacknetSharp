@@ -22,7 +22,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!CommonUtil.TryParseConString(argv[1], 22, out string? name, out string? host, out ushort port,
+            if (!ServerUtil.TryParseConString(argv[1], 22, out string? name, out string? host, out ushort port,
                 out string? error))
             {
                 user.WriteEventSafe(Output($"ssh: {error}\n"));
@@ -48,7 +48,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             var login = system.Logins.FirstOrDefault(l => l.User == name);
-            if (login == null || !CommonUtil.ValidatePassword(input.Input!.Input, login.Hash, login.Salt))
+            if (login == null || !ServerUtil.ValidatePassword(input.Input!.Input, login.Hash, login.Salt))
             {
                 user.WriteEventSafe(Output("ssh: Invalid credentials\n"));
                 yield break;
