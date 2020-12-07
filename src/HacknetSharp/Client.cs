@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
@@ -13,9 +12,9 @@ using System.Threading.Tasks;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 
-namespace HacknetSharp.Client
+namespace HacknetSharp
 {
-    public class ClientConnection : IInboundConnection<ServerEvent>, IOutboundConnection<ClientEvent>
+    public class Client : IInboundConnection<ServerEvent>, IOutboundConnection<ClientEvent>
     {
         public string Server { get; }
         public ushort Port { get; }
@@ -38,7 +37,7 @@ namespace HacknetSharp.Client
         private readonly Queue<ClientEvent> _writeEventQueue;
         private readonly ConcurrentQueue<ArraySegment<byte>> _writeQueue;
 
-        public ClientConnection(string server, ushort port, string user, string pass, string? registrationToken = null)
+        public Client(string server, ushort port, string user, string pass, string? registrationToken = null)
         {
             Server = server;
             Port = port;
@@ -267,11 +266,12 @@ namespace HacknetSharp.Client
 
             var ms = new MemoryStream();
             lock (_writeEventQueue)
+            {
                 while (_writeEventQueue.Count != 0)
                     ms.WriteEvent(_writeEventQueue.Dequeue());
-            Debug.Assert(ms.TryGetBuffer(out ArraySegment<byte> buf));
-
-            _writeQueue.Enqueue(buf);
+                ms.TryGetBuffer(out ArraySegment<byte> buf);
+                _writeQueue.Enqueue(buf);
+            }
 
             _lockOutOp.WaitOne();
             try
@@ -289,5 +289,12 @@ namespace HacknetSharp.Client
         }
 
         public bool Connected => _connected;
+
+        public class LoginException : Exception
+        {
+            public LoginException(string message) : base(message)
+            {
+            }
+        }
     }
 }

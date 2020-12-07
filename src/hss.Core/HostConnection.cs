@@ -248,11 +248,12 @@ namespace hss.Core
 
             var ms = new MemoryStream();
             lock (_writeEventQueue)
+            {
                 while (_writeEventQueue.TryDequeue(out var evt))
                     ms.WriteEvent(evt);
-            ms.TryGetBuffer(out ArraySegment<byte> buf);
-
-            _writeQueue.Enqueue(buf);
+                ms.TryGetBuffer(out ArraySegment<byte> buf);
+                _writeQueue.Enqueue(buf);
+            }
 
             _lockOutOp.WaitOne();
             try

@@ -177,8 +177,8 @@ make sense based on their description.
 ## Extending functionality
 
 If for whatever reason you wanted to create additional programs,
-reference the `HacknetSharp.Server.Common` project and write your
-programs like the `HacknetSharp.Server.CorePrograms` programs.
+reference the `HacknetSharp.Server` project and write your
+programs like the `hss.Core.CorePrograms` programs.
 
 Your assembly (plus any dependencies not included with
 `HacknetSharp.Server`) should be placed under

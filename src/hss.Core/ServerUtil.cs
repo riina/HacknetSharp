@@ -23,7 +23,6 @@ namespace hss.Core
             new HashSet<Type>(GetTypes(typeof(Model<>), typeof(Model<>).Assembly)
                 .Concat(GetTypes(typeof(Model<>), typeof(ServerUtil).Assembly)));
 
-
         internal static readonly HashSet<Type> DefaultPrograms =
             new HashSet<Type>(GetTypes(typeof(Program), typeof(Program).Assembly)
                 .Concat(GetTypes(typeof(Program), typeof(ServerUtil).Assembly)));

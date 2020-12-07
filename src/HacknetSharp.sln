@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss.Core", "hss.Core\hss.Core.csproj", "{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Client", "HacknetSharp.Client\HacknetSharp.Client.csproj", "{84D24E95-8795-4CA2-B48F-90B9F2395618}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss.Postgres", "hss.Postgres\hss.Postgres.csproj", "{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Test", "HacknetSharp.Test\HacknetSharp.Test.csproj", "{DC155C3D-7C3D-41CC-9444-604D51275178}"
@@ -28,10 +26,6 @@ Global
 		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84D24E95-8795-4CA2-B48F-90B9F2395618}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU

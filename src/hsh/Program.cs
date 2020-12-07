@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
-using HacknetSharp.Client;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 
@@ -41,7 +40,7 @@ namespace hsh
             return failReason.Value.Item1;
         }
 
-        private static async Task<int> ForgeToken(ClientConnection connection)
+        private static async Task<int> ForgeToken(Client connection)
         {
             (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
             if (user == null) return resCode;
@@ -79,7 +78,7 @@ namespace hsh
             }
         }
 
-        private static async Task<int> ExecuteClient(ClientConnection connection)
+        private static async Task<int> ExecuteClient(Client connection)
         {
             connection.OnReceivedEvent += e =>
             {
@@ -143,14 +142,14 @@ namespace hsh
             return 0;
         }
 
-        private static async Task<(UserInfoEvent?, int)> Connect(ClientConnection connection)
+        private static async Task<(UserInfoEvent?, int)> Connect(Client connection)
         {
             UserInfoEvent userInfoEvent;
             try
             {
                 userInfoEvent = await connection.ConnectAsync().Caf();
             }
-            catch (LoginException)
+            catch (Client.LoginException)
             {
                 Console.WriteLine("Login failed.");
                 return (null, 0x20201);
@@ -170,7 +169,7 @@ namespace hsh
             return (userInfoEvent, 0);
         }
 
-        private static ClientConnection? GetConnection(string conString, bool askRegistrationToken,
+        private static Client? GetConnection(string conString, bool askRegistrationToken,
             out (int, string)? failReason)
         {
             failReason = null;
@@ -192,7 +191,7 @@ namespace hsh
             else
                 registrationToken = null;
 
-            return pass != null ? new ClientConnection(server!, port, user!, pass, registrationToken) : null;
+            return pass != null ? new Client(server!, port, user!, pass, registrationToken) : null;
         }
     }
 }
