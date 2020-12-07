@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\hss.Core\hss.Core.csproj" />
+    <ProjectReference Include="..\HacknetSharp.Server\HacknetSharp.Server.csproj" />
   </ItemGroup>
 
 </Project>

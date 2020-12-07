@@ -1,14 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>Enable</Nullable>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\hss.Postgres\hss.Postgres.csproj" />
-      <ProjectReference Include="..\hss.Sqlite\hss.Sqlite.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HacknetSharp.Server\HacknetSharp.Server.csproj" />
+    <ProjectReference Include="..\HacknetSharp\HacknetSharp.csproj" />
+    <ProjectReference Include="..\hss.Postgres\hss.Postgres.csproj" />
+    <ProjectReference Include="..\hss.Sqlite\hss.Sqlite.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
-using hss.Core;
+using hss;
 using NUnit.Framework;
 
 namespace HacknetSharp.Test
@@ -21,12 +21,12 @@ namespace HacknetSharp.Test
         [Test]
         public void Test_UtilSubclass()
         {
-            Assert.IsTrue(ServerUtil.IsSubclass(typeof(Model<>), typeof(SubModel)));
-            Assert.IsFalse(ServerUtil.IsSubclass(typeof(Model<>), typeof(int)));
-            Assert.IsFalse(ServerUtil.IsSubclass(typeof(int), typeof(int)));
-            Assert.IsFalse(ServerUtil.IsSubclass(typeof(Model<>), typeof(Model<>)));
-            Assert.IsTrue(ServerUtil.IsSubclass(typeof(object), typeof(string)));
-            Assert.IsTrue(ServerUtil.IsSubclass(typeof(object), typeof(List<int>)));
+            Assert.IsTrue(CommonUtil.IsSubclass(typeof(Model<>), typeof(SubModel)));
+            Assert.IsFalse(CommonUtil.IsSubclass(typeof(Model<>), typeof(int)));
+            Assert.IsFalse(CommonUtil.IsSubclass(typeof(int), typeof(int)));
+            Assert.IsFalse(CommonUtil.IsSubclass(typeof(Model<>), typeof(Model<>)));
+            Assert.IsTrue(CommonUtil.IsSubclass(typeof(object), typeof(string)));
+            Assert.IsTrue(CommonUtil.IsSubclass(typeof(object), typeof(List<int>)));
         }
 
         private class SubModel : Model<int>

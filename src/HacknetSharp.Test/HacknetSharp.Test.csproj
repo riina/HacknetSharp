@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\hss.Core\hss.Core.csproj" />
       <ProjectReference Include="..\hss.Sqlite\hss.Sqlite.csproj" />
+      <ProjectReference Include="..\hss\hss.csproj" />
     </ItemGroup>
 
 </Project>
