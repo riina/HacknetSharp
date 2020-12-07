@@ -1,6 +1,6 @@
 # HacknetSharp
 
-![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)
+[![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/The-Council-of-Wills/HacknetSharp/actions?workflow=.NET+Build)
 
 Heavily inspired by the legendary game [Hacknet](http://hacknet-os.com/),
 this project aims to deliver a multiplayer Hacknet experience
