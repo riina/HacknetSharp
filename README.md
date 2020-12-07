@@ -2,8 +2,7 @@
 
 [![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/The-Council-of-Wills/HacknetSharp/actions?workflow=.NET+Build)
 
-Heavily inspired by the legendary game [Hacknet](http://hacknet-os.com/),
-this project aims to deliver a multiplayer Hacknet experience
+This project aims to deliver a multiplayer [Hacknet](http://hacknet-os.com/) experience
 to WILLs everywhere.
 
 This project was started purely because tarche created
@@ -24,9 +23,9 @@ and .NET 5 ([install .NET 5 runtime here](https://dotnet.microsoft.com/download/
 
 ## Server
 
-`hss` is the main server program. It can use a SQLite or PostgreSQL
-backing database. It supports .NET 5
-([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).
+`hss` is the main server program. It supports .NET 5
+([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)). It can use a SQLite or PostgreSQL
+backing database.
 
 [Read about how to use the server here.](meta/usage-server.md)
 
