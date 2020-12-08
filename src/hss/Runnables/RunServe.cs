@@ -50,6 +50,8 @@ namespace hss.Runnables
             Console.WriteLine(
                 $"Found cert in {cert.Value.Item1.Location}:{cert.Value.Item1.Location} - {cert.Value.Item2.Subject}");
 
+            var templates = new TemplateGroup();
+            HssUtil.LoadTemplates(templates, HssConstants.ContentFolder);
 
             var conf = new ServerConfig()
                 .WithPrograms(executor.ServerDatabaseContextFactory.Programs.Concat(executor.CustomPrograms))
@@ -57,7 +59,7 @@ namespace hss.Runnables
                 .WithStorageContextFactory(executor.ServerDatabaseContextFactory)
                 .WithDefaultWorld(servConf.DefaultWorld)
                 .WithPort(servConf.Port)
-                .WithTemplates(HssUtil.GetTemplates(""))
+                .WithTemplates(templates)
                 .WithCertificate(cert.Value.Item2);
             var instance = conf.CreateInstance();
             _ = instance.Start();

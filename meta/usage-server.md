@@ -66,17 +66,17 @@ folder.
 
 `hss new system -n <templateName>`
 
-* NameFormat(`string`): defines how name will be formatted based on a
-call to `string.Format(invariantCulture, NameFormat, playerName)` with
-the system owner's name. For example, "{0} Home Server" for a person
-with the username "alec" would produce "alec Home Server"
+* Name(`string`): defines system name with replacements, e.g.
+ "{Owner.UserName} Home Server" for a person with the username
+ "alec" would produce "alec Home Server"
 * OsName(`string`): OS name
 * AddressRange(`string?`): CIDR range string for address pool
 * ConnectCommandLine(`string?`): Default command to execute on shell connect
 * Users(`List<string>?`): List of normal users in addition to the system's owner, formatted as "user:pass"
-* Filesystem(`List<string>?`): List of filesystem entries, formatted as
-"`<type>`[permissions]:`<path>` `<args>`". Permissions are just 3 */^/+ for
-RWE, *:everyone/^:owner/+:admin can perform that operation.
+* Filesystem(`Dictionary<string, List<string>>?`): List of filesystem entries
+  per user (can use replacement {Owner.UserName} for primary user), formatted as
+  "`<type>[permissions]:<path> <args>`". Permissions are just 3 */^/+ for
+  RWE, *:everyone/^:owner/+:admin can perform that operation.
   - fold: Folder.
   - prog: Program, arg[0] is the progCode of the program to execute.
   - text: Text content, arg[0] is the text to include. Unfortunately 
@@ -84,6 +84,11 @@ RWE, *:everyone/^:owner/+:admin can perform that operation.
   - file: Content file, arg[0] determines file path. Not yet 
   implemented.
   - blob: Blob file, arg[0] determines file path. Not yet implemented.
+
+Default replacements:
+* `Owner.UserName` - system owner's username
+* `Owner.Name` - system owner's personal name
+* `Name` / `UserName` - current filesystem section's owner name
 
 ### Person templates
 
@@ -94,12 +99,20 @@ RWE, *:everyone/^:owner/+:admin can perform that operation.
 * AddressRange(`string?`): CIDR range string for address pool
 * EmailProviders(`List<string>`): possible email providers to be 
 selected
-* SystemTemplates(`List<string>`): possible primary system templates 
-to be selected
+* PrimarySystemTemplates(`List<string>`): possible primary
+  system templates to be selected
 * FleetMin(`int?`): Minimum number of additional systems
 * FleetMax(`int?`): Maximum number of additional systems
 * FleetSystemTemplates(`List<string>?`): possible fleet system
-templates to be selected
+  templates to be selected
+* Network(`List<NetworkEntry>?`): Fixed-system network to generate
+  - Template(`string`): System template
+  - Address(`string`): Address (combined with host network using
+    subnet mask)
+  - Configuration(`Dictionary<string, string>?`): Additional
+    replacements to pass to system template
+  - Links(`List<string>?`): Links (uni-directional) to create to
+    other systems
 
 ### World templates
 

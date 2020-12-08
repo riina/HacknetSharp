@@ -37,11 +37,11 @@ namespace hss.Runnables
                 {
                     {
                         "system", (true, options => (
-                            Path.Combine(HssConstants.SystemTemplatesFolder, $"{options.Name}.yaml"),
+                            Path.Combine(HssConstants.ContentFolder, $"{options.Name}.system.yaml"),
                             (object)(options.Example
                                 ? new SystemTemplate
                                 {
-                                    NameFormat = "{Owner.UserName}_HOMEBASE",
+                                    Name = "{Owner.UserName}_HOMEBASE",
                                     OsName = "EncomOS",
                                     Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
                                     Filesystem = new Dictionary<string, List<string>>
@@ -67,7 +67,7 @@ namespace hss.Runnables
                     },
                     {
                         "person", (true, options => (
-                            Path.Combine(HssConstants.PersonTemplatesFolder, $"{options.Name}.yaml"),
+                            Path.Combine(HssConstants.ContentFolder, $"{options.Name}.person.yaml"),
                             (object)(options.Example
                                 ? new PersonTemplate
                                 {
@@ -82,7 +82,7 @@ namespace hss.Runnables
                     },
                     {
                         "world", (true, options => (
-                            Path.Combine(HssConstants.WorldTemplatesFolder, $"{options.Name}.yaml"),
+                            Path.Combine(HssConstants.ContentFolder, $"{options.Name}.world.yaml"),
                             (object)(options.Example
                                 ? new WorldTemplate
                                 {

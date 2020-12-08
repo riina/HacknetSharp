@@ -16,9 +16,9 @@ namespace HacknetSharp.Server.Templates
         public List<string>? PrimarySystemTemplates { get; set; }
         public int FleetMin { get; set; }
         public int FleetMax { get; set; }
-        public List<string>? FleetSystemTemplates { get; set; } = new List<string>();
+        public List<string>? FleetSystemTemplates { get; set; }
 
-        public List<NetworkEntry>? Network { get; set; } = new List<NetworkEntry>();
+        public List<NetworkEntry>? Network { get; set; }
 
         public class NetworkEntry
         {
@@ -26,9 +26,9 @@ namespace HacknetSharp.Server.Templates
 
             public string? Address { get; set; } = null!;
 
-            public Dictionary<string, string>? Configuration { get; set; } = new Dictionary<string, string>();
+            public Dictionary<string, string>? Configuration { get; set; }
 
-            public List<string>? Links { get; set; } = new List<string>();
+            public List<string>? Links { get; set; }
         }
 
         [ThreadStatic] private static Random? _random;

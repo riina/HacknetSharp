@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using HacknetSharp.Server;
+using HacknetSharp.Server.Templates;
 using YamlDotNet.Serialization;
 
 namespace hss
@@ -38,26 +39,27 @@ namespace hss
         internal static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
         internal static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
 
-
-        public static TemplateGroup GetTemplates(string installDir)
+        public static void LoadTemplates(TemplateGroup templates, string dir)
         {
-            var templates = new TemplateGroup();
-            string worlds = Path.Combine(installDir, HssConstants.WorldTemplatesFolder);
-            if (Directory.Exists(worlds))
-                LoadTree(worlds, templates.WorldTemplates, ".yaml");
-
-            string persons = Path.Combine(installDir, HssConstants.PersonTemplatesFolder);
-            if (Directory.Exists(persons))
-                LoadTree(persons, templates.PersonTemplates, ".yaml");
-
-            string systems = Path.Combine(installDir, HssConstants.SystemTemplatesFolder);
-            if (Directory.Exists(systems))
-                LoadTree(systems, templates.SystemTemplates, ".yaml");
-
-            return templates;
+            Dictionary<string, Action<string, string>> templateLoadDict = new Dictionary<string, Action<string, string>>
+            {
+                {
+                    ".world.yaml",
+                    (file, path) => templates.WorldTemplates.Add(file, ReadFromFile<WorldTemplate>(path).Item2)
+                },
+                {
+                    ".person.yaml",
+                    (file, path) => templates.PersonTemplates.Add(file, ReadFromFile<PersonTemplate>(path).Item2)
+                },
+                {
+                    ".system.yaml",
+                    (file, path) => templates.SystemTemplates.Add(file, ReadFromFile<SystemTemplate>(path).Item2)
+                },
+            };
+            LoadTree(dir, templateLoadDict);
         }
 
-        private static void LoadTree<TValue>(string root, Dictionary<string, TValue> dict, string? extension)
+        private static void LoadTree(string root, Dictionary<string, Action<string, string>> actionDict)
         {
             Queue<string> dQueue = new Queue<string>();
             Queue<string> fQueue = new Queue<string>();
@@ -67,16 +69,16 @@ namespace hss
                 if (fQueue.Count != 0)
                 {
                     string file = fQueue.Dequeue();
-                    dict.Add(file, ReadFromFile<TValue>(Path.Combine(root, file)).Item2);
+                    string? str = actionDict.Keys.FirstOrDefault(k =>
+                        file.EndsWith(k, StringComparison.InvariantCultureIgnoreCase));
+                    if (str != null) actionDict[str](file, Path.Combine(root, file));
                 }
                 else
                 {
                     string curDir = dQueue.Dequeue();
                     string absDir = Path.Combine(root, curDir);
                     if (!Directory.Exists(absDir)) continue;
-                    foreach (string file in Directory.EnumerateFiles(absDir).Where(f =>
-                        extension == null || string.Equals(extension, Path.GetExtension(f),
-                            StringComparison.InvariantCultureIgnoreCase)))
+                    foreach (string file in Directory.EnumerateFiles(absDir))
                         fQueue.Enqueue(Program.Combine(curDir, Path.GetFileName(file)));
                     foreach (string folder in Directory.EnumerateDirectories(absDir))
                         dQueue.Enqueue(Program.Combine(curDir, Path.GetFileName(folder)));

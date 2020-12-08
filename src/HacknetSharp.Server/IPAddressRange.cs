@@ -20,6 +20,7 @@ SOFTWARE.
 
 using System;
 using System.Buffers.Binary;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Sockets;
 
@@ -31,14 +32,13 @@ namespace HacknetSharp.Server
     /// <remarks>
     /// Internally, the prefix is stored in a 16-byte buffer purely for having a single struct to use between IPv4 and IPv6
     /// </remarks>
-    public unsafe struct IPAddressRange
+    public unsafe struct IPAddressRange : IEquatable<IPAddressRange>
     {
 #pragma warning disable 649
         private fixed byte _prefix[16];
 #pragma warning restore 649
         public readonly AddressFamily AddressFamily;
         public readonly int PrefixBits;
-        public readonly byte PrefixBitmask;
 
         public IPAddressRange(string cidrString)
         {
@@ -82,11 +82,10 @@ namespace HacknetSharp.Server
 
             PrefixBits = prefixBits;
             int prefixBytes = prefixBits / 8;
-            PrefixBitmask = (byte)(0xff << (8 - prefixBits % 8));
             fixed (byte* pp = _prefix)
                 addrBytes.Slice(0, prefixBytes).CopyTo(new Span<byte>(pp, 16));
-            if (PrefixBitmask != 0)
-                _prefix[prefixBytes] = (byte)(PrefixBitmask & addrBytes[prefixBytes]);
+            if (prefixBits % 8 != 0)
+                _prefix[prefixBytes] = (byte)((byte)(0xff00 >> prefixBits % 8) & addrBytes[prefixBytes]);
             AddressFamily = address.AddressFamily;
         }
 
@@ -106,20 +105,18 @@ namespace HacknetSharp.Server
 
             PrefixBits = prefixBits;
             int prefixBytes = prefixBits / 8;
-            PrefixBitmask = (byte)(0xff << (8 - prefixBits % 8));
             fixed (byte* pp = _prefix)
                 addrBytes.Slice(0, prefixBytes).CopyTo(new Span<byte>(pp, 16));
-            if (PrefixBitmask != 0)
-                _prefix[prefixBytes] = (byte)(PrefixBitmask & addrBytes[prefixBytes]);
+            if (prefixBits % 8 != 0)
+                _prefix[prefixBytes] = (byte)((byte)(0xff00 >> prefixBits % 8) & addrBytes[prefixBytes]);
             AddressFamily = address.AddressFamily;
         }
 
-        private IPAddressRange(Span<byte> prefix, AddressFamily addressFamily, int prefixBits, byte prefixBitmask)
+        private IPAddressRange(Span<byte> prefix, AddressFamily addressFamily, int prefixBits)
         {
             fixed (byte* pp = _prefix) prefix.CopyTo(new Span<byte>(pp, 16));
             AddressFamily = addressFamily;
             PrefixBits = prefixBits;
-            PrefixBitmask = prefixBitmask;
         }
 
         public static bool TryParse(string cidrString, bool allowRange, out IPAddressRange value)
@@ -181,14 +178,13 @@ namespace HacknetSharp.Server
             }
 
             int prefixBytes = prefixBits / 8;
-            byte prefixBitmask = (byte)(0xff << (8 - prefixBits % 8));
             Span<byte> prefix = stackalloc byte[16];
             addrBytes.Slice(0, prefixBytes).CopyTo(prefix);
-            if (prefixBitmask != 0)
-                prefix[prefixBytes] = (byte)(prefixBitmask & addrBytes[prefixBytes]);
+            if (prefixBits % 8 != 0)
+                prefix[prefixBytes] = (byte)((byte)(0xff00 >> prefixBits % 8) & addrBytes[prefixBytes]);
             var addressFamily = address.AddressFamily;
 
-            value = new IPAddressRange(prefix, addressFamily, prefixBits, prefixBitmask);
+            value = new IPAddressRange(prefix, addressFamily, prefixBits);
             return true;
         }
 
@@ -203,7 +199,8 @@ namespace HacknetSharp.Server
             fixed (byte* pp = _prefix)
                 if (!addrBytes.Slice(0, prefixBytes).SequenceEqual(new Span<byte>(pp, prefixBytes)))
                     return false;
-            return PrefixBitmask == 0 || _prefix[prefixBytes] == (PrefixBitmask & addrBytes[prefixBytes]);
+            return PrefixBits % 8 == 0 ||
+                   _prefix[prefixBytes] == ((byte)(0xff00 >> PrefixBits % 8) & addrBytes[prefixBytes]);
         }
 
         public bool TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask)
@@ -212,11 +209,55 @@ namespace HacknetSharp.Server
             subnetMask = 0;
             if (AddressFamily != AddressFamily.InterNetwork) return false;
             subnetMask = ~(uint)0 << (32 - PrefixBits);
-            if (PrefixBitmask != 0)
-                subnetMask |= (uint)(PrefixBitmask << (24 - PrefixBits));
             fixed (byte* pp = _prefix)
                 host = BinaryPrimitives.ReadUInt32BigEndian(new Span<byte>(pp, 4));
             return true;
+        }
+
+        public IPAddressRange OnHost(IPAddressRange host)
+        {
+            if (PrefixBits != 32)
+                throw new InvalidOperationException("Cannot apply host on IPv4 address without 32 bit prefix");
+            if (!TryGetIPv4HostAndSubnetMask(out uint selfHost, out uint _))
+                throw new InvalidOperationException("Cannot apply host on non-IPv4 address");
+            if (!host.TryGetIPv4HostAndSubnetMask(out uint hostHost, out uint hostSubnetMask))
+                throw new InvalidOperationException("Cannot apply non-IPv4 host address");
+            uint addr = (~hostSubnetMask & selfHost) | hostHost;
+            Span<byte> body = stackalloc byte[4];
+            BinaryPrimitives.WriteUInt32BigEndian(body, addr);
+            return new IPAddressRange(body, AddressFamily.InterNetwork, 32);
+        }
+
+        public bool Equals(IPAddressRange other)
+        {
+            if (AddressFamily != other.AddressFamily || PrefixBits != other.PrefixBits) return false;
+            fixed (byte* sp = _prefix)
+                return new Span<byte>(sp, 16).SequenceEqual(new Span<byte>(other._prefix, 16));
+        }
+
+        public override bool Equals(object? obj) => obj is IPAddressRange other && Equals(other);
+
+        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
+        public override int GetHashCode()
+        {
+            Span<byte> prefix;
+            fixed (byte* pp = _prefix)
+                prefix = new Span<byte>(pp, 16);
+            int p1 = BinaryPrimitives.ReadInt32BigEndian(prefix);
+            int p2 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(4, 4));
+            int p3 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(8, 4));
+            int p4 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(12, 4));
+            return HashCode.Combine(p1, p2, p3, p4, (int)AddressFamily, PrefixBits);
+        }
+
+        public override string ToString()
+        {
+            fixed (byte* pp = _prefix)
+                return AddressFamily switch
+                {
+                    AddressFamily.InterNetwork => $"{pp[0]}.{pp[1]}.{pp[2]}.{pp[3]}/{PrefixBits}",
+                    _ => $"{new IPAddress(new ReadOnlySpan<byte>(pp, 16))}/{PrefixBits}",
+                };
         }
     }
 }

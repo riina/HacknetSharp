@@ -1,4 +1,4 @@
-NameFormat: "{Owner.UserName}_HOMEBASE ALEXXX"
+Name: "{Owner.UserName}_HOMEBASE ALEXXX"
 OsName: EncomOS
 AddressRange: 69.69.69.69
 Users:

@@ -1,4 +1,4 @@
-NameFormat: "{Owner.UserName}_HOMEBASE"
+Name: "{Owner.UserName}_HOMEBASE"
 OsName: EncomOS
 ConnectCommandLine: echo "Welcome to Encom OS 12."
 Users:

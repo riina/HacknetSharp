@@ -1,4 +1,4 @@
-NameFormat: "{Owner.UserName}_HOMEBASE KEKW"
+Name: "{Owner.UserName}_HOMEBASE KEKW"
 OsName: EncomOS
 Users:
 - daphne:legacy

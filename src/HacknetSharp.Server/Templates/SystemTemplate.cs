@@ -7,7 +7,7 @@ namespace HacknetSharp.Server.Templates
 {
     public class SystemTemplate
     {
-        public string? NameFormat { get; set; }
+        public string? Name { get; set; }
         public string? OsName { get; set; }
         public string? AddressRange { get; set; }
         public string? ConnectCommandLine { get; set; }
@@ -25,7 +25,7 @@ namespace HacknetSharp.Server.Templates
                 : new Dictionary<string, string>();
             repDict.Add("Owner.Name", owner.Name);
             repDict.Add("Owner.UserName", owner.UserName);
-            model.Name = (NameFormat ?? throw new InvalidOperationException($"{nameof(NameFormat)} is null."))
+            model.Name = (Name ?? throw new InvalidOperationException($"{nameof(Name)} is null."))
                 .ApplyReplacements(repDict);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
             model.ConnectCommandLine = ConnectCommandLine?.ApplyReplacements(repDict);
@@ -101,6 +101,9 @@ namespace HacknetSharp.Server.Templates
                             fileModel.Execute = CharToAccessLevel(matchStr[2]);
                         }
                     }
+
+                    repDict.Remove("Name");
+                    repDict.Remove("UserName");
                 }
         }
 

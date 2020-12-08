@@ -58,7 +58,7 @@ namespace HacknetSharp.Test
                         "system",
                         new SystemTemplate
                         {
-                            NameFormat = "{Owner.UserName}_HOMEBASE",
+                            Name = "{Owner.UserName}_HOMEBASE",
                             OsName = "EncomOS",
                             Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
                             Filesystem = new Dictionary<string, List<string>>
@@ -195,6 +195,13 @@ namespace HacknetSharp.Test
             Assert.IsTrue(range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask));
             Assert.AreEqual(0xc0_a8_00_00, host);
             Assert.AreEqual(0xff_ff_ff_00, subnetMask);
+            Assert.IsTrue(range2.TryGetIPv4HostAndSubnetMask(out uint host2, out uint subnetMask2));
+            Assert.AreEqual(0xc0_a8_00_00, host2);
+            Assert.AreEqual(0xff_ff_fe_00, subnetMask2);
+            IPAddressRange selfish = new IPAddressRange("0.0.0.69");
+            Assert.AreEqual("0.0.0.69/32", selfish.ToString());
+            Assert.AreEqual(new IPAddressRange("192.168.0.69"), selfish.OnHost(range));
+            Assert.AreEqual(new IPAddressRange("192.168.0.69"), selfish.OnHost(range2));
         }
 
         [Test]

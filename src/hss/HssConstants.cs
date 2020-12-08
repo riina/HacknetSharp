@@ -11,18 +11,8 @@
         public const string ServerYamlFile = "server.yaml";
 
         /// <summary>
-        /// Path to world template folder.
+        /// Path to default content folder.
         /// </summary>
-        public const string WorldTemplatesFolder = "templates/world";
-
-        /// <summary>
-        /// Path to person template folder.
-        /// </summary>
-        public const string PersonTemplatesFolder = "templates/person";
-
-        /// <summary>
-        /// Path to system template folder.
-        /// </summary>
-        public const string SystemTemplatesFolder = "templates/system";
+        public const string ContentFolder = "content";
     }
 }
