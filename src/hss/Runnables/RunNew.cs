@@ -41,13 +41,13 @@ namespace hss.Runnables
                             (object)(options.Example
                                 ? new SystemTemplate
                                 {
-                                    NameFormat = "{0}_HOMEBASE",
+                                    NameFormat = "{Owner.UserName}_HOMEBASE",
                                     OsName = "EncomOS",
                                     Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
                                     Filesystem = new Dictionary<string, List<string>>
                                     {
                                         {
-                                            "{owner.UserName}",
+                                            "{Owner.UserName}",
                                             new List<string>(new[]
                                             {
                                                 "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib",
