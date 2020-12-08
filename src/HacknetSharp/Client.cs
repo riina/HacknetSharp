@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace HacknetSharp
 {
@@ -23,6 +25,7 @@ namespace HacknetSharp
         public Action<ServerDisconnectEvent> OnDisconnect { get; set; } = null!;
         private string? _pass;
         private string? _registrationToken;
+        private readonly ILogger _logger;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly AutoResetEvent _op;
         private readonly AutoResetEvent _lockInOp;
@@ -36,8 +39,10 @@ namespace HacknetSharp
         private readonly Queue<ClientEvent> _writeEventQueue;
         private readonly ConcurrentQueue<ArraySegment<byte>> _writeQueue;
 
-        public Client(string server, ushort port, string user, string pass, string? registrationToken = null)
+        public Client(string server, ushort port, string user, string pass, string? registrationToken = null,
+            ILogger? logger = null)
         {
+            _logger = logger ?? NullLogger.Instance;
             Server = server;
             Port = port;
             User = user;
@@ -180,9 +185,9 @@ namespace HacknetSharp
             {
                 _sslStream?.Close();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
+                // ignored
             }
             finally
             {
@@ -191,7 +196,7 @@ namespace HacknetSharp
             }
         }
 
-        private static bool ValidateServerCertificate(
+        private bool ValidateServerCertificate(
             object sender,
             X509Certificate certificate,
             X509Chain chain,
@@ -199,8 +204,7 @@ namespace HacknetSharp
         {
             if (sslPolicyErrors == SslPolicyErrors.None)
                 return true;
-
-            Console.WriteLine("Certificate error: {0}", sslPolicyErrors);
+            _logger.LogError($"Certificate error: {sslPolicyErrors}");
 
             // Do not allow this client to communicate with unauthenticated servers.
             return false;

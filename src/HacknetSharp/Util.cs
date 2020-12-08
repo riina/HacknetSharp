@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using HacknetSharp.Events.Client;
+using HacknetSharp.Events.Server;
 using Ns;
 
 namespace HacknetSharp
@@ -138,17 +138,35 @@ namespace HacknetSharp
         static Util()
         {
             _commandT2C = new Dictionary<Type, Command>();
-            _commandC2T = new Dictionary<Command, Type>();
-            foreach (var type in typeof(Event).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Event))))
-            {
-                if (!(type.GetCustomAttribute(typeof(EventCommandAttribute)) is EventCommandAttribute attr)) continue;
-                _commandT2C[type] = attr.Command;
-                _commandC2T[attr.Command] = type;
-            }
+            _commandC2T = new Dictionary<Command, Func<Event>>();
+            RegisterCommand<ClientDisconnectEvent>(Command.CS_Disconnect);
+            RegisterCommand<CommandEvent>(Command.CS_Command);
+            RegisterCommand<InitialCommandEvent>(Command.CS_InitialCommand);
+            RegisterCommand<InputResponseEvent>(Command.CS_InputResponse);
+            RegisterCommand<LoginEvent>(Command.CS_Login);
+            RegisterCommand<RegistrationTokenForgeRequestEvent>(Command.CS_RegistrationTokenForgeRequest);
+
+            RegisterCommand<AccessFailEvent>(Command.SC_AccessFail);
+            RegisterCommand<FailBaseServerEvent>(Command.SC_FailBaseServer);
+            RegisterCommand<InitialCommandCompleteEvent>(Command.SC_InitialCommandComplete);
+            RegisterCommand<InputRequestEvent>(Command.SC_InputRequest);
+            RegisterCommand<LoginFailEvent>(Command.SC_LoginFail);
+            RegisterCommand<OperationCompleteEvent>(Command.SC_OperationComplete);
+            RegisterCommand<OutputEvent>(Command.SC_Output);
+            RegisterCommand<RegistrationTokenForgeResponseEvent>(Command.SC_RegistrationTokenForgeResponse);
+            RegisterCommand<ServerDisconnectEvent>(Command.SC_Disconnect);
+            RegisterCommand<UserInfoEvent>(Command.SC_UserInfo);
+        }
+
+        private static void RegisterCommand<TEvent>(Command key) where TEvent : Event, new()
+        {
+            var type = typeof(TEvent);
+            _commandT2C[type] = key;
+            _commandC2T[key] = () => new TEvent();
         }
 
         private static readonly Dictionary<Type, Command> _commandT2C;
-        private static readonly Dictionary<Command, Type> _commandC2T;
+        private static readonly Dictionary<Command, Func<Event>> _commandC2T;
 
         public static TEvent? ReadEvent<TEvent>(this Stream stream) where TEvent : Event
         {
@@ -162,9 +180,9 @@ namespace HacknetSharp
                 return null;
             }
 
-            if (!_commandC2T.TryGetValue(command, out var type))
+            if (!_commandC2T.TryGetValue(command, out var f))
                 throw new ProtocolException($"Unknown command type {(uint)command} received");
-            var obj = Activator.CreateInstance(type);
+            var obj = f();
             var evt = obj as TEvent ??
                       throw new Exception(
                           $"Failed to cast event {obj.GetType().FullName} as {typeof(TEvent).FullName}");
@@ -185,10 +203,10 @@ namespace HacknetSharp
                 return null;
             }
 
-            if (!_commandC2T.TryGetValue(command, out var type))
+            if (!_commandC2T.TryGetValue(command, out var f))
                 throw new ProtocolException($"Unknown command type {(uint)command} received");
 
-            var obj = Activator.CreateInstance(type);
+            var obj = f();
             var evt = obj as TEvent ??
                       throw new Exception(
                           $"Failed to cast event {obj.GetType().FullName} as {typeof(TEvent).FullName}");
