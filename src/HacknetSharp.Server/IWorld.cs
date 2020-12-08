@@ -8,7 +8,7 @@ namespace HacknetSharp.Server
     public interface IWorld
     {
         WorldModel Model { get; }
-        ISpawn Spawn { get; }
+        Spawn Spawn { get; }
         IServerDatabase Database { get; }
         SystemTemplate PlayerSystemTemplate { get; }
         double Time { get; }

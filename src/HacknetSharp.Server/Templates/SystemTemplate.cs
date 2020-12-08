@@ -11,17 +11,20 @@ namespace HacknetSharp.Server.Templates
         public string? OsName { get; set; }
         public string? AddressRange { get; set; }
         public string? ConnectCommandLine { get; set; }
-        public List<string>? Users { get; set; } = new List<string>();
-        public Dictionary<string, List<string>>? Filesystem { get; set; } = new Dictionary<string, List<string>>();
+        public List<string>? Users { get; set; }
+        public Dictionary<string, List<string>>? Filesystem { get; set; }
 
         private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+):([\S\s]+)(\+)?");
         private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
-        public void ApplyTemplate(IServerDatabase database, ISpawn spawn, WorldModel world, SystemModel model,
-            PersonModel owner, byte[] hash, byte[] salt)
+        public virtual void ApplyTemplate(IServerDatabase database, Spawn spawn, WorldModel world, SystemModel model,
+            PersonModel owner, byte[] hash, byte[] salt, Dictionary<string, string>? configuration = null)
         {
-            var repDict =
-                new Dictionary<string, string> {{"Owner.Name", owner.Name}, {"Owner.UserName", owner.UserName}};
+            var repDict = configuration != null
+                ? new Dictionary<string, string>(configuration)
+                : new Dictionary<string, string>();
+            repDict.Add("Owner.Name", owner.Name);
+            repDict.Add("Owner.UserName", owner.UserName);
             model.Name = (NameFormat ?? throw new InvalidOperationException($"{nameof(NameFormat)} is null."))
                 .ApplyReplacements(repDict);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");

@@ -12,7 +12,7 @@ namespace hss
     {
         public Server Server { get; }
         public WorldModel Model { get; }
-        public ISpawn Spawn { get; }
+        public Spawn Spawn { get; }
         public IServerDatabase Database { get; }
         public SystemTemplate PlayerSystemTemplate { get; }
         public double Time { get; set; }

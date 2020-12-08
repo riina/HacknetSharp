@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 
-namespace hss
+namespace HacknetSharp.Server
 {
-    public class Spawn : ISpawn
+    public class Spawn
     {
         public PlayerModel Player(IServerDatabase database, UserModel context)
         {
