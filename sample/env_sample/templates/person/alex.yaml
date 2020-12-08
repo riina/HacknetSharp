@@ -1,0 +1,12 @@
+Usernames:
+- alex
+Passwords:
+- sabina
+EmailProviders:
+- gmail.com
+SystemTemplates:
+- test/alexSystem.yaml
+FleetMin: 2
+FleetMax: 4
+FleetSystemTemplates:
+- test/systemTemplate.yaml

@@ -44,15 +44,23 @@ namespace hss.Runnables
                                     NameFormat = "{0}_HOMEBASE",
                                     OsName = "EncomOS",
                                     Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
-                                    Filesystem = new List<string>(new[]
+                                    Filesystem = new Dictionary<string, List<string>>
                                     {
-                                        "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
-                                        "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
-                                        "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
-                                        "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
-                                        "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
-                                        "prog:/bin/cd core:cd", "prog:/bin/ls core:ls", "prog:/bin/echo core:echo"
-                                    })
+                                        {
+                                            "{owner.UserName}",
+                                            new List<string>(new[]
+                                            {
+                                                "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib",
+                                                "fold:/mnt", "fold+++:/root", "fold:/usr", "fold:/usr/bin",
+                                                "fold:/usr/lib", "fold:/usr/local", "fold:/usr/share", "fold:/var",
+                                                "fold:/var/spool",
+                                                "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
+                                                "file:/home/samwise/image.png misc/image.png",
+                                                "prog:/bin/cat core:cat", "prog:/bin/cd core:cd",
+                                                "prog:/bin/ls core:ls", "prog:/bin/echo core:echo"
+                                            })
+                                        }
+                                    }
                                 }
                                 : new SystemTemplate()))
                         )

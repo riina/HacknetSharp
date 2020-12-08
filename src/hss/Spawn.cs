@@ -132,10 +132,10 @@ namespace hss
             return login;
         }
 
-        public FileModel Folder(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, bool hidden = false)
+        public FileModel Folder(IServerDatabase database, WorldModel context, SystemModel system, LoginModel owner,
+            string name, string path, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -143,7 +143,8 @@ namespace hss
                 Kind = FileModel.FileKind.Folder,
                 Name = name,
                 Path = path,
-                System = owner,
+                System = system,
+                Owner = owner,
                 World = context,
                 Hidden = hidden
             };
@@ -152,19 +153,19 @@ namespace hss
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath, hidden);
+                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, system, owner, nName, nPath, hidden);
             }
 
-            owner.Files.Add(model);
+            system.Files.Add(model);
             database.Add(model);
             return model;
         }
 
-        public FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, string file, bool hidden = false)
+        public FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel system, LoginModel owner,
+            string name, string path, string file, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -172,7 +173,8 @@ namespace hss
                 Kind = FileModel.FileKind.FileFile,
                 Name = name,
                 Path = path,
-                System = owner,
+                System = system,
+                Owner = owner,
                 World = context,
                 Content = file,
                 Hidden = hidden
@@ -182,19 +184,19 @@ namespace hss
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath, hidden);
+                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, system, owner, nName, nPath, hidden);
             }
 
-            owner.Files.Add(model);
+            system.Files.Add(model);
             database.Add(model);
             return model;
         }
 
-        public FileModel TextFile(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, string content, bool hidden = false)
+        public FileModel TextFile(IServerDatabase database, WorldModel context, SystemModel system, LoginModel owner,
+            string name, string path, string content, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -202,7 +204,8 @@ namespace hss
                 Kind = FileModel.FileKind.TextFile,
                 Name = name,
                 Path = path,
-                System = owner,
+                System = system,
+                Owner = owner,
                 World = context,
                 Content = content,
                 Hidden = hidden
@@ -212,19 +215,19 @@ namespace hss
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath, hidden);
+                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, system, owner, nName, nPath, hidden);
             }
 
-            owner.Files.Add(model);
+            system.Files.Add(model);
             database.Add(model);
             return model;
         }
 
-        public FileModel ProgFile(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, string progCode, bool hidden = false)
+        public FileModel ProgFile(IServerDatabase database, WorldModel context, SystemModel system, LoginModel owner,
+            string name, string path, string progCode, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -232,7 +235,8 @@ namespace hss
                 Kind = FileModel.FileKind.ProgFile,
                 Name = name,
                 Path = path,
-                System = owner,
+                System = system,
+                Owner = owner,
                 World = context,
                 Content = progCode,
                 Hidden = hidden
@@ -242,19 +246,19 @@ namespace hss
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath, hidden);
+                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, system, owner, nName, nPath, hidden);
             }
 
-            owner.Files.Add(model);
+            system.Files.Add(model);
             database.Add(model);
             return model;
         }
 
-        public FileModel Duplicate(IServerDatabase database, WorldModel context, SystemModel owner, string name,
-            string path, FileModel existing, bool hidden = false)
+        public FileModel Duplicate(IServerDatabase database, WorldModel context, SystemModel system, LoginModel owner,
+            string name, string path, FileModel existing, bool hidden = false)
         {
-            if (owner.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel
             {
@@ -262,7 +266,8 @@ namespace hss
                 Kind = existing.Kind,
                 Name = name,
                 Path = path,
-                System = owner,
+                System = system,
+                Owner = owner,
                 World = context,
                 Content = existing.Content,
                 Hidden = hidden
@@ -272,11 +277,11 @@ namespace hss
             if (path != "/")
             {
                 var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
-                if (!owner.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(database, context, owner, nName, nPath, hidden);
+                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(database, context, system, owner, nName, nPath, hidden);
             }
 
-            owner.Files.Add(model);
+            system.Files.Add(model);
             database.Add(model);
             return model;
         }

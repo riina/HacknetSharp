@@ -16,7 +16,10 @@ namespace hss.Sqlite.Migrations
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -30,7 +33,10 @@ namespace hss.Sqlite.Migrations
                     PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false),
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "PlayerModel",
@@ -138,7 +144,7 @@ namespace hss.Sqlite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KnownSystemModel", x => new {x.FromKey, x.ToKey});
+                    table.PrimaryKey("PK_KnownSystemModel", x => new { x.FromKey, x.ToKey });
                     table.ForeignKey(
                         name: "FK_KnownSystemModel_SystemModel_FromKey",
                         column: x => x.FromKey,
@@ -159,6 +165,7 @@ namespace hss.Sqlite.Migrations
                 {
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
                     SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Admin = table.Column<bool>(type: "INTEGER", nullable: false),
                     Person = table.Column<Guid>(type: "TEXT", nullable: false),
                     User = table.Column<string>(type: "TEXT", nullable: false),
                     Hash = table.Column<byte[]>(type: "BLOB", nullable: false),

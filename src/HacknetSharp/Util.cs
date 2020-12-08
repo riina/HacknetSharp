@@ -89,13 +89,14 @@ namespace HacknetSharp
             }
         }
 
-        public static LifecycleState TriggerState(AutoResetEvent resetEvent, Dictionary<LifecycleState, LifecycleState> map, ref LifecycleState toChange)
+        public static LifecycleState TriggerState(AutoResetEvent resetEvent,
+            Dictionary<LifecycleState, LifecycleState> map, ref LifecycleState toChange)
         {
             resetEvent.WaitOne();
             try
             {
                 var res = toChange;
-                if(!map.TryGetValue(res, out var target))
+                if (!map.TryGetValue(res, out var target))
                     throw new KeyNotFoundException($"No mapping to state {res}");
                 toChange = target;
                 return res;

@@ -1,5 +1,4 @@
 ﻿using System;
-using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {

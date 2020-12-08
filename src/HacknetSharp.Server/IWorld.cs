@@ -21,7 +21,9 @@ namespace HacknetSharp.Server
         ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
             LoginModel loginModel, string line);
 
-        ServiceProcess? StartService(PersonModel personModel, SystemModel systemModel, LoginModel loginModel, string line);
+        ServiceProcess? StartService(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
+            string line);
+
         void ExecuteCommand(ProgramContext programContext);
         void RegisterModel<T>(Model<T> model) where T : IEquatable<T>;
         void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>;

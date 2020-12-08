@@ -212,7 +212,7 @@ namespace HacknetSharp
         public async Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis,
             CancellationToken cancellationToken)
         {
-            if (_state != LifecycleState.Active || _inTask == null) throw new InvalidOperationException();
+            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             while (!cancellationToken.IsCancellationRequested)
             {
                 _lockInOp.WaitOne();
@@ -220,7 +220,7 @@ namespace HacknetSharp
                 if (evt != null) _inEvents.Remove(evt);
                 _lockInOp.Set();
                 if (evt != null) return evt;
-                if (_inTask.IsFaulted)
+                if (_inTask!.IsFaulted)
                     throw new Exception($"Could not read event: task excepted. Information:\n{_inTask.Exception}");
                 if (_inTask.IsCompleted) return null;
                 await Task.Delay(pollMillis, cancellationToken).Caf();
@@ -240,14 +240,14 @@ namespace HacknetSharp
 
         public void WriteEvent(ClientEvent evt)
         {
-            if (_state != LifecycleState.Active || _sslStream == null) throw new InvalidOperationException();
+            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             lock (_writeEventQueue)
                 _writeEventQueue.Enqueue(evt);
         }
 
         public void WriteEvents(IEnumerable<ClientEvent> events)
         {
-            if (_state != LifecycleState.Active || _sslStream == null) throw new InvalidOperationException();
+            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             lock (_writeEventQueue)
                 foreach (var evt in events)
                     _writeEventQueue.Enqueue(evt);
@@ -257,7 +257,7 @@ namespace HacknetSharp
 
         public async Task FlushAsync(CancellationToken cancellationToken)
         {
-            if (_state != LifecycleState.Active || _sslStream == null) throw new InvalidOperationException();
+            Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             await Task.Yield();
 
             var ms = new MemoryStream();
@@ -274,7 +274,7 @@ namespace HacknetSharp
             {
                 while (_writeQueue.TryDequeue(out var segment))
                 {
-                    await _sslStream.WriteAsync(segment.Array, segment.Offset, segment.Count, cancellationToken).Caf();
+                    await _sslStream!.WriteAsync(segment.Array, segment.Offset, segment.Count, cancellationToken).Caf();
                     await _sslStream.FlushAsync(cancellationToken).Caf();
                 }
             }

@@ -1,0 +1,29 @@
+NameFormat: "{Owner.UserName}_HOMEBASE KEKW"
+OsName: EncomOS
+Users:
+- daphne:legacy
+- samwise:genshin
+Filesystem:
+  "{Owner.UserName}":
+  - fold*+*:/bin
+  - fold:/etc
+  - fold:/home
+  - fold*+*:/lib
+  - fold:/mnt
+  - fold+++:/root
+  - fold:/usr
+  - fold:/usr/bin
+  - fold:/usr/lib
+  - fold:/usr/local
+  - fold:/usr/share
+  - fold:/var
+  - fold:/var/spool
+  - prog:/bin/cat core:cat
+  - prog:/bin/cd core:cd
+  - prog:/bin/ls core:ls
+  - prog:/bin/echo core:echo
+  - prog:/bin/ssh core:ssh
+  - prog:/bin/ps core:ps
+  - prog:/bin/scan core:scan
+  - text:"/home/{UserName}/read me.txt" "mr. {Name}, sir!"
+  - file:/home/{UserName}/image.png misc/image.png
