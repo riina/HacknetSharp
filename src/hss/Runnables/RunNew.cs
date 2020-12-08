@@ -75,7 +75,7 @@ namespace hss.Runnables
                                     Passwords = new List<string> {"misterchef", "baconbacon", "isucklol"},
                                     EmailProviders =
                                         new List<string> {"hentaimail.net", "thisisnotaproblem.org", "fbiopenup.gov"},
-                                    SystemTemplates = new List<string> {"systemTemplate2"}
+                                    PrimarySystemTemplates = new List<string> {"systemTemplate2"}
                                 }
                                 : new PersonTemplate()))
                         )

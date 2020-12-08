@@ -9,14 +9,27 @@ namespace HacknetSharp.Server.Templates
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class PersonTemplate
     {
-        public List<string> Usernames { get; set; } = new List<string>();
-        public List<string> Passwords { get; set; } = new List<string>();
+        public List<string>? Usernames { get; set; }
+        public List<string>? Passwords { get; set; }
         public string? AddressRange { get; set; }
-        public List<string> EmailProviders { get; set; } = new List<string>();
-        public List<string> SystemTemplates { get; set; } = new List<string>();
+        public List<string>? EmailProviders { get; set; }
+        public List<string>? PrimarySystemTemplates { get; set; }
         public int FleetMin { get; set; }
         public int FleetMax { get; set; }
         public List<string>? FleetSystemTemplates { get; set; } = new List<string>();
+
+        public List<NetworkEntry>? Network { get; set; } = new List<NetworkEntry>();
+
+        public class NetworkEntry
+        {
+            public string? Template { get; set; } = null!;
+
+            public string? Address { get; set; } = null!;
+
+            public Dictionary<string, string>? Configuration { get; set; } = new Dictionary<string, string>();
+
+            public List<string>? Links { get; set; } = new List<string>();
+        }
 
         [ThreadStatic] private static Random? _random;
 
@@ -25,12 +38,17 @@ namespace HacknetSharp.Server.Templates
         public void Generate(IServerDatabase database, ISpawn spawn, TemplateGroup templates, WorldModel world,
             string? addressRange)
         {
+            if (Usernames == null) throw new InvalidOperationException($"{nameof(Usernames)} is null.");
+            if (Passwords == null) throw new InvalidOperationException($"{nameof(Passwords)} is null.");
+            if (PrimarySystemTemplates == null)
+                throw new InvalidOperationException($"{nameof(PrimarySystemTemplates)} is null.");
             if (Usernames.Count == 0) throw new InvalidOperationException($"{nameof(Usernames)} is empty.");
             if (Passwords.Count == 0) throw new InvalidOperationException($"{nameof(Passwords)} is empty.");
-            if (SystemTemplates.Count == 0) throw new InvalidOperationException($"{nameof(SystemTemplates)} is empty.");
+            if (PrimarySystemTemplates.Count == 0)
+                throw new InvalidOperationException($"{nameof(PrimarySystemTemplates)} is empty.");
             if (FleetMin != 0 && (FleetSystemTemplates?.Count ?? 0) == 0)
                 throw new InvalidOperationException($"{nameof(FleetSystemTemplates)} is empty.");
-            string systemTemplateName = SystemTemplates[Random.Next() % SystemTemplates.Count];
+            string systemTemplateName = PrimarySystemTemplates[Random.Next() % PrimarySystemTemplates.Count];
             if (!templates.SystemTemplates.TryGetValue(systemTemplateName, out var systemTemplate))
                 throw new KeyNotFoundException($"Unknown template {systemTemplateName}");
             string username = Usernames[Random.Next() % Usernames.Count];
@@ -65,6 +83,8 @@ namespace HacknetSharp.Server.Templates
                 spawn.Connection(database, systems[i], systems[j]);
                 spawn.Connection(database, systems[j], systems[i]);
             }
+
+            // TODO apply fixed systems in Network
         }
     }
 }
