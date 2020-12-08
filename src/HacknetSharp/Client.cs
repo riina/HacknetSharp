@@ -31,7 +31,6 @@ namespace HacknetSharp
         private Task? _inTask;
         private LifecycleState _state;
         private bool _connected;
-        private bool _closed;
         private TcpClient? _client;
         private SslStream? _sslStream;
         private readonly Queue<ClientEvent> _writeEventQueue;
@@ -69,7 +68,7 @@ namespace HacknetSharp
             }
             catch
             {
-                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Dispose,
                     ref _state);
                 throw;
             }
@@ -115,7 +114,7 @@ namespace HacknetSharp
                     // ignored
                 }
 
-                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Dispose,
                     ref _state);
                 Dispose();
                 throw;
@@ -141,16 +140,8 @@ namespace HacknetSharp
         // No throws
         public async Task DisposeAsync()
         {
-            switch (_state)
-            {
-                case LifecycleState.NotStarted:
-                    _state = LifecycleState.Disposed;
-                    return;
-                case LifecycleState.Dispose:
-                case LifecycleState.Disposed:
-                case LifecycleState.Failed:
-                    return;
-            }
+            if (_state == LifecycleState.Disposed) return;
+            await Task.Yield();
 
             _connected = false;
 
@@ -165,17 +156,39 @@ namespace HacknetSharp
             }
 
             while (_state == LifecycleState.Starting) await Task.Delay(100).Caf();
+            Dispose();
+        }
+
+        private static readonly Dictionary<LifecycleState, LifecycleState> _disposeMap =
+            new Dictionary<LifecycleState, LifecycleState>
+            {
+                {LifecycleState.NotStarted, LifecycleState.Disposed},
+                {LifecycleState.Starting, LifecycleState.Dispose},
+                {LifecycleState.Active, LifecycleState.Dispose},
+                {LifecycleState.Dispose, LifecycleState.Dispose},
+                {LifecycleState.Disposed, LifecycleState.Disposed}
+            };
+
+        private void Dispose()
+        {
+            _connected = false;
+
+            Util.TriggerState(_op, _disposeMap, ref _state);
+            if (_state == LifecycleState.Disposed) return;
 
             try
             {
-                Dispose();
+                _sslStream?.Close();
             }
-            catch
+            catch (Exception e)
             {
-                // ignored
+                Console.WriteLine(e);
             }
-
-            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Disposed, ref _state);
+            finally
+            {
+                Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed,
+                    ref _state);
+            }
         }
 
         private static bool ValidateServerCertificate(
@@ -193,30 +206,13 @@ namespace HacknetSharp
             return false;
         }
 
-        private void Dispose()
-        {
-            if (_closed) return;
-
-            _connected = false;
-            _closed = true;
-
-            try
-            {
-                _sslStream?.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
         public Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis) =>
             WaitForAsync(predicate, pollMillis, CancellationToken.None);
 
         public async Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis,
             CancellationToken cancellationToken)
         {
-            if (_closed || _inTask == null) throw new InvalidOperationException();
+            if (_state != LifecycleState.Active || _inTask == null) throw new InvalidOperationException();
             while (!cancellationToken.IsCancellationRequested)
             {
                 _lockInOp.WaitOne();
@@ -244,14 +240,14 @@ namespace HacknetSharp
 
         public void WriteEvent(ClientEvent evt)
         {
-            if (_closed || _sslStream == null) throw new InvalidOperationException();
+            if (_state != LifecycleState.Active || _sslStream == null) throw new InvalidOperationException();
             lock (_writeEventQueue)
                 _writeEventQueue.Enqueue(evt);
         }
 
         public void WriteEvents(IEnumerable<ClientEvent> events)
         {
-            if (_closed || _sslStream == null) throw new InvalidOperationException();
+            if (_state != LifecycleState.Active || _sslStream == null) throw new InvalidOperationException();
             lock (_writeEventQueue)
                 foreach (var evt in events)
                     _writeEventQueue.Enqueue(evt);
@@ -261,7 +257,7 @@ namespace HacknetSharp
 
         public async Task FlushAsync(CancellationToken cancellationToken)
         {
-            if (_closed || _sslStream == null) throw new InvalidOperationException();
+            if (_state != LifecycleState.Active || _sslStream == null) throw new InvalidOperationException();
             await Task.Yield();
 
             var ms = new MemoryStream();
@@ -287,6 +283,8 @@ namespace HacknetSharp
                 _lockOutOp.Set();
             }
         }
+
+        public bool Disposed => _state >= LifecycleState.Dispose;
 
         public bool Connected => _connected;
 

@@ -72,14 +72,33 @@ namespace HacknetSharp
             return stream.ReadU8() != 0 ? stream.ReadUtf8String() : null;
         }
 
-        public static void TriggerState(AutoResetEvent resetEvent, LifecycleState min, LifecycleState max,
+        public static LifecycleState TriggerState(AutoResetEvent resetEvent, LifecycleState min, LifecycleState max,
             LifecycleState target, ref LifecycleState toChange)
         {
             resetEvent.WaitOne();
             try
             {
+                var res = toChange;
                 RequireState(toChange, min, max);
                 toChange = target;
+                return res;
+            }
+            finally
+            {
+                resetEvent.Set();
+            }
+        }
+
+        public static LifecycleState TriggerState(AutoResetEvent resetEvent, Dictionary<LifecycleState, LifecycleState> map, ref LifecycleState toChange)
+        {
+            resetEvent.WaitOne();
+            try
+            {
+                var res = toChange;
+                if(!map.TryGetValue(res, out var target))
+                    throw new KeyNotFoundException($"No mapping to state {res}");
+                toChange = target;
+                return res;
             }
             finally
             {

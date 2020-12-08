@@ -152,7 +152,7 @@ namespace hss
             }
             catch
             {
-                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Failed,
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Disposed,
                     ref _state);
                 throw;
             }
@@ -313,6 +313,7 @@ namespace hss
 
         public async Task DisposeAsync()
         {
+            if (_state == LifecycleState.Disposed) return;
             Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
             while (_state != LifecycleState.Active) await Task.Delay(100).Caf();
             Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref _state);

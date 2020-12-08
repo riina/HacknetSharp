@@ -6,7 +6,6 @@ namespace HacknetSharp
         Starting,
         Active,
         Dispose,
-        Disposed,
-        Failed
+        Disposed
     }
 }
