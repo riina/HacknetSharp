@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using HacknetSharp.Server;
 
-namespace hss
+namespace HacknetSharp.Server
 {
     public class ServiceProcess : Process
     {

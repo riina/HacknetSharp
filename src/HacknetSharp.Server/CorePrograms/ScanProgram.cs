@@ -15,7 +15,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            if (context.Login.Person != context.System.Owner.Key)
+            if (!context.Login.Admin)
             {
                 user.WriteEventSafe(Output("Permission denied."));
                 user.FlushSafeAsync();

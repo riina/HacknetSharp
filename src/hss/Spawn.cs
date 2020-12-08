@@ -113,7 +113,7 @@ namespace hss
         }
 
         public LoginModel Login(IServerDatabase database, WorldModel context, SystemModel owner, string user,
-            byte[] hash, byte[] salt,
+            byte[] hash, byte[] salt, bool admin,
             PersonModel? person = null)
         {
             var login = new LoginModel
@@ -124,7 +124,8 @@ namespace hss
                 User = user,
                 Hash = hash,
                 Salt = salt,
-                Person = person?.Key ?? Guid.Empty
+                Person = person?.Key ?? Guid.Empty,
+                Admin = admin
             };
             owner.Logins.Add(login);
             database.Add(login);

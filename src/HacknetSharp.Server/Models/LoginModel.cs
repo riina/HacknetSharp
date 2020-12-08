@@ -7,6 +7,7 @@ namespace HacknetSharp.Server.Models
     public class LoginModel : WorldMember<Guid>
     {
         public virtual SystemModel System { get; set; } = null!;
+        public virtual bool Admin { get; set; }
         public virtual Guid Person { get; set; }
         public virtual string User { get; set; } = null!;
         public virtual byte[] Hash { get; set; } = null!;

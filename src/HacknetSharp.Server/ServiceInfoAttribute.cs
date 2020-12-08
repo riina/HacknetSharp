@@ -9,16 +9,23 @@ namespace HacknetSharp.Server
     public class ServiceInfoAttribute : Attribute
     {
         /// <summary>
-        /// Service codename, should be something unique like "core:sshd" or "Ryazan:REconstruction".
+        /// Program codename, should be something unique like "core:sshd" or "Ryazan:REconstruction".
+        /// </summary>
+        public string ProgCode { get; set; }
+
+        /// <summary>
+        /// Program name, like "sshd" or "ephyd".
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Provides information about a program.
+        /// Provides information about a service.
         /// </summary>
-        /// <param name="name">Program name.</param>
-        public ServiceInfoAttribute(string name)
+        /// <param name="progCode">Service code.</param>
+        /// <param name="name">Service name.</param>
+        public ServiceInfoAttribute(string progCode, string name)
         {
+            ProgCode = progCode;
             Name = name;
         }
     }

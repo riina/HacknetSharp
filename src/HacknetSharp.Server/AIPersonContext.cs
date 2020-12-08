@@ -3,12 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HacknetSharp;
 using HacknetSharp.Events.Client;
-using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 
-namespace hss
+namespace HacknetSharp.Server
 {
     public class AIPersonContext : IPersonContext
     {

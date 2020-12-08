@@ -32,7 +32,7 @@ namespace HacknetSharp.Server.CorePrograms
                         }
             }
 
-            LoginModel? login = context.Login.Person == context.System.Owner.Key ? null : context.Login;
+            LoginModel? login = context.Login.Admin ? null : context.Login;
 
             user.WriteEventSafe(new OutputEvent
             {

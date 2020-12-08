@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using HacknetSharp.Events.Server;
-using HacknetSharp.Server;
 
-namespace hss
+namespace HacknetSharp.Server
 {
     public class ProgramProcess : Process
     {

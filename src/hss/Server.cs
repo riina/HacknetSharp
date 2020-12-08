@@ -147,7 +147,7 @@ namespace hss
                     var service = Activator.CreateInstance(type) as Service ??
                                   throw new ApplicationException(
                                       $"{type.FullName} supplied as service but could not be casted to {nameof(Service)}");
-                    Services.Add(info.Name, service);
+                    Services.Add(info.ProgCode, service);
                 }
             }
             catch

@@ -19,7 +19,7 @@ namespace HacknetSharp.Server
         VulnerabilityModel Vulnerability(IServerDatabase database, WorldModel context, SystemModel system);
 
         LoginModel Login(IServerDatabase database, WorldModel context, SystemModel owner, string user, byte[] hash,
-            byte[] salt, PersonModel? person = null);
+            byte[] salt, bool admin, PersonModel? person = null);
 
         FileModel FileFile(IServerDatabase database, WorldModel context, SystemModel owner, string name, string path,
             string file, bool hidden = false);

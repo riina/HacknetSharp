@@ -6,8 +6,6 @@ namespace HacknetSharp.Server
     public class ProgramContext : ProcessContext
     {
         public IPersonContext User { get; set; } = null!;
-        public PersonModel Person { get; set; } = null!;
-        public LoginModel Login { get; set; } = null!;
         public ShellProcess Shell { get; set; } = null!;
         public Guid OperationId { get; set; }
         public InvocationType Type { get; set; }

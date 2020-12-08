@@ -286,7 +286,7 @@ namespace hss
                 var pk = person.Key;
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
                             ?? world.Spawn.Login(world.Database, world.Model, system, person.UserName,
-                                playerModel.User.Hash, playerModel.User.Salt, person);
+                                playerModel.User.Hash, playerModel.User.Salt, true, person);
                 world.StartShell(this, person, system, login, "");
             }
 

@@ -55,10 +55,9 @@ namespace hss
                         bool fail = operation.Context is ProgramContext pc0 && !pc0.User.Connected;
                         fail = fail || operation.Context.System.BootTime > Model.Now;
                         fail = fail || !Model.Systems.Contains(operation.Context.System);
-                        fail = fail || operation.Context is ProgramContext pc1 &&
-                            !operation.Context.System.Logins.Contains(pc1.Login);
+                        fail = fail || !operation.Context.System.Logins.Contains(operation.Context.Login);
                         fail = fail || operation.Context is ProgramContext pc2 &&
-                            !pc2.Person.ShellChain.Contains(pc2.Shell);
+                            !operation.Context.Person.ShellChain.Contains(pc2.Shell);
                         if (fail)
                         {
                             try
@@ -95,26 +94,20 @@ namespace hss
 
         public void CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
-            var processes = process.Context.System.Processes;
-            uint pid = process.Context.Pid;
+            var context = process.Context;
+            var processes = context.System.Processes;
+            uint pid = context.Pid;
             bool removed = processes.Remove(pid);
-            if (process.Context is ProgramContext pc)
+            context.Person.ShellChain.RemoveAll(p => p == process);
+            if (context is ProgramContext pc)
             {
-                pc.Person.ShellChain.RemoveAll(p => p == process);
                 uint shellPid = pc.Shell.ProgramContext.Pid;
-                /*Console.WriteLine($"Testing {shellPid} {removed}...");
-                foreach (var proc in processes)
+                if (removed &&
+                    processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid) &&
+                    pc.Person.ShellChain.Count != 0)
                 {
-                    Console.WriteLine($"{proc.Value} {proc.Value.Context.ParentPid} {proc.Value.Context.Pid}");
-                }*/
-
-                if (removed && processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid))
-                {
-                    if (pc.Person.ShellChain.Count != 0)
-                    {
-                        pc.User.WriteEventSafe(ServerUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
-                        pc.User.FlushSafeAsync();
-                    }
+                    pc.User.WriteEventSafe(ServerUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
+                    pc.User.FlushSafeAsync();
                 }
             }
 
@@ -150,50 +143,81 @@ namespace hss
             _shellProcesses.Add(process);
         }
 
-        public void StartAICommand(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
-            string line)
+        public ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel,
+            SystemModel systemModel,
+            LoginModel loginModel, string line)
         {
+            if (personModel.ShellChain.Count == 0)
+                return null;
+
+            var shell = personModel.ShellChain[^1];
+            var argv = Arguments.SplitCommandLine(line);
+
+            uint? pid;
+            if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0]) ||
+                !(pid = systemModel.GetAvailablePid()).HasValue) return null;
+
             var programContext = new ProgramContext
             {
                 World = this,
                 Person = personModel,
-                User = new AIPersonContext(personModel),
+                User = personContext,
                 OperationId = Guid.Empty,
-                Argv = Arguments.SplitCommandLine(line),
+                Argv = argv,
                 Type = ProgramContext.InvocationType.Standard,
                 ConWidth = -1,
                 System = systemModel,
-                Login = loginModel
+                Login = loginModel,
+                ParentPid = shell.ProgramContext.Pid,
+                Pid = pid.Value
             };
 
             if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
             {
-                _processes.Add(new ProgramProcess(programContext, intrinsicRes.Item1));
-                return;
+                var proc = new ProgramProcess(programContext, intrinsicRes.Item1);
+                _processes.Add(proc);
+                return proc;
             }
 
-            if (!systemModel.DirectoryExists("/bin")) return;
+            if (!systemModel.DirectoryExists("/bin")) return null;
             string exe = $"/bin/{programContext.Argv[0]}";
-            if (!systemModel.FileExists(exe, true)) return;
+            if (!systemModel.FileExists(exe, true)) return null;
             var fse = systemModel.GetFileSystemEntry(exe);
-            if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
-                Server.Programs.TryGetValue(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                    out var res)) _processes.Add(new ProgramProcess(programContext, res.Item1));
+            if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !Server.Programs.TryGetValue(
+                systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                out var res))
+                return null;
+
+            {
+                var proc = new ProgramProcess(programContext, res.Item1);
+                _processes.Add(proc);
+                return proc;
+            }
         }
 
-        public void StartDaemon(SystemModel systemModel, string line)
+        public ServiceProcess? StartService(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
+            string line)
         {
             var serviceContext = new ServiceContext
             {
-                World = this, Argv = Arguments.SplitCommandLine(line), System = systemModel
+                World = this,
+                Argv = Arguments.SplitCommandLine(line),
+                System = systemModel,
+                Person = personModel,
+                Login = loginModel
             };
-            if (!systemModel.DirectoryExists("/bin")) return;
+            if (!systemModel.DirectoryExists("/bin")) return null;
             string exe = $"/bin/{serviceContext.Argv[0]}";
-            if (!systemModel.FileExists(exe, true)) return;
+            if (!systemModel.FileExists(exe, true)) return null;
             var fse = systemModel.GetFileSystemEntry(exe);
-            if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
-                Server.Services.TryGetValue(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                    out var res)) _processes.Add(new ServiceProcess(serviceContext, res));
+            if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !Server.Services.TryGetValue(
+                systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                out var res))
+                return null;
+
+            var proc = new ServiceProcess(serviceContext, res);
+            _processes.Add(proc);
+            return proc;
         }
 
         public void ExecuteCommand(ProgramContext programContext)

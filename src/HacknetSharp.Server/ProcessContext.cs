@@ -8,6 +8,8 @@ namespace HacknetSharp.Server
         public uint Pid { get; set; }
         public IWorld World { get; set; } = null!;
         public SystemModel System { get; set; } = null!;
+        public PersonModel Person { get; set; } = null!;
+        public LoginModel Login { get; set; } = null!;
         public string[] Argv { get; set; } = null!;
     }
 }
