@@ -59,7 +59,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            context.World.StartShell(user, context.Person, system, login, "");
+            context.World.StartShell(user, context.Person, system, login, ServerConstants.ShellName);
             context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
             {

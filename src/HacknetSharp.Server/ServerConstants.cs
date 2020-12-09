@@ -6,5 +6,7 @@ namespace HacknetSharp.Server
         /// Path to extensions folder.
         /// </summary>
         public const string ExtensionsFolder = "extensions";
+
+        public const string ShellName = "wsh";
     }
 }

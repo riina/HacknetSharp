@@ -308,7 +308,7 @@ namespace hss
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
                             ?? world.Spawn.Login(system, person.UserName,
                                 _user.Hash, _user.Salt, true, person);
-                world.StartShell(this, person, system, login, "");
+                world.StartShell(this, person, system, login, ServerConstants.ShellName);
             }
 
             return person;
