@@ -26,5 +26,9 @@ Filesystem:
   - prog:/bin/ps core:ps
   - prog:/bin/scan core:scan
   - prog:/bin/map core:map
+  - prog:/bin/cp core:cp
+  - prog:/bin/mv core:mv
+  - prog:/bin/rm core:rm
+  - prog:/bin/mkdir core:mkdir
   - text:"/home/{UserName}/read me.txt" "mr. {Name}, sir!"
   - file:/home/{UserName}/image.png misc/image.png

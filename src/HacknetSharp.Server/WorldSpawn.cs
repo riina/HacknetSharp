@@ -305,5 +305,74 @@ namespace HacknetSharp.Server
             if (isCascade) return;
             _database.Delete(person);
         }
+
+        public void MoveFile(FileModel file, string targetPath, string targetName, LoginModel login,
+            bool hidden = false)
+        {
+            if (!file.CanWrite(login)) throw new IOException("Permission denied");
+            var system = file.System;
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
+                throw new IOException($"The specified path already exists: {Program.Combine(targetPath, targetName)}");
+            system.TryGetWithAccess(targetPath, login, out var result, out var closest, hidden);
+            switch (result)
+            {
+                case ReadAccessResult.Readable:
+                    // Not possible if fs search didn't find one
+                    break;
+                case ReadAccessResult.NotReadable:
+                    throw new IOException("Permission denied");
+                case ReadAccessResult.NoExist:
+                    break;
+            }
+
+            // Generate dependent folders
+            if (targetPath != "/")
+            {
+                var (parentPath, parentName) = SystemModel.GetDirectoryAndName(targetPath);
+                if (system.Files.All(f => f.Hidden != hidden || f.Path != parentPath || f.Name != parentName))
+                    Folder(system, login, parentName, parentPath, hidden);
+            }
+
+            if (file.Kind == FileModel.FileKind.Folder)
+            {
+                var toModify = new List<FileModel>();
+                string rootPath = file.FullPath;
+                Queue<FileModel> queue = new Queue<FileModel>();
+                queue.Enqueue(file);
+                while (queue.TryDequeue(out var f))
+                {
+                    string fp = f.FullPath;
+                    foreach (var fx in system.Files.Where(ft => ft.Path == fp))
+                    {
+                        if (!fx.CanWrite(login)) throw new IOException("Permission denied");
+                        if (fx.Kind == FileModel.FileKind.Folder)
+                            queue.Enqueue(fx);
+                        toModify.Add(fx);
+                    }
+                }
+
+                string targetFp = Program.GetNormalized(Program.Combine(targetPath, targetName));
+                foreach (var f in toModify)
+                    f.Path = Program.Combine(targetFp, Path.GetRelativePath(rootPath, f.Path));
+
+                _database.EditBulk(toModify);
+            }
+
+            file.Path = targetPath;
+            file.Name = targetName;
+            _database.Edit(file);
+        }
+
+        public void RemoveFile(FileModel file, LoginModel login)
+        {
+            if (!file.CanWrite(login)) throw new IOException("Permission denied");
+            string self = file.FullPath;
+            var system = file.System;
+            var tmp = new List<FileModel>(system.Files.Where(f => f.Path == self));
+            foreach (var f in tmp)
+                RemoveFile(f, login);
+            system.Files.Remove(file);
+            _database.Delete(file);
+        }
     }
 }

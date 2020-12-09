@@ -122,9 +122,9 @@ namespace HacknetSharp.Server.Models
         }
 
         public bool TryGetWithAccess(string path, LoginModel login, out ReadAccessResult result,
-            [NotNullWhen(true)] out FileModel? closest)
+            [NotNullWhen(true)] out FileModel? closest, bool hidden = false)
         {
-            closest = GetClosestWithReadableParent(path, login);
+            closest = GetClosestWithReadableParent(path, login, hidden);
             result = !closest?.CanRead(login) ?? false ? ReadAccessResult.NotReadable :
                 closest == null || closest.FullPath != path ? ReadAccessResult.NoExist : ReadAccessResult.Readable;
 #pragma warning disable 8762
@@ -132,26 +132,26 @@ namespace HacknetSharp.Server.Models
 #pragma warning restore 8762
         }
 
-        public FileModel? GetClosestWithReadableParent(string path, LoginModel login)
+        public FileModel? GetClosestWithReadableParent(string path, LoginModel login, bool hidden = false)
         {
             var (nPath, nName) = GetDirectoryAndName(path);
-            return GetClosestWithReadableParentInternal(nPath, nName, login);
+            return GetClosestWithReadableParentInternal(nPath, nName, login, hidden);
         }
 
-        private FileModel? GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login)
+        private FileModel? GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login, bool hidden)
         {
             if (nPath == "/" && nName == "") return null;
             FileModel? top;
             if (nPath != "/")
             {
                 var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
-                top = GetClosestWithReadableParentInternal(pPath, pName, login);
+                top = GetClosestWithReadableParentInternal(pPath, pName, login, hidden);
             }
             else
                 top = null;
 
             var self = Files
-                .FirstOrDefault(f => f.Hidden == false && f.Path == nPath && f.Name == nName);
+                .FirstOrDefault(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName);
             return self != null && (top == null || top.CanRead(login) && top.FullPath == nPath) ? self : top;
         }
 
