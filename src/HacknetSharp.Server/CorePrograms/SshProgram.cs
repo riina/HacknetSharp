@@ -19,6 +19,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (argv.Length == 1)
             {
                 user.WriteEventSafe(Output("ssh: Needs connection target\n"));
+                user.FlushSafeAsync();
                 yield break;
             }
 
@@ -26,6 +27,7 @@ namespace HacknetSharp.Server.CorePrograms
                 out string? error))
             {
                 user.WriteEventSafe(Output($"ssh: {error}\n"));
+                user.FlushSafeAsync();
                 yield break;
             }
 
@@ -33,10 +35,12 @@ namespace HacknetSharp.Server.CorePrograms
                 !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
             {
                 user.WriteEventSafe(Output($"ssh: Invalid host {host}\n"));
+                user.FlushSafeAsync();
                 yield break;
             }
 
             user.WriteEventSafe(Output("Password:"));
+            user.FlushSafeAsync();
             var input = Input(user, true);
             yield return input;
             user.WriteEventSafe(Output("Connecting...\n"));
@@ -44,6 +48,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (system == null)
             {
                 user.WriteEventSafe(Output("ssh: No route to host\n"));
+                user.FlushSafeAsync();
                 yield break;
             }
 
@@ -51,6 +56,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (login == null || !ServerUtil.ValidatePassword(input.Input!.Input, login.Hash, login.Salt))
             {
                 user.WriteEventSafe(Output("ssh: Invalid credentials\n"));
+                user.FlushSafeAsync();
                 yield break;
             }
 
