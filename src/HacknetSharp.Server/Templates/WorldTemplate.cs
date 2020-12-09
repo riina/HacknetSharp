@@ -38,7 +38,7 @@ namespace HacknetSharp.Server.Templates
                     throw new KeyNotFoundException($"Unknown template {generator.PersonTemplate}");
                 else
                     for (int i = 0; i < generator.Count; i++)
-                        template.Generate(database, worldSpawn, templates, world, generator.AddressRange);
+                        template.Generate(worldSpawn, templates, generator.AddressRange);
         }
     }
 }

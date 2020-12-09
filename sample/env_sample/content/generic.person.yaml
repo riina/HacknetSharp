@@ -1,14 +1,14 @@
 Usernames:
-- locke
-- bacon
-- hayleyk653
+  locke: 1
+  bacon: 1
+  hayleyk653: 1
 Passwords:
-- misterchef
-- baconbacon
-- isucklol
+  misterchef: 1
+  baconbacon: 1
+  isucklol: 1
 EmailProviders:
-- hentaimail.net
-- thisisnotaproblem.org
-- fbiopenup.gov
-PrimarySystemTemplates:
-- test/generic.system.yaml
+  hentaimail.net: 1
+  thisisnotaproblem.org: 1
+  fbiopenup.gov: 1
+PrimaryTemplates:
+  generic.system.yaml: 1

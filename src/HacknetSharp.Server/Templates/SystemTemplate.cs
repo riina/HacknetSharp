@@ -11,8 +11,16 @@ namespace HacknetSharp.Server.Templates
         public string? OsName { get; set; }
         public string? AddressRange { get; set; }
         public string? ConnectCommandLine { get; set; }
+        public List<Vulnerability>? Vulnerabilities { get; set; }
         public Dictionary<string, string>? Users { get; set; }
         public Dictionary<string, List<string>>? Filesystem { get; set; }
+
+        public class Vulnerability
+        {
+            public string? EntryPoint { get; set; }
+            public string? Protocol { get; set; }
+            public string? Cve { get; set; }
+        }
 
         private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+)(\+)?");
         private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
@@ -42,6 +50,18 @@ namespace HacknetSharp.Server.Templates
                     string uname = match.Groups[1].Value;
                     unameToLoginDict.Add(uname, spawn.Login(model, uname.ToLowerInvariant(), hashSub,
                         saltSub, match.Groups[2].Success));
+                }
+
+            if (Vulnerabilities != null)
+                foreach (var vuln in Vulnerabilities)
+                {
+                    if (vuln.EntryPoint == null)
+                        throw new InvalidOperationException(
+                            $"Vulnerability does not have {nameof(Vulnerability.EntryPoint)}");
+                    if (vuln.Protocol == null)
+                        throw new InvalidOperationException(
+                            $"Vulnerability does not have {nameof(Vulnerability.Protocol)}");
+                    spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint, vuln.Cve);
                 }
 
             if (Filesystem != null)

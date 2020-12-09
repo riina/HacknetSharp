@@ -9,16 +9,25 @@ namespace HacknetSharp.Server.Templates
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class PersonTemplate
     {
-        public List<string>? Usernames { get; set; }
-        public List<string>? Passwords { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+        public string? EmailProvider { get; set; }
+        public string? PrimaryTemplate { get; set; }
+        public string? PrimaryAddress { get; set; }
+        public Dictionary<string, float>? Usernames { get; set; }
+        public Dictionary<string, float>? Passwords { get; set; }
         public string? AddressRange { get; set; }
-        public List<string>? EmailProviders { get; set; }
-        public List<string>? PrimarySystemTemplates { get; set; }
+        public Dictionary<string, float>? EmailProviders { get; set; }
+        public Dictionary<string, float>? PrimaryTemplates { get; set; }
         public int FleetMin { get; set; }
         public int FleetMax { get; set; }
-        public List<string>? FleetSystemTemplates { get; set; }
+        public Dictionary<string, float>? FleetTemplates { get; set; }
 
         public List<NetworkEntry>? Network { get; set; }
+
+        [ThreadStatic] private static Random? _random;
+
+        private static Random Random => _random ??= new Random();
 
         public class NetworkEntry
         {
@@ -31,46 +40,40 @@ namespace HacknetSharp.Server.Templates
             public List<string>? Links { get; set; }
         }
 
-        [ThreadStatic] private static Random? _random;
-
-        private static Random Random => _random ??= new Random();
-
-        public virtual void Generate(IServerDatabase database, WorldSpawn spawn, TemplateGroup templates,
-            WorldModel world,
-            string? addressRange)
+        public virtual void Generate(WorldSpawn spawn, TemplateGroup templates, string? addressRange)
         {
-            if (Usernames == null) throw new InvalidOperationException($"{nameof(Usernames)} is null.");
-            if (Passwords == null) throw new InvalidOperationException($"{nameof(Passwords)} is null.");
-            if (PrimarySystemTemplates == null)
-                throw new InvalidOperationException($"{nameof(PrimarySystemTemplates)} is null.");
-            if (Usernames.Count == 0) throw new InvalidOperationException($"{nameof(Usernames)} is empty.");
-            if (Passwords.Count == 0) throw new InvalidOperationException($"{nameof(Passwords)} is empty.");
-            if (PrimarySystemTemplates.Count == 0)
-                throw new InvalidOperationException($"{nameof(PrimarySystemTemplates)} is empty.");
-            if (FleetMin != 0 && (FleetSystemTemplates?.Count ?? 0) == 0)
-                throw new InvalidOperationException($"{nameof(FleetSystemTemplates)} is empty.");
-            string systemTemplateName = PrimarySystemTemplates[Random.Next() % PrimarySystemTemplates.Count];
+            if (Username == null && (Usernames == null || Usernames.Count == 0))
+                throw new InvalidOperationException("No usernames available.");
+            if (Password == null && (Passwords == null || Passwords.Count == 0))
+                throw new InvalidOperationException("No passwords available.");
+            if (PrimaryTemplate == null && (PrimaryTemplates == null || PrimaryTemplates.Count == 0))
+                throw new InvalidOperationException("No primary system templates.");
+            if (FleetMin != 0 && (FleetTemplates?.Count ?? 0) == 0)
+                throw new InvalidOperationException($"{nameof(FleetTemplates)} is empty.");
+            string systemTemplateName = PrimaryTemplate ?? PrimaryTemplates!.SelectWeighted();
             if (!templates.SystemTemplates.TryGetValue(systemTemplateName, out var systemTemplate))
                 throw new KeyNotFoundException($"Unknown template {systemTemplateName}");
-            string username = Usernames[Random.Next() % Usernames.Count];
-            string password = Passwords[Random.Next() % Passwords.Count];
+            string username = Username ?? Usernames!.SelectWeighted();
+            string password = Password ?? Passwords!.SelectWeighted();
 
             var range = new IPAddressRange(addressRange ??
                                            AddressRange ?? systemTemplate.AddressRange ??
                                            Constants.DefaultAddressRange);
             var person = spawn.Person(username, username);
             var (hash, salt) = ServerUtil.HashPassword(password);
-            var system = spawn.System(systemTemplate, person, hash, salt, range);
+            SystemModel system = PrimaryAddress != null
+                ? spawn.System(systemTemplate, person, hash, salt,
+                    new IPAddressRange(PrimaryAddress).OnHost(range))
+                : spawn.System(systemTemplate, person, hash, salt, range);
             var systems = new List<SystemModel> {system};
             person.DefaultSystem = system.Key;
-            if (FleetSystemTemplates != null)
+            if (FleetTemplates != null)
             {
                 int count = Random.Next(FleetMin, FleetMax + 1);
                 bool fixedRange = addressRange != null || AddressRange != null;
                 for (int i = 0; i < count; i++)
                 {
-                    string fleetSystemTemplateName =
-                        FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count];
+                    string fleetSystemTemplateName = FleetTemplates.SelectWeighted();
                     if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                         throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
                     systems.Add(spawn.System(fleetSystemTemplate, person, hash, salt,
@@ -96,7 +99,7 @@ namespace HacknetSharp.Server.Templates
                     string address = networkEntry.Address ??
                                      throw new InvalidOperationException(
                                          $"{nameof(NetworkEntry)} missing {nameof(NetworkEntry.Address)}");
-                    var addr = new IPAddressRange(address);
+                    var addr = new IPAddressRange(address).OnHost(range);
                     string template = networkEntry.Template ??
                                       throw new InvalidOperationException(
                                           $"{nameof(NetworkEntry)} missing {nameof(NetworkEntry.Template)}");

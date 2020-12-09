@@ -252,10 +252,13 @@ namespace hss.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Cve")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EntryPoint")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Protocol")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

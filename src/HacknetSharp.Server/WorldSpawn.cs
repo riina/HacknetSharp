@@ -62,7 +62,7 @@ namespace HacknetSharp.Server
             else
             {
                 if (systems.Count >= 1)
-                    throw new ApplicationException("System with target address already exists");
+                    throw new ApplicationException($"System with target address {range} already exists");
                 resAddr = host;
             }
 
@@ -108,9 +108,18 @@ namespace HacknetSharp.Server
             return c;
         }
 
-        public VulnerabilityModel Vulnerability(SystemModel system)
+        public VulnerabilityModel Vulnerability(SystemModel system, string protocol, string entryPoint,
+            string? cve = null)
         {
-            var vuln = new VulnerabilityModel {Key = Guid.NewGuid(), World = _world, System = system};
+            var vuln = new VulnerabilityModel
+            {
+                Key = Guid.NewGuid(),
+                World = _world,
+                System = system,
+                Protocol = protocol,
+                EntryPoint = entryPoint,
+                Cve = cve
+            };
             system.Vulnerabilities.Add(vuln);
             _database.Add(vuln);
             return vuln;
@@ -313,7 +322,7 @@ namespace HacknetSharp.Server
             var system = file.System;
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
                 throw new IOException($"The specified path already exists: {Program.Combine(targetPath, targetName)}");
-            system.TryGetWithAccess(targetPath, login, out var result, out var closest, hidden);
+            system.TryGetWithAccess(targetPath, login, out var result, out _, hidden);
             switch (result)
             {
                 case ReadAccessResult.Readable:

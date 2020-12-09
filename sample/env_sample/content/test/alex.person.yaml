@@ -1,0 +1,20 @@
+Username: alex
+Password: sabina
+AddressRange: 69.69.69.0/24
+EmailProvider: gmail.com
+PrimaryTemplate: generic.system.yaml
+PrimaryAddress: 0.0.0.1
+#FleetMin: 3
+#FleetMax: 4
+#FleetSystemTemplates:
+#- generic.system.yaml
+Network:
+- Template: test/alex.system.yaml
+  Address: 0.0.0.69
+  Links: [0.0.0.68, 0.0.0.70]
+- Template: generic.system.yaml
+  Address: 0.0.0.68
+  Links: [0.0.0.69, 0.0.0.70]
+- Template: generic.system.yaml
+  Address: 0.0.0.70
+  Links: [0.0.0.68, 0.0.0.69]

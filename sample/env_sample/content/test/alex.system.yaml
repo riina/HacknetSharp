@@ -1,10 +1,10 @@
 Name: "{Owner.UserName}_HOMEBASE ALEXXX"
 OsName: EncomOS
 ConnectCommandLine: echo "I am alex and I am super spy!!!"
-AddressRange: 69.69.69.69
-Users:
-  daphne+: andthenonedayIgotin
-  samwise: genshin
+Vulnerabilities:
+- EntryPoint: 20
+  Protocol: ssh
+  Cve: CVE-2020-3200
 Filesystem:
   "{Owner.UserName}":
   - fold*+*:/bin
@@ -33,4 +33,5 @@ Filesystem:
   - prog:/bin/rm core:rm
   - prog:/bin/mkdir core:mkdir
   - prog:/bin/help core:help
-  - text:"/home/{UserName}/read me.txt" "my name is alex and I have hard on for sabina lol"
+  - prog:/bin/probe core:probe
+  - text:/home/{UserName}/readme.txt "my name is alex and I have hard on for sabina lol"

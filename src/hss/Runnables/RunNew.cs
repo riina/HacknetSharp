@@ -43,7 +43,8 @@ namespace hss.Runnables
                                 {
                                     Name = "{Owner.UserName}_HOMEBASE",
                                     OsName = "EncomOS",
-                                    Users = new Dictionary<string, string> {{"daphne", "legacy"}, {"samwise", "genshin"}},
+                                    Users =
+                                        new Dictionary<string, string> {{"daphne", "legacy"}, {"samwise", "genshin"}},
                                     Filesystem = new Dictionary<string, List<string>>
                                     {
                                         {
@@ -71,11 +72,18 @@ namespace hss.Runnables
                             (object)(options.Example
                                 ? new PersonTemplate
                                 {
-                                    Usernames = new List<string> {"locke", "bacon", "hayleyk653"},
-                                    Passwords = new List<string> {"misterchef", "baconbacon", "isucklol"},
+                                    Usernames =
+                                        new Dictionary<string, float> {{"locke", 1}, {"bacon", 1}, {"hayleyk653", 1}},
+                                    Passwords = new Dictionary<string, float>
+                                    {
+                                        {"misterchef", 1}, {"baconbacon", 1}, {"isucklol", 1}
+                                    },
                                     EmailProviders =
-                                        new List<string> {"hentaimail.net", "thisisnotaproblem.org", "fbiopenup.gov"},
-                                    PrimarySystemTemplates = new List<string> {"systemTemplate2"}
+                                        new Dictionary<string, float>
+                                        {
+                                            {"hentaimail.net", 1}, {"thisisnotaproblem.org", 1}, {"fbiopenup.gov", 1}
+                                        },
+                                    PrimaryTemplates = new Dictionary<string, float> {{"systemTemplate2", 1}}
                                 }
                                 : new PersonTemplate()))
                         )

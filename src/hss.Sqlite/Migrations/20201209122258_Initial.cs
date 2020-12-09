@@ -186,7 +186,8 @@ namespace hss.Sqlite.Migrations
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
                     SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     EntryPoint = table.Column<string>(type: "TEXT", nullable: false),
-                    Cve = table.Column<string>(type: "TEXT", nullable: false),
+                    Protocol = table.Column<string>(type: "TEXT", nullable: false),
+                    Cve = table.Column<string>(type: "TEXT", nullable: true),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

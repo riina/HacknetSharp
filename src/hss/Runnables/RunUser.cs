@@ -49,7 +49,7 @@ namespace hss.Runnables
         [Verb("remove", HelpText = "Remove users.")]
         private class Remove : Executor.ISelfRunnable
         {
-            [Value(0, MetaName = "names", HelpText = "User names.", Required = true)]
+            [Value(0, MetaName = "names", HelpText = "User names.")]
             public IEnumerable<string> Names { get; set; } = null!;
 
             [Option('a', "all", HelpText = "Remove all users.")]

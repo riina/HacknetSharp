@@ -151,5 +151,19 @@ namespace HacknetSharp.Server
             var (genHash, _) = HashPassword(pass, salt: salt);
             return genHash.AsSpan().SequenceEqual(hash);
         }
+
+        [ThreadStatic] private static Random? _random;
+
+        private static Random Random => _random ??= new Random();
+
+        public static string SelectWeighted(this Dictionary<string, float> source)
+        {
+            double s = 0;
+            double r = source.Values.Sum() * Random.NextDouble();
+            foreach (var kvp in source)
+                if (r < (s += kvp.Value))
+                    return kvp.Key;
+            throw new Exception();
+        }
     }
 }

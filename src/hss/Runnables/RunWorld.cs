@@ -55,7 +55,7 @@ namespace hss.Runnables
         [Verb("remove", HelpText = "Remove worlds.")]
         private class Remove : Executor.ISelfRunnable
         {
-            [Value(0, MetaName = "names", HelpText = "World names.", Required = true)]
+            [Value(0, MetaName = "names", HelpText = "World names.")]
             public IEnumerable<string> Names { get; set; } = null!;
 
             [Option('a', "all", HelpText = "Remove all worlds.")]

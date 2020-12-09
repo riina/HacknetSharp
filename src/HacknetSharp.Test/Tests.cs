@@ -80,11 +80,17 @@ namespace HacknetSharp.Test
                     {
                         "person", new PersonTemplate
                         {
-                            Usernames = new List<string> {"locke", "bacon", "hayleyk653"},
-                            Passwords = new List<string> {"misterchef", "baconbacon", "isucklol"},
+                            Usernames = new Dictionary<string, float> {{"locke", 1}, {"bacon", 1}, {"hayleyk653", 1}},
+                            Passwords = new Dictionary<string, float>
+                            {
+                                {"misterchef", 1}, {"baconbacon", 1}, {"isucklol", 1}
+                            },
                             EmailProviders =
-                                new List<string> {"hentaimail.net", "thisisnotaproblem.org", "fbiopenup.gov"},
-                            PrimarySystemTemplates = new List<string> {"systemTemplate2"}
+                                new Dictionary<string, float>
+                                {
+                                    {"hentaimail.net", 1}, {"thisisnotaproblem.org", 1}, {"fbiopenup.gov", 1}
+                                },
+                            PrimaryTemplates = new Dictionary<string, float> {{"systemTemplate2", 1}}
                         }
                     },
                     {
@@ -219,7 +225,7 @@ namespace HacknetSharp.Test
         [Test]
         public void Test_Filter()
         {
-            var filter = PathFilter.GenerateFilter(new []{"*.69", "*.78.*"}, true);
+            var filter = PathFilter.GenerateFilter(new[] {"*.69", "*.78.*"}, true);
             Assert.IsTrue(filter.Test("69.69.69.69"));
             Assert.IsTrue(filter.Test("12.34.78.99"));
             Assert.IsFalse(filter.Test("12.34.77.99"));

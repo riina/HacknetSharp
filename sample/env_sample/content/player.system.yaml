@@ -1,9 +1,6 @@
 Name: "{Owner.UserName}_HOMEBASE"
 OsName: EncomOS
 ConnectCommandLine: echo "Welcome to Encom OS 12."
-Users:
-  daphne: legacy
-  samwise: genshin
 Filesystem:
   "{Owner.UserName}":
   - fold*+*:/bin
@@ -32,4 +29,5 @@ Filesystem:
   - prog:/bin/rm core:rm
   - prog:/bin/mkdir core:mkdir
   - prog:/bin/help core:help
-  - text:"/home/{UserName}/read me.txt" "mr. {Name}, sir!"
+  - prog:/bin/probe core:probe
+  - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

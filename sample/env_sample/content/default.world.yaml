@@ -6,4 +6,4 @@ Generators:
 - Count: 3
   PersonTemplate: generic.person.yaml
 - Count: 1
-  PersonTemplate: alex.person.yaml
+  PersonTemplate: test/alex.person.yaml
