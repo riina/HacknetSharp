@@ -122,18 +122,12 @@ namespace hsh
                     e => e is IOperation op && op.Operation == operationLcl, 10).Caf();
                 if (endEvt == null) break;
                 operation = Guid.NewGuid();
-                if (endEvt is InitialCommandCompleteEvent icc && icc.NeedsRetry)
-                    connection.WriteEvent(new InitialCommandEvent
-                    {
-                        Operation = operation, ConWidth = Console.WindowWidth
-                    });
-                else
-                    connection.WriteEvent(new CommandEvent
-                    {
-                        Operation = operation,
-                        ConWidth = Console.WindowWidth,
-                        Text = Console.ReadLine() ?? throw new ApplicationException()
-                    });
+                connection.WriteEvent(new CommandEvent
+                {
+                    Operation = operation,
+                    ConWidth = Console.WindowWidth,
+                    Text = Console.ReadLine() ?? throw new ApplicationException()
+                });
 
                 await connection.FlushAsync().Caf();
             } while (true);

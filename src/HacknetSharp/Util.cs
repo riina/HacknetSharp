@@ -148,7 +148,6 @@ namespace HacknetSharp
 
             RegisterCommand<AccessFailEvent>(Command.SC_AccessFail);
             RegisterCommand<FailBaseServerEvent>(Command.SC_FailBaseServer);
-            RegisterCommand<InitialCommandCompleteEvent>(Command.SC_InitialCommandComplete);
             RegisterCommand<InputRequestEvent>(Command.SC_InputRequest);
             RegisterCommand<LoginFailEvent>(Command.SC_LoginFail);
             RegisterCommand<OperationCompleteEvent>(Command.SC_OperationComplete);

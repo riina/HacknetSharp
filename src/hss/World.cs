@@ -19,10 +19,11 @@ namespace hss
         public double PreviousTime { get; set; }
 
         private readonly HashSet<Process> _processes;
-        private readonly HashSet<Process> _removeProcesses;
+        private readonly HashSet<Process> _tmpProcesses;
+
 
         private readonly HashSet<ShellProcess> _shellProcesses;
-        private readonly HashSet<ShellProcess> _removeShellProcesses;
+        private readonly HashSet<ShellProcess> _tmpShellProcesses;
 
 
         internal World(Server server, WorldModel model, IServerDatabase database, Spawn spawn)
@@ -33,20 +34,23 @@ namespace hss
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             _processes = new HashSet<Process>();
-            _removeProcesses = new HashSet<Process>();
+            _tmpProcesses = new HashSet<Process>();
             _shellProcesses = new HashSet<ShellProcess>();
-            _removeShellProcesses = new HashSet<ShellProcess>();
+            _tmpShellProcesses = new HashSet<ShellProcess>();
         }
 
         public void Tick()
         {
-            TickSet(_processes, _removeProcesses);
-            TickSet(_shellProcesses, _removeShellProcesses);
+            TickSet(_processes, _tmpProcesses);
+            TickSet(_shellProcesses, _tmpShellProcesses);
         }
 
-        private void TickSet<T>(HashSet<T> processes, HashSet<T> removeProcesses) where T : Process
+        private void TickSet<T>(HashSet<T> processes, HashSet<T> tmpProcesses)
+            where T : Process
         {
-            foreach (var operation in processes)
+            tmpProcesses.Clear();
+            tmpProcesses.UnionWith(processes);
+            foreach (var operation in tmpProcesses)
             {
                 try
                 {
@@ -72,12 +76,12 @@ namespace hss
                         else if (!operation.Update(this)) continue;
                     }
 
-                    removeProcesses.Add(operation);
+                    processes.Remove(operation);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    removeProcesses.Add(operation);
+                    processes.Remove(operation);
                     try
                     {
                         CompleteRecurse(operation, Process.CompletionKind.KillRemote);
@@ -88,8 +92,6 @@ namespace hss
                     }
                 }
             }
-
-            processes.ExceptWith(removeProcesses);
         }
 
         public void CompleteRecurse(Process process, Process.CompletionKind completionKind)
@@ -99,21 +101,40 @@ namespace hss
             uint pid = context.Pid;
             bool removed = processes.Remove(pid);
             context.Person.ShellChain.RemoveAll(p => p == process);
-            // TODO use chained program execution (or fall back on "&& pc.Type != ProgramContext.InvocationType.StartUp")
-            if (context is ProgramContext pc)
-            {
-                uint shellPid = pc.Shell.ProgramContext.Pid;
-                if (removed &&
-                    processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid) &&
-                    pc.Person.ShellChain.Count != 0)
-                {
-                    pc.User.WriteEventSafe(ServerUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
-                    pc.User.FlushSafeAsync();
-                }
-            }
 
             process.Complete(completionKind);
             process.Completed = completionKind;
+
+            if (context is ProgramContext pc)
+            {
+                var chainLine = pc.ChainLine;
+                if (chainLine != null)
+                {
+                    var genPc = new ProgramContext
+                    {
+                        World = pc.World,
+                        Person = pc.Person,
+                        User = pc.User,
+                        OperationId = pc.OperationId,
+                        Argv = chainLine,
+                        Type = ProgramContext.InvocationType.Standard,
+                        ConWidth = pc.ConWidth
+                    };
+                    ExecuteCommand(genPc);
+                }
+                else
+                {
+                    uint shellPid = pc.Shell.ProgramContext.Pid;
+                    if (removed &&
+                        processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid) &&
+                        pc.Person.ShellChain.Count != 0)
+                    {
+                        pc.User.WriteEventSafe(ServerUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
+                        pc.User.FlushSafeAsync();
+                    }
+                }
+            }
+
             var toKill = processes.Values.Where(p => p.Context.ParentPid == pid).ToList();
             foreach (var p in toKill)
                 CompleteRecurse(p, completionKind);

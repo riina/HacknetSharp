@@ -10,6 +10,7 @@ namespace HacknetSharp.Server
         public InvocationType Type { get; set; }
         public int ConWidth { get; set; } = -1;
         public bool IsAI { get; set; }
+        public string[]? ChainLine { get; set; }
 
         public enum InvocationType
         {

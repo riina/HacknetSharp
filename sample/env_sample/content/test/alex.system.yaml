@@ -1,5 +1,6 @@
 Name: "{Owner.UserName}_HOMEBASE ALEXXX"
 OsName: EncomOS
+ConnectCommandLine: echo "I am alex and I am super spy!!!"
 AddressRange: 69.69.69.69
 Users:
 - daphne:legacy

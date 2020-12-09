@@ -55,6 +55,13 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             context.World.StartShell(user, context.Person, system, login, "");
+            if (system.ConnectCommandLine != null)
+            {
+                var chainLine = Arguments.SplitCommandLine(system.ConnectCommandLine);
+                if (chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
+                    context.ChainLine = chainLine;
+            }
+
             user.FlushSafeAsync();
         }
     }
