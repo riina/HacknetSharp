@@ -7,8 +7,8 @@ using HacknetSharp.Server.Models;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:cp", "cp", "copy files and directories",
-        "copy source files to specified\n" +
-        "destination", "<source>... <dest>", false)]
+        "copy source files to specified destination",
+        "<source>... <dest>", false)]
     public class CpProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);

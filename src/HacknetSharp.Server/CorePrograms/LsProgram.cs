@@ -7,8 +7,7 @@ using System.Text;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:ls", "ls", "list directory contents",
-        "list contents of specified directory\n" +
-        "or current working directory",
+        "list contents of specified directory\nor current working directory",
         "[directory]", false)]
     public class LsProgram : Program
     {

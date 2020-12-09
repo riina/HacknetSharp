@@ -5,7 +5,8 @@ using System.IO;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:rm", "rm", "remove files or directories",
-        "remove specified files or directories", "<files>...", false)]
+        "remove specified files or directories",
+        "<files>...", false)]
     public class RmProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);

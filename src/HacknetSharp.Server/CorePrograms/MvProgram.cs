@@ -7,8 +7,8 @@ using HacknetSharp.Server.Models;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:mv", "mv", "move (rename) files",
-        "move source files to specified\n" +
-        "destination", "<source>... <dest>", false)]
+        "move source files to specified destination",
+        "<source>... <dest>", false)]
     public class MvProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);

@@ -6,7 +6,8 @@ using HacknetSharp.Server.Models;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:mkdir", "mkdir", "make directories",
-        "create directories if they don't exist", "<dir>...", false)]
+        "create directories if they don't exist",
+        "<dir>...", false)]
     public class MkdirProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);

@@ -6,8 +6,7 @@ using HacknetSharp.Server.Models;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:map", "map", "map known systems",
-        "list all known systems\n" +
-        "and report status",
+        "list all known systems",
         "[filter]", false)]
     public class MapProgram : Program
     {

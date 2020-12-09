@@ -7,8 +7,7 @@ using HacknetSharp.Server.Models;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:ps", "ps", "process status",
-        "display active processes on\n" +
-        "this machine",
+        "display active processes on this machine",
         "[-e]", false)]
     public class PsProgram : Program
     {

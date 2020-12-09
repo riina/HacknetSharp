@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net.Security;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
@@ -242,6 +240,18 @@ namespace hss
             var proc = new ServiceProcess(serviceContext, res);
             _processes.Add(proc);
             return proc;
+        }
+
+        public ProgramInfoAttribute? GetProgramInfo(string? content)
+        {
+            if (content == null) return null;
+            var line = Arguments.SplitCommandLine(content);
+            if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
+            if (Server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
+                return prog.Item2;
+            if (Server.Programs.TryGetValue(line[0], out prog))
+                return prog.Item2;
+            return null;
         }
 
         public void ExecuteCommand(ProgramContext programContext)

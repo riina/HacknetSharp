@@ -4,9 +4,8 @@ using System.Linq;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:ssh", "ssh", "connect to remote machine",
-        "opens an authenticated connection\n" +
-        "to a remote machine and opens a shell:",
-        "ssh username@server", false)]
+        "opens an authenticated connection to a\nremote machine and opens a shell",
+        "username@server", false)]
     public class SshProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);

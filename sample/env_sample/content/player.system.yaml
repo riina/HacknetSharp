@@ -31,4 +31,5 @@ Filesystem:
   - prog:/bin/mv core:mv
   - prog:/bin/rm core:rm
   - prog:/bin/mkdir core:mkdir
+  - prog:/bin/help core:help
   - text:"/home/{UserName}/read me.txt" "mr. {Name}, sir!"

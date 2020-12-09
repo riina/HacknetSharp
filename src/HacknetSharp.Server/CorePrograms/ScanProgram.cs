@@ -6,8 +6,7 @@ using HacknetSharp.Server.Models;
 namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:scan", "scan", "scan network",
-        "scan network for known devices\n" +
-        "and report status",
+        "scan network for local systems and report status",
         "[system]...", false)]
     public class ScanProgram : Program
     {
