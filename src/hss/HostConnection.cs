@@ -27,7 +27,6 @@ namespace hss
         private readonly AutoResetEvent _lockOutOp;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly HashSet<Guid> _initializedWorlds;
-        private PlayerModel? _playerModel;
         private SslStream? _sslStream;
         private readonly Queue<ServerEvent> _writeEventQueue;
         private readonly ConcurrentQueue<ReadOnlyMemory<byte>> _writeQueue;
@@ -87,16 +86,38 @@ namespace hss
                             }
 
                             if (login.RegistrationToken != null)
+                            {
                                 _user = await _server.AccessController
                                     .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
+                                if (_user != null)
+                                    RegisterNewPerson(_server.DefaultWorld, _user);
+                                else
+                                {
+                                    WriteEvent(new LoginFailEvent {Operation = op});
+                                    WriteEvent(new ServerDisconnectEvent {Reason = "Registration failed."});
+                                    await FlushAsync(cancellationToken).Caf();
+                                    return;
+                                }
+                            }
                             else
-                                _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
-                            if (_user == null)
                             {
-                                WriteEvent(new LoginFailEvent {Operation = op});
-                                WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
-                                await FlushAsync(cancellationToken).Caf();
-                                return;
+                                _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                                if (_user == null)
+                                {
+                                    WriteEvent(new LoginFailEvent {Operation = op});
+                                    WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
+                                    await FlushAsync(cancellationToken).Caf();
+                                    return;
+                                }
+                            }
+
+                            // Reset to existing world if necessary
+                            if (!_server.Worlds.ContainsKey(_user.ActiveWorld))
+                            {
+                                _user.ActiveWorld = _server.DefaultWorld.Model.Key;
+                                var w3 = _server.DefaultWorld.Model.Key;
+                                if (_user.Identities.All(p => p.World.Key != w3))
+                                    RegisterNewPerson(_server.DefaultWorld, _user);
                             }
 
                             _sslStream.ReadTimeout = 100 * 1000;
@@ -140,7 +161,7 @@ namespace hss
                                 break;
                             }
 
-                            _server.QueueConnectCommand(this, op, command.ConWidth);
+                            _server.QueueConnectCommand(this, _user, op, command.ConWidth);
                             break;
                         }
                         case CommandEvent command:
@@ -152,7 +173,8 @@ namespace hss
                                 break;
                             }
 
-                            _server.QueueCommand(this, op, command.ConWidth, Arguments.SplitCommandLine(command.Text));
+                            _server.QueueCommand(this, _user, op, command.ConWidth,
+                                Arguments.SplitCommandLine(command.Text));
 
                             break;
                         }
@@ -272,67 +294,40 @@ namespace hss
         public PersonModel GetPerson(IWorld world)
         {
             if (_user == null) throw new InvalidOperationException();
-            var playerModel = GetPlayerModel();
             var wId = world.Model.Key;
-            PersonModel person = playerModel.Identities.FirstOrDefault(x => x.World.Key == wId)
-                                 ?? RegisterNewPerson(_server, world, playerModel);
+            PersonModel person = _user.Identities.FirstOrDefault(x => x.World.Key == wId)
+                                 ?? RegisterNewPerson(world, _user);
 
             if (_initializedWorlds.Add(wId))
             {
                 // Reset user state
                 var systemModelKey = person.DefaultSystem;
                 var system = world.Model.Systems.FirstOrDefault(x => x.Key == systemModelKey)
-                             ?? RegisterNewSystem(_server, world, playerModel, person);
+                             ?? RegisterNewSystem(world, _user, person);
                 var pk = person.Key;
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
-                            ?? world.Spawn.Login(world.Database, world.Model, system, person.UserName,
-                                playerModel.User.Hash, playerModel.User.Salt, true, person);
+                            ?? world.Spawn.Login(system, person.UserName,
+                                _user.Hash, _user.Salt, true, person);
                 world.StartShell(this, person, system, login, "");
             }
 
             return person;
         }
 
-        private static PersonModel RegisterNewPerson(Server server, IWorld world,
-            PlayerModel player)
+        private static PersonModel RegisterNewPerson(IWorld world, UserModel user)
         {
-            var person = server.Spawn.Person(server.Database, world.Model, player.Key, player.Key, player);
-            RegisterNewSystem(server, world, player, person);
+            var person = world.Spawn.Person(user.Key, user.Key, user);
+            RegisterNewSystem(world, user, person);
             return person;
         }
 
-        private static SystemModel RegisterNewSystem(Server server, IWorld world, PlayerModel player,
+        private static SystemModel RegisterNewSystem(IWorld world, UserModel user,
             PersonModel person)
         {
-            var system = server.Spawn.System(server.Database, world.Model, world.PlayerSystemTemplate, person,
-                player.User.Hash, player.User.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
+            var system = world.Spawn.System(world.PlayerSystemTemplate, person, user.Hash, user.Salt,
+                new IPAddressRange(world.Model.PlayerAddressRange));
             person.DefaultSystem = system.Key;
             return system;
-        }
-
-        public PlayerModel GetPlayerModel()
-        {
-            if (_user == null) throw new InvalidOperationException();
-
-            // Get from connection
-            if (_playerModel != null) return _playerModel;
-
-            _playerModel = _server.Database.GetAsync<string, PlayerModel>(_user.Key).Result;
-            if (_playerModel == null)
-            {
-                var world = _server.DefaultWorld;
-
-                _playerModel = _server.Spawn.Player(_server.Database, _user);
-                _server.RegisterModel(_playerModel);
-
-                RegisterNewPerson(_server, world, _playerModel);
-            }
-
-            // Reset to existing world if necessary
-            if (!_server.Worlds.ContainsKey(_playerModel.ActiveWorld))
-                _playerModel.ActiveWorld = _server.DefaultWorld.Model.Key;
-
-            return _playerModel;
         }
 
         public void WriteEventSafe(ServerEvent evt)

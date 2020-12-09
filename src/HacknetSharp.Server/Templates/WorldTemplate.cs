@@ -28,6 +28,7 @@ namespace HacknetSharp.Server.Templates
             world.StartupCommandLine = StartupCommandLine ??
                                        throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
+            var worldSpawn = new WorldSpawn(database, world);
             if (Generators == null) return;
             foreach (var generator in Generators)
                 if (!templates.PersonTemplates.TryGetValue(generator.PersonTemplate ??
@@ -37,7 +38,7 @@ namespace HacknetSharp.Server.Templates
                     throw new KeyNotFoundException($"Unknown template {generator.PersonTemplate}");
                 else
                     for (int i = 0; i < generator.Count; i++)
-                        template.Generate(database, spawn, templates, world, generator.AddressRange);
+                        template.Generate(database, worldSpawn, templates, world, generator.AddressRange);
         }
     }
 }

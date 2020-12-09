@@ -35,7 +35,8 @@ namespace HacknetSharp.Server.Templates
 
         private static Random Random => _random ??= new Random();
 
-        public virtual void Generate(IServerDatabase database, Spawn spawn, TemplateGroup templates, WorldModel world,
+        public virtual void Generate(IServerDatabase database, WorldSpawn spawn, TemplateGroup templates,
+            WorldModel world,
             string? addressRange)
         {
             if (Usernames == null) throw new InvalidOperationException($"{nameof(Usernames)} is null.");
@@ -57,9 +58,9 @@ namespace HacknetSharp.Server.Templates
             var range = new IPAddressRange(addressRange ??
                                            AddressRange ?? systemTemplate.AddressRange ??
                                            Constants.DefaultAddressRange);
-            var person = spawn.Person(database, world, username, username);
+            var person = spawn.Person(username, username);
             var (hash, salt) = ServerUtil.HashPassword(password);
-            var system = spawn.System(database, world, systemTemplate, person, hash, salt, range);
+            var system = spawn.System(systemTemplate, person, hash, salt, range);
             var systems = new List<SystemModel> {system};
             person.DefaultSystem = system.Key;
             if (FleetSystemTemplates != null)
@@ -72,7 +73,7 @@ namespace HacknetSharp.Server.Templates
                         FleetSystemTemplates[Random.Next() % FleetSystemTemplates.Count];
                     if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                         throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
-                    systems.Add(spawn.System(database, world, fleetSystemTemplate, person, hash, salt,
+                    systems.Add(spawn.System(fleetSystemTemplate, person, hash, salt,
                         fixedRange
                             ? range
                             : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange)));
@@ -81,8 +82,8 @@ namespace HacknetSharp.Server.Templates
                 for (int i = 0; i < systems.Count; i++)
                 for (int j = i + 1; j < systems.Count; j++)
                 {
-                    spawn.Connection(database, systems[i], systems[j]);
-                    spawn.Connection(database, systems[j], systems[i]);
+                    spawn.Connection(systems[i], systems[j]);
+                    spawn.Connection(systems[j], systems[i]);
                 }
             }
 
@@ -103,7 +104,7 @@ namespace HacknetSharp.Server.Templates
                         throw new KeyNotFoundException($"Unknown template {template}");
                     var netTemplateShim =
                         new SystemTemplateShim(netTemplate) {Configuration = networkEntry.Configuration};
-                    var netSystem = spawn.System(database, world, netTemplateShim, person, hash, salt, addr);
+                    var netSystem = spawn.System(netTemplateShim, person, hash, salt, addr);
                     networkDict.Add(address, netSystem);
                     if (networkEntry.Links != null)
                         networkLinkDict.Add(address, networkEntry.Links);
@@ -112,7 +113,7 @@ namespace HacknetSharp.Server.Templates
                 foreach (var (srcAddr, networkLinks) in networkLinkDict)
                 {
                     var baseSystem = networkDict[srcAddr];
-                    foreach (var linked in networkLinks) spawn.Connection(database, baseSystem, networkDict[linked]);
+                    foreach (var linked in networkLinks) spawn.Connection(baseSystem, networkDict[linked]);
                 }
             }
         }
@@ -127,9 +128,8 @@ namespace HacknetSharp.Server.Templates
                 _baseTemplate = baseTemplate;
             }
 
-            public override void ApplyTemplate(IServerDatabase database, Spawn spawn, WorldModel world,
-                SystemModel model, PersonModel owner, byte[] hash, byte[] salt,
-                Dictionary<string, string>? configuration = null)
+            public override void ApplyTemplate(WorldSpawn spawn, SystemModel model, PersonModel owner, byte[] hash,
+                byte[] salt, Dictionary<string, string>? configuration = null)
             {
                 if (configuration != null)
                 {
@@ -144,7 +144,7 @@ namespace HacknetSharp.Server.Templates
                 else
                     configuration = Configuration;
 
-                _baseTemplate.ApplyTemplate(database, spawn, world, model, owner, hash, salt, configuration);
+                _baseTemplate.ApplyTemplate(spawn, model, owner, hash, salt, configuration);
             }
         }
     }

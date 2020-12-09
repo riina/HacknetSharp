@@ -10,7 +10,7 @@ namespace HacknetSharp.Server.Models
     {
         public virtual string Name { get; set; } = null!;
         public virtual string UserName { get; set; } = null!;
-        public virtual PlayerModel? Player { get; set; }
+        public virtual UserModel? User { get; set; }
         public virtual Guid DefaultSystem { get; set; }
         public List<ShellProcess> ShellChain { get; set; } = new List<ShellProcess>();
         public virtual bool StartedUp { get; set; }

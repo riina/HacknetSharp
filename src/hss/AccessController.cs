@@ -8,10 +8,12 @@ namespace hss
     public class AccessController
     {
         private readonly ServerDatabase _db;
+        private readonly Spawn _spawn;
 
         public AccessController(Server server)
         {
             _db = server.Database;
+            _spawn = new Spawn(_db);
         }
 
         public async Task<UserModel?> AuthenticateAsync(string user, string pass)
@@ -29,7 +31,7 @@ namespace hss
             if (token == null) return null;
             _db.Delete(token);
             var (hash, salt) = ServerUtil.HashPassword(pass);
-            userModel = new UserModel {Key = user, Hash = hash, Salt = salt};
+            userModel = _spawn.User(user, hash, salt, false);
             _db.Add(userModel);
             await _db.SyncAsync().Caf();
             return userModel;
@@ -54,27 +56,9 @@ namespace hss
             return true;
         }
 
-        public async Task DeregisterNonSyncAsync(UserModel userModel, bool purge)
+        public void Deregister(UserModel userModel, bool purge)
         {
-            // this can only be executed during sync step of world update, must queue
-            //var ctx = _db.Context;
-            if (purge)
-            {
-                var player = await _db.GetAsync<string, PlayerModel>(userModel.Key).Caf();
-                if (player != null)
-                {
-                    foreach (var person in player.Identities)
-                    {
-                        foreach (var system in person.Systems) _db.DeleteBulk(system.Files);
-                        _db.DeleteBulk(person.Systems);
-                    }
-
-                    _db.DeleteBulk(player.Identities);
-                    _db.Delete(player);
-                }
-            }
-
-            _db.Delete(userModel);
+            _spawn.RemoveUser(userModel);
         }
     }
 }

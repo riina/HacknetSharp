@@ -57,11 +57,11 @@ namespace hss
             AccessController = new AccessController(this);
             Worlds = new Dictionary<Guid, World>();
             Templates = config.Templates;
-            Spawn = new Spawn();
+            Spawn = new Spawn(Database);
             World? defaultWorld = null;
             foreach (var w in context.Set<WorldModel>())
             {
-                var world = new World(this, w, Database, Spawn);
+                var world = new World(this, w, Database);
                 Worlds[w.Key] = world;
                 if (w.Name.Equals(config.DefaultWorld)) defaultWorld = world;
             }
@@ -247,17 +247,16 @@ namespace hss
             }
         }
 
-        public void QueueConnectCommand(HostConnection context, Guid operationId, int conWidth)
+        public void QueueConnectCommand(HostConnection context, UserModel user, Guid operationId, int conWidth)
         {
             _queueOp.WaitOne();
             try
             {
-                var player = context.GetPlayerModel();
-                if (!Worlds.TryGetValue(player.ActiveWorld, out var world))
+                if (!Worlds.TryGetValue(user.ActiveWorld, out var world))
                 {
                     world = DefaultWorld;
-                    player.ActiveWorld = world.Model.Key;
-                    DirtyModel(player);
+                    user.ActiveWorld = world.Model.Key;
+                    DirtyModel(user);
                 }
 
                 var person = context.GetPerson(world);
@@ -281,17 +280,16 @@ namespace hss
             }
         }
 
-        public void QueueCommand(HostConnection context, Guid operationId, int conWidth, string[] line)
+        public void QueueCommand(HostConnection context, UserModel user, Guid operationId, int conWidth, string[] line)
         {
             _queueOp.WaitOne();
             try
             {
-                var player = context.GetPlayerModel();
-                if (!Worlds.TryGetValue(player.ActiveWorld, out var world))
+                if (!Worlds.TryGetValue(user.ActiveWorld, out var world))
                 {
                     world = DefaultWorld;
-                    player.ActiveWorld = world.Model.Key;
-                    DirtyModel(player);
+                    user.ActiveWorld = world.Model.Key;
+                    DirtyModel(user);
                 }
 
                 _inputQueue.Enqueue(new ProgramContext

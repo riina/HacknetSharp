@@ -7,6 +7,7 @@ using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using hss;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 
 namespace HacknetSharp.Test
@@ -154,17 +155,17 @@ namespace HacknetSharp.Test
             var worldTemplate = (WorldTemplate)_templates["world"];
             //templates.WorldTemplates.Add("worldTemplate", worldTemplate);
 
-            var spawn = new Spawn();
 
             IServerDatabase database = new DummyServerDatabase();
+            var iSpawn = new Spawn(database);
+            var worldModel = iSpawn.World("za warudo", templates, worldTemplate);
+            var spawn = new WorldSpawn(database, worldModel);
 
-            var worldModel = spawn.World(database, "za warudo", templates, worldTemplate);
 
-            var person1Model = spawn.Person(database, worldModel, "Jacob Keyes", "jacobkeyes");
+            var person1Model = spawn.Person("Jacob Keyes", "jacobkeyes");
             (byte[] person1Hash, byte[] person1Salt) = ServerUtil.HashPassword("miranda");
 
-            var system1Model = spawn.System(database, worldModel, system1Template, person1Model, person1Hash,
-                person1Salt,
+            var system1Model = spawn.System(system1Template, person1Model, person1Hash, person1Salt,
                 new IPAddressRange(Constants.DefaultAddressRange));
 
             // Initially have 3 systems from generator, add custom system
@@ -183,7 +184,7 @@ namespace HacknetSharp.Test
 
 
         [Test]
-        public void TestCidr()
+        public void Test_Cidr()
         {
             IPAddressRange range = new IPAddressRange("192.168.0.0/24");
             Assert.IsTrue(range.Contains(IPAddress.Parse("192.168.0.1")));
@@ -205,7 +206,7 @@ namespace HacknetSharp.Test
         }
 
         [Test]
-        public void TestReplacements()
+        public void Test_Replacements()
         {
             var dict = new Dictionary<string, string>();
             string str = "daisy johnson {skye}";

@@ -17,8 +17,8 @@ namespace HacknetSharp.Server.Templates
         private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+):([\S\s]+)(\+)?");
         private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
-        public virtual void ApplyTemplate(IServerDatabase database, Spawn spawn, WorldModel world, SystemModel model,
-            PersonModel owner, byte[] hash, byte[] salt, Dictionary<string, string>? configuration = null)
+        public virtual void ApplyTemplate(WorldSpawn spawn, SystemModel model, PersonModel owner, byte[] hash,
+            byte[] salt, Dictionary<string, string>? configuration = null)
         {
             var repDict = configuration != null
                 ? new Dictionary<string, string>(configuration)
@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.Templates
             model.ConnectCommandLine = ConnectCommandLine?.ApplyReplacements(repDict);
             var unameToLoginDict = new Dictionary<string, LoginModel>
             {
-                {owner.UserName, spawn.Login(database, world, model, owner.UserName, hash, salt, true, owner)}
+                {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}
             };
             if (Users != null)
                 foreach (var user in Users)
@@ -40,7 +40,7 @@ namespace HacknetSharp.Server.Templates
                     if (!match.Success) throw new Exception($"Failed to parse user:pass for {user}");
                     var (hashSub, saltSub) = ServerUtil.HashPassword(match.Groups[2].Value);
                     string uname = match.Groups[1].Value;
-                    unameToLoginDict.Add(uname, spawn.Login(database, world, model, uname.ToLowerInvariant(), hashSub,
+                    unameToLoginDict.Add(uname, spawn.Login(model, uname.ToLowerInvariant(), hashSub,
                         saltSub, match.Groups[3].Success));
                 }
 
@@ -67,24 +67,24 @@ namespace HacknetSharp.Server.Templates
                         switch (match.Groups[1].Value.ToLowerInvariant())
                         {
                             case "fold":
-                                fileModel = spawn.Folder(database, world, model, fsLogin, name, path);
+                                fileModel = spawn.Folder(model, fsLogin, name, path);
                                 break;
                             case "prog":
                                 if (args.Length < 2)
                                     throw new Exception($"Not enough arguments to file entry {file}");
-                                fileModel = spawn.ProgFile(database, world, model, fsLogin, name, path,
+                                fileModel = spawn.ProgFile(model, fsLogin, name, path,
                                     args[1].ApplyReplacements(repDict));
                                 break;
                             case "text":
                                 if (args.Length < 2)
                                     throw new Exception($"Not enough arguments to file entry {file}");
-                                fileModel = spawn.TextFile(database, world, model, fsLogin, name, path,
+                                fileModel = spawn.TextFile(model, fsLogin, name, path,
                                     args[1].ApplyReplacements(repDict));
                                 break;
                             case "file":
                                 if (args.Length < 2)
                                     throw new Exception($"Not enough arguments to file entry {file}");
-                                fileModel = spawn.FileFile(database, world, model, fsLogin, name, path,
+                                fileModel = spawn.FileFile(model, fsLogin, name, path,
                                     args[1].ApplyReplacements(repDict));
                                 break;
                             case "blob":

@@ -40,7 +40,7 @@ namespace hss.Runnables
                 string? pass = Util.ReadPassword();
                 if (pass == null) return 0;
                 var (hash, salt) = ServerUtil.HashPassword(pass);
-                ctx.Add(new UserModel {Admin = Admin, Hash = hash, Salt = salt, Key = Name});
+                new Spawn(new ServerDatabase(ctx)).User(Name, hash, salt, Admin);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
             }
@@ -66,27 +66,12 @@ namespace hss.Runnables
                     : ctx.Set<UserModel>().Where(u => names.Contains(u.Key))).ToListAsync().Caf();
 
                 foreach (var user in users)
-                {
-                    var player = await ctx.FindAsync<PlayerModel>(user.Key).Caf();
-                    if (player != null)
-                    {
-                        foreach (var person in player.Identities)
-                        {
-                            foreach (var system in person.Systems) ctx.RemoveRange(system.Files);
-                            ctx.RemoveRange(person.Systems);
-                        }
-
-                        ctx.RemoveRange(player.Identities);
-                        ctx.Remove(player);
-                    }
-                }
-
-                foreach (var user in users)
                     Console.WriteLine($"{user.Key}:{(user.Admin ? "admin" : "regular")}");
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
-                ctx.RemoveRange(users);
+                var spawn = new Spawn(new ServerDatabase(ctx));
+                foreach (var user in users) spawn.RemoveUser(user);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
             }

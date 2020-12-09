@@ -46,7 +46,7 @@ namespace hss.Runnables
 
                 var database = new ServerDatabase(ctx);
 
-                new Spawn().World(database, Name, templates, template);
+                new Spawn(database).World(Name, templates, template);
                 await database.SyncAsync().Caf();
                 return 0;
             }
@@ -76,7 +76,8 @@ namespace hss.Runnables
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
-                ctx.RemoveRange(worlds);
+                var spawn = new Spawn(new ServerDatabase(ctx));
+                foreach (var world in worlds) spawn.RemoveWorld(world);
                 await ctx.SaveChangesAsync().Caf();
                 return 0;
             }

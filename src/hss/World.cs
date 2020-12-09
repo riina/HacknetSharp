@@ -12,7 +12,7 @@ namespace hss
     {
         public Server Server { get; }
         public WorldModel Model { get; }
-        public Spawn Spawn { get; }
+        public WorldSpawn Spawn { get; }
         public IServerDatabase Database { get; }
         public SystemTemplate PlayerSystemTemplate { get; }
         public double Time { get; set; }
@@ -26,11 +26,11 @@ namespace hss
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
 
 
-        internal World(Server server, WorldModel model, IServerDatabase database, Spawn spawn)
+        internal World(Server server, WorldModel model, IServerDatabase database)
         {
             Server = server;
             Model = model;
-            Spawn = spawn;
+            Spawn = new WorldSpawn(database, Model);
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             _processes = new HashSet<Process>();

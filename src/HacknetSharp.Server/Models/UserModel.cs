@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
@@ -8,7 +10,8 @@ namespace HacknetSharp.Server.Models
         public virtual byte[] Hash { get; set; } = null!;
         public virtual byte[] Salt { get; set; } = null!;
         public virtual bool Admin { get; set; }
-        public virtual PlayerModel Player { get; set; } = null!;
+        public virtual Guid ActiveWorld { get; set; }
+        public virtual HashSet<PersonModel> Identities { get; set; } = null!;
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -17,8 +20,7 @@ namespace HacknetSharp.Server.Models
             builder.Entity<UserModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasOne(y => y.Player).WithOne(z => z.User).HasForeignKey<PlayerModel>(p => p.UserForeignKey)
-                    .OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(p => p!.Identities).WithOne(p => p.User!).OnDelete(DeleteBehavior.Cascade);
             });
 #pragma warning restore 1591
     }

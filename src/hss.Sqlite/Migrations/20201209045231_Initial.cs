@@ -14,7 +14,8 @@ namespace hss.Sqlite.Migrations
                     Key = table.Column<string>(type: "TEXT", nullable: false),
                     Hash = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
-                    Admin = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Admin = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
 
@@ -31,25 +32,6 @@ namespace hss.Sqlite.Migrations
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
-
-            migrationBuilder.CreateTable(
-                name: "PlayerModel",
-                columns: table => new
-                {
-                    Key = table.Column<string>(type: "TEXT", nullable: false),
-                    UserForeignKey = table.Column<string>(type: "TEXT", nullable: false),
-                    ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerModel", x => x.Key);
-                    table.ForeignKey(
-                        name: "FK_PlayerModel_UserModel_UserForeignKey",
-                        column: x => x.UserForeignKey,
-                        principalTable: "UserModel",
-                        principalColumn: "Key",
-                        onDelete: ReferentialAction.Cascade);
-                });
 
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
@@ -76,7 +58,7 @@ namespace hss.Sqlite.Migrations
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
-                    PlayerKey = table.Column<string>(type: "TEXT", nullable: true),
+                    UserKey = table.Column<string>(type: "TEXT", nullable: true),
                     DefaultSystem = table.Column<Guid>(type: "TEXT", nullable: false),
                     StartedUp = table.Column<bool>(type: "INTEGER", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
@@ -85,9 +67,9 @@ namespace hss.Sqlite.Migrations
                 {
                     table.PrimaryKey("PK_PersonModel", x => x.Key);
                     table.ForeignKey(
-                        name: "FK_PersonModel_PlayerModel_PlayerKey",
-                        column: x => x.PlayerKey,
-                        principalTable: "PlayerModel",
+                        name: "FK_PersonModel_UserModel_UserKey",
+                        column: x => x.UserKey,
+                        principalTable: "UserModel",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -281,20 +263,14 @@ namespace hss.Sqlite.Migrations
                 column: "WorldKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonModel_PlayerKey",
+                name: "IX_PersonModel_UserKey",
                 table: "PersonModel",
-                column: "PlayerKey");
+                column: "UserKey");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonModel_WorldKey",
                 table: "PersonModel",
                 column: "WorldKey");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerModel_UserForeignKey",
-                table: "PlayerModel",
-                column: "UserForeignKey",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegistrationToken_ForgerKey",
@@ -346,13 +322,10 @@ namespace hss.Sqlite.Migrations
                 name: "PersonModel");
 
             migrationBuilder.DropTable(
-                name: "PlayerModel");
+                name: "UserModel");
 
             migrationBuilder.DropTable(
                 name: "WorldModel");
-
-            migrationBuilder.DropTable(
-                name: "UserModel");
         }
     }
 }

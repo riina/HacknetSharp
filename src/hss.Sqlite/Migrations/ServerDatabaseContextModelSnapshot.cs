@@ -139,11 +139,11 @@ namespace hss.Sqlite.Migrations
                     .IsRequired()
                     .HasColumnType("TEXT");
 
-                b.Property<string>("PlayerKey")
-                    .HasColumnType("TEXT");
-
                 b.Property<bool>("StartedUp")
                     .HasColumnType("INTEGER");
+
+                b.Property<string>("UserKey")
+                    .HasColumnType("TEXT");
 
                 b.Property<string>("UserName")
                     .IsRequired()
@@ -154,31 +154,11 @@ namespace hss.Sqlite.Migrations
 
                 b.HasKey("Key");
 
-                b.HasIndex("PlayerKey");
+                b.HasIndex("UserKey");
 
                 b.HasIndex("WorldKey");
 
                 b.ToTable("PersonModel");
-            });
-
-            modelBuilder.Entity("HacknetSharp.Server.Models.PlayerModel", b =>
-            {
-                b.Property<string>("Key")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid>("ActiveWorld")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("UserForeignKey")
-                    .IsRequired()
-                    .HasColumnType("TEXT");
-
-                b.HasKey("Key");
-
-                b.HasIndex("UserForeignKey")
-                    .IsUnique();
-
-                b.ToTable("PlayerModel");
             });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.RegistrationToken", b =>
@@ -237,6 +217,9 @@ namespace hss.Sqlite.Migrations
             modelBuilder.Entity("HacknetSharp.Server.Models.UserModel", b =>
             {
                 b.Property<string>("Key")
+                    .HasColumnType("TEXT");
+
+                b.Property<Guid>("ActiveWorld")
                     .HasColumnType("TEXT");
 
                 b.Property<bool>("Admin")
@@ -379,9 +362,9 @@ namespace hss.Sqlite.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b =>
             {
-                b.HasOne("HacknetSharp.Server.Models.PlayerModel", "Player")
+                b.HasOne("HacknetSharp.Server.Models.UserModel", "User")
                     .WithMany("Identities")
-                    .HasForeignKey("PlayerKey")
+                    .HasForeignKey("UserKey")
                     .OnDelete(DeleteBehavior.Cascade);
 
                 b.HasOne("HacknetSharp.Server.Models.WorldModel", "World")
@@ -390,20 +373,9 @@ namespace hss.Sqlite.Migrations
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
 
-                b.Navigation("Player");
+                b.Navigation("User");
 
                 b.Navigation("World");
-            });
-
-            modelBuilder.Entity("HacknetSharp.Server.Models.PlayerModel", b =>
-            {
-                b.HasOne("HacknetSharp.Server.Models.UserModel", "User")
-                    .WithOne("Player")
-                    .HasForeignKey("HacknetSharp.Server.Models.PlayerModel", "UserForeignKey")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-
-                b.Navigation("User");
             });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.RegistrationToken", b =>
@@ -453,8 +425,6 @@ namespace hss.Sqlite.Migrations
 
             modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b => { b.Navigation("Systems"); });
 
-            modelBuilder.Entity("HacknetSharp.Server.Models.PlayerModel", b => { b.Navigation("Identities"); });
-
             modelBuilder.Entity("HacknetSharp.Server.Models.SystemModel", b =>
             {
                 b.Navigation("Files");
@@ -468,11 +438,7 @@ namespace hss.Sqlite.Migrations
                 b.Navigation("Vulnerabilities");
             });
 
-            modelBuilder.Entity("HacknetSharp.Server.Models.UserModel", b =>
-            {
-                b.Navigation("Player")
-                    .IsRequired();
-            });
+            modelBuilder.Entity("HacknetSharp.Server.Models.UserModel", b => { b.Navigation("Identities"); });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.WorldModel", b =>
             {
