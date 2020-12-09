@@ -99,6 +99,7 @@ namespace hss
             uint pid = context.Pid;
             bool removed = processes.Remove(pid);
             context.Person.ShellChain.RemoveAll(p => p == process);
+            // TODO use chained program execution (or fall back on "&& pc.Type != ProgramContext.InvocationType.StartUp")
             if (context is ProgramContext pc)
             {
                 uint shellPid = pc.Shell.ProgramContext.Pid;

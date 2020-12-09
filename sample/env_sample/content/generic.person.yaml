@@ -11,7 +11,4 @@ EmailProviders:
 - thisisnotaproblem.org
 - fbiopenup.gov
 PrimarySystemTemplates:
-- test/systemTemplate.yaml
-FleetMin: 0
-FleetMax: 0
-FleetSystemTemplates: []
+- test/generic.system.yaml

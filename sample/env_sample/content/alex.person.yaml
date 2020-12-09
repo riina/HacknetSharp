@@ -5,8 +5,8 @@ Passwords:
 EmailProviders:
 - gmail.com
 PrimarySystemTemplates:
-- test/alexSystem.yaml
+- test/alex.system.yaml
 FleetMin: 2
 FleetMax: 4
 FleetSystemTemplates:
-- test/systemTemplate.yaml
+- test/generic.system.yaml
