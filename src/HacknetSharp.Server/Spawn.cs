@@ -46,12 +46,11 @@ namespace HacknetSharp.Server
         {
             foreach (var person in user.Identities)
             {
-                foreach (var system in person.Systems) _database.DeleteBulk(system.Files);
-                _database.DeleteBulk(person.Systems);
+                var worldSpawn = new WorldSpawn(_database, person.World);
+                foreach (var system in person.Systems) worldSpawn.RemoveSystem(system);
             }
 
             if (isCascade) return;
-            _database.DeleteBulk(user.Identities);
             _database.Delete(user);
         }
 
@@ -61,8 +60,6 @@ namespace HacknetSharp.Server
             foreach (var person in world.Persons)
                 worldSpawn.RemovePerson(person, true);
             if (isCascade) return;
-            _database.DeleteBulk(world.Persons);
-            _database.DeleteBulk(world.Systems);
             _database.Delete(world);
         }
     }
