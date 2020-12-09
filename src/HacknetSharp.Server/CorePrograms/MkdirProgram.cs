@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using HacknetSharp.Server.Models;
 
@@ -23,39 +24,49 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            var spawn = context.World.Spawn;
-            var login = context.Login;
-            foreach (var input in argv[1..^1])
+            try
             {
-                string inputFmt = GetNormalized(input);
-                if(inputFmt == "/") continue;
-                system.TryGetWithAccess(inputFmt, login, out var result, out _);
+                var spawn = context.World.Spawn;
+                var login = context.Login;
+                string workDir = context.Shell.WorkingDirectory;
+                foreach (var input in argv[1..])
                 {
-                    switch (result) {
-                        case ReadAccessResult.Readable:
-                            user.WriteEventSafe(Output($"{inputFmt}: Path exists\n"));
-                            user.FlushSafeAsync();
-                            yield break;
-                        case ReadAccessResult.NotReadable:
-                            user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
-                            user.FlushSafeAsync();
-                            yield break;
-                        case ReadAccessResult.NoExist:
-                            try
-                            {
-                                var (path, name) = SystemModel.GetDirectoryAndName(inputFmt);
-                                spawn.Folder(system, login, name, path);
-                            }
-                            catch (IOException e)
-                            {
-                                user.WriteEventSafe(Output($"{e.Message}\n"));
+                    string inputFmt = GetNormalized(Combine(workDir, input));
+                    if (inputFmt == "/") continue;
+                    system.TryGetWithAccess(inputFmt, login, out var result, out _);
+                    {
+                        switch (result)
+                        {
+                            case ReadAccessResult.Readable:
+                                user.WriteEventSafe(Output($"{inputFmt}: Path exists\n"));
                                 user.FlushSafeAsync();
                                 yield break;
-                            }
+                            case ReadAccessResult.NotReadable:
+                                user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
+                                user.FlushSafeAsync();
+                                yield break;
+                            case ReadAccessResult.NoExist:
+                                try
+                                {
+                                    var (path, name) = SystemModel.GetDirectoryAndName(inputFmt);
+                                    spawn.Folder(system, login, name, path);
+                                }
+                                catch (IOException e)
+                                {
+                                    user.WriteEventSafe(Output($"{e.Message}\n"));
+                                    user.FlushSafeAsync();
+                                    yield break;
+                                }
 
-                            break;
+                                break;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                user.WriteEventSafe(Output($"{e.Message}\n"));
+                user.FlushSafeAsync();
             }
         }
     }

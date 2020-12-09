@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
@@ -25,61 +27,73 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            string target;
             try
             {
-                target = GetNormalized(Combine(context.Shell.WorkingDirectory, argv[^1]));
-            }
-            catch
-            {
-                yield break;
-            }
-
-            var spawn = context.World.Spawn;
-            var login = context.Login;
-            foreach (var input in argv[1..^2])
-            {
-                string inputFmt = GetNormalized(input);
-                if (system.TryGetWithAccess(inputFmt, login, out var result, out var closest))
+                string target;
+                string workDir = context.Shell.WorkingDirectory;
+                try
                 {
-                    try
-                    {
-                        string lclTarget;
-                        string lclName;
-                        if (closest.Kind == FileModel.FileKind.Folder || argv.Length != 3)
-                        {
-                            lclTarget = target;
-                            lclName = closest.Name;
-                        }
-                        else
-                        {
-                            lclTarget = GetDirectoryName(target) ?? "/";
-                            lclName = GetFileName(target);
-                        }
-
-                        spawn.Duplicate(system, login, lclTarget, lclName, closest);
-                    }
-                    catch (IOException e)
-                    {
-                        user.WriteEventSafe(Output($"{e.Message}\n"));
-                        user.FlushSafeAsync();
-                        yield break;
-                    }
+                    target = GetNormalized(Combine(workDir, argv[^1]));
                 }
-                else
-                    switch (result)
+                catch
+                {
+                    yield break;
+                }
+
+                var spawn = context.World.Spawn;
+                var login = context.Login;
+                foreach (var input in argv[1..^1])
+                {
+                    string inputFmt = GetNormalized(Combine(workDir, input));
+                    if (system.TryGetWithAccess(inputFmt, login, out var result, out var closest))
                     {
-                        case ReadAccessResult.Readable:
-                            break;
-                        case ReadAccessResult.NotReadable:
-                            user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
+                        try
+                        {
+                            var targetExisting =
+                                system.Files.FirstOrDefault(f => f.Hidden == false && f.FullPath == target);
+                            string lclTarget;
+                            string lclName;
+                            if (argv.Length != 3 || targetExisting != null
+                                && targetExisting.Kind == FileModel.FileKind.Folder)
+                            {
+                                lclTarget = target;
+                                lclName = closest.Name;
+                            }
+                            else
+                            {
+                                lclTarget = GetDirectoryName(target) ?? "/";
+                                lclName = GetFileName(target);
+                            }
+
+                            spawn.Duplicate(system, login, lclName, lclTarget, closest);
+                        }
+                        catch (IOException e)
+                        {
+                            user.WriteEventSafe(Output($"{e.Message}\n"));
                             user.FlushSafeAsync();
                             yield break;
-                        case ReadAccessResult.NoExist:
-                            user.WriteEventSafe(Output($"{inputFmt}: No such file or directory\n"));
-                            user.FlushSafeAsync();
-                            yield break;
+                        }
                     }
+                    else
+                        switch (result)
+                        {
+                            case ReadAccessResult.Readable:
+                                break;
+                            case ReadAccessResult.NotReadable:
+                                user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
+                                user.FlushSafeAsync();
+                                yield break;
+                            case ReadAccessResult.NoExist:
+                                user.WriteEventSafe(Output($"{inputFmt}: No such file or directory\n"));
+                                user.FlushSafeAsync();
+                                yield break;
+                        }
+                }
+            }
+            catch (Exception e)
+            {
+                user.WriteEventSafe(Output($"{e.Message}\n"));
+                user.FlushSafeAsync();
             }
         }
     }

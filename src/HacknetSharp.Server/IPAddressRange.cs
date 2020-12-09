@@ -38,7 +38,7 @@ namespace HacknetSharp.Server
         private fixed byte _prefix[16];
 #pragma warning restore 649
         public readonly AddressFamily AddressFamily;
-        public readonly int PrefixBits;
+        public readonly byte PrefixBits;
 
         public IPAddressRange(string cidrString)
         {
@@ -80,7 +80,7 @@ namespace HacknetSharp.Server
                 if (addrLen * 8 < prefixBits) throw new ArgumentException("Mask length exceeded address bit length");
             }
 
-            PrefixBits = prefixBits;
+            PrefixBits = (byte) prefixBits;
             int prefixBytes = prefixBits / 8;
             fixed (byte* pp = _prefix)
                 addrBytes.Slice(0, prefixBytes).CopyTo(new Span<byte>(pp, 16));
@@ -103,7 +103,7 @@ namespace HacknetSharp.Server
             // Get prefix length
             prefixBits = addrLen * 8;
 
-            PrefixBits = prefixBits;
+            PrefixBits = (byte) prefixBits;
             int prefixBytes = prefixBits / 8;
             fixed (byte* pp = _prefix)
                 addrBytes.Slice(0, prefixBytes).CopyTo(new Span<byte>(pp, 16));
@@ -116,7 +116,7 @@ namespace HacknetSharp.Server
         {
             fixed (byte* pp = _prefix) prefix.CopyTo(new Span<byte>(pp, 16));
             AddressFamily = addressFamily;
-            PrefixBits = prefixBits;
+            PrefixBits = (byte) prefixBits;
         }
 
         public static bool TryParse(string cidrString, bool allowRange, out IPAddressRange value)

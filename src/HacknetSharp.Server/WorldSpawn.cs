@@ -306,7 +306,7 @@ namespace HacknetSharp.Server
             _database.Delete(person);
         }
 
-        public void MoveFile(FileModel file, string targetPath, string targetName, LoginModel login,
+        public void MoveFile(FileModel file, string targetName, string targetPath, LoginModel login,
             bool hidden = false)
         {
             if (!file.CanWrite(login)) throw new IOException("Permission denied");
