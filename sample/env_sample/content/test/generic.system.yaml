@@ -1,8 +1,8 @@
 Name: "{Owner.UserName}_HOMEBASE KEKW"
 OsName: EncomOS
 Users:
-- daphne:legacy
-- samwise:genshin
+  daphne: legacy
+  samwise: genshin
 Filesystem:
   "{Owner.UserName}":
   - fold*+*:/bin
@@ -25,5 +25,6 @@ Filesystem:
   - prog:/bin/ssh core:ssh
   - prog:/bin/ps core:ps
   - prog:/bin/scan core:scan
+  - prog:/bin/map core:map
   - text:"/home/{UserName}/read me.txt" "mr. {Name}, sir!"
   - file:/home/{UserName}/image.png misc/image.png

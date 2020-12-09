@@ -17,7 +17,10 @@ namespace hss.Sqlite.Migrations
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false),
                     ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -31,7 +34,10 @@ namespace hss.Sqlite.Migrations
                     PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false),
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
@@ -116,11 +122,13 @@ namespace hss.Sqlite.Migrations
                 {
                     FromKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     ToKey = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Key = table.Column<Guid>(type: "TEXT", nullable: false)
+                    Local = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KnownSystemModel", x => new {x.FromKey, x.ToKey});
+                    table.PrimaryKey("PK_KnownSystemModel", x => new { x.FromKey, x.ToKey });
                     table.ForeignKey(
                         name: "FK_KnownSystemModel_SystemModel_FromKey",
                         column: x => x.FromKey,
@@ -133,6 +141,12 @@ namespace hss.Sqlite.Migrations
                         principalTable: "SystemModel",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_KnownSystemModel_WorldModel_WorldKey",
+                        column: x => x.WorldKey,
+                        principalTable: "WorldModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,6 +265,11 @@ namespace hss.Sqlite.Migrations
                 name: "IX_KnownSystemModel_ToKey",
                 table: "KnownSystemModel",
                 column: "ToKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_KnownSystemModel_WorldKey",
+                table: "KnownSystemModel",
+                column: "WorldKey");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LoginModel_SystemKey",

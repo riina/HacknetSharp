@@ -82,8 +82,8 @@ namespace HacknetSharp.Server.Templates
                 for (int i = 0; i < systems.Count; i++)
                 for (int j = i + 1; j < systems.Count; j++)
                 {
-                    spawn.Connection(systems[i], systems[j]);
-                    spawn.Connection(systems[j], systems[i]);
+                    spawn.Connection(systems[i], systems[j], true);
+                    spawn.Connection(systems[j], systems[i], true);
                 }
             }
 
@@ -113,7 +113,7 @@ namespace HacknetSharp.Server.Templates
                 foreach (var (srcAddr, networkLinks) in networkLinkDict)
                 {
                     var baseSystem = networkDict[srcAddr];
-                    foreach (var linked in networkLinks) spawn.Connection(baseSystem, networkDict[linked]);
+                    foreach (var linked in networkLinks) spawn.Connection(baseSystem, networkDict[linked], true);
                 }
             }
         }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Security;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
@@ -166,8 +168,7 @@ namespace hss
         }
 
         public ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel,
-            SystemModel systemModel,
-            LoginModel loginModel, string line)
+            SystemModel systemModel, LoginModel loginModel, string line)
         {
             if (personModel.ShellChain.Count == 0)
                 return null;
@@ -205,12 +206,13 @@ namespace hss
             string exe = $"/bin/{programContext.Argv[0]}";
             if (!systemModel.FileExists(exe, true)) return null;
             var fse = systemModel.GetFileSystemEntry(exe);
-            if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !Server.Programs.TryGetValue(
+            if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !TryGetProgramWithHargs(
                 systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                 out var res))
                 return null;
 
             {
+                programContext.HArgv = res.Item3;
                 var proc = new ProgramProcess(programContext, res.Item1);
                 _processes.Add(proc);
                 return proc;
@@ -298,9 +300,10 @@ namespace hss
                     {
                         var fse = systemModel.GetFileSystemEntry(exe);
                         if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
-                            Server.Programs.TryGetValue(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                            TryGetProgramWithHargs(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                                 out var res))
                         {
+                            programContext.HArgv = res.Item3;
                             var process = new ProgramProcess(programContext, res.Item1);
                             _processes.Add(process);
                             systemModel.Processes.Add(pid.Value, process);
@@ -326,6 +329,20 @@ namespace hss
                 programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
                 programContext.User.FlushSafeAsync();
             }
+        }
+
+        private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute, string[]) result)
+        {
+            var line = Arguments.SplitCommandLine(command);
+            if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
+            {
+                result = default;
+                return false;
+            }
+
+            Server.Programs.TryGetValue(line[0], out var res);
+            result = (res.Item1, res.Item2, line[1..]);
+            return true;
         }
 
         public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>

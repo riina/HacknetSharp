@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
-using hss;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 
 namespace HacknetSharp.Test
@@ -61,7 +59,7 @@ namespace HacknetSharp.Test
                         {
                             Name = "{Owner.UserName}_HOMEBASE",
                             OsName = "EncomOS",
-                            Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
+                            Users = new Dictionary<string, string> {{"daphne", "legacy"}, {"samwise", "genshin"}},
                             Filesystem = new Dictionary<string, List<string>>
                             {
                                 {
@@ -216,6 +214,15 @@ namespace HacknetSharp.Test
             dict["blergh1"] = "shots";
             dict["blergh2"] = "fired";
             Assert.AreEqual("shots fired", "{blergh1} {blergh2}".ApplyReplacements(dict));
+        }
+
+        [Test]
+        public void Test_Filter()
+        {
+            var filter = PathFilter.GenerateFilter(new []{"*.69", "*.78.*"}, true);
+            Assert.IsTrue(filter.Test("69.69.69.69"));
+            Assert.IsTrue(filter.Test("12.34.78.99"));
+            Assert.IsFalse(filter.Test("12.34.77.99"));
         }
     }
 }

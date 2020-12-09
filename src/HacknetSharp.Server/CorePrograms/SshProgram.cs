@@ -61,6 +61,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             context.World.StartShell(user, context.Person, system, login, "");
+            context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
             {
                 var chainLine = Arguments.SplitCommandLine(system.ConnectCommandLine);

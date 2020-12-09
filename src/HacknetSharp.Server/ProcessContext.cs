@@ -11,5 +11,6 @@ namespace HacknetSharp.Server
         public PersonModel Person { get; set; } = null!;
         public LoginModel Login { get; set; } = null!;
         public string[] Argv { get; set; } = null!;
+        public string[] HArgv { get; set; } = null!;
     }
 }

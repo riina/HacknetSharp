@@ -91,9 +91,17 @@ namespace HacknetSharp.Server
             return system;
         }
 
-        public KnownSystemModel Connection(SystemModel from, SystemModel to)
+        public KnownSystemModel Connection(SystemModel from, SystemModel to, bool local)
         {
-            var c = new KnownSystemModel {From = from, FromKey = from.Key, To = to, ToKey = to.Key};
+            var c = new KnownSystemModel
+            {
+                From = from,
+                FromKey = from.Key,
+                To = to,
+                ToKey = to.Key,
+                World = _world,
+                Local = local
+            };
             from.KnownSystems.Add(c);
             to.KnowingSystems.Add(c);
             _database.Add(c);

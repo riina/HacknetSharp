@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
-    public class KnownSystemModel : Model<Guid>
+    public class KnownSystemModel : WorldMember<Guid>
     {
         public Guid FromKey { get; set; }
         public Guid ToKey { get; set; }
 
         public virtual SystemModel From { get; set; } = null!;
         public virtual SystemModel To { get; set; } = null!;
+        public bool Local { get; set; }
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

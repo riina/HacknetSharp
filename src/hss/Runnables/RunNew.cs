@@ -43,7 +43,7 @@ namespace hss.Runnables
                                 {
                                     Name = "{Owner.UserName}_HOMEBASE",
                                     OsName = "EncomOS",
-                                    Users = new List<string>(new[] {"daphne:legacy", "samwise:genshin"}),
+                                    Users = new Dictionary<string, string> {{"daphne", "legacy"}, {"samwise", "genshin"}},
                                     Filesystem = new Dictionary<string, List<string>>
                                     {
                                         {

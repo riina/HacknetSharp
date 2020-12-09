@@ -11,10 +11,10 @@ namespace HacknetSharp.Server.Templates
         public string? OsName { get; set; }
         public string? AddressRange { get; set; }
         public string? ConnectCommandLine { get; set; }
-        public List<string>? Users { get; set; }
+        public Dictionary<string, string>? Users { get; set; }
         public Dictionary<string, List<string>>? Filesystem { get; set; }
 
-        private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+):([\S\s]+)(\+)?");
+        private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+)(\+)?");
         private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
         public virtual void ApplyTemplate(WorldSpawn spawn, SystemModel model, PersonModel owner, byte[] hash,
@@ -34,14 +34,14 @@ namespace HacknetSharp.Server.Templates
                 {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}
             };
             if (Users != null)
-                foreach (var user in Users)
+                foreach (var userKvp in Users)
                 {
-                    var match = _userRegex.Match(user);
-                    if (!match.Success) throw new Exception($"Failed to parse user:pass for {user}");
-                    var (hashSub, saltSub) = ServerUtil.HashPassword(match.Groups[2].Value);
+                    var match = _userRegex.Match(userKvp.Key);
+                    if (!match.Success) throw new Exception($"Failed to parse user for {userKvp.Key}");
+                    var (hashSub, saltSub) = ServerUtil.HashPassword(userKvp.Value);
                     string uname = match.Groups[1].Value;
                     unameToLoginDict.Add(uname, spawn.Login(model, uname.ToLowerInvariant(), hashSub,
-                        saltSub, match.Groups[3].Success));
+                        saltSub, match.Groups[2].Success));
                 }
 
             if (Filesystem != null)

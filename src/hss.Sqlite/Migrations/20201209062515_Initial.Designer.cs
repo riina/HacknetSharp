@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
-    [Migration("20201209045231_Initial")]
+    [Migration("20201209062515_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,9 +81,17 @@ namespace hss.Sqlite.Migrations
                     b.Property<Guid>("Key")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Local")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("WorldKey")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("FromKey", "ToKey");
 
                     b.HasIndex("ToKey");
+
+                    b.HasIndex("WorldKey");
 
                     b.ToTable("KnownSystemModel");
                 });
@@ -339,9 +347,15 @@ namespace hss.Sqlite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HacknetSharp.Server.Models.WorldModel", "World")
+                        .WithMany()
+                        .HasForeignKey("WorldKey");
+
                     b.Navigation("From");
 
                     b.Navigation("To");
+
+                    b.Navigation("World");
                 });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.LoginModel", b =>
