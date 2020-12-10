@@ -8,6 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace HacknetSharp.Server
@@ -164,6 +165,57 @@ namespace HacknetSharp.Server
                 if (r < (s += kvp.Value))
                     return kvp.Key;
             throw new Exception();
+        }
+
+        public static ProgramContext InitProgramContext(IWorld world, Guid operationId, IPersonContext user,
+            PersonModel person, LoginModel login, string line,
+            ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
+        {
+            return new ProgramContext
+            {
+                World = world,
+                Person = person,
+                User = user,
+                OperationId = operationId,
+                Argv = Arguments.SplitCommandLine(line),
+                Type = invocationType,
+                ConWidth = conWidth,
+                System = login.System,
+                Login = login
+            };
+        }
+
+        public static ProgramContext InitProgramContext(IWorld world, Guid operationId, IPersonContext user,
+            PersonModel person, LoginModel login, string[] line,
+            ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
+        {
+            return new ProgramContext
+            {
+                World = world,
+                Person = person,
+                User = user,
+                OperationId = operationId,
+                Argv = line,
+                Type = invocationType,
+                ConWidth = conWidth,
+                System = login.System,
+                Login = login
+            };
+        }
+
+        public static ProgramContext InitTentativeProgramContext(IWorld world, Guid operationId, IPersonContext user,
+            PersonModel person, string[] line,ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
+        {
+            return new ProgramContext
+            {
+                World = world,
+                Person = person,
+                User = user,
+                OperationId = operationId,
+                Argv = line,
+                Type = invocationType,
+                ConWidth = conWidth
+            };
         }
     }
 }

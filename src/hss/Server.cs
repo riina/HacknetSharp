@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -261,18 +262,11 @@ namespace hss
 
                 var person = context.GetPerson(world);
 
-                _inputQueue.Enqueue(new ProgramContext
-                {
-                    World = world,
-                    Person = person,
-                    User = context,
-                    OperationId = operationId,
-                    Argv = Array.Empty<string>(),
-                    Type = person.StartedUp
+                _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context, person,
+                    Array.Empty<string>(),
+                    invocationType: person.StartedUp
                         ? ProgramContext.InvocationType.Connect
-                        : ProgramContext.InvocationType.StartUp,
-                    ConWidth = conWidth
-                });
+                        : ProgramContext.InvocationType.StartUp, conWidth: conWidth));
             }
             finally
             {
@@ -292,16 +286,8 @@ namespace hss
                     DirtyModel(user);
                 }
 
-                _inputQueue.Enqueue(new ProgramContext
-                {
-                    World = world,
-                    Person = context.GetPerson(world),
-                    User = context,
-                    OperationId = operationId,
-                    Argv = line,
-                    Type = ProgramContext.InvocationType.Standard,
-                    ConWidth = conWidth
-                });
+                _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context,
+                    context.GetPerson(world), line, conWidth: conWidth));
             }
             finally
             {
@@ -342,6 +328,8 @@ namespace hss
                     ref _state);
             }
         }
+
+        public bool HasConnection(string userName) => _connections.Any(c => c.Value.UserName == userName);
 
         internal void SelfRemoveConnection(Guid id) => _connections.TryRemove(id, out _);
 

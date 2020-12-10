@@ -59,8 +59,10 @@ Templates drive the main content. Use `hss new` to create
 templates (`-e` to get an example instead of a bare file, `-n <name>`
 to specify the filename).
 
-Templates go in folders under the server directory's `templates/`
+Templates go in folders under the server directory's `content/`
 folder.
+
+See the [samples](../sample/) folder for template examples.
 
 ### System templates
 
@@ -84,6 +86,10 @@ folder.
   - file: Content file, arg[0] determines file path. Not yet 
   implemented.
   - blob: Blob file, arg[0] determines file path. Not yet implemented.
+* Vulnerabilities(`List<Vulnerability>?`): Base vulnerabilities.
+  - EntryPoint(`string`): Entry point for vulnerability (port).
+  - Protocol(`string`): Protocol (e.g. ssh, ftp).
+  - Cve(`string?`): Real-world CVE for fun.
 
 Default replacements:
 * `Owner.UserName` - system owner's username
@@ -93,18 +99,21 @@ Default replacements:
 ### Person templates
 
 `hss new person -n <templateName>`
-
-* Usernames(`List<string>`): possible usernames to be selected
-* Passwords(`List<string>`): possible passwords to be selected
+* Username(`string?`): fixed username to use
+* Password(`string?`): fixed password to use
+* EmailProviders(`string?`): fixed email providers to use
+* PrimaryTemplate(`string?`): fixed primary system template to use
+* Usernames(`Dictionary<string,float>?`): possible usernames to be selected (weighted)
+* Passwords(`Dictionary<string,float>?`): possible passwords to be selected (weighted)
 * AddressRange(`string?`): CIDR range string for address pool
-* EmailProviders(`List<string>`): possible email providers to be 
-selected
-* PrimarySystemTemplates(`List<string>`): possible primary
-  system templates to be selected
+* EmailProviders(`Dictionary<string,float>?`): possible email providers to be 
+selected (weighted)
+* PrimaryTemplates(`Dictionary<string,float>?`): possible primary
+  system templates to be selected (weighted)
 * FleetMin(`int?`): Minimum number of additional systems
 * FleetMax(`int?`): Maximum number of additional systems
-* FleetSystemTemplates(`List<string>?`): possible fleet system
-  templates to be selected
+* FleetTemplates(`Dictionary<string,float>?`): possible fleet system
+  templates to be selected (weighted)
 * Network(`List<NetworkEntry>?`): Fixed-system network to generate
   - Template(`string`): System template
   - Address(`string`): Address (combined with host network using
@@ -141,14 +150,14 @@ The program / EF Core migrations work with a database, and require a
 few environment variables or server.yaml properties to be configured.
 
 * PostgreSQL
-  - hndb_kind: must be set to "postgres"
-  - hndb_host: hostname for PostgreSQL server.
-  - hndb_name: name of PostgreSQL database to use.
-  - hndb_user: username for PostgreSQL server.
+  - hndb_kind/DatabaseKind: must be set to "postgres"
+  - hndb_host/PostgresHost: hostname for PostgreSQL server.
+  - hndb_name/PostgresDatabase: name of PostgreSQL database to use.
+  - hndb_user/PostgresUser: username for PostgreSQL server.
   - hndb_pass: password for PostgreSQL server.
 * SQLite
-  - hndb_kind: must be set to "sqlite"
-  - hndb_file: Path to SQL file to use.
+  - hndb_kind/DatabaseKind: must be set to "sqlite"
+  - hndb_file/SqliteFile: Path to SQL file to use.
 
 ## Creating initial database / migrating
 
@@ -191,7 +200,7 @@ make sense based on their description.
 
 If for whatever reason you wanted to create additional programs,
 reference the `HacknetSharp.Server` project and write your
-programs like the `hss.Core.CorePrograms` programs.
+programs like the `HacknetSharp.Server.CorePrograms` programs.
 
 Your assembly (plus any dependencies not included with
 `HacknetSharp.Server`) should be placed under

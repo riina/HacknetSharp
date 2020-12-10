@@ -20,6 +20,7 @@ namespace hss
     {
         public Guid Id { get; }
         public ConcurrentDictionary<Guid, InputResponseEvent> Inputs { get; }
+        public string? UserName => _user?.Key;
 
         private UserModel? _user;
         private readonly Server _server;
@@ -83,6 +84,23 @@ namespace hss
                             {
                                 WriteEvent(new LoginFailEvent {Operation = op});
                                 break;
+                            }
+
+                            if (_server.HasConnection(login.User))
+                            {
+                                if (login.RegistrationToken != null)
+                                {
+                                    WriteEvent(new LoginFailEvent {Operation = op});
+                                    WriteEvent(new ServerDisconnectEvent {Reason = "Registration failed."});
+                                }
+                                else
+                                {
+                                    WriteEvent(new LoginFailEvent {Operation = op});
+                                    WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
+                                }
+
+                                await FlushAsync(cancellationToken).Caf();
+                                return;
                             }
 
                             if (login.RegistrationToken != null)

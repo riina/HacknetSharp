@@ -100,7 +100,13 @@ namespace hss
             var processes = context.System.Processes;
             uint pid = context.Pid;
             bool removed = processes.Remove(pid);
-            context.Person.ShellChain.RemoveAll(p => p == process);
+            if (process is ShellProcess shProc)
+            {
+                var chain = context.Person.ShellChain;
+                int shellIdx = chain.IndexOf(shProc);
+                if (shellIdx != -1)
+                    chain.RemoveRange(shellIdx, chain.Count - shellIdx);
+            }
 
             process.Complete(completionKind);
             process.Completed = completionKind;
@@ -108,18 +114,10 @@ namespace hss
             if (context is ProgramContext pc)
             {
                 var chainLine = pc.ChainLine;
-                if (chainLine != null)
+                if (chainLine != null && completionKind == Process.CompletionKind.Normal)
                 {
-                    var genPc = new ProgramContext
-                    {
-                        World = pc.World,
-                        Person = pc.Person,
-                        User = pc.User,
-                        OperationId = pc.OperationId,
-                        Argv = chainLine,
-                        Type = ProgramContext.InvocationType.Standard,
-                        ConWidth = pc.ConWidth
-                    };
+                    var genPc = ServerUtil.InitTentativeProgramContext(pc.World, pc.OperationId, pc.User, pc.Person,
+                        chainLine, conWidth: pc.ConWidth);
                     ExecuteCommand(genPc);
                 }
                 else
@@ -143,18 +141,8 @@ namespace hss
         public void StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
             LoginModel loginModel, string line)
         {
-            var programContext = new ProgramContext
-            {
-                World = this,
-                Person = personModel,
-                User = personContext,
-                OperationId = Guid.Empty,
-                Argv = Arguments.SplitCommandLine(line),
-                Type = ProgramContext.InvocationType.Standard,
-                ConWidth = -1,
-                System = systemModel,
-                Login = loginModel
-            };
+            var programContext =
+                ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, line);
             var pid = systemModel.GetAvailablePid();
             if (pid == null) return;
             programContext.Pid = pid.Value;
@@ -178,20 +166,10 @@ namespace hss
             if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0]) ||
                 !(pid = systemModel.GetAvailablePid()).HasValue) return null;
 
-            var programContext = new ProgramContext
-            {
-                World = this,
-                Person = personModel,
-                User = personContext,
-                OperationId = Guid.Empty,
-                Argv = argv,
-                Type = ProgramContext.InvocationType.Standard,
-                ConWidth = -1,
-                System = systemModel,
-                Login = loginModel,
-                ParentPid = shell.ProgramContext.Pid,
-                Pid = pid.Value
-            };
+            var programContext =
+                ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
+            programContext.ParentPid = shell.ProgramContext.Pid;
+            programContext.Pid = pid.Value;
 
             if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
             {

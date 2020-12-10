@@ -34,4 +34,5 @@ Filesystem:
   - prog:/bin/mkdir core:mkdir
   - prog:/bin/help core:help
   - prog:/bin/probe core:probe
+  - prog:/bin/kill core:kill
   - text:/home/{UserName}/readme.txt "my name is alex and I have hard on for sabina lol"
