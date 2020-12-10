@@ -11,6 +11,7 @@ namespace HacknetSharp.Server
         WorldSpawn Spawn { get; }
         IServerDatabase Database { get; }
         SystemTemplate PlayerSystemTemplate { get; }
+        IEnumerable<(Program, ProgramInfoAttribute)> IntrinsicPrograms { get; }
         double Time { get; }
         double PreviousTime { get; }
         void CompleteRecurse(Process process, Process.CompletionKind completionKind);

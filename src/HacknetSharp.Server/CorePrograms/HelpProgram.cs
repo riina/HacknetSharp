@@ -6,7 +6,7 @@ namespace HacknetSharp.Server.CorePrograms
 {
     [ProgramInfo("core:help", "help", "show command listing",
         "show help information for all commands\nor details on specific command",
-        "[command]", false)]
+        "[command]", true)]
     public class HelpProgram : Program
     {
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
@@ -25,6 +25,10 @@ namespace HacknetSharp.Server.CorePrograms
                 var sb = new StringBuilder();
                 if (argv.Length == 1)
                 {
+                    sb.Append("\n««  Intrinsic commands  »»\n\n");
+                    foreach (var intrinsic in world.IntrinsicPrograms)
+                        sb.Append($"{intrinsic.Item2.Name,-12} {intrinsic.Item2.Description}\n");
+                    sb.Append("\n««  Programs  »»\n\n");
                     foreach (var program in system.Files.Where(f => f.Path == "/bin" && !f.Hidden && f.CanRead(login))
                         .OrderBy(f => f.Name))
                     {
@@ -39,14 +43,14 @@ namespace HacknetSharp.Server.CorePrograms
                     var program = system.Files.FirstOrDefault(f => f.Path == "/bin" && f.Name == name && !f.Hidden);
                     if (program == null)
                     {
-                        user.WriteEventSafe(Output("/bin: No such file or directory\n"));
+                        user.WriteEventSafe(Output("Unknown program\n"));
                         user.FlushSafeAsync();
                         yield break;
                     }
 
                     if (!program.CanRead(login))
                     {
-                        user.WriteEventSafe(Output("/bin: Permission denied\n"));
+                        user.WriteEventSafe(Output("Permission denied\n"));
                         user.FlushSafeAsync();
                         yield break;
                     }

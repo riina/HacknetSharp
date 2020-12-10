@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server
@@ -7,7 +9,20 @@ namespace HacknetSharp.Server
         public ProgramContext ProgramContext { get; }
         public string WorkingDirectory { get; set; } = "/";
         public bool Close { get; set; }
+        public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
         private bool _cleaned;
+
+        public IEnumerable<string> AllVariables
+        {
+            get
+            {
+                var en = (IEnumerable<string>)Variables.Values;
+                /*int shIdx = ProgramContext.Person.ShellChain.IndexOf(ProgramContext.Shell);
+                foreach (var sh in ProgramContext.Person.ShellChain.Take(shIdx).Reverse())
+                    en = en.Concat(sh.Variables.Values);*/
+                return en;
+            }
+        }
 
         public ShellProcess(ProgramContext context) : base(context)
         {
@@ -22,6 +37,17 @@ namespace HacknetSharp.Server
                 return true;
             }
 
+            return false;
+        }
+
+        public bool TryGetVariable(string key, [NotNullWhen(true)] out string? value)
+        {
+            if (Variables.TryGetValue(key, out value))
+                return true;
+            /*int shIdx = ProgramContext.Person.ShellChain.IndexOf(ProgramContext.Shell);
+            foreach (var sh in ProgramContext.Person.ShellChain.Take(shIdx).Reverse())
+                if (sh.Variables.TryGetValue(key, out value))
+                    return true;*/
             return false;
         }
 

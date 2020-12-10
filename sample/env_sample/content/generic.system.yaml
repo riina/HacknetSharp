@@ -30,7 +30,6 @@ Filesystem:
   - prog:/bin/mv core:mv
   - prog:/bin/rm core:rm
   - prog:/bin/mkdir core:mkdir
-  - prog:/bin/help core:help
   - prog:/bin/probe core:probe
   - prog:/bin/kill core:kill
   - text:"/home/{UserName}/readme.txt" "Are you ready to comply?"

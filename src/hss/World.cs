@@ -232,6 +232,8 @@ namespace hss
             return null;
         }
 
+        public IEnumerable<(Program, ProgramInfoAttribute)> IntrinsicPrograms => Server.IntrinsicPrograms.Values;
+
         public void ExecuteCommand(ProgramContext programContext)
         {
             var personModel = programContext.Person;
@@ -269,7 +271,9 @@ namespace hss
                 programContext.Pid = pid.Value;
                 if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
                 {
-                    _processes.Add(new ProgramProcess(programContext, intrinsicRes.Item1));
+                    var process = new ProgramProcess(programContext, intrinsicRes.Item1);
+                    _processes.Add(process);
+                    systemModel.Processes.Add(pid.Value, process);
                     return;
                 }
 
@@ -328,9 +332,9 @@ namespace hss
                 return false;
             }
 
-            Server.Programs.TryGetValue(line[0], out var res);
-            result = (res.Item1, res.Item2, line[1..]);
-            return true;
+            bool success = Server.Programs.TryGetValue(line[0], out var res);
+            result = (res.Item1, res.Item2, line);
+            return success;
         }
 
         public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
