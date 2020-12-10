@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
-using HacknetSharp.Server.Templates;
 using NUnit.Framework;
 
 namespace HacknetSharp.Test
@@ -47,143 +43,6 @@ namespace HacknetSharp.Test
             Assert.AreEqual(("/", "shadow"), SystemModel.GetDirectoryAndName("/shadow"));
             Assert.AreEqual(("/shadow", "absorber"),
                 SystemModel.GetDirectoryAndName("/shadow/absorber"));
-        }
-
-        private readonly Dictionary<string, object>
-            _templates =
-                new Dictionary<string, object>
-                {
-                    {
-                        "system",
-                        new SystemTemplate
-                        {
-                            Name = "{Owner.UserName}_HOMEBASE",
-                            OsName = "EncomOS",
-                            Users = new Dictionary<string, string> {{"daphne", "legacy"}, {"samwise", "genshin"}},
-                            Filesystem = new Dictionary<string, List<string>>
-                            {
-                                {
-                                    "{Owner.UserName}",
-                                    new List<string>(new[]
-                                    {
-                                        "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
-                                        "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
-                                        "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
-                                        "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
-                                        "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
-                                        "prog:/bin/cd core:cd", "prog:/bin/ls core:ls", "prog:/bin/echo core:echo"
-                                    })
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "person", new PersonTemplate
-                        {
-                            Usernames = new Dictionary<string, float> {{"locke", 1}, {"bacon", 1}, {"hayleyk653", 1}},
-                            Passwords = new Dictionary<string, float>
-                            {
-                                {"misterchef", 1}, {"baconbacon", 1}, {"isucklol", 1}
-                            },
-                            EmailProviders =
-                                new Dictionary<string, float>
-                                {
-                                    {"hentaimail.net", 1}, {"thisisnotaproblem.org", 1}, {"fbiopenup.gov", 1}
-                                },
-                            PrimaryTemplates = new Dictionary<string, float> {{"systemTemplate2", 1}}
-                        }
-                    },
-                    {
-                        "world",
-                        new WorldTemplate
-                        {
-                            Label = "Liyue kinda sux",
-                            PlayerSystemTemplate = "playerTemplate",
-                            StartupCommandLine = "echo \"Starting shell...\"",
-                            PlayerAddressRange = Constants.DefaultAddressRange,
-                            Generators = new List<WorldTemplate.Generator>
-                            {
-                                new WorldTemplate.Generator {Count = 3, PersonTemplate = "personTemplate2"}
-                            }
-                        }
-                    }
-                };
-
-        private class DummyServerDatabase : IServerDatabase
-        {
-            public Task<TResult> GetAsync<TKey, TResult>(TKey key)
-                where TKey : IEquatable<TKey> where TResult : Model<TKey> => throw new NotSupportedException();
-
-            public Task<List<TResult>> GetBulkAsync<TKey, TResult>(ICollection<TKey> keys)
-                where TKey : IEquatable<TKey> where TResult : Model<TKey> => throw new NotSupportedException();
-
-            public void Add<TEntry>(TEntry entity) where TEntry : notnull
-            {
-            }
-
-            public void AddBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
-            {
-            }
-
-            public void Edit<TEntry>(TEntry entity) where TEntry : notnull
-            {
-            }
-
-            public void EditBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
-            {
-            }
-
-            public void Delete<TEntry>(TEntry entity) where TEntry : notnull
-            {
-            }
-
-            public void DeleteBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
-            {
-            }
-
-            public Task SyncAsync() => Task.CompletedTask;
-        }
-
-        [Test]
-        public void Test_Spawning()
-        {
-            var templates = new TemplateGroup();
-            // Borrow sample template
-            var system1Template = (SystemTemplate)_templates["system"];
-            templates.SystemTemplates.Add("systemTemplate1", system1Template);
-            templates.SystemTemplates.Add("systemTemplate2", system1Template);
-
-            var personTemplate2 = (PersonTemplate)_templates["person"];
-            templates.PersonTemplates.Add("personTemplate2", personTemplate2);
-
-            var worldTemplate = (WorldTemplate)_templates["world"];
-            //templates.WorldTemplates.Add("worldTemplate", worldTemplate);
-
-
-            IServerDatabase database = new DummyServerDatabase();
-            var iSpawn = new Spawn(database);
-            var worldModel = iSpawn.World("za warudo", templates, worldTemplate);
-            var spawn = new WorldSpawn(database, worldModel);
-
-
-            var person1Model = spawn.Person("Jacob Keyes", "jacobkeyes");
-            (byte[] person1Hash, byte[] person1Salt) = ServerUtil.HashPassword("miranda");
-
-            var system1Model = spawn.System(system1Template, person1Model, person1Hash, person1Salt,
-                new IPAddressRange(Constants.DefaultAddressRange));
-
-            // Initially have 3 systems from generator, add custom system
-
-            Assert.AreEqual(1 + 3, worldModel.Systems.Count);
-
-            Assert.AreEqual("jacobkeyes_HOMEBASE", system1Model.Name);
-            Assert.AreEqual(1,
-                system1Model.Logins.Count(l => l.User == "jacobkeyes" && l.System == system1Model &&
-                                               l.World == worldModel &&
-                                               l.Hash == person1Hash && l.Salt == person1Salt));
-            Assert.AreEqual(1,
-                system1Model.Logins.Count(l => l.User == "samwise" && l.System == system1Model &&
-                                               l.World == worldModel));
         }
 
 
@@ -229,6 +88,12 @@ namespace HacknetSharp.Test
             Assert.IsTrue(filter.Test("69.69.69.69"));
             Assert.IsTrue(filter.Test("12.34.78.99"));
             Assert.IsFalse(filter.Test("12.34.77.99"));
+        }
+
+        [Test]
+        public void Test_Args()
+        {
+            Assert.AreEqual(new[]{"li\"yue", "\"ki nda\" ", "\"sucks", "bro\"", "\"lm\"ao\""}, Arguments.SplitCommandLine("li\\\"yue \"\\\"ki nda\\\" \" \\\"sucks bro\\\" \\\"lm\\\"ao\\\""));
         }
     }
 }
