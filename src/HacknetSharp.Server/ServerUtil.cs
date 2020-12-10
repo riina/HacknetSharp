@@ -147,6 +147,11 @@ namespace HacknetSharp.Server
             [NotNullWhen(true)] out string? host, out ushort port, [NotNullWhen(false)] out string? error) =>
             Util.TryParseConString(conString, defaultPort, out name!, out host!, out port, out error!);
 
+        public static bool TryParseScpConString(string conString, [NotNullWhen(true)] out string? name,
+            [NotNullWhen(true)] out string? host, [NotNullWhen(true)] out string? path,
+            [NotNullWhen(false)] out string? error) =>
+            Util.TryParseScpConString(conString, out name!, out host!, out path!, out error!);
+
         public static bool ValidatePassword(string pass, byte[] hash, byte[] salt)
         {
             var (genHash, _) = HashPassword(pass, salt: salt);
@@ -204,7 +209,8 @@ namespace HacknetSharp.Server
         }
 
         public static ProgramContext InitTentativeProgramContext(IWorld world, Guid operationId, IPersonContext user,
-            PersonModel person, string[] line,ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
+            PersonModel person, string[] line,
+            ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
         {
             return new ProgramContext
             {

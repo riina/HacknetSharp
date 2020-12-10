@@ -30,4 +30,5 @@ Filesystem:
   - prog:/bin/mkdir core:mkdir
   - prog:/bin/probe core:probe
   - prog:/bin/kill core:kill
+  - prog:/bin/scp core:scp
   - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

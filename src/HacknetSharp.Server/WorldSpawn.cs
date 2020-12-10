@@ -269,6 +269,9 @@ namespace HacknetSharp.Server
         public FileModel Duplicate(SystemModel system, LoginModel owner, string name, string path, FileModel existing,
             bool hidden = false)
         {
+            // does not support duplicating file tree. "yet" but also probably won't
+            if (existing.Kind == FileModel.FileKind.Folder)
+                throw new IOException($"Cannot copy folder {existing.FullPath}");
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
                 throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
             var model = new FileModel

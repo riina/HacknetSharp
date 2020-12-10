@@ -291,7 +291,7 @@ namespace HacknetSharp
         }
 
         private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
-        private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S]+)");
+        private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S\s]+)");
 
         public static bool TryParseConString(string conString, ushort defaultPort, out string? name, out string? host,
             out ushort port, out string? error)
@@ -319,6 +319,36 @@ namespace HacknetSharp
             }
 
             host = serverPortMatch.Groups[1].Value;
+
+            return true;
+        }
+
+        public static bool TryParseScpConString(string conString, out string? name, out string? host, out string? path, out string? error)
+        {
+            name = null;
+            host = null;
+            path = null;
+            error = null;
+            var conStringMatch = _conStringRegex.Match(conString);
+            if (!conStringMatch.Success)
+            {
+                error = "Invalid conString, must be user@server[:port]";
+                return false;
+            }
+
+            name = conStringMatch.Groups[1].Value;
+            host = conStringMatch.Groups[2].Value;
+            if (!host.Contains(":")) return true;
+
+            var serverPortMatch = _serverPortRegex.Match(host);
+            if (!serverPortMatch.Success)
+            {
+                error = "Invalid host/port, must be user@server[:port]";
+                return false;
+            }
+
+            host = serverPortMatch.Groups[1].Value;
+            path = serverPortMatch.Groups[2].Value;
 
             return true;
         }

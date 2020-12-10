@@ -53,7 +53,7 @@ namespace HacknetSharp.Server.CorePrograms
                                 system.Files.FirstOrDefault(f => f.Hidden == false && f.FullPath == target);
                             string lclTarget;
                             string lclName;
-                            if (argv.Length != 3 || targetExisting != null
+                            if (target == "/" || argv.Length != 3 || targetExisting != null
                                 && targetExisting.Kind == FileModel.FileKind.Folder)
                             {
                                 lclTarget = target;

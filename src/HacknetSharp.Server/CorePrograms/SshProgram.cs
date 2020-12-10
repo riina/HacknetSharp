@@ -22,7 +22,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!ServerUtil.TryParseConString(argv[1], 22, out string? name, out string? host, out ushort port,
+            if (!ServerUtil.TryParseConString(argv[1], 22, out string? name, out string? host, out _,
                 out string? error))
             {
                 user.WriteEventSafe(Output($"ssh: {error}\n"));
