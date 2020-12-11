@@ -61,34 +61,6 @@ namespace HacknetSharp.Server.Templates
                                            Constants.DefaultAddressRange);
             var person = spawn.Person(username, username);
             var (hash, salt) = ServerUtil.HashPassword(password);
-            SystemModel system = PrimaryAddress != null
-                ? spawn.System(systemTemplate, person, hash, salt,
-                    new IPAddressRange(PrimaryAddress).OnHost(range))
-                : spawn.System(systemTemplate, person, hash, salt, range);
-            var systems = new List<SystemModel> {system};
-            person.DefaultSystem = system.Key;
-            if (FleetTemplates != null)
-            {
-                int count = Random.Next(FleetMin, FleetMax + 1);
-                bool fixedRange = addressRange != null || AddressRange != null;
-                for (int i = 0; i < count; i++)
-                {
-                    string fleetSystemTemplateName = FleetTemplates.SelectWeighted();
-                    if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
-                        throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
-                    systems.Add(spawn.System(fleetSystemTemplate, person, hash, salt,
-                        fixedRange
-                            ? range
-                            : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange)));
-                }
-
-                for (int i = 0; i < systems.Count; i++)
-                for (int j = i + 1; j < systems.Count; j++)
-                {
-                    spawn.Connection(systems[i], systems[j], true);
-                    spawn.Connection(systems[j], systems[i], true);
-                }
-            }
 
             if (Network != null)
             {
@@ -117,6 +89,36 @@ namespace HacknetSharp.Server.Templates
                 {
                     var baseSystem = networkDict[srcAddr];
                     foreach (var linked in networkLinks) spawn.Connection(baseSystem, networkDict[linked], true);
+                }
+            }
+
+            SystemModel system = PrimaryAddress != null
+                ? spawn.System(systemTemplate, person, hash, salt,
+                    new IPAddressRange(PrimaryAddress).OnHost(range))
+                : spawn.System(systemTemplate, person, hash, salt, range);
+            person.DefaultSystem = system.Key;
+
+            if (FleetTemplates != null)
+            {
+                var systems = new List<SystemModel> {system};
+                int count = Random.Next(FleetMin, FleetMax + 1);
+                bool fixedRange = addressRange != null || AddressRange != null;
+                for (int i = 0; i < count; i++)
+                {
+                    string fleetSystemTemplateName = FleetTemplates.SelectWeighted();
+                    if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
+                        throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
+                    systems.Add(spawn.System(fleetSystemTemplate, person, hash, salt,
+                        fixedRange
+                            ? range
+                            : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange)));
+                }
+
+                for (int i = 0; i < systems.Count; i++)
+                for (int j = i + 1; j < systems.Count; j++)
+                {
+                    spawn.Connection(systems[i], systems[j], true);
+                    spawn.Connection(systems[j], systems[i], true);
                 }
             }
         }

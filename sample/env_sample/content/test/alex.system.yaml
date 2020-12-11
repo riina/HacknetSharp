@@ -2,7 +2,7 @@ Name: "{Owner.UserName}_HOMEBASE ALEXXX"
 OsName: EncomOS
 ConnectCommandLine: echo "I am alex and I am super spy!!!"
 Vulnerabilities:
-- EntryPoint: 20
+- EntryPoint: 22
   Protocol: ssh
   Cve: CVE-2020-3200
 Filesystem:
