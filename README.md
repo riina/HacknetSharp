@@ -16,8 +16,7 @@ the standard "none." As a wise Jedi once said, "Don't try it."
 
 ## Client
 
-`hsh` is the main terminal client. It supports .NET Framework 4.7.2
-and .NET 5 ([install .NET 5 runtime here](https://dotnet.microsoft.com/download/dotnet/5.0)).
+`hsh` is the main terminal client. It supports .NET 5 ([install .NET 5 runtime here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 [Read about how to use the client here.](meta/usage-client.md)
 
