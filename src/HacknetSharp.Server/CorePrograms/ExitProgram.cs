@@ -14,7 +14,7 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var chain = context.Person.ShellChain;
-            if (chain.Count != 0) chain[^1].Close = true;
+            if (chain.Count != 0) context.World.CompleteRecurse(chain[^1], Process.CompletionKind.Normal);
         }
     }
 }
