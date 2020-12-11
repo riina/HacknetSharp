@@ -146,7 +146,7 @@ namespace hsh
                             string cmd = menuSb.ToString();
                             if (cmd.Contains('q', StringComparison.InvariantCultureIgnoreCase))
                             {
-                                bool write = cmd.Contains('w');
+                                bool write = cmd.Contains('w', StringComparison.InvariantCultureIgnoreCase);
                                 if (readOnly && write)
                                 {
                                     PrintStatusBar("Cannot write a read-only buffer", true);
