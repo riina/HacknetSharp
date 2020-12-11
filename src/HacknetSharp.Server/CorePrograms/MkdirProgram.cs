@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.CorePrograms
             var argv = context.Argv;
             if (argv.Length < 2)
             {
-                user.WriteEventSafe(Output("At least 1 operand is required by this command:\n\t<dir>... <dest>\n"));
+                user.WriteEventSafe(Output("At least 1 operand is required by this command:\n\t<dir>...\n"));
                 user.FlushSafeAsync();
                 yield break;
             }
