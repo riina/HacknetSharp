@@ -8,7 +8,7 @@ namespace HacknetSharp.Server
 {
     public interface IPersonContext : IOutboundConnection<ServerEvent>
     {
-        ConcurrentDictionary<Guid, InputResponseEvent> Inputs { get; }
+        ConcurrentDictionary<Guid, ClientResponseEvent> Responses { get; }
         PersonModel GetPerson(IWorld world);
 
         public void WriteEventSafe(ServerEvent evt);

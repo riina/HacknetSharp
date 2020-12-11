@@ -33,5 +33,6 @@ Filesystem:
   - prog:/bin/probe core:probe
   - prog:/bin/kill core:kill
   - prog:/bin/scp core:scp
+  - prog:/bin/edit core:edit
   - text:"/home/{UserName}/readme.txt" "Are you ready to comply?"
   - file:/home/{UserName}/image.png misc/image.png

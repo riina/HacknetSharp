@@ -34,8 +34,6 @@ jobs:
       run: dotnet publish hsh --framework net5.0 --configuration Release --runtime linux-x64 --self-contained false
     - name: Publish hsh net5.0 win-x64
       run: dotnet publish hsh --framework net5.0 --configuration Release --runtime win-x64 --self-contained false
-    - name: Publish hsh net472
-      run: dotnet publish hsh --framework net472 --configuration Release
 
     - name: Publish hss net5.0 osx-x64
       run: dotnet publish hss --framework net5.0 --configuration Release --runtime osx-x64 --self-contained false
@@ -56,10 +54,6 @@ jobs:
       with:
         name: hsh-net5.0-win-64
         path: src/hsh/bin/Release/net5.0/win-x64/publish/
-    - uses: actions/upload-artifact@v2
-      with:
-        name: hsh-net472
-        path: src/hsh/bin/Release/net472/publish/
 
     - uses: actions/upload-artifact@v2
       with:

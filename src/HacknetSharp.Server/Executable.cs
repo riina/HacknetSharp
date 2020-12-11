@@ -75,6 +75,21 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
+        /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+        /// </summary>
+        /// <param name="context">Context to check for messages in.</param>
+        /// <param name="readOnly">True if only read access is allowed.</param>
+        /// <param name="content">Content to edit.</param>
+        /// <returns>Yield token.</returns>
+        public static EditYieldToken Edit(IPersonContext context, bool readOnly, string content)
+        {
+            var opGuid = Guid.NewGuid();
+            context.WriteEventSafe(new EditRequestEvent {Operation = opGuid, ReadOnly = readOnly, Content = content});
+            context.FlushSafeAsync();
+            return new EditYieldToken(context, opGuid);
+        }
+
+        /// <summary>
         /// Represents a yield token that invokes a delegate only one time.
         /// </summary>
         public class ActWaitYieldToken : YieldToken
@@ -242,8 +257,50 @@ namespace HacknetSharp.Server
             public override bool Yield(IWorld world)
             {
                 if (Input != null) return true;
-                if (!Context.Inputs.TryRemove(Operation, out var input)) return false;
-                Input = input;
+                if (!Context.Responses.TryRemove(Operation, out var response)) return false;
+                Input = response as InputResponseEvent ?? new InputResponseEvent {Operation = Operation, Input = ""};
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Represents an edit-dependent yield token.
+        /// </summary>
+        public class EditYieldToken : YieldToken
+        {
+            /// <summary>
+            /// Context.
+            /// </summary>
+            public IPersonContext Context { get; }
+
+            /// <summary>
+            /// Operation ID.
+            /// </summary>
+            public Guid Operation { get; }
+
+            /// <summary>
+            /// Edit response.
+            /// </summary>
+            public EditResponseEvent? Edit { get; set; }
+
+            /// <summary>
+            /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+            /// </summary>
+            /// <param name="context">Context to check for messages in.</param>
+            /// <param name="operation">Operation ID to check for.</param>
+            /// <returns>Yield token.</returns>
+            public EditYieldToken(IPersonContext context, Guid operation)
+            {
+                Context = context;
+                Operation = operation;
+            }
+
+            public override bool Yield(IWorld world)
+            {
+                if (Edit != null) return true;
+                if (!Context.Responses.TryRemove(Operation, out var response)) return false;
+                Edit = response as EditResponseEvent ??
+                       new EditResponseEvent {Operation = Operation, Content = "", Write = false};
                 return true;
             }
         }

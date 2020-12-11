@@ -19,7 +19,7 @@ namespace hss
     public class HostConnection : IPersonContext
     {
         public Guid Id { get; }
-        public ConcurrentDictionary<Guid, InputResponseEvent> Inputs { get; }
+        public ConcurrentDictionary<Guid, ClientResponseEvent> Responses { get; }
         public string? UserName => _user?.Key;
 
         private UserModel? _user;
@@ -40,7 +40,7 @@ namespace hss
             _server = server;
             _client = client;
             _lockOutOp = new AutoResetEvent(true);
-            Inputs = new ConcurrentDictionary<Guid, InputResponseEvent>();
+            Responses = new ConcurrentDictionary<Guid, ClientResponseEvent>();
             _cancellationTokenSource = new CancellationTokenSource();
             _initializedWorlds = new HashSet<Guid>();
             _writeEventQueue = new Queue<ServerEvent>();
@@ -196,9 +196,9 @@ namespace hss
 
                             break;
                         }
-                        case InputResponseEvent response:
+                        case ClientResponseEvent response:
                         {
-                            Inputs.AddOrUpdate(response.Operation, response, (id, e) => e);
+                            Responses.AddOrUpdate(response.Operation, response, (id, e) => e);
                             break;
                         }
                     }

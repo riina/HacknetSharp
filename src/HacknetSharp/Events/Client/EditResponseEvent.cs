@@ -4,23 +4,27 @@ using Ns;
 
 namespace HacknetSharp.Events.Client
 {
-    [EventCommand(Command.CS_InputResponse)]
-    public class InputResponseEvent : ClientResponseEvent
+    [EventCommand(Command.CS_EditResponse)]
+    public class EditResponseEvent : ClientResponseEvent
     {
         public override Guid Operation { get; set; }
 
-        public string Input { get; set; } = null!;
+        public bool Write { get; set; }
+
+        public string Content { get; set; } = null!;
 
         public override void Serialize(Stream stream)
         {
             stream.WriteGuid(Operation);
-            stream.WriteUtf8String(Input);
+            stream.WriteByte(Write ? (byte)1 : (byte)0);
+            stream.WriteUtf8String(Content);
         }
 
         public override void Deserialize(Stream stream)
         {
             Operation = stream.ReadGuid();
-            Input = stream.ReadUtf8String();
+            Write = stream.ReadU8() != 0;
+            Content = stream.ReadUtf8String();
         }
     }
 }

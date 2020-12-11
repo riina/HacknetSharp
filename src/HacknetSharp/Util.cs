@@ -145,6 +145,7 @@ namespace HacknetSharp
             RegisterCommand<InputResponseEvent>(Command.CS_InputResponse);
             RegisterCommand<LoginEvent>(Command.CS_Login);
             RegisterCommand<RegistrationTokenForgeRequestEvent>(Command.CS_RegistrationTokenForgeRequest);
+            RegisterCommand<EditResponseEvent>(Command.CS_EditResponse);
 
             RegisterCommand<AccessFailEvent>(Command.SC_AccessFail);
             RegisterCommand<FailBaseServerEvent>(Command.SC_FailBaseServer);
@@ -155,6 +156,7 @@ namespace HacknetSharp
             RegisterCommand<RegistrationTokenForgeResponseEvent>(Command.SC_RegistrationTokenForgeResponse);
             RegisterCommand<ServerDisconnectEvent>(Command.SC_Disconnect);
             RegisterCommand<UserInfoEvent>(Command.SC_UserInfo);
+            RegisterCommand<EditRequestEvent>(Command.SC_EditRequest);
         }
 
         private static void RegisterCommand<TEvent>(Command key) where TEvent : Event, new()

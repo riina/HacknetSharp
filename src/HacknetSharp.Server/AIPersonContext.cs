@@ -12,12 +12,12 @@ namespace HacknetSharp.Server
     {
         private readonly PersonModel _person;
 
-        public ConcurrentDictionary<Guid, InputResponseEvent> Inputs { get; }
+        public ConcurrentDictionary<Guid, ClientResponseEvent> Responses { get; }
 
         public AIPersonContext(PersonModel person)
         {
             _person = person;
-            Inputs = new ConcurrentDictionary<Guid, InputResponseEvent>();
+            Responses = new ConcurrentDictionary<Guid, ClientResponseEvent>();
         }
 
         public bool Connected => true;

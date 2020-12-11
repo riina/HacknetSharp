@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
@@ -94,6 +95,19 @@ namespace hsh
                         });
                         connection.FlushAsync();
                         break;
+                    case EditRequestEvent editRequest:
+                    {
+                        var result = HsEditor.Open(editRequest.Content, editRequest.ReadOnly);
+                        connection.WriteEvent(new EditResponseEvent
+                        {
+                            Operation = editRequest.Operation,
+                            Content = result.Write
+                                ? new StringBuilder().AppendJoin('\n', result.Lines).ToString()
+                                : editRequest.Content
+                        });
+                        connection.FlushAsync();
+                        break;
+                    }
                 }
             };
             connection.OnDisconnect += e =>
