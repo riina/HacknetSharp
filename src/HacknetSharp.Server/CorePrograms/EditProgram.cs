@@ -43,7 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
                             if (editable)
                             {
                                 closest.Content = edit.Edit!.Content;
-                                context.World.Database.Edit(closest);
+                                context.World.Database.Update(closest);
                             }
 
                             break;
@@ -75,7 +75,7 @@ namespace HacknetSharp.Server.CorePrograms
                             if (editable)
                             {
                                 closest.Content = edit.Edit!.Content;
-                                context.World.Database.Edit(closest);
+                                context.World.Database.Update(closest);
                             }
 
                             yield break;

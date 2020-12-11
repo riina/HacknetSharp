@@ -367,12 +367,12 @@ namespace HacknetSharp.Server
                 foreach (var f in toModify)
                     f.Path = Program.Combine(targetFp, Path.GetRelativePath(rootPath, f.Path));
 
-                _database.EditBulk(toModify);
+                _database.UpdateBulk(toModify);
             }
 
             file.Path = targetPath;
             file.Name = targetName;
-            _database.Edit(file);
+            _database.Update(file);
         }
 
         public void RemoveFile(FileModel file, LoginModel login)

@@ -194,7 +194,7 @@ namespace hss
 
                     _setOp.WaitOne();
                     if (_dirtySet.Count != 0)
-                        Database.EditBulk(_dirtySet);
+                        Database.UpdateBulk(_dirtySet);
                     if (_registrationSet.Count != 0)
                         Database.AddBulk(_registrationSet);
                     if (_deregistrationSet.Count != 0)

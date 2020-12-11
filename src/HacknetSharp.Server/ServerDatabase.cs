@@ -22,6 +22,10 @@ namespace HacknetSharp.Server
         /// </summary>
         private readonly ServerDatabaseContext _context;
 
+        private readonly HashSet<object> _added;
+        private readonly HashSet<object> _updated;
+        private readonly HashSet<object> _removed;
+
         /// <summary>
         /// Creates a new instance of <see cref="ServerDatabase"/> with the provided <see cref="ServerDatabaseContext"/>.
         /// </summary>
@@ -30,6 +34,9 @@ namespace HacknetSharp.Server
         {
             _context = context;
             _waitHandle = new AutoResetEvent(true);
+            _added = new HashSet<object>();
+            _updated = new HashSet<object>();
+            _removed = new HashSet<object>();
         }
 
         /// <inheritdoc/>
@@ -92,7 +99,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                _context.Add(entity);
+                _added.Add(entity);
             }
             finally
             {
@@ -106,7 +113,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                _context.AddRange((IEnumerable<object>)entities);
+                _added.UnionWith((IEnumerable<object>)entities);
             }
             finally
             {
@@ -115,12 +122,12 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc/>
-        public void Edit<TEntry>(TEntry entity) where TEntry : notnull
+        public void Update<TEntry>(TEntry entity) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
             {
-                _context.Update(entity);
+                _updated.Add(entity);
             }
             finally
             {
@@ -129,12 +136,12 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc/>
-        public void EditBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
+        public void UpdateBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull
         {
             _waitHandle.WaitOne();
             try
             {
-                _context.UpdateRange((IEnumerable<object>)entities);
+                _updated.UnionWith((IEnumerable<object>)entities);
             }
             finally
             {
@@ -148,7 +155,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                _context.Remove(entity);
+                _removed.Add(entity);
             }
             finally
             {
@@ -163,7 +170,7 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
-                _context.RemoveRange((IEnumerable<object>)entities);
+                _removed.UnionWith((IEnumerable<object>)entities);
             }
             finally
             {
@@ -177,7 +184,13 @@ namespace HacknetSharp.Server
             _waitHandle.WaitOne();
             try
             {
+                _context.AddRange(_added.Except(_removed));
+                _context.UpdateRange(_updated.Except(_added).Except(_removed));
+                _context.RemoveRange(_removed.Except(_added));
                 await _context.SaveChangesAsync().Caf();
+                _added.Clear();
+                _updated.Clear();
+                _removed.Clear();
             }
             finally
             {

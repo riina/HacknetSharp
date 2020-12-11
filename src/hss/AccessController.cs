@@ -40,7 +40,7 @@ namespace hss
         public async Task<bool> ChangePasswordAsync(UserModel userModel, string newPass)
         {
             (userModel.Hash, userModel.Salt) = ServerUtil.HashPassword(newPass);
-            _db.Edit(userModel);
+            _db.Update(userModel);
             await _db.SyncAsync().Caf();
             return true;
         }
@@ -51,7 +51,7 @@ namespace hss
             var targetUserModel = await _db.GetAsync<string, UserModel>(user).Caf();
             if (targetUserModel == null) return false;
             (targetUserModel.Hash, targetUserModel.Salt) = ServerUtil.HashPassword(newPass);
-            _db.Edit(targetUserModel);
+            _db.Update(targetUserModel);
             await _db.SyncAsync().Caf();
             return true;
         }

@@ -49,14 +49,14 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="entity">Entity to mark.</param>
         /// <typeparam name="TEntry">The entity type.</typeparam>
-        void Edit<TEntry>(TEntry entity) where TEntry : notnull;
+        void Update<TEntry>(TEntry entity) where TEntry : notnull;
 
         /// <summary>
         /// Marks a group of entities as edited in the database.
         /// </summary>
         /// <param name="entities">Entities to mark.</param>
         /// <typeparam name="TEntry">The entity type.</typeparam>
-        void EditBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull;
+        void UpdateBulk<TEntry>(IEnumerable<TEntry> entities) where TEntry : notnull;
 
         /// <summary>
         /// Removes an entity from the database.
