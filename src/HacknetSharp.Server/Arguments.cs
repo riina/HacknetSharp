@@ -101,12 +101,16 @@ namespace HacknetSharp.Server
 
                         break;
                     case State.EscapeNonQuoted:
-                        state = State.NonQuoted;
+                        if (c != '"')
+                            sb.Append('\\');
                         sb.Append(c);
+                        state = State.NonQuoted;
                         break;
                     case State.EscapeQuoted:
-                        state = State.Quoted;
+                        if (c != '"')
+                            sb.Append('\\');
                         sb.Append(c);
+                        state = State.Quoted;
                         break;
                 }
             }
