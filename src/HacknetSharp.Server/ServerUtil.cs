@@ -1,5 +1,4 @@
 using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -166,6 +165,51 @@ namespace HacknetSharp.Server
                 if (r < (s += kvp.Value))
                     return kvp.Key;
             throw new Exception();
+        }
+
+        private static readonly char[] _userChars =
+            Enumerable.Range('0', '9' - '0' + 1)
+                .Concat(Enumerable.Range('a', 'z' - 'a' + 1))
+                .Select(i => (char)i).ToArray();
+
+        public static string GenerateUser(int preferredLength = 16)
+        {
+            int top = _userChars.Length;
+            preferredLength = Math.Min(32, preferredLength);
+            Span<char> chars = stackalloc char[preferredLength];
+            for (int i = 0; i < preferredLength; i++)
+                chars[i] = _userChars[Random.Next(0, top)];
+            return new string(chars);
+        }
+
+        private static readonly char[] _passChars =
+            new int[] {'!', '#', '$', '%', '&', '*'}
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+                .Concat(Enumerable.Range('0', '9' - '0' + 1))
+                .Concat(Enumerable.Range('0', '9' - '0' + 1))
+                .Concat(Enumerable.Range('0', '9' - '0' + 1))
+                .Concat(Enumerable.Range('0', '9' - '0' + 1))
+                .Concat(Enumerable.Range('0', '9' - '0' + 1))
+                .Concat(Enumerable.Range('0', '9' - '0' + 1))
+                .Concat(Enumerable.Range('a', 'z' - 'a' + 1))
+                .Concat(Enumerable.Range('A', 'Z' - 'A' + 1))
+                .Select(i => (char)i).ToArray();
+
+        public static string GeneratePassword(int preferredLength = 16)
+        {
+            int top = _passChars.Length;
+            preferredLength = Math.Min(32, preferredLength);
+            Span<char> chars = stackalloc char[preferredLength];
+            for (int i = 0; i < preferredLength; i++)
+                chars[i] = _passChars[Random.Next(0, top)];
+            return new string(chars);
         }
 
         public static ProgramContext InitProgramContext(IWorld world, Guid operationId, IPersonContext user,
