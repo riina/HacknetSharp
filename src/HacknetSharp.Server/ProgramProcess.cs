@@ -13,6 +13,11 @@ namespace HacknetSharp.Server
         public ProgramProcess(ProgramContext context, Program program) : base(context)
         {
             _context = context;
+            var argv = context.Argv;
+            var env = context.Shell.Variables;
+            int count = argv.Length;
+            for (int i = 0; i < count; i++)
+                argv[i] = argv[i].ApplyShellReplacements(env);
             _enumerator = program.Run(context);
         }
 

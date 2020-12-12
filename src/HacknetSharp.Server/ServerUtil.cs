@@ -139,13 +139,16 @@ namespace HacknetSharp.Server
             $"{(byte)(value >> 24)}.{(byte)(value >> 16)}.{(byte)(value >> 8)}.{(byte)value}";
 
         public static bool TryParseConString(string conString, ushort defaultPort, [NotNullWhen(true)] out string? name,
-            [NotNullWhen(true)] out string? host, out ushort port, [NotNullWhen(false)] out string? error) =>
-            Util.TryParseConString(conString, defaultPort, out name!, out host!, out port, out error!);
+            [NotNullWhen(true)] out string? host, out ushort port, [NotNullWhen(false)] out string? error,
+            string? impliedUser = null, string? impliedTarget = null) =>
+            Util.TryParseConString(conString, defaultPort, out name!, out host!, out port, out error!, impliedUser,
+                impliedTarget);
 
         public static bool TryParseScpConString(string conString, [NotNullWhen(true)] out string? name,
             [NotNullWhen(true)] out string? host, [NotNullWhen(true)] out string? path,
-            [NotNullWhen(false)] out string? error) =>
-            Util.TryParseScpConString(conString, out name!, out host!, out path!, out error!);
+            [NotNullWhen(false)] out string? error, string? impliedUser = null, string? impliedTarget = null) =>
+            Util.TryParseScpConString(conString, out name!, out host!, out path!, out error!, impliedUser,
+                impliedTarget);
 
         public static bool ValidatePassword(string pass, byte[] hash, byte[] salt)
         {
@@ -183,15 +186,15 @@ namespace HacknetSharp.Server
         }
 
         private static readonly char[] _passChars =
-            new int[] {'!', '#', '$', '%', '&', '*'}
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '$', '%', '&', '*'})
+            new int[] {'!', '#', '%', '&', '*'}
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
+                .Concat(new int[] {'!', '#', '%', '&', '*'})
                 .Concat(Enumerable.Range('0', '9' - '0' + 1))
                 .Concat(Enumerable.Range('0', '9' - '0' + 1))
                 .Concat(Enumerable.Range('0', '9' - '0' + 1))

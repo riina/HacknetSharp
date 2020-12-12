@@ -39,8 +39,10 @@ namespace HacknetSharp.Server.CorePrograms
             string pw = ServerUtil.GeneratePassword();
             var pwHashSalt = ServerUtil.HashPassword(pw);
             context.World.Spawn.Login(system, un, pwHashSalt.hash, pwHashSalt.salt, true);
-            // TODO save login to shell variable and apply shell replacements to input lines
-            user.WriteEventSafe(Output($"User: {un}\nPass: {pw}\n"));
+            var env = context.Shell.Variables;
+            env["USER"] = un;
+            env["PASS"] = pw;
+            user.WriteEventSafe(Output($"$USER: {un}\n$PASS: {pw}\n"));
             user.FlushSafeAsync();
         }
     }

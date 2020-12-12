@@ -18,19 +18,25 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var argv = context.Argv;
-            if (argv.Length < 3)
-            {
-                user.WriteEventSafe(
-                    Output("scp: 2 operands are required by this command:\n\t<username>@<server>:<source> <dest>\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
 
-            if (!ServerUtil.TryParseScpConString(argv[1], out string? name, out string? host, out string? path,
-                out string? error))
+            if (!ServerUtil.TryParseScpConString(argv.Length == 2 ? "" : argv[1], out string? name, out string? host,
+                out string? path,
+                out string? error, context.Shell.TryGetVariable("USER", out string? shellUser) ? shellUser : null,
+                context.Shell.TryGetVariable("TARGET", out string? shellTarget) ? shellTarget : null))
             {
-                user.WriteEventSafe(Output($"scp: {error}\n"));
-                user.FlushSafeAsync();
+                if (argv.Length < 3)
+                {
+                    user.WriteEventSafe(
+                        Output(
+                            "scp: 2 operands are required by this command:\n\t<username>@<server>:<source> <dest>\n"));
+                    user.FlushSafeAsync();
+                }
+                else
+                {
+                    user.WriteEventSafe(Output($"scp: {error}\n"));
+                    user.FlushSafeAsync();
+                }
+
                 yield break;
             }
 
@@ -42,10 +48,18 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            user.WriteEventSafe(Output("Password:"));
-            user.FlushSafeAsync();
-            var passInput = Input(user, true);
-            yield return passInput;
+            string password;
+            if (context.Shell.TryGetVariable("PASS", out string? shellPass))
+                password = shellPass;
+            else
+            {
+                user.WriteEventSafe(Output("Password:"));
+                user.FlushSafeAsync();
+                var input = Input(user, true);
+                yield return input;
+                password = input.Input!.Input;
+            }
+
             var rSystem = context.World.Model.Systems.FirstOrDefault(s => s.Address == hostUint);
             if (rSystem == null)
             {
@@ -55,7 +69,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             var rLogin = rSystem.Logins.FirstOrDefault(l => l.User == name);
-            if (rLogin == null || !ServerUtil.ValidatePassword(passInput.Input!.Input, rLogin.Hash, rLogin.Salt))
+            if (rLogin == null || !ServerUtil.ValidatePassword(password, rLogin.Hash, rLogin.Salt))
             {
                 user.WriteEventSafe(Output("scp: Invalid credentials\n"));
                 user.FlushSafeAsync();

@@ -15,18 +15,23 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var argv = context.Argv;
-            if (argv.Length == 1)
-            {
-                user.WriteEventSafe(Output("ssh: Needs connection target\n"));
-                user.FlushSafeAsync();
-                yield break;
-            }
 
-            if (!ServerUtil.TryParseConString(argv[1], 22, out string? name, out string? host, out _,
-                out string? error))
+            if (!ServerUtil.TryParseConString(argv.Length == 1 ? "" : argv[1], 22, out string? name, out string? host,
+                out _, out string? error,
+                context.Shell.TryGetVariable("USER", out string? shellUser) ? shellUser : null,
+                context.Shell.TryGetVariable("TARGET", out string? shellTarget) ? shellTarget : null))
             {
-                user.WriteEventSafe(Output($"ssh: {error}\n"));
-                user.FlushSafeAsync();
+                if (argv.Length == 1)
+                {
+                    user.WriteEventSafe(Output("ssh: Needs connection target\n"));
+                    user.FlushSafeAsync();
+                }
+                else
+                {
+                    user.WriteEventSafe(Output($"ssh: {error}\n"));
+                    user.FlushSafeAsync();
+                }
+
                 yield break;
             }
 
@@ -38,10 +43,18 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            user.WriteEventSafe(Output("Password:"));
-            user.FlushSafeAsync();
-            var input = Input(user, true);
-            yield return input;
+            string password;
+            if (context.Shell.TryGetVariable("PASS", out string? shellPass))
+                password = shellPass;
+            else
+            {
+                user.WriteEventSafe(Output("Password:"));
+                user.FlushSafeAsync();
+                var input = Input(user, true);
+                yield return input;
+                password = input.Input!.Input;
+            }
+
             user.WriteEventSafe(Output("Connecting...\n"));
             var system = context.World.Model.Systems.FirstOrDefault(s => s.Address == hostUint);
             if (system == null)
@@ -52,7 +65,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             var login = system.Logins.FirstOrDefault(l => l.User == name);
-            if (login == null || !ServerUtil.ValidatePassword(input.Input!.Input, login.Hash, login.Salt))
+            if (login == null || !ServerUtil.ValidatePassword(password, login.Hash, login.Salt))
             {
                 user.WriteEventSafe(Output("ssh: Invalid credentials\n"));
                 user.FlushSafeAsync();

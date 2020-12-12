@@ -296,7 +296,7 @@ namespace HacknetSharp
         private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S\s]+)");
 
         public static bool TryParseConString(string conString, ushort defaultPort, out string? name, out string? host,
-            out ushort port, out string? error)
+            out ushort port, out string? error, string? impliedUser = null, string? impliedTarget = null)
         {
             name = null;
             host = null;
@@ -305,13 +305,32 @@ namespace HacknetSharp
             var conStringMatch = _conStringRegex.Match(conString);
             if (!conStringMatch.Success)
             {
-                error = "Invalid conString, must be user@server[:port]";
-                return false;
+                if (impliedUser == null)
+                {
+                    error = "Invalid conString, must be user@server[:port]";
+                    return false;
+                }
+
+                name = impliedUser;
+                host = conString;
+            }
+            else
+            {
+                name = conStringMatch.Groups[1].Value;
+                host = conStringMatch.Groups[2].Value;
             }
 
-            name = conStringMatch.Groups[1].Value;
-            host = conStringMatch.Groups[2].Value;
-            if (!host.Contains(":")) return true;
+            if (!host.Contains(":"))
+            {
+                if (ushort.TryParse(host, out ushort soloHost))
+                {
+                    port = soloHost;
+                    if (impliedTarget != null) host = impliedTarget;
+                }
+                else if (string.IsNullOrWhiteSpace(host) && impliedTarget != null) host = impliedTarget;
+
+                return true;
+            }
 
             var serverPortMatch = _serverPortRegex.Match(host);
             if (!serverPortMatch.Success || !ushort.TryParse(serverPortMatch.Groups[2].Value, out port))
@@ -325,7 +344,8 @@ namespace HacknetSharp
             return true;
         }
 
-        public static bool TryParseScpConString(string conString, out string? name, out string? host, out string? path, out string? error)
+        public static bool TryParseScpConString(string conString, out string? name, out string? host, out string? path,
+            out string? error, string? impliedUser = null, string? impliedTarget = null)
         {
             name = null;
             host = null;
@@ -334,18 +354,38 @@ namespace HacknetSharp
             var conStringMatch = _conStringRegex.Match(conString);
             if (!conStringMatch.Success)
             {
-                error = "Invalid conString, must be user@server[:port]";
-                return false;
+                if (impliedUser == null)
+                {
+                    error = "Invalid conString, must be user@server:path";
+                    return false;
+                }
+
+                name = impliedUser;
+                host = conString;
+            }
+            else
+            {
+                name = conStringMatch.Groups[1].Value;
+                host = conStringMatch.Groups[2].Value;
             }
 
-            name = conStringMatch.Groups[1].Value;
-            host = conStringMatch.Groups[2].Value;
-            if (!host.Contains(":")) return true;
+            if (!host.Contains(":"))
+            {
+                if (!string.IsNullOrWhiteSpace(host) && impliedTarget != null)
+                {
+                    path = host;
+                    host = impliedTarget;
+                    return true;
+                }
+
+                error = "Invalid conString, must be user@server:path";
+                return false;
+            }
 
             var serverPortMatch = _serverPortRegex.Match(host);
             if (!serverPortMatch.Success)
             {
-                error = "Invalid host/port, must be user@server[:port]";
+                error = "Invalid host/port, must be user@server:path";
                 return false;
             }
 
@@ -356,9 +396,15 @@ namespace HacknetSharp
         }
 
         private static readonly Regex _replacementRegex = new Regex(@"{((?:[^{}\\]|\\.)*)}");
+        private static readonly Regex _shellReplacementRegex = new Regex(@"\$([A-Za-z0-9]+)");
 
         public static string ApplyReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
             _replacementRegex.Replace(str,
+                m => replacements.TryGetValue(m.Groups[1].Value, out var rep) ? rep : m.Value);
+
+        public static string
+            ApplyShellReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
+            _shellReplacementRegex.Replace(str,
                 m => replacements.TryGetValue(m.Groups[1].Value, out var rep) ? rep : m.Value);
     }
 }
