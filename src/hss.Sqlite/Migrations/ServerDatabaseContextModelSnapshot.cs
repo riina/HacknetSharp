@@ -209,6 +209,9 @@ namespace hss.Sqlite.Migrations
                     b.Property<Guid>("OwnerKey")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("RequiredExploits")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("WorldKey")
                         .HasColumnType("TEXT");
 
@@ -257,6 +260,9 @@ namespace hss.Sqlite.Migrations
                     b.Property<string>("EntryPoint")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Exploits")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Protocol")
                         .IsRequired()

@@ -3,6 +3,7 @@ OsName: EncomOS
 Users:
   daphne+: andthenonedayIgotin
   samwise: genshin
+RequiredExploits: 10
 Filesystem:
   "{Owner.UserName}":
   - fold*+*:/bin

@@ -220,10 +220,10 @@ namespace hss
             return proc;
         }
 
-        public ProgramInfoAttribute? GetProgramInfo(string? content)
+        public ProgramInfoAttribute? GetProgramInfo(string? argv)
         {
-            if (content == null) return null;
-            var line = Arguments.SplitCommandLine(content);
+            if (argv == null) return null;
+            var line = Arguments.SplitCommandLine(argv);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
             if (Server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
                 return prog.Item2;
@@ -335,36 +335,6 @@ namespace hss
             bool success = Server.Programs.TryGetValue(line[0], out var res);
             result = (res.Item1, res.Item2, line);
             return success;
-        }
-
-        public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
-        {
-            Server.RegisterModel(model);
-        }
-
-        public void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
-        {
-            Server.RegisterModels(models);
-        }
-
-        public void DirtyModel<T>(Model<T> model) where T : IEquatable<T>
-        {
-            Server.DirtyModel(model);
-        }
-
-        public void DirtyModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
-        {
-            Server.DirtyModels(models);
-        }
-
-        public void DeregisterModel<T>(Model<T> model) where T : IEquatable<T>
-        {
-            Server.DeregisterModel(model);
-        }
-
-        public void DeregisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
-        {
-            Server.DeregisterModels(models);
         }
     }
 }

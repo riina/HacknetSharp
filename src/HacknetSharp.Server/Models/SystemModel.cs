@@ -14,6 +14,7 @@ namespace HacknetSharp.Server.Models
         public virtual uint Address { get; set; }
         public virtual string? ConnectCommandLine { get; set; }
         public virtual double BootTime { get; set; }
+        public virtual int RequiredExploits { get; set; }
         public virtual PersonModel Owner { get; set; } = null!;
         public virtual HashSet<LoginModel> Logins { get; set; } = null!;
         public virtual HashSet<FileModel> Files { get; set; } = null!;

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
@@ -49,6 +51,20 @@ namespace HacknetSharp.Server
                 if (sh.Variables.TryGetValue(key, out value))
                     return true;*/
             return false;
+        }
+
+        public bool TryGetTarget([NotNullWhen(true)] out SystemModel? target)
+        {
+            if (!Variables.TryGetValue("TARGET", out string? addr) ||
+                !IPAddressRange.TryParse(addr, false, out var ip) ||
+                !ip.TryGetIPv4HostAndSubnetMask(out uint host, out _))
+            {
+                target = null;
+                return false;
+            }
+
+            target = ProgramContext.World.Model.Systems.FirstOrDefault(s => s.Address == host);
+            return target != null;
         }
 
         public override void Complete(CompletionKind completionKind)

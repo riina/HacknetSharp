@@ -96,6 +96,7 @@ namespace hss.Sqlite.Migrations
                     Address = table.Column<uint>(type: "INTEGER", nullable: false),
                     ConnectCommandLine = table.Column<string>(type: "TEXT", nullable: true),
                     BootTime = table.Column<double>(type: "REAL", nullable: false),
+                    RequiredExploits = table.Column<int>(type: "INTEGER", nullable: false),
                     OwnerKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
@@ -186,6 +187,7 @@ namespace hss.Sqlite.Migrations
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
                     SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     EntryPoint = table.Column<string>(type: "TEXT", nullable: false),
+                    Exploits = table.Column<int>(type: "INTEGER", nullable: false),
                     Protocol = table.Column<string>(type: "TEXT", nullable: false),
                     Cve = table.Column<string>(type: "TEXT", nullable: true),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)

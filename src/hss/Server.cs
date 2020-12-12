@@ -26,9 +26,7 @@ namespace hss
         private readonly ConcurrentDictionary<Guid, HostConnection> _connections;
         private readonly Queue<ProgramContext> _inputQueue;
         private readonly List<ProgramContext> _inputProcessing;
-        private readonly AutoResetEvent _setOp;
         private readonly AutoResetEvent _queueOp;
-        private double _initialTime;
         private LifecycleState _state;
 
         private readonly TcpListener _connectListener;
@@ -42,9 +40,6 @@ namespace hss
         public Dictionary<string, Service> Services { get; }
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
-        private readonly List<object> _registrationSet;
-        private readonly List<object> _dirtySet;
-        private readonly List<object> _deregistrationSet;
         public Spawn Spawn { get; }
 
         protected internal Server(ServerConfig config)
@@ -81,11 +76,7 @@ namespace hss
             _connections = new ConcurrentDictionary<Guid, HostConnection>();
             _inputQueue = new Queue<ProgramContext>();
             _inputProcessing = new List<ProgramContext>();
-            _setOp = new AutoResetEvent(true);
             _queueOp = new AutoResetEvent(true);
-            _registrationSet = new List<object>();
-            _dirtySet = new List<object>();
-            _deregistrationSet = new List<object>();
             _state = LifecycleState.NotStarted;
         }
 
@@ -162,7 +153,6 @@ namespace hss
 
             _connectListener.Start();
             _connectTask = RunConnectListener();
-            _initialTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             return UpdateAsync();
         }
 
@@ -172,6 +162,7 @@ namespace hss
             const int tickMs = 10;
             const int saveDelayMs = 10 * 1000;
             long lastSave = ms;
+            long lastMs = ms;
             while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
             {
                 try
@@ -186,23 +177,11 @@ namespace hss
                     foreach (var world in Worlds.Values)
                     {
                         world.PreviousTime = world.Model.Now;
-                        world.Time = world.PreviousTime +
-                                     (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _initialTime) / 1000.0;
+                        world.Time = world.PreviousTime + (ms - lastMs) / 1000.0;
                         world.Model.Now = world.Time;
                         world.Tick();
                     }
 
-                    _setOp.WaitOne();
-                    if (_dirtySet.Count != 0)
-                        Database.UpdateBulk(_dirtySet);
-                    if (_registrationSet.Count != 0)
-                        Database.AddBulk(_registrationSet);
-                    if (_deregistrationSet.Count != 0)
-                        Database.DeleteBulk(_deregistrationSet);
-                    _dirtySet.Clear();
-                    _registrationSet.Clear();
-                    _deregistrationSet.Clear();
-                    _setOp.Set();
                     long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     long ms3;
                     if (lastSave + saveDelayMs < ms2)
@@ -216,6 +195,7 @@ namespace hss
                         ms3 = ms2;
 
                     await Task.Delay((int)Math.Min(tickMs, Math.Max(0, tickMs - (ms3 - ms)))).Caf();
+                    lastMs = ms;
                     ms = ms3;
                 }
                 catch (DbUpdateConcurrencyException e)
@@ -257,7 +237,7 @@ namespace hss
                 {
                     world = DefaultWorld;
                     user.ActiveWorld = world.Model.Key;
-                    DirtyModel(user);
+                    Database.Update(user);
                 }
 
                 var person = context.GetPerson(world);
@@ -283,7 +263,7 @@ namespace hss
                 {
                     world = DefaultWorld;
                     user.ActiveWorld = world.Model.Key;
-                    DirtyModel(user);
+                    Database.Update(user);
                 }
 
                 _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context,
@@ -347,85 +327,6 @@ namespace hss
                 {
                     // ignored
                 }
-            }
-        }
-
-
-        public void RegisterModel<T>(Model<T> model) where T : IEquatable<T>
-        {
-            _setOp.WaitOne();
-            try
-            {
-                _registrationSet.Add(model);
-            }
-            finally
-            {
-                _setOp.Set();
-            }
-        }
-
-        public void RegisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
-        {
-            _setOp.WaitOne();
-            try
-            {
-                _registrationSet.AddRange(models);
-            }
-            finally
-            {
-                _setOp.Set();
-            }
-        }
-
-        public void DirtyModel<T>(Model<T> model) where T : IEquatable<T>
-        {
-            _setOp.WaitOne();
-            try
-            {
-                _dirtySet.Add(model);
-            }
-            finally
-            {
-                _setOp.Set();
-            }
-        }
-
-        public void DirtyModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
-        {
-            _setOp.WaitOne();
-            try
-            {
-                _dirtySet.AddRange(models);
-            }
-            finally
-            {
-                _setOp.Set();
-            }
-        }
-
-        public void DeregisterModel<T>(Model<T> model) where T : IEquatable<T>
-        {
-            _setOp.WaitOne();
-            try
-            {
-                _deregistrationSet.Add(model);
-            }
-            finally
-            {
-                _setOp.Set();
-            }
-        }
-
-        public void DeregisterModels<T>(IEnumerable<Model<T>> models) where T : IEquatable<T>
-        {
-            _setOp.WaitOne();
-            try
-            {
-                _deregistrationSet.AddRange(models);
-            }
-            finally
-            {
-                _setOp.Set();
             }
         }
 

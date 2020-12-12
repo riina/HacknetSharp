@@ -12,6 +12,7 @@ namespace HacknetSharp.Server.Templates
         public string? AddressRange { get; set; }
         public string? ConnectCommandLine { get; set; }
         public List<Vulnerability>? Vulnerabilities { get; set; }
+        public int RequiredExploits { get; set; }
         public Dictionary<string, string>? Users { get; set; }
         public Dictionary<string, List<string>>? Filesystem { get; set; }
 
@@ -19,6 +20,7 @@ namespace HacknetSharp.Server.Templates
         {
             public string? EntryPoint { get; set; }
             public string? Protocol { get; set; }
+            public int Exploits { get; set; }
             public string? Cve { get; set; }
         }
 
@@ -37,6 +39,7 @@ namespace HacknetSharp.Server.Templates
                 .ApplyReplacements(repDict);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
             model.ConnectCommandLine = ConnectCommandLine?.ApplyReplacements(repDict);
+            model.RequiredExploits = RequiredExploits;
             var unameToLoginDict = new Dictionary<string, LoginModel>
             {
                 {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}
@@ -61,7 +64,7 @@ namespace HacknetSharp.Server.Templates
                     if (vuln.Protocol == null)
                         throw new InvalidOperationException(
                             $"Vulnerability does not have {nameof(Vulnerability.Protocol)}");
-                    spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint, vuln.Cve);
+                    spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint,vuln.Exploits, vuln.Cve);
                 }
 
             if (Filesystem != null)

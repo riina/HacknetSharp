@@ -40,23 +40,30 @@ namespace HacknetSharp.Server.CorePrograms
                 else
                 {
                     string name = argv[1];
+                    ProgramInfoAttribute? info;
                     var program = system.Files.FirstOrDefault(f => f.Path == "/bin" && f.Name == name && !f.Hidden);
-                    if (program == null)
+                    if (program != null)
+                    {
+                        if (!program.CanRead(login))
+                        {
+                            user.WriteEventSafe(Output("Permission denied\n"));
+                            user.FlushSafeAsync();
+                            yield break;
+                        }
+
+                        info = world.GetProgramInfo(program.Content);
+                    }
+                    else
+                    {
+                        info = world.IntrinsicPrograms.Select(p => p.Item2).First(p => p.Name == name);
+                    }
+
+                    if (info == null)
                     {
                         user.WriteEventSafe(Output("Unknown program\n"));
                         user.FlushSafeAsync();
                         yield break;
                     }
-
-                    if (!program.CanRead(login))
-                    {
-                        user.WriteEventSafe(Output("Permission denied\n"));
-                        user.FlushSafeAsync();
-                        yield break;
-                    }
-
-                    var info = world.GetProgramInfo(program.Content);
-                    if (info == null) yield break;
 
                     sb.Append("\n««  ").Append(info.Name).Append("  »»").Append("\n\n").Append(info.LongDescription)
                         .Append("\n\nUsage:\n\t").Append(name);

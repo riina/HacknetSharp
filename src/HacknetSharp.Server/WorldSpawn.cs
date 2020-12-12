@@ -109,7 +109,7 @@ namespace HacknetSharp.Server
         }
 
         public VulnerabilityModel Vulnerability(SystemModel system, string protocol, string entryPoint,
-            string? cve = null)
+            int exploits, string? cve = null)
         {
             var vuln = new VulnerabilityModel
             {
@@ -118,6 +118,7 @@ namespace HacknetSharp.Server
                 System = system,
                 Protocol = protocol,
                 EntryPoint = entryPoint,
+                Exploits = exploits,
                 Cve = cve
             };
             system.Vulnerabilities.Add(vuln);

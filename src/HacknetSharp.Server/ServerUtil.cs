@@ -136,12 +136,8 @@ namespace HacknetSharp.Server
         public static OutputEvent CreatePromptEvent(ShellProcess shell) =>
             new OutputEvent {Text = $"{UintToAddress(shell.ProgramContext.System.Address)}:{shell.WorkingDirectory}> "};
 
-        public static string UintToAddress(uint value)
-        {
-            Span<byte> dst = stackalloc byte[4];
-            BinaryPrimitives.WriteUInt32BigEndian(dst, value);
-            return $"{dst[0]}.{dst[1]}.{dst[2]}.{dst[3]}";
-        }
+        public static string UintToAddress(uint value) =>
+            $"{(byte)(value >> 24)}.{(byte)(value >> 16)}.{(byte)(value >> 8)}.{(byte)value}";
 
         public static bool TryParseConString(string conString, ushort defaultPort, [NotNullWhen(true)] out string? name,
             [NotNullWhen(true)] out string? host, out ushort port, [NotNullWhen(false)] out string? error) =>

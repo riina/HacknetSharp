@@ -10,12 +10,12 @@ namespace HacknetSharp.Server.Templates
         public string? PlayerSystemTemplate { get; set; }
         public string? PlayerAddressRange { get; set; }
         public string? StartupCommandLine { get; set; }
-        public List<Generator>? Generators { get; set; }
+        public List<PersonGroup>? People { get; set; }
 
-        public class Generator
+        public class PersonGroup
         {
             public int Count { get; set; }
-            public string? PersonTemplate { get; set; }
+            public string? Template { get; set; }
             public string? AddressRange { get; set; }
         }
 
@@ -29,16 +29,19 @@ namespace HacknetSharp.Server.Templates
                                        throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
             var worldSpawn = new WorldSpawn(database, world);
-            if (Generators == null) return;
-            foreach (var generator in Generators)
-                if (!templates.PersonTemplates.TryGetValue(generator.PersonTemplate ??
+            if (People == null) return;
+            foreach (var generator in People)
+                if (!templates.PersonTemplates.TryGetValue(generator.Template ??
                                                            throw new InvalidOperationException(
-                                                               $"Null {nameof(Generator.PersonTemplate)}"),
+                                                               $"Null {nameof(PersonGroup.Template)}"),
                     out var template))
-                    throw new KeyNotFoundException($"Unknown template {generator.PersonTemplate}");
+                    throw new KeyNotFoundException($"Unknown template {generator.Template}");
                 else
-                    for (int i = 0; i < generator.Count; i++)
+                {
+                    int count = Math.Max(1, generator.Count);
+                    for (int i = 0; i < count; i++)
                         template.Generate(worldSpawn, templates, generator.AddressRange);
+                }
         }
     }
 }

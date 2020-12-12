@@ -44,10 +44,9 @@ namespace hss.Runnables
                     return 89;
                 }
 
-                var database = new ServerDatabase(ctx);
-
-                new Spawn(database).World(Name, templates, template);
-                await database.SyncAsync().Caf();
+                var db = new ServerDatabase(ctx);
+                new Spawn(db).World(Name, templates, template);
+                await db.SyncAsync().Caf();
                 return 0;
             }
         }
@@ -76,9 +75,10 @@ namespace hss.Runnables
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
-                var spawn = new Spawn(new ServerDatabase(ctx));
+                var db = new ServerDatabase(ctx);
+                var spawn = new Spawn(db);
                 foreach (var world in worlds) spawn.RemoveWorld(world);
-                await ctx.SaveChangesAsync().Caf();
+                await db.SyncAsync().Caf();
                 return 0;
             }
         }

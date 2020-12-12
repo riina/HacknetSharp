@@ -89,7 +89,9 @@ See the [samples](../sample/) folder for template examples.
 * Vulnerabilities(`List<Vulnerability>?`): Base vulnerabilities.
   - EntryPoint(`string`): Entry point for vulnerability (port).
   - Protocol(`string`): Protocol (e.g. ssh, ftp).
+  - Exploits(`int`): # exploits this vulnerability grants.
   - Cve(`string?`): Real-world CVE for fun.
+* RequiredExploits(`int`): # required exploits for system access.
 
 Default replacements:
 * `Owner.UserName` - system owner's username
@@ -132,9 +134,10 @@ name, this is only for listing the worlds with `hss world list`).
 * PlayerSystemTemplate(`string`): template to use for players.
 * PlayerAddressRange(`string`): CIDR range string for address pool
 * StartupCommandLine(`string`): Initial command for clients to execute.
-* Generators(`List<Generator>?`): Person generators to populate world.
-  - Count(`int`): Number of persons to generate with this template.
+* People(`List<PersonGroup>?`): Person generators to populate world.
   - PersonTemplate(`string`): Person template to generate with.
+  - Count(`int?`): Number of persons to generate with this template 
+  (default 1).
   - AddressRange(`string?`): CIDR range string for address pool
 
 ### Server configuration

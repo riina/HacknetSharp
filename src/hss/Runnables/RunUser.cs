@@ -40,8 +40,9 @@ namespace hss.Runnables
                 string? pass = Util.ReadPassword();
                 if (pass == null) return 0;
                 var (hash, salt) = ServerUtil.HashPassword(pass);
-                new Spawn(new ServerDatabase(ctx)).User(Name, hash, salt, Admin);
-                await ctx.SaveChangesAsync().Caf();
+                var db = new ServerDatabase(ctx);
+                new Spawn(db).User(Name, hash, salt, Admin);
+                await db.SyncAsync().Caf();
                 return 0;
             }
         }
@@ -70,9 +71,10 @@ namespace hss.Runnables
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
-                var spawn = new Spawn(new ServerDatabase(ctx));
+                var db = new ServerDatabase(ctx);
+                var spawn = new Spawn(db);
                 foreach (var user in users) spawn.RemoveUser(user);
-                await ctx.SaveChangesAsync().Caf();
+                await db.SyncAsync().Caf();
                 return 0;
             }
         }

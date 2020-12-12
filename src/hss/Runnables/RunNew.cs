@@ -98,9 +98,9 @@ namespace hss.Runnables
                                     PlayerSystemTemplate = "playerTemplate",
                                     StartupCommandLine = "echo \"Starting shell...\"",
                                     PlayerAddressRange = Constants.DefaultAddressRange,
-                                    Generators = new List<WorldTemplate.Generator>
+                                    People = new List<WorldTemplate.PersonGroup>
                                     {
-                                        new WorldTemplate.Generator {Count = 3, PersonTemplate = "personTemplate2"}
+                                        new WorldTemplate.PersonGroup {Count = 3, Template = "personTemplate2"}
                                     }
                                 }
                                 : new WorldTemplate()))
