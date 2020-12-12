@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -18,41 +17,9 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var argv = context.Argv;
-            SystemModel? system;
-            if (argv.Length != 1)
-            {
-                if (!IPAddressRange.TryParse(argv[1], false, out var ip) ||
-                    !ip.TryGetIPv4HostAndSubnetMask(out uint host, out _))
-                {
-                    user.WriteEventSafe(Output("Invalid address format.\n"));
-                    user.FlushSafeAsync();
-                    yield break;
-                }
 
-                system = context.World.Model.Systems.FirstOrDefault(s => s.Address == host);
-                if (system == null)
-                {
-                    user.WriteEventSafe(Output("No route to host\n"));
-                    user.FlushSafeAsync();
-                    yield break;
-                }
-            }
-            else
-            {
-                if (!context.Shell.Variables.ContainsKey("TARGET"))
-                {
-                    user.WriteEventSafe(Output("No host address provided.\n"));
-                    user.FlushSafeAsync();
-                    yield break;
-                }
-
-                if (!context.Shell.TryGetTarget(out system))
-                {
-                    user.WriteEventSafe(Output("No route to host\n"));
-                    user.FlushSafeAsync();
-                    yield break;
-                }
-            }
+            if (!TryGetSystemOrOutput(context, argv.Length != 1 ? argv[1] : null, out var system))
+                yield break;
 
             user.WriteEventSafe(Output($"Probing {ServerUtil.UintToAddress(system.Address)}...\n"));
             user.FlushSafeAsync();
@@ -61,10 +28,16 @@ namespace HacknetSharp.Server.CorePrograms
 
             var sb = new StringBuilder();
             sb.Append("\nVulnerabilities:\n");
+            context.Shell.OpenVulnerabilities.TryGetValue(system.Address, out var vulns);
             foreach (var vuln in system.Vulnerabilities)
+            {
+                string openStr = vulns?.Contains(vuln) ?? false ? "OPEN" : "CLOSED";
                 sb.Append(
-                    $"{vuln.EntryPoint,-8}: {vuln.Protocol} ({vuln.Exploits} exploit(s), {vuln.Cve ?? "unknown CVEs"})\n");
+                    $"{vuln.EntryPoint,-8}: {vuln.Protocol} ({openStr}, {vuln.Exploits} exploit(s), {vuln.Cve ?? "unknown CVEs"})\n");
+            }
+
             sb.Append($"\nRequired exploits: {system.RequiredExploits}\n");
+            sb.Append($"Current exploits: {vulns?.Aggregate(0, (n, v) => n + v.Exploits) ?? 0}\n");
             user.WriteEventSafe(Output(sb.ToString()));
             user.FlushSafeAsync();
         }

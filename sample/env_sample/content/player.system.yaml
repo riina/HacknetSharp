@@ -33,4 +33,6 @@ Filesystem:
   - prog:/bin/kill core:kill
   - prog:/bin/scp core:scp
   - prog:/bin/edit core:edit
+  - prog:/bin/sshdk core:hack ssh 5.0
+  - prog:/bin/ftpftw core:hack ftp 7.0
   - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

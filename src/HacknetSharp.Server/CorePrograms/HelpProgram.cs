@@ -19,6 +19,7 @@ namespace HacknetSharp.Server.CorePrograms
             var argv = context.Argv;
             var login = context.Login;
             var world = context.World;
+            var replacements = new Dictionary<string, string>();
 
             if (system.TryGetWithAccess("/bin", login, out var result, out _))
             {
@@ -33,8 +34,9 @@ namespace HacknetSharp.Server.CorePrograms
                         .OrderBy(f => f.Name))
                     {
                         var info = world.GetProgramInfo(program.Content);
+                        GenReplacements(replacements, program.Content!);
                         if (info == null) continue;
-                        sb.Append($"{info.Name,-12} {info.Description}\n");
+                        sb.Append($"{program.Name,-12} {info.Description.ApplyReplacements(replacements)}\n");
                     }
                 }
                 else
@@ -52,10 +54,13 @@ namespace HacknetSharp.Server.CorePrograms
                         }
 
                         info = world.GetProgramInfo(program.Content);
+                        GenReplacements(replacements, program.Content!);
                     }
                     else
                     {
-                        info = world.IntrinsicPrograms.Select(p => p.Item2).First(p => p.Name == name);
+                        info = world.IntrinsicPrograms.Select(p => p.Item2).FirstOrDefault(p => p.Name == name);
+                        if (info != null)
+                            name = info.Name;
                     }
 
                     if (info == null)
@@ -65,10 +70,11 @@ namespace HacknetSharp.Server.CorePrograms
                         yield break;
                     }
 
-                    sb.Append("\n««  ").Append(info.Name).Append("  »»").Append("\n\n").Append(info.LongDescription)
+                    sb.Append("\n««  ").Append(name).Append("  »»").Append("\n\n")
+                        .Append(info.LongDescription.ApplyReplacements(replacements))
                         .Append("\n\nUsage:\n\t").Append(name);
                     if (!string.IsNullOrWhiteSpace(info.Usage))
-                        sb.Append(' ').Append(info.Usage);
+                        sb.Append(' ').Append(info.Usage.ApplyReplacements(replacements));
                     sb.Append("\n\n");
                 }
 
@@ -90,6 +96,13 @@ namespace HacknetSharp.Server.CorePrograms
                     user.FlushSafeAsync();
                     yield break;
             }
+        }
+
+        private static void GenReplacements(Dictionary<string, string> replacements, string content)
+        {
+            replacements.Clear();
+            var line = Arguments.SplitCommandLine(content);
+            for (int i = 0; i < line.Length; i++) replacements[$"HARG:{i}"] = line[i];
         }
     }
 }

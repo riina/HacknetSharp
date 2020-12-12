@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using HacknetSharp.Server.Models;
 
@@ -87,6 +89,7 @@ namespace HacknetSharp.Server.Templates
                                       throw new Exception($"Path cannot be {mainPath}");
                         string name = Program.GetFileName(mainPath);
                         FileModel fileModel;
+                        string content = new StringBuilder().AppendJoin(' ',args.Skip(1)).ToString().ApplyReplacements(repDict);
                         switch (match.Groups[1].Value.ToLowerInvariant())
                         {
                             case "fold":
@@ -95,20 +98,17 @@ namespace HacknetSharp.Server.Templates
                             case "prog":
                                 if (args.Length < 2)
                                     throw new Exception($"Not enough arguments to file entry {file}");
-                                fileModel = spawn.ProgFile(model, fsLogin, name, path,
-                                    args[1].ApplyReplacements(repDict));
+                                fileModel = spawn.ProgFile(model, fsLogin, name, path, content);
                                 break;
                             case "text":
                                 if (args.Length < 2)
                                     throw new Exception($"Not enough arguments to file entry {file}");
-                                fileModel = spawn.TextFile(model, fsLogin, name, path,
-                                    args[1].ApplyReplacements(repDict));
+                                fileModel = spawn.TextFile(model, fsLogin, name, path, content);
                                 break;
                             case "file":
                                 if (args.Length < 2)
                                     throw new Exception($"Not enough arguments to file entry {file}");
-                                fileModel = spawn.FileFile(model, fsLogin, name, path,
-                                    args[1].ApplyReplacements(repDict));
+                                fileModel = spawn.FileFile(model, fsLogin, name, path, content);
                                 break;
                             case "blob":
                                 throw new NotImplementedException();

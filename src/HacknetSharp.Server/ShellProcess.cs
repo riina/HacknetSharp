@@ -12,19 +12,23 @@ namespace HacknetSharp.Server
         public string WorkingDirectory { get; set; } = "/";
         public bool Close { get; set; }
         public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
+
+        public Dictionary<uint, HashSet<VulnerabilityModel>> OpenVulnerabilities { get; set; } =
+            new Dictionary<uint, HashSet<VulnerabilityModel>>();
+
         private bool _cleaned;
 
-        public IEnumerable<string> AllVariables
+        /*public IEnumerable<string> AllVariables
         {
             get
             {
                 var en = (IEnumerable<string>)Variables.Values;
                 /*int shIdx = ProgramContext.Person.ShellChain.IndexOf(ProgramContext.Shell);
                 foreach (var sh in ProgramContext.Person.ShellChain.Take(shIdx).Reverse())
-                    en = en.Concat(sh.Variables.Values);*/
+                    en = en.Concat(sh.Variables.Values);#1#
                 return en;
             }
-        }
+        }*/
 
         public ShellProcess(ProgramContext context) : base(context)
         {
