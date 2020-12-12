@@ -57,7 +57,7 @@ namespace HacknetSharp.Server.Templates
             string password = Password ?? Passwords!.SelectWeighted();
 
             var range = new IPAddressRange(addressRange ??
-                                           AddressRange ?? systemTemplate.AddressRange ??
+                                           AddressRange ??
                                            Constants.DefaultAddressRange);
             var person = spawn.Person(username, username);
             var (hash, salt) = ServerUtil.HashPassword(password);
