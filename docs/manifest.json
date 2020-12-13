@@ -1,0 +1,1619 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/black/Documents/GitHub/HacknetSharp/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Client.LoginException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Client.LoginException.html",
+          "hash": "Q0U1q+yaFk2e6CRLz1aMdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Client.html",
+          "hash": "aaPLUmRsveFbLA/lyQlLJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.ClientEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.ClientEvent.html",
+          "hash": "rnJuP2rZMENp2yKr8wg+6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Command.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Command.html",
+          "hash": "UAoc3qeAshForMOehSFB/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Constants.html",
+          "hash": "nilzHCg2f0KONSgMaw7MoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Event.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Event.html",
+          "hash": "OoXpPZLG0C3jq+zwJgrrtg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.EventCommandAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.EventCommandAttribute.html",
+          "hash": "ji8BbzUxQ5AcPd4VlyUecw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.ClientDisconnectEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.ClientDisconnectEvent.html",
+          "hash": "cfqNAaIc4G65ccoH1OcOzw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.ClientResponseEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.ClientResponseEvent.html",
+          "hash": "ukaCVwGOCroJsrKDZlchaA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.CommandEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.CommandEvent.html",
+          "hash": "ZAtVZ1hbiU+WMzpEhzXpLQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.EditResponseEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.EditResponseEvent.html",
+          "hash": "tcYug9J+wVYs0GWedtYI6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.InitialCommandEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.InitialCommandEvent.html",
+          "hash": "a4rLNLlxzKj7bLxkvzr7dg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.InputResponseEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.InputResponseEvent.html",
+          "hash": "1X/B3AkaAZm7DPg3FSCW9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.LoginEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.LoginEvent.html",
+          "hash": "AOIUDa1XM0ytmm7H4WJOqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.RegistrationTokenForgeRequestEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.RegistrationTokenForgeRequestEvent.html",
+          "hash": "2242g3hORkT1+P4x0ZMH5g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Client.html",
+          "hash": "EIjT/umEbfrDo4LBAX/HQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.AccessFailEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.AccessFailEvent.html",
+          "hash": "HWJscOdHm/eJKMkCTEpG5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.EditRequestEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.EditRequestEvent.html",
+          "hash": "/D2b1Vjcn7qwudfKlBi1dQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.FailBaseServerEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.FailBaseServerEvent.html",
+          "hash": "7sfTqa8o0fDHx0thVcet5g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.InputRequestEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.InputRequestEvent.html",
+          "hash": "O8+Xe7PaeRiiiI3+gr3DOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.LoginFailEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.LoginFailEvent.html",
+          "hash": "bDVOn+hDEPmU006eMHAkrg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.OperationCompleteEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.OperationCompleteEvent.html",
+          "hash": "e4qLBDjvZmTUyohZ+aakVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.OutputEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.OutputEvent.html",
+          "hash": "JG89QwIoJ5g3G5AUxo4HTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.RegistrationTokenForgeResponseEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.RegistrationTokenForgeResponseEvent.html",
+          "hash": "DePok5r+CBfmMJvEh+dcXg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.ServerDisconnectEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.ServerDisconnectEvent.html",
+          "hash": "6joswMaLn6HPdRzl+Y8rtw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.UserInfoEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.UserInfoEvent.html",
+          "hash": "6t/vqMCVylgdV96IAPeXSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Events.Server.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Events.Server.html",
+          "hash": "PHdQkFXmMCrJUeyFR07VGA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.IConnection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.IConnection.html",
+          "hash": "T2rtDSJNlkvMZsNszo+mEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.IInboundConnection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.IInboundConnection-1.html",
+          "hash": "ElDIpHA1uYv411yJd2utNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.IOperation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.IOperation.html",
+          "hash": "hJeN8Jt7NQh1U5DVEYETiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.IOutboundConnection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.IOutboundConnection-1.html",
+          "hash": "fBKJJxALqj81Ye41d5pJsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.LifecycleState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.LifecycleState.html",
+          "hash": "n27QQ7IZuG8uVqIpBd4Sdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.ProtocolException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.ProtocolException.html",
+          "hash": "KiRSEJZetzGOvcLdtEgTog=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.AIPersonContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.AIPersonContext.html",
+          "hash": "EkMcE3CB/uxnWLXz8jczeA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.CatProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.CatProgram.html",
+          "hash": "157ToBFIZw8NErmXYK8WeA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.CdProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.CdProgram.html",
+          "hash": "BdhWwSASCjsEHAO8EiGM4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.CpProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.CpProgram.html",
+          "hash": "8Y1SOjdL20gK1kyYvCX4jw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.EchoProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.EchoProgram.html",
+          "hash": "3nZG0CLGuavQkUhLismhYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.EditProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.EditProgram.html",
+          "hash": "8X86zAp3WX8S3+aJp9e1bA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.ExitProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.ExitProgram.html",
+          "hash": "cQamR5TkJqGmSEdfnN101g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.HackProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.HackProgram.html",
+          "hash": "9rTkaHjgRhjKJyBdwDMLIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.HelpProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.HelpProgram.html",
+          "hash": "dgHpgpDFjuv/i+k3MM+svg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.KillProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.KillProgram.html",
+          "hash": "0BlxhDl2toCLDvs1rzz3gQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.LsProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.LsProgram.html",
+          "hash": "k6aPJmrK2psS/eyC5OadaA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.MapProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.MapProgram.html",
+          "hash": "O7E3KaMcfOR/Dq2k+lwPKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.MkdirProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.MkdirProgram.html",
+          "hash": "yaMVlGocG73SaOmtww9Buw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.MvProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.MvProgram.html",
+          "hash": "1DK+yN3VL+w2LdfLriokzg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.PortHackProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.PortHackProgram.html",
+          "hash": "5AQjlia83vWZneEzoLZqpA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.ProbeProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.ProbeProgram.html",
+          "hash": "Xkw7Llaxk+vDhwK1lWuZRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.PsProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.PsProgram.html",
+          "hash": "wxgHWs+xNdigOpai5EeRbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.RmProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.RmProgram.html",
+          "hash": "FpV/dfLZ6e5J8R1m5JJ7VA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.ScanProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.ScanProgram.html",
+          "hash": "lRvT+wqmJ6cCY1APyDnFGA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.ScpProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.ScpProgram.html",
+          "hash": "LWaJyRQ3v0tpuhwS9RWqtA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.SetProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.SetProgram.html",
+          "hash": "0UYSphui41D/1ius+itr1Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.SshProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.SshProgram.html",
+          "hash": "L6fYdm9uZmCLDHW4jl+tKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.html",
+          "hash": "MF9VxNpk5qPIcmMLANNVHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.ActWaitYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.ActWaitYieldToken.html",
+          "hash": "2LR+5FpOHsTnJAr4R6EGRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.AggregateYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.AggregateYieldToken.html",
+          "hash": "y/z1Kjqvv3m0LH9zTo59sg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.ConditionYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.ConditionYieldToken.html",
+          "hash": "Cg1JTxUz5d17y5GGpFzxSg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.DelayYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.DelayYieldToken.html",
+          "hash": "HWHlRenXsBoWbKZjSQ7rZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.EditYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.EditYieldToken.html",
+          "hash": "Cs6WvaaIag5GD4QBHcKFHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.InputYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.InputYieldToken.html",
+          "hash": "rgoFxWgJ+lzdp41DBuyy8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.SequenceYieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.SequenceYieldToken.html",
+          "hash": "KRG/isymMnMibTvRccpGSw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Executable-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Executable-1.html",
+          "hash": "pbfxD8/bu4UGHidVBDNbOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.IPAddressRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.IPAddressRange.html",
+          "hash": "OdBiFmmVfKwjECMGeYQHmw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.IPersonContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.IPersonContext.html",
+          "hash": "xjMs06x/I2tXhsX2KgCaoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.IServerDatabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.IServerDatabase.html",
+          "hash": "ogho3MOddV5tPBmCksBMeg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.IWorld.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.IWorld.html",
+          "hash": "0DtNBVtVuuYcq07c7jr4Lw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Model-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Model-1.html",
+          "hash": "BjvNxxraR+xPt711MEw2HA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ModelBuilderCallbackAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ModelBuilderCallbackAttribute.html",
+          "hash": "NEd1oOtto+cDZumr0phOmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.FileModel.AccessLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.FileModel.AccessLevel.html",
+          "hash": "mtypjn3DaueJ7bQd+S6CMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.FileModel.FileKind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.FileModel.FileKind.html",
+          "hash": "Yvl5Y7SbLMJehZ9d/Gag4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.FileModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.FileModel.html",
+          "hash": "75AymEJV3uPb3aMfz6Ierg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.KnownSystemModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.KnownSystemModel.html",
+          "hash": "Sql5FfyBCgUrvXZHFH/SjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.LoginModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.LoginModel.html",
+          "hash": "0cugYbWM9MKtyhy+mgun1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.PersonModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.PersonModel.html",
+          "hash": "IUyH8xhfVC9WaJX30u2QZA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.RegistrationToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.RegistrationToken.html",
+          "hash": "Sf37+PxD+IK0QCxlwfdH7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.SystemModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.SystemModel.html",
+          "hash": "uxlssoEc517L7KiVodJUwg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.UserModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.UserModel.html",
+          "hash": "dcFUv0Rq4ljn0kB0QnqKRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.VulnerabilityModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.VulnerabilityModel.html",
+          "hash": "URZzBrOsctCSUO15yMczoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.WorldMember-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.WorldMember-1.html",
+          "hash": "B4Kw3AG259tbbHt5AAkGIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.WorldModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.WorldModel.html",
+          "hash": "ycfpZXavBguzXU3sUx9hkg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Models.html",
+          "hash": "56itAb2verfvGRw/NJUdmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.PathFilter.Filter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.PathFilter.Filter.html",
+          "hash": "lOUmGV8vkvdpvzIkmNPK3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.PathFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.PathFilter.html",
+          "hash": "Rn5PmRjljEaBuPbT8hNZqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Process.CompletionKind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Process.CompletionKind.html",
+          "hash": "8YUQGYmKfH+Z0O3Nk+zq3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Process.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Process.html",
+          "hash": "HibSa1Vpm7IgYvQmGijoQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ProcessContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ProcessContext.html",
+          "hash": "/VsWPzt84+KI/r3UEg1dAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Program.html",
+          "hash": "o0tUYvMwqhKBG+q8R+gCww=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ProgramContext.InvocationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ProgramContext.InvocationType.html",
+          "hash": "oDylRHpLcZ3r6igsPdDgAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ProgramContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ProgramContext.html",
+          "hash": "FaVTfde4E0+Ajz1vP5vnLQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ProgramInfoAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ProgramInfoAttribute.html",
+          "hash": "6grJkz5iEj+Tv1IFfYiFXg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ProgramProcess.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ProgramProcess.html",
+          "hash": "DNqKRM9qZ1hSmvEdPMp2SA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ReadAccessResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ReadAccessResult.html",
+          "hash": "QoDKwq5ymn5RMgkYqVbStg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerConstants.html",
+          "hash": "TDWBXDYuc7WsOXC1PuytCw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerDatabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerDatabase.html",
+          "hash": "CzpHuoqgnw4nTQgTPyqtsA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerDatabaseContext.ModelBuilderDelegate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerDatabaseContext.ModelBuilderDelegate.html",
+          "hash": "Iz1dV8FsvbHHuLSPXp28GQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerDatabaseContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerDatabaseContext.html",
+          "hash": "v8oUKfrJq6BneRa1bj8ASg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerDatabaseContextFactoryBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerDatabaseContextFactoryBase.html",
+          "hash": "QAFRK4zH/4iElr9eHp5XRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerSettings.html",
+          "hash": "xtN7sq8Rz3ZnCN39TM1/BA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServerUtil.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServerUtil.html",
+          "hash": "kEufgcgGSMnRN8/nqDCh8g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Service.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Service.html",
+          "hash": "MAbR0C11MHWb00Woqx1JjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServiceContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServiceContext.html",
+          "hash": "AKCwURUthlZLOFESXE0JoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServiceInfoAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServiceInfoAttribute.html",
+          "hash": "bm3/RrIIgxe+XRdWE3ZeEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ServiceProcess.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ServiceProcess.html",
+          "hash": "49vgkgND6hcjBGAu3u5Jfw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.ShellProcess.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.ShellProcess.html",
+          "hash": "csuiy5rEHM2LECBlbDMxcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Spawn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Spawn.html",
+          "hash": "6m+ZOzrV68nxLU69QlUCvg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.StorageDependenciesAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.StorageDependenciesAttribute.html",
+          "hash": "AdoWyJKuVc9RAhvJNEQQVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.TemplateGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.TemplateGroup.html",
+          "hash": "91KLOKkcERhs5cPBKmierA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.PersonTemplate.NetworkEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.PersonTemplate.NetworkEntry.html",
+          "hash": "NrxGJRxnLbylIf+7jhd3oA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.PersonTemplate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.PersonTemplate.html",
+          "hash": "t0nBDuW1YSWPo/Jxt9fbpA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.SystemTemplate.Vulnerability.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.SystemTemplate.Vulnerability.html",
+          "hash": "DDkG/BiF1Xyn8JhRWIlsoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.SystemTemplate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.SystemTemplate.html",
+          "hash": "2fcM/OOslKzRr8wxZI4BFQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.WorldTemplate.PersonGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.WorldTemplate.PersonGroup.html",
+          "hash": "YzCS3W6dd3kTkiAclhsebw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.WorldTemplate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.WorldTemplate.html",
+          "hash": "PxlKXsDdCWYfc27lS+gwGg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.Templates.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.Templates.html",
+          "hash": "ssPPyyqmEpbZlgs1KwjoxQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.WorldSpawn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.WorldSpawn.html",
+          "hash": "o7hHGFhbFym7hhx84bCXjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.YieldToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.YieldToken.html",
+          "hash": "RvcotNbORf9P8oY2b04IFA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.html",
+          "hash": "L8Q/tbKrlen+kiG8yAQmPg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.ServerEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.ServerEvent.html",
+          "hash": "b/iefyql04KJdHABw4nNFA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Util.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Util.html",
+          "hash": "O7Em52wytwetLQNVr+ixeA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.html",
+          "hash": "KCvSqWwKtYix9bq/FFhFSw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "lfJB5VnmnzFr56a+EPcJ3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "S2onxKiD2nfNw1Ui1LY09A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "hDBU4kGn+mP6PDahE54Z7Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "gB8AESyvNru97tzIZofEEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "icon.png",
+      "output": {
+        "resource": {
+          "relative_path": "icon.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "2me0D4udzkuZEsJml0Z2oQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "y2gsNRVRM/rjPaHLD0gLHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 3
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 122,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

@@ -1,0 +1,725 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct IPAddressRange
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct IPAddressRange
+   ">
+    <meta name="generator" content="docfx 2.53.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="HacknetSharp.Server.IPAddressRange">
+  
+  
+  <h1 id="HacknetSharp_Server_IPAddressRange" data-uid="HacknetSharp.Server.IPAddressRange" class="text-break">Struct IPAddressRange
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a CIDR IP range (or a single IP address)</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
+  <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
+  <h5 id="HacknetSharp_Server_IPAddressRange_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct IPAddressRange : IEquatable&lt;IPAddressRange&gt;</code></pre>
+  </div>
+  <h5 id="HacknetSharp_Server_IPAddressRange_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Internally, the prefix is stored in a 16-byte buffer purely for having a single struct to use between IPv4 and IPv6</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange__ctor_System_Net_IPAddress_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.%23ctor(System.Net.IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L109">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange__ctor_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange__ctor_System_Net_IPAddress_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor(System.Net.IPAddress)">IPAddressRange(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a> from the specified <span class="xref">System.Net.IPAddress</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPAddressRange(IPAddress address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>Address to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when failed to convert address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange__ctor_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L55">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange__ctor_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange__ctor_System_String_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor(System.String)">IPAddressRange(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a> with the provided CIDR range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPAddressRange(string cidrString)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">cidrString</span></td>
+        <td><p>CIDR range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Throws on failure to parse address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_AddressFamily.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.AddressFamily%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L43">View Source</a>
+  </span>
+  <h4 id="HacknetSharp_Server_IPAddressRange_AddressFamily" data-uid="HacknetSharp.Server.IPAddressRange.AddressFamily">AddressFamily</h4>
+  <div class="markdown level1 summary"><p>Address family of this range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly AddressFamily AddressFamily</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.Sockets.AddressFamily</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_PrefixBits.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.PrefixBits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L48">View Source</a>
+  </span>
+  <h4 id="HacknetSharp_Server_IPAddressRange_PrefixBits" data-uid="HacknetSharp.Server.IPAddressRange.PrefixBits">PrefixBits</h4>
+  <div class="markdown level1 summary"><p>Number of prefix bits for this range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly byte PrefixBits</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Contains_System_Net_IPAddress_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L221">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_Contains_" data-uid="HacknetSharp.Server.IPAddressRange.Contains*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_Contains_System_Net_IPAddress_" data-uid="HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)">Contains(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Checks if address is contained in range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(IPAddress address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>Address to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if this range contains the specified IP address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when failed to parse address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Equals_HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L274">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_Equals_" data-uid="HacknetSharp.Server.IPAddressRange.Equals*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_Equals_HacknetSharp_Server_IPAddressRange_" data-uid="HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)">Equals(IPAddressRange)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(IPAddressRange other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Equals_System_Object_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L282">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_Equals_" data-uid="HacknetSharp.Server.IPAddressRange.Equals*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_Equals_System_Object_" data-uid="HacknetSharp.Server.IPAddressRange.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_GetHashCode.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L285">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_GetHashCode_" data-uid="HacknetSharp.Server.IPAddressRange.GetHashCode*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_GetHashCode" data-uid="HacknetSharp.Server.IPAddressRange.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_OnHost_HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.OnHost(HacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L259">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_OnHost_" data-uid="HacknetSharp.Server.IPAddressRange.OnHost*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_OnHost_HacknetSharp_Server_IPAddressRange_" data-uid="HacknetSharp.Server.IPAddressRange.OnHost(HacknetSharp.Server.IPAddressRange)">OnHost(IPAddressRange)</h4>
+  <div class="markdown level1 summary"><p>Applies host to this address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPAddressRange OnHost(IPAddressRange host)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>Host to apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a></td>
+        <td><p>Converted address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown if this instance isn't a full 32-bit address or if <code data-dev-comment-type="paramref" class="paramref">host</code> isn't an IPv4 address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_ToString.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L299">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_ToString_" data-uid="HacknetSharp.Server.IPAddressRange.ToString*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_ToString" data-uid="HacknetSharp.Server.IPAddressRange.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.ValueType.ToString()</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_System_UInt32__System_UInt32__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask(System.UInt32%40%2CSystem.UInt32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L242">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_" data-uid="HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_System_UInt32__System_UInt32__" data-uid="HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask(System.UInt32@,System.UInt32@)">TryGetIPv4HostAndSubnetMask(out UInt32, out UInt32)</h4>
+  <div class="markdown level1 summary"><p>Attempts to get host and subnet components from this range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>Host for this range.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">subnetMask</span></td>
+        <td><p>Subnet mask of this range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>False if not an IPv4 address range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_TryParse_System_String_System_Boolean_HacknetSharp_Server_IPAddressRange__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.TryParse(System.String%2CSystem.Boolean%2CHacknetSharp.Server.IPAddressRange%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L146">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_IPAddressRange_TryParse_" data-uid="HacknetSharp.Server.IPAddressRange.TryParse*"></a>
+  <h4 id="HacknetSharp_Server_IPAddressRange_TryParse_System_String_System_Boolean_HacknetSharp_Server_IPAddressRange__" data-uid="HacknetSharp.Server.IPAddressRange.TryParse(System.String,System.Boolean,HacknetSharp.Server.IPAddressRange@)">TryParse(String, Boolean, out IPAddressRange)</h4>
+  <div class="markdown level1 summary"><p>Attempts to parse a CIDR string to an address range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryParse(string cidrString, bool allowRange, out IPAddressRange value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">cidrString</span></td>
+        <td><p>CIDR range string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRange</span></td>
+        <td><p>If true, allows ranges instead of just single addresses.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Parsed value if successful.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Returns true if successfully parsed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IPAddressRange.cs/#L35" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

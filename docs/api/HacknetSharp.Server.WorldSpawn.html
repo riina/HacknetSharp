@@ -1,0 +1,1373 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WorldSpawn
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WorldSpawn
+   ">
+    <meta name="generator" content="docfx 2.53.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="HacknetSharp.Server.WorldSpawn">
+  
+  
+  <h1 id="HacknetSharp_Server_WorldSpawn" data-uid="HacknetSharp.Server.WorldSpawn" class="text-break">Class WorldSpawn
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a world-level spawn/despawn manager.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">WorldSpawn</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
+  <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
+  <h5 id="HacknetSharp_Server_WorldSpawn_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class WorldSpawn</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn__ctor_HacknetSharp_Server_IServerDatabase_HacknetSharp_Server_Models_WorldModel_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.%23ctor(HacknetSharp.Server.IServerDatabase%2CHacknetSharp.Server.Models.WorldModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L30">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn__ctor_" data-uid="HacknetSharp.Server.WorldSpawn.#ctor*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn__ctor_HacknetSharp_Server_IServerDatabase_HacknetSharp_Server_Models_WorldModel_" data-uid="HacknetSharp.Server.WorldSpawn.#ctor(HacknetSharp.Server.IServerDatabase,HacknetSharp.Server.Models.WorldModel)">WorldSpawn(IServerDatabase, WorldModel)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.WorldSpawn.html">WorldSpawn</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WorldSpawn(IServerDatabase database, WorldModel world)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IServerDatabase.html">IServerDatabase</a></td>
+        <td><span class="parametername">database</span></td>
+        <td><p>Database to work on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.WorldModel.html">WorldModel</a></td>
+        <td><span class="parametername">world</span></td>
+        <td><p>World model to work on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Database.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Database%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L18">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Database_" data-uid="HacknetSharp.Server.WorldSpawn.Database*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Database" data-uid="HacknetSharp.Server.WorldSpawn.Database">Database</h4>
+  <div class="markdown level1 summary"><p>Server database this instance is backed by.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IServerDatabase Database { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IServerDatabase.html">IServerDatabase</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_World.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.World%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L23">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_World_" data-uid="HacknetSharp.Server.WorldSpawn.World*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_World" data-uid="HacknetSharp.Server.WorldSpawn.World">World</h4>
+  <div class="markdown level1 summary"><p>World this spawner belongs to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected WorldModel World { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.WorldModel.html">WorldModel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Connection_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_SystemModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Connection(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.SystemModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L144">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Connection_" data-uid="HacknetSharp.Server.WorldSpawn.Connection*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Connection_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_SystemModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.Connection(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.SystemModel,System.Boolean)">Connection(SystemModel, SystemModel, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a new A-to-B system knowledge connection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KnownSystemModel Connection(SystemModel from, SystemModel to, bool local)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">from</span></td>
+        <td><p>System that knows the other.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">to</span></td>
+        <td><p>System that is known by the other.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">local</span></td>
+        <td><p>If true, treat as knowing the other system as a local status-queryable system.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.KnownSystemModel.html">KnownSystemModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Duplicate_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Duplicate(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CHacknetSharp.Server.Models.FileModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L396">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Duplicate_" data-uid="HacknetSharp.Server.WorldSpawn.Duplicate*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Duplicate_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.Duplicate(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel,System.Boolean)">Duplicate(SystemModel, LoginModel, String, String, FileModel, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Duplicates a file, non-recursive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileModel Duplicate(SystemModel system, LoginModel owner, string name, string path, FileModel existing, bool hidden = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>System file resides on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>File owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Filename.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><span class="parametername">existing</span></td>
+        <td><p>Source file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>If true, hide from normal filesystem.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>File already exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_FileFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.FileFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L267">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_FileFile_" data-uid="HacknetSharp.Server.WorldSpawn.FileFile*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_FileFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.FileFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)">FileFile(SystemModel, LoginModel, String, String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a file-backed file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileModel FileFile(SystemModel system, LoginModel owner, string name, string path, string file, bool hidden = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>System file resides on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>File owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Filename.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">file</span></td>
+        <td><p>Source file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>If true, hide from normal filesystem.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>File already exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Folder_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Folder(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L227">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Folder_" data-uid="HacknetSharp.Server.WorldSpawn.Folder*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Folder_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.Folder(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)">Folder(SystemModel, LoginModel, String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a folder.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileModel Folder(SystemModel system, LoginModel owner, string name, string path, bool hidden = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>System file resides on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>File owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Filename.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>If true, hide from normal filesystem.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>File already exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Login_HacknetSharp_Server_Models_SystemModel_System_String_System_Byte___System_Byte___System_Boolean_HacknetSharp_Server_Models_PersonModel_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Login(HacknetSharp.Server.Models.SystemModel%2CSystem.String%2CSystem.Byte%5B%5D%2CSystem.Byte%5B%5D%2CSystem.Boolean%2CHacknetSharp.Server.Models.PersonModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L198">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Login_" data-uid="HacknetSharp.Server.WorldSpawn.Login*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Login_HacknetSharp_Server_Models_SystemModel_System_String_System_Byte___System_Byte___System_Boolean_HacknetSharp_Server_Models_PersonModel_" data-uid="HacknetSharp.Server.WorldSpawn.Login(HacknetSharp.Server.Models.SystemModel,System.String,System.Byte[],System.Byte[],System.Boolean,HacknetSharp.Server.Models.PersonModel)">Login(SystemModel, String, Byte[], Byte[], Boolean, PersonModel)</h4>
+  <div class="markdown level1 summary"><p>Creates a new login.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LoginModel Login(SystemModel owner, string user, byte[] hash, byte[] salt, bool admin, PersonModel person = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>System the login belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">user</span></td>
+        <td><p>Username to make login for.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">hash</span></td>
+        <td><p>Password hash.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>Password salt.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">admin</span></td>
+        <td><p>If true, admin on system.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.PersonModel.html">PersonModel</a></td>
+        <td><span class="parametername">person</span></td>
+        <td><p>Person to associate login with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_System_String_System_String_HacknetSharp_Server_Models_LoginModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel%2CSystem.String%2CSystem.String%2CHacknetSharp.Server.Models.LoginModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L467">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_MoveFile_" data-uid="HacknetSharp.Server.WorldSpawn.MoveFile*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_System_String_System_String_HacknetSharp_Server_Models_LoginModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,System.String,System.String,HacknetSharp.Server.Models.LoginModel,System.Boolean)">MoveFile(FileModel, String, String, LoginModel, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Moves a file using file access.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveFile(FileModel file, string targetName, string targetPath, LoginModel login, bool hidden = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><span class="parametername">file</span></td>
+        <td><p>File to move.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetName</span></td>
+        <td><p>Target filename.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetPath</span></td>
+        <td><p>Target directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">login</span></td>
+        <td><p>Login to attempt operation with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>If true, hide from normal filesystem/</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>Thrown when there is an issue preventing the operation (e.g. access or already existing).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Person_System_String_System_String_HacknetSharp_Server_Models_UserModel_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Person(System.String%2CSystem.String%2CHacknetSharp.Server.Models.UserModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L43">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Person_" data-uid="HacknetSharp.Server.WorldSpawn.Person*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Person_System_String_System_String_HacknetSharp_Server_Models_UserModel_" data-uid="HacknetSharp.Server.WorldSpawn.Person(System.String,System.String,HacknetSharp.Server.Models.UserModel)">Person(String, String, UserModel)</h4>
+  <div class="markdown level1 summary"><p>Creates a new person.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PersonModel Person(string name, string userName, UserModel user = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Proper name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userName</span></td>
+        <td><p>Username.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.UserModel.html">UserModel</a></td>
+        <td><span class="parametername">user</span></td>
+        <td><p>User model if associated with a user.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.PersonModel.html">PersonModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L353">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_ProgFile_" data-uid="HacknetSharp.Server.WorldSpawn.ProgFile*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)">ProgFile(SystemModel, LoginModel, String, String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a program file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileModel ProgFile(SystemModel system, LoginModel owner, string name, string path, string progCode, bool hidden = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>System file resides on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>File owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Filename.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">progCode</span></td>
+        <td><p>ProgCode or hargv (hidden argv).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>If true, hide from normal filesystem.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>File already exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_RemoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_LoginModel_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.RemoveFile(HacknetSharp.Server.Models.FileModel%2CHacknetSharp.Server.Models.LoginModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L532">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_RemoveFile_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveFile*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_RemoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_LoginModel_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.LoginModel)">RemoveFile(FileModel, LoginModel)</h4>
+  <div class="markdown level1 summary"><p>Removes a file from the world, recursively.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveFile(FileModel file, LoginModel login)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><span class="parametername">file</span></td>
+        <td><p>Model to remove.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">login</span></td>
+        <td><p>Login to attempt operation with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_RemovePerson_HacknetSharp_Server_Models_PersonModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.RemovePerson(HacknetSharp.Server.Models.PersonModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L450">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_RemovePerson_" data-uid="HacknetSharp.Server.WorldSpawn.RemovePerson*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_RemovePerson_HacknetSharp_Server_Models_PersonModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.RemovePerson(HacknetSharp.Server.Models.PersonModel,System.Boolean)">RemovePerson(PersonModel, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Removes a person from the world.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemovePerson(PersonModel person, bool isCascade = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.PersonModel.html">PersonModel</a></td>
+        <td><span class="parametername">person</span></td>
+        <td><p>Model to remove.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isCascade</span></td>
+        <td><p>If true, does not directly delete from database.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_RemoveSystem_HacknetSharp_Server_Models_SystemModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.RemoveSystem(HacknetSharp.Server.Models.SystemModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L435">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_RemoveSystem_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveSystem*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_RemoveSystem_HacknetSharp_Server_Models_SystemModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveSystem(HacknetSharp.Server.Models.SystemModel,System.Boolean)">RemoveSystem(SystemModel, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Removes a system from the world.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveSystem(SystemModel system, bool isCascade = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>Model to remove.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isCascade</span></td>
+        <td><p>If true, does not directly delete from database.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_System_HacknetSharp_Server_Templates_SystemTemplate_HacknetSharp_Server_Models_PersonModel_System_Byte___System_Byte___HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.System(HacknetSharp.Server.Templates.SystemTemplate%2CHacknetSharp.Server.Models.PersonModel%2CSystem.Byte%5B%5D%2CSystem.Byte%5B%5D%2CHacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L72">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_System_" data-uid="HacknetSharp.Server.WorldSpawn.System*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_System_HacknetSharp_Server_Templates_SystemTemplate_HacknetSharp_Server_Models_PersonModel_System_Byte___System_Byte___HacknetSharp_Server_IPAddressRange_" data-uid="HacknetSharp.Server.WorldSpawn.System(HacknetSharp.Server.Templates.SystemTemplate,HacknetSharp.Server.Models.PersonModel,System.Byte[],System.Byte[],HacknetSharp.Server.IPAddressRange)">System(SystemTemplate, PersonModel, Byte[], Byte[], IPAddressRange)</h4>
+  <div class="markdown level1 summary"><p>Creates a new system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt, IPAddressRange range)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Templates.SystemTemplate.html">SystemTemplate</a></td>
+        <td><span class="parametername">template</span></td>
+        <td><p>System template.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.PersonModel.html">PersonModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>System owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">hash</span></td>
+        <td><p>Owner password hash.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>Owner password salt.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a></td>
+        <td><span class="parametername">range</span></td>
+        <td><p>Address range or single address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ApplicationException</span></td>
+        <td><p>Thrown when address range is not IPv4 range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_System_HacknetSharp_Server_Templates_SystemTemplate_HacknetSharp_Server_Models_PersonModel_System_Byte___System_Byte___System_UInt32_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.System(HacknetSharp.Server.Templates.SystemTemplate%2CHacknetSharp.Server.Models.PersonModel%2CSystem.Byte%5B%5D%2CSystem.Byte%5B%5D%2CSystem.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L115">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_System_" data-uid="HacknetSharp.Server.WorldSpawn.System*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_System_HacknetSharp_Server_Templates_SystemTemplate_HacknetSharp_Server_Models_PersonModel_System_Byte___System_Byte___System_UInt32_" data-uid="HacknetSharp.Server.WorldSpawn.System(HacknetSharp.Server.Templates.SystemTemplate,HacknetSharp.Server.Models.PersonModel,System.Byte[],System.Byte[],System.UInt32)">System(SystemTemplate, PersonModel, Byte[], Byte[], UInt32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt, uint address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Templates.SystemTemplate.html">SystemTemplate</a></td>
+        <td><span class="parametername">template</span></td>
+        <td><p>System template.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.PersonModel.html">PersonModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>System owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">hash</span></td>
+        <td><p>Owner password hash.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>Owner password salt.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>Address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L310">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_TextFile_" data-uid="HacknetSharp.Server.WorldSpawn.TextFile*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)">TextFile(SystemModel, LoginModel, String, String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a text file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileModel TextFile(SystemModel system, LoginModel owner, string name, string path, string content, bool hidden = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>System file resides on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>File owner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Filename.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>Text content.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>If true, hide from normal filesystem.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>File already exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_Vulnerability_HacknetSharp_Server_Models_SystemModel_System_String_System_String_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel%2CSystem.String%2CSystem.String%2CSystem.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L170">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_WorldSpawn_Vulnerability_" data-uid="HacknetSharp.Server.WorldSpawn.Vulnerability*"></a>
+  <h4 id="HacknetSharp_Server_WorldSpawn_Vulnerability_HacknetSharp_Server_Models_SystemModel_System_String_System_String_System_Int32_System_String_" data-uid="HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel,System.String,System.String,System.Int32,System.String)">Vulnerability(SystemModel, String, String, Int32, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new vulnerability.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VulnerabilityModel Vulnerability(SystemModel system, string protocol, string entryPoint, int exploits, string cve = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>System for vulnerability.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">protocol</span></td>
+        <td><p>Vulnerability protocol (e.g. &quot;ssh&quot;).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">entryPoint</span></td>
+        <td><p>Vulnerability entrypoint/port (e.g. &quot;22&quot;).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">exploits</span></td>
+        <td><p>Exploit count.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">cve</span></td>
+        <td><p>Optional CVE number (for fun).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.VulnerabilityModel.html">VulnerabilityModel</a></td>
+        <td><p>Generated model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
