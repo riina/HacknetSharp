@@ -73,13 +73,9 @@ namespace HacknetSharp.Server
 
         public override void Complete(CompletionKind completionKind)
         {
-            Clean(completionKind);
-        }
-
-        private void Clean(CompletionKind completionKind)
-        {
             if (_cleaned) return;
             _cleaned = true;
+            Completed = completionKind;
             if (completionKind != CompletionKind.Normal)
             {
                 ProgramContext.User.WriteEventSafe(Program.Output("[Shell terminated]"));
@@ -91,6 +87,8 @@ namespace HacknetSharp.Server
                 ProgramContext.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
                 ProgramContext.User.FlushSafeAsync();
             }
+
+            ServerUtil.SignalUnbindProcess(ProgramContext, this);
         }
     }
 }

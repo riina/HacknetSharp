@@ -71,7 +71,7 @@ namespace hss.Runnables
                     : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
 
                 foreach (var world in worlds)
-                    Console.WriteLine($"{world.Name}:{world.Key} ({world.Name})");
+                    Console.WriteLine($"{world.Name}:{world.Key} ({world.Label})");
 
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 

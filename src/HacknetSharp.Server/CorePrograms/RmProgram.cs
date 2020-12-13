@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -36,6 +38,13 @@ namespace HacknetSharp.Server.CorePrograms
                     {
                         try
                         {
+                            string fp = closest.FullPath;
+                            if (closest.Kind == FileModel.FileKind.Folder && system.Files.Any(f => f.Path == fp))
+                            {
+                                user.WriteEventSafe(Output($"{inputFmt}: Directory not empty\n"));
+                                user.FlushSafeAsync();
+                                yield break;
+                            }
                             spawn.RemoveFile(closest, login);
                         }
                         catch (IOException e)

@@ -19,8 +19,7 @@ namespace HacknetSharp.Server.Templates
             public string? AddressRange { get; set; }
         }
 
-        public virtual void ApplyTemplate(IServerDatabase database, Spawn spawn, TemplateGroup templates,
-            WorldModel world)
+        public virtual void ApplyTemplate(IServerDatabase database, TemplateGroup templates, WorldModel world)
         {
             world.Label = Label ?? throw new InvalidOperationException($"{nameof(Label)} is null.");
             world.PlayerSystemTemplate =

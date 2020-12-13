@@ -59,8 +59,9 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            user.WriteEventSafe(Output($"Running {protocol} exploit...\n"));
-            user.FlushSafeAsync();
+
+            user.WriteEventSafe(Output($"«««« RUNNING {argv[0]} »»»»\n"));
+            ServerUtil.SignalUnbindProcess(context, null);
 
             yield return Delay(hackTime);
 
@@ -69,7 +70,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             openVulns.Add(vuln);
 
-            user.WriteEventSafe(Output("Done\n"));
+            user.WriteEventSafe(Output($"\n«««« {argv[0]} COMPLETE »»»»\n"));
             user.FlushSafeAsync();
         }
     }

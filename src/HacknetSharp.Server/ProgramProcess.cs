@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
-using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server
 {
     public class ProgramProcess : Process
     {
-        private readonly ProgramContext _context;
+        private ProgramContext _programContext;
         private readonly IEnumerator<YieldToken?> _enumerator;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
         public ProgramProcess(ProgramContext context, Program program) : base(context)
         {
-            _context = context;
+            _programContext = context;
             var argv = context.Argv;
             var env = context.Shell.Variables;
             int count = argv.Length;
@@ -23,7 +22,7 @@ namespace HacknetSharp.Server
 
         public override bool Update(IWorld world)
         {
-            if (!_context.User.Connected) return true;
+            if (!_programContext.User.Connected) return true;
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
                 else _currentToken = null;
@@ -42,39 +41,32 @@ namespace HacknetSharp.Server
         {
             if (_cleaned) return;
             _cleaned = true;
-            if (_context.IsAI)
-                return;
+            Completed = completionKind;
 
-            if (!_context.User.Connected) return;
+            if (_programContext.IsAI) return;
 
-            if (_context.Type == ProgramContext.InvocationType.StartUp)
-                _context.Person.StartedUp = true;
+            if (!_programContext.User.Connected) return;
+
+            if (_programContext.Type == ProgramContext.InvocationType.StartUp) _programContext.Person.StartedUp = true;
 
             if (completionKind != CompletionKind.Normal)
             {
-                _context.User.WriteEventSafe(Program.Output("[Process terminated]"));
-                _context.User.FlushSafeAsync();
+                _programContext.User.WriteEventSafe(
+                    Program.Output($"[Process {_programContext.Pid} {_programContext.Argv[0]} terminated]\n"));
+                _programContext.User.FlushSafeAsync();
             }
 
-            var shellChain = _context.Person.ShellChain;
-            uint addr = 0;
-            if (shellChain.Count != 0)
-                addr = shellChain[^1].ProgramContext.System.Address;
-            string path = _context.Shell.WorkingDirectory;
-            var chainLine = _context.ChainLine;
-            if (_context.Type == ProgramContext.InvocationType.StartUp && _context.System.ConnectCommandLine != null)
-                chainLine ??= Arguments.SplitCommandLine(_context.System.ConnectCommandLine);
+            var chainLine = _programContext.ChainLine;
+            if (_programContext.Type == ProgramContext.InvocationType.StartUp &&
+                _programContext.System.ConnectCommandLine != null)
+                chainLine ??= Arguments.SplitCommandLine(_programContext.System.ConnectCommandLine);
             if (chainLine != null && chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
             {
-                _context.ChainLine = chainLine;
+                _programContext.ChainLine = chainLine;
                 return;
             }
 
-            _context.User.WriteEventSafe(new OperationCompleteEvent
-            {
-                Operation = _context.OperationId, Address = addr, Path = path
-            });
-            _context.User.FlushSafeAsync();
+            ServerUtil.SignalUnbindProcess(_programContext, this);
         }
     }
 }

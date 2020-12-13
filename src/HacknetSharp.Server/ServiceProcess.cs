@@ -33,13 +33,9 @@ namespace HacknetSharp.Server
 
         public override void Complete(CompletionKind completionKind)
         {
-            Clean();
-        }
-
-        private void Clean()
-        {
             if (_cleaned) return;
             _cleaned = true;
+            Completed = completionKind;
         }
     }
 }

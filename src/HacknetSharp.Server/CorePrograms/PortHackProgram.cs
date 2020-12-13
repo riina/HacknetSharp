@@ -30,8 +30,8 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            user.WriteEventSafe(Output("Executing login bruteforce...\n"));
-            user.FlushSafeAsync();
+            user.WriteEventSafe(Output("«««« RUNNING PORTHACK »»»»\n"));
+            ServerUtil.SignalUnbindProcess(context, null);
 
             yield return Delay(6.0f);
 
@@ -42,7 +42,7 @@ namespace HacknetSharp.Server.CorePrograms
             var env = context.Shell.Variables;
             env["USER"] = un;
             env["PASS"] = pw;
-            user.WriteEventSafe(Output($"$USER: {un}\n$PASS: {pw}\n"));
+            user.WriteEventSafe(Output($"\n«««« OPERATION COMPLETE »»»»\n$USER: {un}\n$PASS: {pw}\n"));
             user.FlushSafeAsync();
         }
     }

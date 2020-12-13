@@ -96,10 +96,11 @@ namespace hss
 
         public void CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
+            if (process.Completed != null) return;
             var context = process.Context;
             var processes = context.System.Processes;
             uint pid = context.Pid;
-            bool removed = processes.Remove(pid);
+            processes.Remove(pid);
             if (process is ShellProcess shProc)
             {
                 var chain = context.Person.ShellChain;
@@ -109,7 +110,6 @@ namespace hss
             }
 
             process.Complete(completionKind);
-            process.Completed = completionKind;
 
             if (context is ProgramContext pc)
             {
@@ -119,17 +119,6 @@ namespace hss
                     var genPc = ServerUtil.InitTentativeProgramContext(pc.World, pc.OperationId, pc.User, pc.Person,
                         chainLine, conWidth: pc.ConWidth);
                     ExecuteCommand(genPc);
-                }
-                else
-                {
-                    uint shellPid = pc.Shell.ProgramContext.Pid;
-                    if (removed &&
-                        processes.Values.All(p => p.Context.Pid == shellPid || p.Context.ParentPid != shellPid) &&
-                        pc.Person.ShellChain.Count != 0)
-                    {
-                        pc.User.WriteEventSafe(ServerUtil.CreatePromptEvent(pc.Person.ShellChain[^1]));
-                        pc.User.FlushSafeAsync();
-                    }
                 }
             }
 

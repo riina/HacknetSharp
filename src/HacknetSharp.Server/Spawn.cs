@@ -37,7 +37,7 @@ namespace HacknetSharp.Server
                 Persons = new HashSet<PersonModel>(),
                 Systems = new HashSet<SystemModel>()
             };
-            template.ApplyTemplate(_database, this, templates, world);
+            template.ApplyTemplate(_database, templates, world);
             _database.Add(world);
             return world;
         }
