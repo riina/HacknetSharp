@@ -94,7 +94,7 @@ namespace HacknetSharp.Test
         public void Test_Args()
         {
             Assert.AreEqual(new[] {"li\"yue", "\"ki \\nda\" ", "\"sucks", "bro\"", "\"lm\"ao\""},
-                Arguments.SplitCommandLine("li\\\"yue \"\\\"ki \\nda\\\" \" \\\"sucks bro\\\" \\\"lm\\\"ao\\\""));
+                ServerUtil.SplitCommandLine("li\\\"yue \"\\\"ki \\nda\\\" \" \\\"sucks bro\\\" \\\"lm\\\"ao\\\""));
         }
     }
 }

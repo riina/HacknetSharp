@@ -2,6 +2,9 @@
 
 namespace HacknetSharp.Server
 {
+    /// <summary>
+    /// Represents a running service.
+    /// </summary>
     public class ServiceProcess : Process
     {
         private readonly ServiceContext _context;
@@ -9,12 +12,18 @@ namespace HacknetSharp.Server
         private YieldToken? _currentToken;
         private bool _cleaned;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ServiceProcess"/>.
+        /// </summary>
+        /// <param name="context">Service context.</param>
+        /// <param name="service">Service this process will use.</param>
         public ServiceProcess(ServiceContext context, Service service) : base(context)
         {
             _context = context;
             _enumerator = service.Run(context);
         }
 
+        /// <inheritdoc />
         public override bool Update(IWorld world)
         {
             if (_currentToken != null)
@@ -31,6 +40,7 @@ namespace HacknetSharp.Server
             return false;
         }
 
+        /// <inheritdoc />
         public override void Complete(CompletionKind completionKind)
         {
             if (_cleaned) return;

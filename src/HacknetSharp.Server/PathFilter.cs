@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace HacknetSharp.Server
 {
+    /// <summary>
+    /// Utility for generating rudimentary glob-ish filters.
+    /// </summary>
     public static class PathFilter
     {
         /// <summary>

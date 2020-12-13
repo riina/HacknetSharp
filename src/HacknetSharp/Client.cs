@@ -16,13 +16,36 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace HacknetSharp
 {
+    /// <summary>
+    /// Represents a <see cref="HacknetSharp"/> protocol client.
+    /// </summary>
     public class Client : IInboundConnection<ServerEvent>, IOutboundConnection<ClientEvent>
     {
+        /// <summary>
+        /// Server this client was instantiated with.
+        /// </summary>
         public string Server { get; }
+
+        /// <summary>
+        /// Port this client was instantiated with.
+        /// </summary>
         public ushort Port { get; }
+
+        /// <summary>
+        /// Username this client was instantiated with.
+        /// </summary>
         public string User { get; }
+
+        /// <summary>
+        /// Delegate for event responses.
+        /// </summary>
         public Action<ServerEvent> OnReceivedEvent { get; set; } = null!;
+
+        /// <summary>
+        /// Delegate for disconnect event responses.
+        /// </summary>
         public Action<ServerDisconnectEvent> OnDisconnect { get; set; } = null!;
+
         private string? _pass;
         private string? _registrationToken;
         private readonly ILogger _logger;
@@ -39,6 +62,15 @@ namespace HacknetSharp
         private readonly Queue<ClientEvent> _writeEventQueue;
         private readonly ConcurrentQueue<ArraySegment<byte>> _writeQueue;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Client"/>.
+        /// </summary>
+        /// <param name="server">Server hostname.</param>
+        /// <param name="port">Server port.</param>
+        /// <param name="user">Username.</param>
+        /// <param name="pass">Password.</param>
+        /// <param name="registrationToken">User registration token.</param>
+        /// <param name="logger">Logger implementation.</param>
         public Client(string server, ushort port, string user, string pass, string? registrationToken = null,
             ILogger? logger = null)
         {
@@ -58,6 +90,14 @@ namespace HacknetSharp
             _writeQueue = new ConcurrentQueue<ArraySegment<byte>>();
         }
 
+        /// <summary>
+        /// Attempts connection to server.
+        /// </summary>
+        /// <returns>Task</returns>
+        /// <exception cref="LoginException">Invalid login was received.</exception>
+        /// <exception cref="ProtocolException">Invalid event was received.</exception>
+        /// <exception cref="SocketException">Socket failed to connect.</exception>
+        /// <exception cref="InvalidOperationException">Operation not valid for current state of object.</exception>
         public async Task<UserInfoEvent> ConnectAsync()
         {
             Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
@@ -142,7 +182,10 @@ namespace HacknetSharp
             throw new TaskCanceledException();
         }
 
-        // No throws
+        /// <summary>
+        /// Disconnects client and disposes this instance. Does not throw.
+        /// </summary>
+        /// <returns>Task representing this async operation.</returns>
         public async Task DisposeAsync()
         {
             if (_state == LifecycleState.Disposed) return;
@@ -210,9 +253,11 @@ namespace HacknetSharp
             return false;
         }
 
+        /// <inheritdoc />
         public Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis) =>
             WaitForAsync(predicate, pollMillis, CancellationToken.None);
 
+        /// <inheritdoc />
         public async Task<ServerEvent?> WaitForAsync(Func<ServerEvent, bool> predicate, int pollMillis,
             CancellationToken cancellationToken)
         {
@@ -233,6 +278,7 @@ namespace HacknetSharp
             throw new TaskCanceledException();
         }
 
+        /// <inheritdoc />
         public IEnumerable<ServerEvent> GetEvents(ICollection<ServerEvent>? output = null)
         {
             _lockInOp.WaitOne();
@@ -246,6 +292,7 @@ namespace HacknetSharp
             return output;
         }
 
+        /// <inheritdoc />
         public void DiscardEvents()
         {
             _lockInOp.WaitOne();
@@ -253,6 +300,7 @@ namespace HacknetSharp
             _lockInOp.Set();
         }
 
+        /// <inheritdoc />
         public void WriteEvent(ClientEvent evt)
         {
             Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
@@ -260,6 +308,7 @@ namespace HacknetSharp
                 _writeEventQueue.Enqueue(evt);
         }
 
+        /// <inheritdoc />
         public void WriteEvents(IEnumerable<ClientEvent> events)
         {
             Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
@@ -268,8 +317,10 @@ namespace HacknetSharp
                     _writeEventQueue.Enqueue(evt);
         }
 
+        /// <inheritdoc />
         public Task FlushAsync() => FlushAsync(CancellationToken.None);
 
+        /// <inheritdoc />
         public async Task FlushAsync(CancellationToken cancellationToken)
         {
             Util.RequireState(_state, LifecycleState.Starting, LifecycleState.Active);
@@ -299,12 +350,23 @@ namespace HacknetSharp
             }
         }
 
+        /// <summary>
+        /// If true, this object has been disposed.
+        /// </summary>
         public bool Disposed => _state >= LifecycleState.Dispose;
 
+        /// <inheritdoc />
         public bool Connected => _connected;
 
+        /// <summary>
+        /// Exception thrown when login has failed according to server response.
+        /// </summary>
         public class LoginException : Exception
         {
+            /// <summary>
+            /// Create new instance of <see cref="LoginException"/>
+            /// </summary>
+            /// <param name="message">Description message.</param>
             public LoginException(string message) : base(message)
             {
             }

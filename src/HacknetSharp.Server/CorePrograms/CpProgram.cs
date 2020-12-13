@@ -6,11 +6,13 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:cp", "cp", "copy files and directories",
         "copy source files to specified destination",
         "<source>... <dest>", false)]
     public class CpProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

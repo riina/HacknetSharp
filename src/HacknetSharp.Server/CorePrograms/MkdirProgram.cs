@@ -5,11 +5,13 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:mkdir", "mkdir", "make directories",
         "create directories if they don't exist",
         "<dir>...", false)]
     public class MkdirProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

@@ -4,12 +4,25 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
+    <Description>HacknetSharp common core library</Description>
+    <Copyright>Copyright ©2020 teamRokuro</Copyright>
+    <PackageProjectUrl>https://github.com/Lucina/HacknetSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Lucina/HacknetSharp</RepositoryUrl>
+    <Company>teamRokuro</Company>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <PackOnBuild>true</PackOnBuild>
+    <Owners>riina,Lucina</Owners>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageVersion>0.1.0</PackageVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-    <PackageReference Include="Ns" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4"/>
+    <PackageReference Include="Ns" Version="3.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0"/>
   </ItemGroup>
 
 </Project>

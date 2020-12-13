@@ -4,12 +4,14 @@ using System.Text;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:probe", "probe", "probe remote system",
         "probe a system's ports to determine\nwhat vulnerabilities exist on the system\n\n" +
         "target system can be assumed from environment\nvariable \"TARGET\"",
         "[system]", false)]
     public class ProbeProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

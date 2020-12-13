@@ -6,11 +6,13 @@ using System.Text;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:ls", "ls", "list directory contents",
         "list contents of specified directory\nor current working directory",
         "[directory]", false)]
     public class LsProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

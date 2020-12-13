@@ -58,8 +58,11 @@ namespace hss.Sqlite
         /// <inheritdoc />
         public override ServerDatabaseContext CreateDbContext(string[] args)
         {
-            string file = Environment.GetEnvironmentVariable(EnvStorageFile) ?? ServerYaml?.SqliteFile ?? (
-                !_fromMain ? "hakase" : throw new ApplicationException($"ENV {EnvStorageFile} not set"));
+            string? file = Environment.GetEnvironmentVariable(EnvStorageFile);
+            if (file == null && ServerYaml?.DatabaseProperties != null &&
+                ServerYaml.DatabaseProperties.TryGetValue("SqliteFile", out var sqliteFile))
+                file = sqliteFile;
+            file ??= !_fromMain ? "hakase" : throw new ApplicationException($"ENV {EnvStorageFile} not set");
             var ob = new DbContextOptionsBuilder<ServerDatabaseContext>();
 
             ob.UseSqlite($"Data Source={file};",

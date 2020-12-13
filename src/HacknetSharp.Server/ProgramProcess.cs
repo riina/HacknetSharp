@@ -2,13 +2,21 @@
 
 namespace HacknetSharp.Server
 {
+    /// <summary>
+    /// Represents a running program.
+    /// </summary>
     public class ProgramProcess : Process
     {
-        private ProgramContext _programContext;
+        private readonly ProgramContext _programContext;
         private readonly IEnumerator<YieldToken?> _enumerator;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ProgramProcess"/>.
+        /// </summary>
+        /// <param name="context">Program context.</param>
+        /// <param name="program">Program this process will use.</param>
         public ProgramProcess(ProgramContext context, Program program) : base(context)
         {
             _programContext = context;
@@ -20,6 +28,7 @@ namespace HacknetSharp.Server
             _enumerator = program.Run(context);
         }
 
+        /// <inheritdoc />
         public override bool Update(IWorld world)
         {
             if (!_programContext.User.Connected) return true;
@@ -37,13 +46,14 @@ namespace HacknetSharp.Server
             return false;
         }
 
+        /// <inheritdoc />
         public override void Complete(CompletionKind completionKind)
         {
             if (_cleaned) return;
             _cleaned = true;
             Completed = completionKind;
 
-            if (_programContext.IsAI) return;
+            if (_programContext.IsAi) return;
 
             if (!_programContext.User.Connected) return;
 
@@ -59,7 +69,7 @@ namespace HacknetSharp.Server
             var chainLine = _programContext.ChainLine;
             if (_programContext.Type == ProgramContext.InvocationType.StartUp &&
                 _programContext.System.ConnectCommandLine != null)
-                chainLine ??= Arguments.SplitCommandLine(_programContext.System.ConnectCommandLine);
+                chainLine ??= ServerUtil.SplitCommandLine(_programContext.System.ConnectCommandLine);
             if (chainLine != null && chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
             {
                 _programContext.ChainLine = chainLine;

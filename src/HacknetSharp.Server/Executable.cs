@@ -7,15 +7,34 @@ using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server
 {
+    /// <summary>
+    /// Represents an executable with a <see cref="Run"/> method.
+    /// </summary>
+    /// <typeparam name="TExecutableContext">Context type.</typeparam>
     public abstract partial class Executable<TExecutableContext> where TExecutableContext : ProcessContext
     {
+        /// <summary>
+        /// Run this executable with the given context.
+        /// </summary>
+        /// <param name="context">Context to use with this execution.</param>
+        /// <returns>Enumerator that divides execution steps.</returns>
         public abstract IEnumerator<YieldToken?> Run(TExecutableContext context);
 
         #region Utility methods
 
+        /// <summary>
+        /// Gets normalized filesystem path.
+        /// </summary>
+        /// <param name="path">Input path.</param>
+        /// <returns>Normalized path.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetNormalized(string path) => Path.TrimEndingDirectorySeparator(GetFullPath(path, "/"));
 
+        /// <summary>
+        /// Gets filename from path.
+        /// </summary>
+        /// <param name="path">Input path.</param>
+        /// <returns>Extracted filename.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetFileName(string path) => Path.GetFileName(path);
 
@@ -117,6 +136,7 @@ namespace HacknetSharp.Server
                 Token = token;
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world)
             {
                 if (!_executed)
@@ -145,6 +165,7 @@ namespace HacknetSharp.Server
                 Tokens = new List<YieldToken>(tokens);
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world)
             {
                 while (Tokens.Count > 0 && Tokens[0].Yield(world))
@@ -173,6 +194,7 @@ namespace HacknetSharp.Server
                 Tokens = new HashSet<YieldToken>(tokens);
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world)
             {
                 if (Tokens.Count == 0) return true;
@@ -200,6 +222,7 @@ namespace HacknetSharp.Server
                 Delay = delay;
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world) => (Delay -= world.Time - world.PreviousTime) <= 0.0;
         }
 
@@ -208,6 +231,9 @@ namespace HacknetSharp.Server
         /// </summary>
         public class ConditionYieldToken : YieldToken
         {
+            /// <summary>
+            /// Condition for this token.
+            /// </summary>
             public Func<bool> Condition { get; }
 
             /// <summary>
@@ -219,6 +245,7 @@ namespace HacknetSharp.Server
                 Condition = condition;
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world) => Condition();
         }
 
@@ -254,6 +281,7 @@ namespace HacknetSharp.Server
                 Operation = operation;
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world)
             {
                 if (Input != null) return true;
@@ -295,6 +323,7 @@ namespace HacknetSharp.Server
                 Operation = operation;
             }
 
+            /// <inheritdoc />
             public override bool Yield(IWorld world)
             {
                 if (Edit != null) return true;

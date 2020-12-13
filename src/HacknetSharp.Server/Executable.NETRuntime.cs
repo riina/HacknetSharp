@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
+#pragma warning disable 1591
+
 namespace HacknetSharp.Server
 {
     public partial class Executable<TExecutableContext> where TExecutableContext : ProcessContext

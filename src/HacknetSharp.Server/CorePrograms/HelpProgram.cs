@@ -4,11 +4,13 @@ using System.Text;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:help", "help", "show command listing",
         "show help information for all commands\nor details on specific command",
         "[command]", true)]
     public class HelpProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
@@ -101,7 +103,7 @@ namespace HacknetSharp.Server.CorePrograms
         private static void GenReplacements(Dictionary<string, string> replacements, string content)
         {
             replacements.Clear();
-            var line = Arguments.SplitCommandLine(content);
+            var line = ServerUtil.SplitCommandLine(content);
             for (int i = 0; i < line.Length; i++) replacements[$"HARG:{i}"] = line[i];
         }
     }

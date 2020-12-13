@@ -103,8 +103,9 @@ Default replacements:
 `hss new person -n <templateName>`
 * Username(`string?`): fixed username to use
 * Password(`string?`): fixed password to use
-* EmailProviders(`string?`): fixed email providers to use
+* EmailProvider(`string?`): fixed email provider to use
 * PrimaryTemplate(`string?`): fixed primary system template to use
+* PrimaryAddress(`string?`): fixed primary address to use
 * Usernames(`Dictionary<string,float>?`): possible usernames to be selected (weighted)
 * Passwords(`Dictionary<string,float>?`): possible passwords to be selected (weighted)
 * AddressRange(`string?`): CIDR range string for address pool
@@ -144,8 +145,11 @@ name, this is only for listing the worlds with `hss world list`).
 
 `hss new server [-n <configName>]`
 
-* ExternalAddr(`string`): external hostname to bind to.
+* Host(`string`): external hostname to bind to.
+* Port(`ushort`): external port to bind to.
+* DatabaseProperties(`Dictionary<string, string>`): database properties.
 * DefaultWorld(`string`): default world for new players to join.
+* EnableLoggin(`bool`): if true, enable logging.
 
 ## Database operations
 
@@ -153,13 +157,13 @@ The program / EF Core migrations work with a database, and require a
 few environment variables or server.yaml properties to be configured.
 
 * PostgreSQL
-  - hndb_kind/DatabaseKind: must be set to "postgres"
+  - hndb_kind/Kind: must be set to "postgres"
   - hndb_host/PostgresHost: hostname for PostgreSQL server.
   - hndb_name/PostgresDatabase: name of PostgreSQL database to use.
   - hndb_user/PostgresUser: username for PostgreSQL server.
   - hndb_pass: password for PostgreSQL server.
 * SQLite
-  - hndb_kind/DatabaseKind: must be set to "sqlite"
+  - hndb_kind/Kind: must be set to "sqlite"
   - hndb_file/SqliteFile: Path to SQL file to use.
 
 ## Creating initial database / migrating

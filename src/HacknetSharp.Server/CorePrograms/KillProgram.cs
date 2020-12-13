@@ -3,11 +3,13 @@ using System.Linq;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:kill", "kill", "terminate a process",
         "sends a termination signal to a process",
         "<pid>...", false)]
     public class KillProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

@@ -5,6 +5,11 @@
     /// </summary>
     public abstract class YieldToken
     {
+        /// <summary>
+        /// Checks yield condition of this token.
+        /// </summary>
+        /// <param name="world">World to check token against.</param>
+        /// <returns>True if yield is over and execution should resume.</returns>
         public abstract bool Yield(IWorld world);
     }
 }

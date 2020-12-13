@@ -6,11 +6,13 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:rm", "rm", "remove files or directories",
         "remove specified files or directories",
         "<files>...", false)]
     public class RmProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

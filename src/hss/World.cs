@@ -127,19 +127,21 @@ namespace hss
                 CompleteRecurse(p, completionKind);
         }
 
-        public void StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
+        public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
             LoginModel loginModel, string line)
         {
             var programContext =
-                ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, line);
+                ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel,
+                    ServerUtil.SplitCommandLine(line));
             var pid = systemModel.GetAvailablePid();
-            if (pid == null) return;
+            if (pid == null) return null;
             programContext.Pid = pid.Value;
             var process = new ShellProcess(programContext);
             programContext.Shell = process;
             systemModel.Processes.Add(pid.Value, process);
             personModel.ShellChain.Add(process);
             _shellProcesses.Add(process);
+            return process;
         }
 
         public ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel,
@@ -149,7 +151,7 @@ namespace hss
                 return null;
 
             var shell = personModel.ShellChain[^1];
-            var argv = Arguments.SplitCommandLine(line);
+            var argv = ServerUtil.SplitCommandLine(line);
 
             uint? pid;
             if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0]) ||
@@ -190,7 +192,7 @@ namespace hss
             var serviceContext = new ServiceContext
             {
                 World = this,
-                Argv = Arguments.SplitCommandLine(line),
+                Argv = ServerUtil.SplitCommandLine(line),
                 System = systemModel,
                 Person = personModel,
                 Login = loginModel
@@ -212,7 +214,7 @@ namespace hss
         public ProgramInfoAttribute? GetProgramInfo(string? argv)
         {
             if (argv == null) return null;
-            var line = Arguments.SplitCommandLine(argv);
+            var line = ServerUtil.SplitCommandLine(argv);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
             if (Server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
                 return prog.Item2;
@@ -243,9 +245,9 @@ namespace hss
             programContext.Argv = programContext.Type switch
             {
                 ProgramContext.InvocationType.Connect => systemModel.ConnectCommandLine != null
-                    ? Arguments.SplitCommandLine(systemModel.ConnectCommandLine)
+                    ? ServerUtil.SplitCommandLine(systemModel.ConnectCommandLine)
                     : Array.Empty<string>(),
-                ProgramContext.InvocationType.StartUp => Arguments.SplitCommandLine(Model.StartupCommandLine),
+                ProgramContext.InvocationType.StartUp => ServerUtil.SplitCommandLine(Model.StartupCommandLine),
                 _ => programContext.Argv
             };
 
@@ -269,7 +271,7 @@ namespace hss
                 if (programContext.Type != ProgramContext.InvocationType.StartUp &&
                     !systemModel.DirectoryExists("/bin"))
                 {
-                    if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAI)
+                    if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
                         programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
                 }
                 else
@@ -295,7 +297,7 @@ namespace hss
                     }
                     else
                     {
-                        if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAI)
+                        if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
                             programContext.User.WriteEventSafe(new OutputEvent
                             {
                                 Text = $"{programContext.Argv[0]}: command not found\n"
@@ -304,7 +306,7 @@ namespace hss
                 }
             }
 
-            if (!programContext.IsAI)
+            if (!programContext.IsAi)
             {
                 programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(programContext.Shell));
                 programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
@@ -314,7 +316,7 @@ namespace hss
 
         private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute, string[]) result)
         {
-            var line = Arguments.SplitCommandLine(command);
+            var line = ServerUtil.SplitCommandLine(command);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
             {
                 result = default;

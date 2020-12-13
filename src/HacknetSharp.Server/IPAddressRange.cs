@@ -37,9 +37,21 @@ namespace HacknetSharp.Server
 #pragma warning disable 649
         private fixed byte _prefix[16];
 #pragma warning restore 649
+        /// <summary>
+        /// Address family of this range.
+        /// </summary>
         public readonly AddressFamily AddressFamily;
+
+        /// <summary>
+        /// Number of prefix bits for this range.
+        /// </summary>
         public readonly byte PrefixBits;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="IPAddressRange"/> with the provided CIDR range.
+        /// </summary>
+        /// <param name="cidrString">CIDR range.</param>
+        /// <exception cref="ArgumentException">Throws on failure to parse address.</exception>
         public IPAddressRange(string cidrString)
         {
             int location = cidrString.LastIndexOf('/');
@@ -89,6 +101,11 @@ namespace HacknetSharp.Server
             AddressFamily = address.AddressFamily;
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="IPAddressRange"/> from the specified <see cref="IPAddress"/>.
+        /// </summary>
+        /// <param name="address">Address to convert.</param>
+        /// <exception cref="ArgumentException">Thrown when failed to convert address.</exception>
         public IPAddressRange(IPAddress address)
         {
             int prefixBits;
@@ -119,6 +136,13 @@ namespace HacknetSharp.Server
             PrefixBits = (byte)prefixBits;
         }
 
+        /// <summary>
+        /// Attempts to parse a CIDR string to an address range.
+        /// </summary>
+        /// <param name="cidrString">CIDR range string.</param>
+        /// <param name="allowRange">If true, allows ranges instead of just single addresses.</param>
+        /// <param name="value">Parsed value if successful.</param>
+        /// <returns>Returns true if successfully parsed.</returns>
         public static bool TryParse(string cidrString, bool allowRange, out IPAddressRange value)
         {
             int location = cidrString.LastIndexOf('/');
@@ -188,6 +212,12 @@ namespace HacknetSharp.Server
             return true;
         }
 
+        /// <summary>
+        /// Checks if address is contained in range.
+        /// </summary>
+        /// <param name="address">Address to check.</param>
+        /// <returns>True if this range contains the specified IP address.</returns>
+        /// <exception cref="ArgumentException">Thrown when failed to parse address.</exception>
         public bool Contains(IPAddress address)
         {
             if (address.AddressFamily != AddressFamily) return false;
@@ -203,6 +233,12 @@ namespace HacknetSharp.Server
                    _prefix[prefixBytes] == ((byte)(0xff00 >> PrefixBits % 8) & addrBytes[prefixBytes]);
         }
 
+        /// <summary>
+        /// Attempts to get host and subnet components from this range.
+        /// </summary>
+        /// <param name="host">Host for this range.</param>
+        /// <param name="subnetMask">Subnet mask of this range.</param>
+        /// <returns>False if not an IPv4 address range.</returns>
         public bool TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask)
         {
             host = 0;
@@ -214,6 +250,12 @@ namespace HacknetSharp.Server
             return true;
         }
 
+        /// <summary>
+        /// Applies host to this address.
+        /// </summary>
+        /// <param name="host">Host to apply.</param>
+        /// <returns>Converted address.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if this instance isn't a full 32-bit address or if <paramref name="host"/> isn't an IPv4 address.</exception>
         public IPAddressRange OnHost(IPAddressRange host)
         {
             if (PrefixBits != 32)
@@ -228,6 +270,7 @@ namespace HacknetSharp.Server
             return new IPAddressRange(body, AddressFamily.InterNetwork, 32);
         }
 
+        /// <inheritdoc />
         public bool Equals(IPAddressRange other)
         {
             if (AddressFamily != other.AddressFamily || PrefixBits != other.PrefixBits) return false;
@@ -235,8 +278,10 @@ namespace HacknetSharp.Server
                 return new Span<byte>(sp, 16).SequenceEqual(new Span<byte>(other._prefix, 16));
         }
 
+        /// <inheritdoc />
         public override bool Equals(object? obj) => obj is IPAddressRange other && Equals(other);
 
+        /// <inheritdoc />
         [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
         {
@@ -250,6 +295,7 @@ namespace HacknetSharp.Server
             return HashCode.Combine(p1, p2, p3, p4, (int)AddressFamily, PrefixBits);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             fixed (byte* pp = _prefix)

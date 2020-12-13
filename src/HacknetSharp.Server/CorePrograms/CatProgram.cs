@@ -5,6 +5,7 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:cat", "cat", "concatenate and print files",
         "print provided files sequentially\nin command-line order\n",
         "[files...]", false)]
@@ -12,6 +13,7 @@ namespace HacknetSharp.Server.CorePrograms
     {
         private static readonly OutputEvent _newlineOutput = new OutputEvent {Text = "\n"};
 
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

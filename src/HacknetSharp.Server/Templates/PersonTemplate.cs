@@ -5,41 +5,121 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.Templates
 {
+    /// <summary>
+    /// Represents a person template.
+    /// </summary>
     [SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class PersonTemplate
     {
+        /// <summary>
+        /// Fixed username to use.
+        /// </summary>
         public string? Username { get; set; }
+
+        /// <summary>
+        /// Fixed password to use.
+        /// </summary>
         public string? Password { get; set; }
+
+        /// <summary>
+        /// Fixed email provider to use.
+        /// </summary>
         public string? EmailProvider { get; set; }
+
+        /// <summary>
+        /// Fixed primary system template to use.
+        /// </summary>
         public string? PrimaryTemplate { get; set; }
+
+        /// <summary>
+        /// Fixed primary address to use.
+        /// </summary>
         public string? PrimaryAddress { get; set; }
+
+        /// <summary>
+        /// Username pool (weighted).
+        /// </summary>
         public Dictionary<string, float>? Usernames { get; set; }
+
+        /// <summary>
+        /// Password pool (weighted).
+        /// </summary>
         public Dictionary<string, float>? Passwords { get; set; }
+
+        /// <summary>
+        /// CIDR range string for address pool.
+        /// </summary>
         public string? AddressRange { get; set; }
+
+        /// <summary>
+        /// Email provider pool (weighted).
+        /// </summary>
         public Dictionary<string, float>? EmailProviders { get; set; }
+
+        /// <summary>
+        /// Primary template pool (weighted).
+        /// </summary>
         public Dictionary<string, float>? PrimaryTemplates { get; set; }
+
+        /// <summary>
+        /// Minimum # in generated fleet.
+        /// </summary>
         public int FleetMin { get; set; }
+
+        /// <summary>
+        /// Maximum # in generated fleet.
+        /// </summary>
         public int FleetMax { get; set; }
+
+        /// <summary>
+        /// Fleet template pool (weighted).
+        /// </summary>
         public Dictionary<string, float>? FleetTemplates { get; set; }
 
+        /// <summary>
+        /// Fixed-system network to generate.
+        /// </summary>
         public List<NetworkEntry>? Network { get; set; }
 
         [ThreadStatic] private static Random? _random;
 
         private static Random Random => _random ??= new Random();
 
+        /// <summary>
+        /// Represents an entry in a person template's fixed-node network.
+        /// </summary>
         public class NetworkEntry
         {
+            /// <summary>
+            /// Template to use.
+            /// </summary>
             public string? Template { get; set; } = null!;
 
+            /// <summary>
+            /// Specific address for system.
+            /// </summary>
             public string? Address { get; set; } = null!;
 
+            /// <summary>
+            /// Additional replacements to pass to system template.
+            /// </summary>
             public Dictionary<string, string>? Configuration { get; set; }
 
+            /// <summary>
+            /// Other <see cref="NetworkEntry.Address"/>es to create local links to.
+            /// </summary>
             public List<string>? Links { get; set; }
         }
 
+        /// <summary>
+        /// Generates a person using this template.
+        /// </summary>
+        /// <param name="spawn">World spawner instance.</param>
+        /// <param name="templates">Template group to use.</param>
+        /// <param name="addressRange">Address range to override template with.</param>
+        /// <exception cref="InvalidOperationException">Thrown when there is insufficient data to successfully apply template.</exception>
+        /// <exception cref="KeyNotFoundException">Thrown when a template is not found.</exception>
         public virtual void Generate(WorldSpawn spawn, TemplateGroup templates, string? addressRange)
         {
             if (Username == null && (Usernames == null || Usernames.Count == 0))

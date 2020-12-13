@@ -5,12 +5,14 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:hack", "{HARG:1}", "{HARG:1} exploit",
         "Attempts to execute {HARG:1} exploit\non specified port or entrypoint\non target system\n\n" +
         "target system can be assumed from environment\nvariable \"TARGET\"",
         "[target] <port/entrypoint>", false)]
     public class HackProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

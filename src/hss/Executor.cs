@@ -26,7 +26,11 @@ namespace hss
             ServerSettings? serverYaml = null;
             if (File.Exists(HssConstants.ServerYamlFile))
                 (_, serverYaml) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
-            string kind = Environment.GetEnvironmentVariable(EnvStorageKind) ?? serverYaml?.DatabaseKind ??
+            string? kind = Environment.GetEnvironmentVariable(EnvStorageKind);
+            if (kind == null && serverYaml?.DatabaseProperties != null &&
+                serverYaml.DatabaseProperties.TryGetValue("Kind", out var databaseKind))
+                kind = databaseKind;
+            if (kind == null)
                 throw new ApplicationException($"ENV {EnvStorageKind} not set");
             return await new Executor(kind.ToLowerInvariant() switch
             {

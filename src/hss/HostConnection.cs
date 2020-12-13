@@ -192,7 +192,7 @@ namespace hss
                             }
 
                             _server.QueueCommand(this, _user, op, command.ConWidth,
-                                Arguments.SplitCommandLine(command.Text));
+                                ServerUtil.SplitCommandLine(command.Text));
 
                             break;
                         }

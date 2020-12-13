@@ -3,12 +3,14 @@ using System.Linq;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:porthack", "PortHack", "bruteforce login",
         "Obtains an administrator login on\nthe target system\n\n" +
         "target system can be assumed from environment\nvariable \"TARGET\"",
         "[target] <port/entrypoint>", false)]
     public class PortHackProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

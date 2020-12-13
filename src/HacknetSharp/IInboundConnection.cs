@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace HacknetSharp
 {
+    /// <summary>
+    /// Represents an event listener that can be used to obtain / wait for received events.
+    /// </summary>
+    /// <typeparam name="TReceive"></typeparam>
     public interface IInboundConnection<TReceive> : IConnection where TReceive : Event
     {
         /// <summary>

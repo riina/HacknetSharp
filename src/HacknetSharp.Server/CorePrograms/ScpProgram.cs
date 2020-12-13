@@ -6,11 +6,13 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:scp", "scp", "copy remote file or directory",
         "copy source file/directory from remote machine\nto specified destination",
         "<username>@<server>:<source> <dest>", false)]
     public class ScpProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

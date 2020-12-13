@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
@@ -13,6 +14,9 @@ using Ns;
 
 namespace HacknetSharp
 {
+    /// <summary>
+    /// Contains utility methods and extension methods.
+    /// </summary>
     public static class Util
     {
         /// <summary>
@@ -47,18 +51,41 @@ namespace HacknetSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConfiguredValueTaskAwaitable<T> Caf<T>(this ValueTask<T> task) => task.ConfigureAwait(false);
 
+
+        /// <summary>
+        /// Writes a command code to this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <param name="command">Command to write.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteCommand(this Stream stream, Command command) =>
             stream.WriteU32((uint)command);
 
+        /// <summary>
+        /// Reads a command code from this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <returns>Read command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Command ReadCommand(this Stream stream) =>
             (Command)stream.ReadU32();
 
+        /// <summary>
+        /// Asynchronously reads a command code from this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Task that represents pending read command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async Task<Command> ReadCommandAsync(this Stream stream, CancellationToken cancellationToken) =>
             (Command)await stream.ReadU32Async(cancellationToken).Caf();
 
+        /// <summary>
+        /// Writes a nullable UTF-8 string to this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <param name="value">Value to write.</param>
+        /// <remarks>The string is formatted by the <see cref="NetSerializerExtensions.WriteUtf8String"/> method this method uses.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteUtf8StringNullable(this Stream stream, string? value)
         {
@@ -66,12 +93,28 @@ namespace HacknetSharp
             if (value != null) stream.WriteUtf8String(value);
         }
 
+        /// <summary>
+        /// Reads a nullable UTF-8 string from this stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        /// <remarks>The string must be formatted to be compatible with the <see cref="NetSerializerExtensions.ReadUtf8String"/> method this method uses.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string? ReadUtf8StringNullable(this Stream stream)
         {
             return stream.ReadU8() != 0 ? stream.ReadUtf8String() : null;
         }
 
+        /// <summary>
+        /// Triggers a transition to another lifecycle state.
+        /// </summary>
+        /// <param name="resetEvent">Concurrency event to use.</param>
+        /// <param name="min">Minimum input state.</param>
+        /// <param name="max">Maximum input state.</param>
+        /// <param name="target">State to set target reference to.</param>
+        /// <param name="toChange">Target reference to modify.</param>
+        /// <returns>Input state.</returns>
+        /// <exception cref="InvalidOperationException">Invalid input state based on bounds.</exception>
         public static LifecycleState TriggerState(AutoResetEvent resetEvent, LifecycleState min, LifecycleState max,
             LifecycleState target, ref LifecycleState toChange)
         {
@@ -89,6 +132,14 @@ namespace HacknetSharp
             }
         }
 
+        /// <summary>
+        /// Triggers a transition to another lifecycle state based on a mapping.
+        /// </summary>
+        /// <param name="resetEvent">Concurrency event to use.</param>
+        /// <param name="map">Transition mapping.</param>
+        /// <param name="toChange">Target reference to modify.</param>
+        /// <returns>Input state.</returns>
+        /// <exception cref="KeyNotFoundException">Input state was not found in transition dictionary.</exception>
         public static LifecycleState TriggerState(AutoResetEvent resetEvent,
             Dictionary<LifecycleState, LifecycleState> map, ref LifecycleState toChange)
         {
@@ -107,6 +158,13 @@ namespace HacknetSharp
             }
         }
 
+        /// <summary>
+        /// Evaluates active state and throws <see cref="InvalidOperationException"/> if requirement is breached.
+        /// </summary>
+        /// <param name="state">Active state of object.</param>
+        /// <param name="min">Minimum state.</param>
+        /// <param name="max">Maximum state.</param>
+        /// <exception cref="InvalidOperationException">Invalid input state based on bounds.</exception>
         public static void RequireState(LifecycleState state, LifecycleState min, LifecycleState max)
         {
             if ((int)state < (int)min)
@@ -117,6 +175,15 @@ namespace HacknetSharp
                     $"Cannot perform this action that requires state {max} when object is in state {state}");
         }
 
+        /// <summary>
+        /// Attempts to increment a countdown based on an expectation of the current lifecycle state.
+        /// </summary>
+        /// <param name="resetEvent">Concurrency event to use.</param>
+        /// <param name="countdownEvent">Countdown to modify.</param>
+        /// <param name="state">Active state of object.</param>
+        /// <param name="min">Minimum state.</param>
+        /// <param name="max">Maximum state.</param>
+        /// <returns>True if state limits were met and countdown was incremented.</returns>
         public static bool TryIncrementCountdown(AutoResetEvent resetEvent, CountdownEvent countdownEvent,
             LifecycleState state, LifecycleState min, LifecycleState max)
         {
@@ -128,6 +195,11 @@ namespace HacknetSharp
             return keepGoing;
         }
 
+        /// <summary>
+        /// Decrements a countdown, synchronized using a concurrency event.
+        /// </summary>
+        /// <param name="resetEvent">Concurrency event to use.</param>
+        /// <param name="countdownEvent">Countdown to modify.</param>
         public static void DecrementCountdown(AutoResetEvent resetEvent, CountdownEvent countdownEvent)
         {
             resetEvent.WaitOne();
@@ -169,6 +241,13 @@ namespace HacknetSharp
         private static readonly Dictionary<Type, Command> _commandT2C;
         private static readonly Dictionary<Command, Func<Event>> _commandC2T;
 
+        /// <summary>
+        /// Reads an event from this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <typeparam name="TEvent">Event type.</typeparam>
+        /// <returns>Read event or null if stream closed.</returns>
+        /// <exception cref="ProtocolException">Thrown when an invalid command code was received or deserialization failed.</exception>
         public static TEvent? ReadEvent<TEvent>(this Stream stream) where TEvent : Event
         {
             Command command;
@@ -187,10 +266,26 @@ namespace HacknetSharp
             var evt = obj as TEvent ??
                       throw new Exception(
                           $"Failed to cast event {obj.GetType().FullName} as {typeof(TEvent).FullName}");
-            evt.Deserialize(stream);
+            try
+            {
+                evt.Deserialize(stream);
+            }
+            catch (Exception e)
+            {
+                throw new ProtocolException(e.Message);
+            }
+
             return evt;
         }
 
+        /// <summary>
+        /// Asynchronously reads an event from this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <typeparam name="TEvent">Event type.</typeparam>
+        /// <returns>Task that returns read event or null if stream closed.</returns>
+        /// <exception cref="ProtocolException"></exception>
         public static async Task<TEvent?> ReadEventAsync<TEvent>(this Stream stream,
             CancellationToken cancellationToken) where TEvent : Event
         {
@@ -215,14 +310,24 @@ namespace HacknetSharp
             return evt;
         }
 
+        /// <summary>
+        /// Writes an event to this stream.
+        /// </summary>
+        /// <param name="stream">Stream to operate on.</param>
+        /// <param name="evt">Event to send.</param>
+        /// <exception cref="ArgumentException">Unregistered command type. The protocol depends on specific registered types.</exception>
         public static void WriteEvent(this Stream stream, Event evt)
         {
             if (!_commandT2C.TryGetValue(evt.GetType(), out var command))
-                throw new Exception($"Couldn't find registered command type for type {evt.GetType().FullName}");
+                throw new ArgumentException($"Couldn't find registered command type for type {evt.GetType().FullName}");
             stream.WriteCommand(command);
             evt.Serialize(stream);
         }
 
+        /// <summary>
+        /// Reads a password from <see cref="Console"/>.
+        /// </summary>
+        /// <returns></returns>
         public static string? ReadPassword()
         {
             var ss = new StringBuilder();
@@ -250,7 +355,7 @@ namespace HacknetSharp
         }
 
         /// <summary>
-        /// Read SecureString password
+        /// Reads a SecureString password
         /// </summary>
         /// <returns>Password or null if terminated</returns>
         public static SecureString? ReadSecureString()
@@ -280,12 +385,20 @@ namespace HacknetSharp
             return ss;
         }
 
-        private static readonly HashSet<string> _yes = new HashSet<string>(new[]
+        /// <summary>
+        /// Answers perceived as an affirmative statement for <see cref="Confirm"/>.
+        /// </summary>
+        public static readonly IReadOnlyCollection<string> _yes = new HashSet<string>(new[]
         {
             "yes", "y", "sure", "absolutely", "sin duda", "do it", "yes please", "yes, please", "bingo", "come on",
             "such"
         });
 
+        /// <summary>
+        /// Asks for confirmation on an action and validates response.
+        /// </summary>
+        /// <param name="mes">Prompt to print.</param>
+        /// <returns>True if user input was contained in <see cref="_yes"/>.</returns>
         public static bool Confirm(string mes)
         {
             Console.WriteLine(mes);
@@ -295,10 +408,22 @@ namespace HacknetSharp
         private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
         private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S\s]+)");
 
-        public static bool TryParseConString(string conString, ushort defaultPort, out string? name, out string? host,
-            out ushort port, out string? error, string? impliedUser = null, string? impliedTarget = null)
+        /// <summary>
+        /// Attempts to parse a connection string (e.g. user@host[:port]).
+        /// </summary>
+        /// <param name="conString">Connection string to parse.</param>
+        /// <param name="defaultPort">Default port to use in absence of port in connection string.</param>
+        /// <param name="user">Parsed user.</param>
+        /// <param name="host">Parsed host.</param>
+        /// <param name="port">Parsed port.</param>
+        /// <param name="error">Error message.</param>
+        /// <param name="impliedUser">User to use in absence of user in connection string.</param>
+        /// <param name="impliedHost">Host to use in absence of host in connection string.</param>
+        /// <returns>True if successfully parsed.</returns>
+        public static bool TryParseConString(string conString, ushort defaultPort, out string? user, out string? host,
+            out ushort port, out string? error, string? impliedUser = null, string? impliedHost = null)
         {
-            name = null;
+            user = null;
             host = null;
             port = defaultPort;
             error = null;
@@ -307,16 +432,16 @@ namespace HacknetSharp
             {
                 if (impliedUser == null)
                 {
-                    error = "Invalid conString, must be user@server[:port]";
+                    error = "Invalid conString, must be user@host[:port]";
                     return false;
                 }
 
-                name = impliedUser;
+                user = impliedUser;
                 host = conString;
             }
             else
             {
-                name = conStringMatch.Groups[1].Value;
+                user = conStringMatch.Groups[1].Value;
                 host = conStringMatch.Groups[2].Value;
             }
 
@@ -325,9 +450,9 @@ namespace HacknetSharp
                 if (ushort.TryParse(host, out ushort soloHost))
                 {
                     port = soloHost;
-                    if (impliedTarget != null) host = impliedTarget;
+                    if (impliedHost != null) host = impliedHost;
                 }
-                else if (string.IsNullOrWhiteSpace(host) && impliedTarget != null) host = impliedTarget;
+                else if (string.IsNullOrWhiteSpace(host) && impliedHost != null) host = impliedHost;
 
                 return true;
             }
@@ -335,7 +460,7 @@ namespace HacknetSharp
             var serverPortMatch = _serverPortRegex.Match(host);
             if (!serverPortMatch.Success || !ushort.TryParse(serverPortMatch.Groups[2].Value, out port))
             {
-                error = "Invalid host/port, must be user@server[:port]";
+                error = "Invalid host/port, must be user@host[:port]";
                 return false;
             }
 
@@ -344,10 +469,21 @@ namespace HacknetSharp
             return true;
         }
 
-        public static bool TryParseScpConString(string conString, out string? name, out string? host, out string? path,
-            out string? error, string? impliedUser = null, string? impliedTarget = null)
+        /// <summary>
+        /// Attempts to parse SCP variant of a connection string (e.g. user@host[:path]).
+        /// </summary>
+        /// <param name="conString">Connection string to parse.</param>
+        /// <param name="user">Parsed user.</param>
+        /// <param name="host">Parsed host.</param>
+        /// <param name="path">Parsed path.</param>
+        /// <param name="error">Error message.</param>
+        /// <param name="impliedUser">User to use in absence of user in connection string.</param>
+        /// <param name="impliedHost">Host to use in absence of host in connection string.</param>
+        /// <returns>True if successfully parsed.</returns>
+        public static bool TryParseScpConString(string conString, out string? user, out string? host, out string? path,
+            out string? error, string? impliedUser = null, string? impliedHost = null)
         {
-            name = null;
+            user = null;
             host = null;
             path = null;
             error = null;
@@ -356,25 +492,25 @@ namespace HacknetSharp
             {
                 if (impliedUser == null)
                 {
-                    error = "Invalid conString, must be user@server:path";
+                    error = "Invalid conString, must be user@host:path";
                     return false;
                 }
 
-                name = impliedUser;
+                user = impliedUser;
                 host = conString;
             }
             else
             {
-                name = conStringMatch.Groups[1].Value;
+                user = conStringMatch.Groups[1].Value;
                 host = conStringMatch.Groups[2].Value;
             }
 
             if (!host.Contains(":"))
             {
-                if (!string.IsNullOrWhiteSpace(host) && impliedTarget != null)
+                if (!string.IsNullOrWhiteSpace(host) && impliedHost != null)
                 {
                     path = host;
-                    host = impliedTarget;
+                    host = impliedHost;
                     return true;
                 }
 
@@ -398,10 +534,22 @@ namespace HacknetSharp
         private static readonly Regex _replacementRegex = new Regex(@"{((?:[^{}\\]|\\.)*)}");
         private static readonly Regex _shellReplacementRegex = new Regex(@"\$([A-Za-z0-9]+)");
 
+        /// <summary>
+        /// Applies replacements using curly bracket syntax.
+        /// </summary>
+        /// <param name="str">String to apply replacements to.</param>
+        /// <param name="replacements">Replacement dictionary to use.</param>
+        /// <returns>String with replacements applied.</returns>
         public static string ApplyReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
             _replacementRegex.Replace(str,
                 m => replacements.TryGetValue(m.Groups[1].Value, out var rep) ? rep : m.Value);
 
+        /// <summary>
+        /// Applies replacements using dollar sign syntax.
+        /// </summary>
+        /// <param name="str">String to apply replacements to.</param>
+        /// <param name="replacements">Replacement dictionary to use.</param>
+        /// <returns>String with replacements applied.</returns>
         public static string
             ApplyShellReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
             _shellReplacementRegex.Replace(str,

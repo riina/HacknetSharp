@@ -3,11 +3,13 @@ using System.Linq;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:ssh", "ssh", "connect to remote machine",
         "opens an authenticated connection to a\nremote machine and opens a shell",
         "username@server", false)]
     public class SshProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
@@ -77,7 +79,7 @@ namespace HacknetSharp.Server.CorePrograms
                 context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
             {
-                var chainLine = Arguments.SplitCommandLine(system.ConnectCommandLine);
+                var chainLine = ServerUtil.SplitCommandLine(system.ConnectCommandLine);
                 if (chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
                     context.ChainLine = chainLine;
             }

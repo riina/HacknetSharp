@@ -5,11 +5,13 @@ using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:echo", "echo", "write arguments",
         "write specified arguments separated by\nsingle spaces followed by newline",
         "[arguments]", false)]
     public class EchoProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)

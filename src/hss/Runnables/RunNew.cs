@@ -112,8 +112,10 @@ namespace hss.Runnables
                                 ? new ServerSettings
                                 {
                                     Host = "127.0.0.1",
-                                    DatabaseKind = "sqlite",
-                                    SqliteFile = "hakase",
+                                    DatabaseProperties = new Dictionary<string, string>
+                                    {
+                                        {"Kind", "sqlite"}, {"SqliteFile", "hakase.db"}
+                                    },
                                     DefaultWorld = "main"
                                 }
                                 : new ServerSettings()))

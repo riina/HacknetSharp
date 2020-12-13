@@ -4,11 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace HacknetSharp.Server.CorePrograms
 {
+    /// <inheritdoc />
     [ProgramInfo("core:set", "set", "set variable",
         "set environment variable for this shell and its processes",
         "[<name>[=[<value>]]]", true)]
     public class SetProgram : Program
     {
+        /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
         private static readonly Regex _exportRegex = new Regex(@"([A-Za-z0-9]+)=([\S\s]*)");

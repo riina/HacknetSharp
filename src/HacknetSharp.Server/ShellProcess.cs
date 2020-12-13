@@ -6,13 +6,37 @@ using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
+    /// <summary>
+    /// Represents a running shell.
+    /// </summary>
     public class ShellProcess : Process
     {
+        /// <summary>
+        /// Program context of this shell.
+        /// </summary>
         public ProgramContext ProgramContext { get; }
+
+        /// <summary>
+        /// Working directory of this shell.
+        /// </summary>
         public string WorkingDirectory { get; set; } = "/";
+
+        /// <summary>
+        /// If set true, shell process will exit on the next execution step.
+        /// </summary>
+        /// <remarks>
+        /// It's better to call <see cref="IWorld.CompleteRecurse"/> instead.
+        /// </remarks>
         public bool Close { get; set; }
+
+        /// <summary>
+        /// Shell variables.
+        /// </summary>
         public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
 
+        /// <summary>
+        /// Open vulnerabilities by system address.
+        /// </summary>
         public Dictionary<uint, HashSet<VulnerabilityModel>> OpenVulnerabilities { get; set; } =
             new Dictionary<uint, HashSet<VulnerabilityModel>>();
 
@@ -30,11 +54,16 @@ namespace HacknetSharp.Server
             }
         }*/
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ShellProcess"/>.
+        /// </summary>
+        /// <param name="context">Program context.</param>
         public ShellProcess(ProgramContext context) : base(context)
         {
             ProgramContext = context;
         }
 
+        /// <inheritdoc />
         public override bool Update(IWorld world)
         {
             if (Close)
@@ -46,6 +75,12 @@ namespace HacknetSharp.Server
             return false;
         }
 
+        /// <summary>
+        /// Attempts to get a variable.
+        /// </summary>
+        /// <param name="key">Variable name.</param>
+        /// <param name="value">Obtained value if successful.</param>
+        /// <returns>True if variable was retrieved.</returns>
         public bool TryGetVariable(string key, [NotNullWhen(true)] out string? value)
         {
             if (Variables.TryGetValue(key, out value))
@@ -57,20 +92,7 @@ namespace HacknetSharp.Server
             return false;
         }
 
-        public bool TryGetTarget([NotNullWhen(true)] out SystemModel? target)
-        {
-            if (!Variables.TryGetValue("TARGET", out string? addr) ||
-                !IPAddressRange.TryParse(addr, false, out var ip) ||
-                !ip.TryGetIPv4HostAndSubnetMask(out uint host, out _))
-            {
-                target = null;
-                return false;
-            }
-
-            target = ProgramContext.World.Model.Systems.FirstOrDefault(s => s.Address == host);
-            return target != null;
-        }
-
+        /// <inheritdoc />
         public override void Complete(CompletionKind completionKind)
         {
             if (_cleaned) return;

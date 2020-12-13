@@ -2,16 +2,19 @@
 
 namespace HacknetSharp
 {
+    /// <summary>
+    /// Represents a serializable message.
+    /// </summary>
     public abstract class Event
     {
         /// <summary>
-        /// Serialize this event.
+        /// Serializes this event.
         /// </summary>
         /// <param name="stream">Target stream.</param>
         public abstract void Serialize(Stream stream);
 
         /// <summary>
-        /// Deserialize this event.
+        /// Deserializes this event.
         /// </summary>
         /// <param name="stream">Source stream.</param>
         public abstract void Deserialize(Stream stream);
