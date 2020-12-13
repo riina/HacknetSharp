@@ -28,9 +28,15 @@ namespace HacknetSharp
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Reads events in the processing queue, removing them as they are returned.
+        /// Gets available events from the input queue and clears input queue.
         /// </summary>
+        /// <param name="output">Existing collection to add events to.</param>
         /// <returns>Events.</returns>
-        IEnumerable<TReceive> ReadEvents();
+        public IEnumerable<TReceive> GetEvents(ICollection<TReceive>? output = null);
+
+        /// <summary>
+        /// Clears input queue.
+        /// </summary>
+        public void DiscardEvents();
     }
 }

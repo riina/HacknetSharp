@@ -233,13 +233,24 @@ namespace HacknetSharp
             throw new TaskCanceledException();
         }
 
-        public IEnumerable<ServerEvent> ReadEvents()
+        public IEnumerable<ServerEvent> GetEvents(ICollection<ServerEvent>? output = null)
         {
             _lockInOp.WaitOne();
-            var list = new List<ServerEvent>(_inEvents);
+            if (output == null)
+                output = new List<ServerEvent>(_inEvents);
+            else
+                foreach (var evt in _inEvents)
+                    output.Add(evt);
             _inEvents.Clear();
             _lockInOp.Set();
-            return list;
+            return output;
+        }
+
+        public void DiscardEvents()
+        {
+            _lockInOp.WaitOne();
+            _inEvents.Clear();
+            _lockInOp.Set();
         }
 
         public void WriteEvent(ClientEvent evt)

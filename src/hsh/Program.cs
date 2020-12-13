@@ -134,6 +134,9 @@ namespace hsh
                 var operationLcl = operation;
                 ServerEvent? endEvt = await connection.WaitForAsync(
                     e => e is IOperation op && op.Operation == operationLcl, 10).Caf();
+                // Other important events are already handled by registered delegates
+                // Operations are sent / waited on one at a time
+                connection.DiscardEvents();
                 if (endEvt == null) break;
                 operation = Guid.NewGuid();
                 connection.WriteEvent(new CommandEvent
