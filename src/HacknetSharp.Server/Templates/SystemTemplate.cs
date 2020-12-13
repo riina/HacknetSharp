@@ -66,7 +66,7 @@ namespace HacknetSharp.Server.Templates
                     if (vuln.Protocol == null)
                         throw new InvalidOperationException(
                             $"Vulnerability does not have {nameof(Vulnerability.Protocol)}");
-                    spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint,vuln.Exploits, vuln.Cve);
+                    spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint, vuln.Exploits, vuln.Cve);
                 }
 
             if (Filesystem != null)
@@ -89,7 +89,8 @@ namespace HacknetSharp.Server.Templates
                                       throw new Exception($"Path cannot be {mainPath}");
                         string name = Program.GetFileName(mainPath);
                         FileModel fileModel;
-                        string content = new StringBuilder().AppendJoin(' ',args.Skip(1)).ToString().ApplyReplacements(repDict);
+                        string content = new StringBuilder().AppendJoin(' ', args.Skip(1)).ToString()
+                            .ApplyReplacements(repDict);
                         switch (match.Groups[1].Value.ToLowerInvariant())
                         {
                             case "fold":

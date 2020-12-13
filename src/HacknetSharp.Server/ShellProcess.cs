@@ -88,7 +88,7 @@ namespace HacknetSharp.Server
                 ProgramContext.User.FlushSafeAsync();
             }
 
-            ServerUtil.SignalUnbindProcess(ProgramContext, this);
+            Program.SignalUnbindProcess(ProgramContext, this);
         }
     }
 }

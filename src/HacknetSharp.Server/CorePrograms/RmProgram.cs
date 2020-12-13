@@ -45,6 +45,7 @@ namespace HacknetSharp.Server.CorePrograms
                                 user.FlushSafeAsync();
                                 yield break;
                             }
+
                             spawn.RemoveFile(closest, login);
                         }
                         catch (IOException e)

@@ -266,35 +266,5 @@ namespace HacknetSharp.Server
                 ConWidth = conWidth
             };
         }
-
-        public static void SignalUnbindProcess(ProgramContext programContext, Process? process)
-        {
-            uint addr = 0;
-            string path = "/";
-            try
-            {
-                // just ignore shells
-                if (process is ShellProcess) return;
-                if (programContext.ChainLine != null &&
-                    (process?.Completed ?? Process.CompletionKind.Normal) == Process.CompletionKind.Normal)
-                    return;
-                var chain = programContext.Person.ShellChain;
-                if (chain.Count == 0) return;
-                var topShell = chain[^1];
-                // Shell is popped before signalled, so check if we're either in the top shell or our shell has been popped
-                if (topShell != programContext.Shell && chain.Contains(programContext.Shell)) return;
-                addr = topShell.ProgramContext.System.Address;
-                path = topShell.WorkingDirectory;
-                programContext.User.WriteEventSafe(CreatePromptEvent(topShell));
-            }
-            finally
-            {
-                programContext.User.WriteEventSafe(new OperationCompleteEvent
-                {
-                    Operation = programContext.OperationId, Address = addr, Path = path
-                });
-                programContext.User.FlushSafeAsync();
-            }
-        }
     }
 }

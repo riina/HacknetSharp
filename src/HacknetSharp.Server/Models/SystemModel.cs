@@ -139,7 +139,8 @@ namespace HacknetSharp.Server.Models
             return GetClosestWithReadableParentInternal(nPath, nName, login, hidden);
         }
 
-        private FileModel? GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login, bool hidden)
+        private FileModel? GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login,
+            bool hidden)
         {
             if (nPath == "/" && nName == "") return null;
             FileModel? top;

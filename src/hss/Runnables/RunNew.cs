@@ -51,14 +51,13 @@ namespace hss.Runnables
                                             "{Owner.UserName}",
                                             new List<string>(new[]
                                             {
-                                                "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib",
-                                                "fold:/mnt", "fold+++:/root", "fold:/usr", "fold:/usr/bin",
-                                                "fold:/usr/lib", "fold:/usr/local", "fold:/usr/share", "fold:/var",
-                                                "fold:/var/spool",
+                                                "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
+                                                "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
+                                                "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
                                                 "text:\"/home/samwise/read me.txt\" mr. frodo, sir!",
-                                                "file:/home/samwise/image.png misc/image.png",
-                                                "prog:/bin/cat core:cat", "prog:/bin/cd core:cd",
-                                                "prog:/bin/ls core:ls", "prog:/bin/echo core:echo"
+                                                "file:/home/samwise/image.png misc/image.png", "prog:/bin/cat core:cat",
+                                                "prog:/bin/cd core:cd", "prog:/bin/ls core:ls",
+                                                "prog:/bin/echo core:echo"
                                             })
                                         }
                                     }

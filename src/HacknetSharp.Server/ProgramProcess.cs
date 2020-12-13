@@ -66,7 +66,7 @@ namespace HacknetSharp.Server
                 return;
             }
 
-            ServerUtil.SignalUnbindProcess(_programContext, this);
+            Program.SignalUnbindProcess(_programContext, this);
         }
     }
 }
