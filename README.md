@@ -7,6 +7,8 @@
 | `Fp`           | [![NuGet](https://img.shields.io/nuget/v/HacknetSharp.svg)](https://www.nuget.org/packages/HacknetSharp/)|
 | `Fp.Templates` | [![NuGet](https://img.shields.io/nuget/v/HacknetSharp.Server.svg)](https://www.nuget.org/packages/HacknetSharp.Server/) |
 
+[API Reference](https://the-council-of-wills.github.io/HacknetSharp/api/index.html)
+
 This project aims to deliver a multiplayer [Hacknet](http://hacknet-os.com/) experience
 to WILLs everywhere.
 
