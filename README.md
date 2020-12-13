@@ -2,6 +2,11 @@
 
 [![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/The-Council-of-Wills/HacknetSharp/actions?workflow=.NET+Build)
 
+| Package                | Release |
+|------------------------|---------|
+| `Fp`           | [![NuGet](https://img.shields.io/nuget/v/HacknetSharp.svg)](https://www.nuget.org/packages/HacknetSharp/)|
+| `Fp.Templates` | [![NuGet](https://img.shields.io/nuget/v/HacknetSharp.Server.svg)](https://www.nuget.org/packages/HacknetSharp.Server/) |
+
 This project aims to deliver a multiplayer [Hacknet](http://hacknet-os.com/) experience
 to WILLs everywhere.
 
