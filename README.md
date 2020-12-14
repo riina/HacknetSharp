@@ -13,29 +13,27 @@
 ## Current Status
 
 Most significant programs are implemented:
--Filesystem interaction (cd/cat/edit/mv/cp/rm)
--Environment variables (set)
--Process management (ps/kill)
--Network (ssh/exit/scan/map)
--Port hacking (probe/`<one-size-fits-all core:hack>`/porthack)
--Utility (echo/help)
+* Filesystem interaction (cd/cat/edit/mv/cp/rm)
+* Environment variables (set)
+* Process management (ps/kill)
+* Network (ssh/exit/scan/map)
+* Port hacking (probe/`<one-size-fits-all core:hack>`/porthack)
+* Utility (echo/help)
 
 There are still some features missing, listed on the
 [MVP project board](https://github.com/The-Council-of-Wills/HacknetSharp/projects/1).
 
 ## Client
+[Usage](meta/usage-client.md)
 
-`hsh` is the main terminal client. It supports .NET 5 ([install .NET 5 runtime here](https://dotnet.microsoft.com/download/dotnet/5.0)).
-
-[Read about how to use the client here.](meta/usage-client.md)
+`hsh` is the main terminal client. It supports .NET 5
+([install .NET 5 runtime here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 ## Server
+[Usage](meta/usage-server.md)
 
 `hss` is the main server program. It supports .NET 5
-([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)). It can use a SQLite or PostgreSQL
-backing database.
-
-[Read about how to use the server here.](meta/usage-server.md)
+([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 ##
 
