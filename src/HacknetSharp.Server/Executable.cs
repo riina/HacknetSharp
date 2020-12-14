@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
@@ -52,18 +53,25 @@ namespace HacknetSharp.Server
             new ActWaitYieldToken(action, token);
 
         /// <summary>
-        /// Creates a yield token with the specified yield tokens. Once each yield token in turn has yielded, execution is resumed.
+        /// Creates a yield token with the specified yield tokens. Once each yield token in turn is done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
         public static SequenceYieldToken Sequence(IEnumerable<YieldToken> tokens) => new SequenceYieldToken(tokens);
 
         /// <summary>
-        /// Creates a yield token with the specified yield tokens. Once all yield tokens have yielded, execution is resumed.
+        /// Creates a yield token with the specified yield tokens. Once all yield tokens are done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
         public static AggregateYieldToken Aggregate(IEnumerable<YieldToken> tokens) => new AggregateYieldToken(tokens);
+
+        /// <summary>
+        /// Creates a yield token with the specified yield tokens. Once any yield token is done yielding, execution is resumed.
+        /// </summary>
+        /// <param name="tokens">Embedded yield tokens.</param>
+        /// <returns>Yield token.</returns>
+        public static AnyYieldToken Any(IEnumerable<YieldToken> tokens) => new AnyYieldToken(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified delay. Once the delay has completed (<see cref="DelayYieldToken.Delay"/> &gt; 0), execution is resumed.
@@ -157,7 +165,7 @@ namespace HacknetSharp.Server
             public List<YieldToken> Tokens { get; }
 
             /// <summary>
-            /// Creates a yield token with the specified yield tokens. Once each yield token in turn has yielded, execution is resumed.
+            /// Creates a yield token with the specified yield tokens. Once each yield token in turn is done yielding, execution is resumed.
             /// </summary>
             /// <param name="tokens">Embedded yield tokens.</param>
             public SequenceYieldToken(IEnumerable<YieldToken> tokens)
@@ -174,9 +182,8 @@ namespace HacknetSharp.Server
             }
         }
 
-
         /// <summary>
-        /// Represents a yield token that evaluates embedded yield tokens until all have yielded.
+        /// Represents a yield token that evaluates embedded yield tokens until all are done yielding.
         /// </summary>
         public class AggregateYieldToken : YieldToken
         {
@@ -186,7 +193,7 @@ namespace HacknetSharp.Server
             public HashSet<YieldToken> Tokens { get; }
 
             /// <summary>
-            /// Creates a yield token with the specified yield tokens. Once all yield tokens have yielded, execution is resumed.
+            /// Creates a yield token with the specified yield tokens. Once all yield tokens are done yielding, execution is resumed.
             /// </summary>
             /// <param name="tokens">Embedded yield tokens.</param>
             public AggregateYieldToken(IEnumerable<YieldToken> tokens)
@@ -199,6 +206,35 @@ namespace HacknetSharp.Server
             {
                 if (Tokens.Count == 0) return true;
                 Tokens.RemoveWhere(t => t.Yield(world));
+                return Tokens.Count == 0;
+            }
+        }
+
+        /// <summary>
+        /// Represents a yield token that evaluates embedded yield tokens until one is done yielding.
+        /// </summary>
+        public class AnyYieldToken : YieldToken
+        {
+            /// <summary>
+            /// Embedded yield tokens.
+            /// </summary>
+            public HashSet<YieldToken> Tokens { get; }
+
+            /// <summary>
+            /// Creates a yield token with the specified yield tokens. Once one is done yielding, execution is resumed.
+            /// </summary>
+            /// <param name="tokens">Embedded yield tokens.</param>
+            public AnyYieldToken(IEnumerable<YieldToken> tokens)
+            {
+                Tokens = new HashSet<YieldToken>(tokens);
+            }
+
+            /// <inheritdoc />
+            public override bool Yield(IWorld world)
+            {
+                if (Tokens.Count == 0) return true;
+                if (Tokens.Any(t => t.Yield(world)))
+                    Tokens.Clear();
                 return Tokens.Count == 0;
             }
         }

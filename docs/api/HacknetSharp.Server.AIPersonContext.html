@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AIPersonContext
    ">
-    <meta name="generator" content="docfx 2.53.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -87,35 +87,11 @@
     <div><a class="xref" href="HacknetSharp.IOutboundConnection-1.html">IOutboundConnection</a>&lt;<a class="xref" href="HacknetSharp.ServerEvent.html">ServerEvent</a>&gt;</div>
     <div><a class="xref" href="HacknetSharp.IConnection.html">IConnection</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
   <h5 id="HacknetSharp_Server_AIPersonContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AIPersonContext : IPersonContext, IOutboundConnection&lt;ServerEvent&gt;, IConnection</code></pre>
+    <pre><code class="lang-csharp hljs">public class AIPersonContext : object, IPersonContext, IOutboundConnection&lt;ServerEvent&gt;, IConnection</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -212,7 +188,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Queue</span>&lt;<span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;&gt;</td>
+        <td><span class="xref">Queue</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -243,7 +219,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Queue</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">Queue</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -274,7 +250,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">System.Guid</span>, <a class="xref" href="HacknetSharp.Events.Client.ClientResponseEvent.html">ClientResponseEvent</a>&gt;</td>
+        <td><span class="xref">ConcurrentDictionary</span>&lt;<span class="xref">Guid</span>, <a class="xref" href="HacknetSharp.Events.Client.ClientResponseEvent.html">ClientResponseEvent</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -290,8 +266,7 @@
   </span>
   <a id="HacknetSharp_Server_AIPersonContext_FlushAsync_" data-uid="HacknetSharp.Server.AIPersonContext.FlushAsync*"></a>
   <h4 id="HacknetSharp_Server_AIPersonContext_FlushAsync" data-uid="HacknetSharp.Server.AIPersonContext.FlushAsync">FlushAsync()</h4>
-  <div class="markdown level1 summary"><p>Flushes pending events to underlying output device.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -307,23 +282,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Task for this async operation.</p>
-</td>
+        <td><span class="xref">Task</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_AIPersonContext_FlushAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.AIPersonContext.FlushAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_AIPersonContext_FlushAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.AIPersonContext.FlushAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/AIPersonContext.cs/#L88">View Source</a>
   </span>
   <a id="HacknetSharp_Server_AIPersonContext_FlushAsync_" data-uid="HacknetSharp.Server.AIPersonContext.FlushAsync*"></a>
-  <h4 id="HacknetSharp_Server_AIPersonContext_FlushAsync_System_Threading_CancellationToken_" data-uid="HacknetSharp.Server.AIPersonContext.FlushAsync(System.Threading.CancellationToken)">FlushAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Flushes pending events to underlying output device.</p>
-</div>
+  <h4 id="HacknetSharp_Server_AIPersonContext_FlushAsync_CancellationToken_" data-uid="HacknetSharp.Server.AIPersonContext.FlushAsync(CancellationToken)">FlushAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -340,10 +313,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -357,9 +329,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Task for this async operation.</p>
-</td>
+        <td><span class="xref">Task</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -389,7 +360,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">Task</span></td>
         <td><p>Task that represents this async operation.</p>
 </td>
       </tr>
@@ -480,15 +451,14 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_AIPersonContext_WriteEvents_System_Collections_Generic_IEnumerable_HacknetSharp_ServerEvent__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.AIPersonContext.WriteEvents(System.Collections.Generic.IEnumerable%7BHacknetSharp.ServerEvent%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_AIPersonContext_WriteEvents_IEnumerable_HacknetSharp_ServerEvent__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.AIPersonContext.WriteEvents(IEnumerable%7BHacknetSharp.ServerEvent%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/AIPersonContext.cs/#L78">View Source</a>
   </span>
   <a id="HacknetSharp_Server_AIPersonContext_WriteEvents_" data-uid="HacknetSharp.Server.AIPersonContext.WriteEvents*"></a>
-  <h4 id="HacknetSharp_Server_AIPersonContext_WriteEvents_System_Collections_Generic_IEnumerable_HacknetSharp_ServerEvent__" data-uid="HacknetSharp.Server.AIPersonContext.WriteEvents(System.Collections.Generic.IEnumerable{HacknetSharp.ServerEvent})">WriteEvents(IEnumerable&lt;ServerEvent&gt;)</h4>
-  <div class="markdown level1 summary"><p>Queues events for send.</p>
-</div>
+  <h4 id="HacknetSharp_Server_AIPersonContext_WriteEvents_IEnumerable_HacknetSharp_ServerEvent__" data-uid="HacknetSharp.Server.AIPersonContext.WriteEvents(IEnumerable{HacknetSharp.ServerEvent})">WriteEvents(IEnumerable&lt;ServerEvent&gt;)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -505,7 +475,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="HacknetSharp.ServerEvent.html">ServerEvent</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="HacknetSharp.ServerEvent.html">ServerEvent</a>&gt;</td>
         <td><span class="parametername">events</span></td>
         <td></td>
       </tr>
@@ -571,7 +541,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

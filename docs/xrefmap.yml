@@ -13,12 +13,15 @@ references:
   commentId: T:HacknetSharp.Client
   fullName: HacknetSharp.Client
   nameWithType: Client
-- uid: HacknetSharp.Client.#ctor(System.String,System.UInt16,System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger)
-  name: Client(String, UInt16, String, String, String, ILogger)
-  href: api/HacknetSharp.Client.html#HacknetSharp_Client__ctor_System_String_System_UInt16_System_String_System_String_System_String_Microsoft_Extensions_Logging_ILogger_
-  commentId: M:HacknetSharp.Client.#ctor(System.String,System.UInt16,System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger)
-  fullName: HacknetSharp.Client.Client(System.String, System.UInt16, System.String, System.String, System.String, Microsoft.Extensions.Logging.ILogger)
-  nameWithType: Client.Client(String, UInt16, String, String, String, ILogger)
+- uid: HacknetSharp.Client.#ctor(System.String,System.UInt16,System.String,System.String,System.String,System.Nullable{ILogger})
+  name: Client(String, UInt16, String, String, String, Nullable<ILogger>)
+  href: api/HacknetSharp.Client.html#HacknetSharp_Client__ctor_System_String_System_UInt16_System_String_System_String_System_String_System_Nullable_ILogger__
+  commentId: M:HacknetSharp.Client.#ctor(System.String,System.UInt16,System.String,System.String,System.String,System.Nullable{ILogger})
+  name.vb: Client(String, UInt16, String, String, String, Nullable(Of ILogger))
+  fullName: HacknetSharp.Client.Client(System.String, System.UInt16, System.String, System.String, System.String, System.Nullable<ILogger>)
+  fullName.vb: HacknetSharp.Client.Client(System.String, System.UInt16, System.String, System.String, System.String, System.Nullable(Of ILogger))
+  nameWithType: Client.Client(String, UInt16, String, String, String, Nullable<ILogger>)
+  nameWithType.vb: Client.Client(String, UInt16, String, String, String, Nullable(Of ILogger))
 - uid: HacknetSharp.Client.#ctor*
   name: Client
   href: api/HacknetSharp.Client.html#HacknetSharp_Client__ctor_
@@ -1727,11 +1730,11 @@ references:
   commentId: M:HacknetSharp.Server.AIPersonContext.FlushAsync
   fullName: HacknetSharp.Server.AIPersonContext.FlushAsync()
   nameWithType: AIPersonContext.FlushAsync()
-- uid: HacknetSharp.Server.AIPersonContext.FlushAsync(System.Threading.CancellationToken)
+- uid: HacknetSharp.Server.AIPersonContext.FlushAsync(CancellationToken)
   name: FlushAsync(CancellationToken)
-  href: api/HacknetSharp.Server.AIPersonContext.html#HacknetSharp_Server_AIPersonContext_FlushAsync_System_Threading_CancellationToken_
-  commentId: M:HacknetSharp.Server.AIPersonContext.FlushAsync(System.Threading.CancellationToken)
-  fullName: HacknetSharp.Server.AIPersonContext.FlushAsync(System.Threading.CancellationToken)
+  href: api/HacknetSharp.Server.AIPersonContext.html#HacknetSharp_Server_AIPersonContext_FlushAsync_CancellationToken_
+  commentId: M:HacknetSharp.Server.AIPersonContext.FlushAsync(CancellationToken)
+  fullName: HacknetSharp.Server.AIPersonContext.FlushAsync(CancellationToken)
   nameWithType: AIPersonContext.FlushAsync(CancellationToken)
 - uid: HacknetSharp.Server.AIPersonContext.FlushAsync*
   name: FlushAsync
@@ -1805,13 +1808,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.AIPersonContext.WriteEvent
   nameWithType: AIPersonContext.WriteEvent
-- uid: HacknetSharp.Server.AIPersonContext.WriteEvents(System.Collections.Generic.IEnumerable{HacknetSharp.ServerEvent})
+- uid: HacknetSharp.Server.AIPersonContext.WriteEvents(IEnumerable{HacknetSharp.ServerEvent})
   name: WriteEvents(IEnumerable<ServerEvent>)
-  href: api/HacknetSharp.Server.AIPersonContext.html#HacknetSharp_Server_AIPersonContext_WriteEvents_System_Collections_Generic_IEnumerable_HacknetSharp_ServerEvent__
-  commentId: M:HacknetSharp.Server.AIPersonContext.WriteEvents(System.Collections.Generic.IEnumerable{HacknetSharp.ServerEvent})
+  href: api/HacknetSharp.Server.AIPersonContext.html#HacknetSharp_Server_AIPersonContext_WriteEvents_IEnumerable_HacknetSharp_ServerEvent__
+  commentId: M:HacknetSharp.Server.AIPersonContext.WriteEvents(IEnumerable{HacknetSharp.ServerEvent})
   name.vb: WriteEvents(IEnumerable(Of ServerEvent))
-  fullName: HacknetSharp.Server.AIPersonContext.WriteEvents(System.Collections.Generic.IEnumerable<HacknetSharp.ServerEvent>)
-  fullName.vb: HacknetSharp.Server.AIPersonContext.WriteEvents(System.Collections.Generic.IEnumerable(Of HacknetSharp.ServerEvent))
+  fullName: HacknetSharp.Server.AIPersonContext.WriteEvents(IEnumerable<HacknetSharp.ServerEvent>)
+  fullName.vb: HacknetSharp.Server.AIPersonContext.WriteEvents(IEnumerable(Of HacknetSharp.ServerEvent))
   nameWithType: AIPersonContext.WriteEvents(IEnumerable<ServerEvent>)
   nameWithType.vb: AIPersonContext.WriteEvents(IEnumerable(Of ServerEvent))
 - uid: HacknetSharp.Server.AIPersonContext.WriteEvents*
@@ -2248,12 +2251,12 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext)
   nameWithType: Executable<TExecutableContext>
   nameWithType.vb: Executable(Of TExecutableContext)
-- uid: HacknetSharp.Server.Executable`1.ActWait(System.Action,HacknetSharp.Server.YieldToken)
+- uid: HacknetSharp.Server.Executable`1.ActWait(Action,HacknetSharp.Server.YieldToken)
   name: ActWait(Action, YieldToken)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_ActWait_System_Action_HacknetSharp_Server_YieldToken_
-  commentId: M:HacknetSharp.Server.Executable`1.ActWait(System.Action,HacknetSharp.Server.YieldToken)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.ActWait(System.Action, HacknetSharp.Server.YieldToken)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ActWait(System.Action, HacknetSharp.Server.YieldToken)
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_ActWait_Action_HacknetSharp_Server_YieldToken_
+  commentId: M:HacknetSharp.Server.Executable`1.ActWait(Action,HacknetSharp.Server.YieldToken)
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.ActWait(Action, HacknetSharp.Server.YieldToken)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ActWait(Action, HacknetSharp.Server.YieldToken)
   nameWithType: Executable<TExecutableContext>.ActWait(Action, YieldToken)
   nameWithType.vb: Executable(Of TExecutableContext).ActWait(Action, YieldToken)
 - uid: HacknetSharp.Server.Executable`1.ActWait*
@@ -2274,12 +2277,12 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ActWaitYieldToken
   nameWithType: Executable<TExecutableContext>.ActWaitYieldToken
   nameWithType.vb: Executable(Of TExecutableContext).ActWaitYieldToken
-- uid: HacknetSharp.Server.Executable`1.ActWaitYieldToken.#ctor(System.Action,HacknetSharp.Server.YieldToken)
+- uid: HacknetSharp.Server.Executable`1.ActWaitYieldToken.#ctor(Action,HacknetSharp.Server.YieldToken)
   name: ActWaitYieldToken(Action, YieldToken)
-  href: api/HacknetSharp.Server.Executable-1.ActWaitYieldToken.html#HacknetSharp_Server_Executable_1_ActWaitYieldToken__ctor_System_Action_HacknetSharp_Server_YieldToken_
-  commentId: M:HacknetSharp.Server.Executable`1.ActWaitYieldToken.#ctor(System.Action,HacknetSharp.Server.YieldToken)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.ActWaitYieldToken.ActWaitYieldToken(System.Action, HacknetSharp.Server.YieldToken)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ActWaitYieldToken.ActWaitYieldToken(System.Action, HacknetSharp.Server.YieldToken)
+  href: api/HacknetSharp.Server.Executable-1.ActWaitYieldToken.html#HacknetSharp_Server_Executable_1_ActWaitYieldToken__ctor_Action_HacknetSharp_Server_YieldToken_
+  commentId: M:HacknetSharp.Server.Executable`1.ActWaitYieldToken.#ctor(Action,HacknetSharp.Server.YieldToken)
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.ActWaitYieldToken.ActWaitYieldToken(Action, HacknetSharp.Server.YieldToken)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ActWaitYieldToken.ActWaitYieldToken(Action, HacknetSharp.Server.YieldToken)
   nameWithType: Executable<TExecutableContext>.ActWaitYieldToken.ActWaitYieldToken(Action, YieldToken)
   nameWithType.vb: Executable(Of TExecutableContext).ActWaitYieldToken.ActWaitYieldToken(Action, YieldToken)
 - uid: HacknetSharp.Server.Executable`1.ActWaitYieldToken.#ctor*
@@ -2342,13 +2345,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ActWaitYieldToken.Yield
   nameWithType: Executable<TExecutableContext>.ActWaitYieldToken.Yield
   nameWithType.vb: Executable(Of TExecutableContext).ActWaitYieldToken.Yield
-- uid: HacknetSharp.Server.Executable`1.Aggregate(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+- uid: HacknetSharp.Server.Executable`1.Aggregate(IEnumerable{HacknetSharp.Server.YieldToken})
   name: Aggregate(IEnumerable<YieldToken>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Aggregate_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__
-  commentId: M:HacknetSharp.Server.Executable`1.Aggregate(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Aggregate_IEnumerable_HacknetSharp_Server_YieldToken__
+  commentId: M:HacknetSharp.Server.Executable`1.Aggregate(IEnumerable{HacknetSharp.Server.YieldToken})
   name.vb: Aggregate(IEnumerable(Of YieldToken))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Aggregate(System.Collections.Generic.IEnumerable<HacknetSharp.Server.YieldToken>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Aggregate(System.Collections.Generic.IEnumerable(Of HacknetSharp.Server.YieldToken))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Aggregate(IEnumerable<HacknetSharp.Server.YieldToken>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Aggregate(IEnumerable(Of HacknetSharp.Server.YieldToken))
   nameWithType: Executable<TExecutableContext>.Aggregate(IEnumerable<YieldToken>)
   nameWithType.vb: Executable(Of TExecutableContext).Aggregate(IEnumerable(Of YieldToken))
 - uid: HacknetSharp.Server.Executable`1.Aggregate*
@@ -2369,13 +2372,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AggregateYieldToken
   nameWithType: Executable<TExecutableContext>.AggregateYieldToken
   nameWithType.vb: Executable(Of TExecutableContext).AggregateYieldToken
-- uid: HacknetSharp.Server.Executable`1.AggregateYieldToken.#ctor(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+- uid: HacknetSharp.Server.Executable`1.AggregateYieldToken.#ctor(IEnumerable{HacknetSharp.Server.YieldToken})
   name: AggregateYieldToken(IEnumerable<YieldToken>)
-  href: api/HacknetSharp.Server.Executable-1.AggregateYieldToken.html#HacknetSharp_Server_Executable_1_AggregateYieldToken__ctor_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__
-  commentId: M:HacknetSharp.Server.Executable`1.AggregateYieldToken.#ctor(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+  href: api/HacknetSharp.Server.Executable-1.AggregateYieldToken.html#HacknetSharp_Server_Executable_1_AggregateYieldToken__ctor_IEnumerable_HacknetSharp_Server_YieldToken__
+  commentId: M:HacknetSharp.Server.Executable`1.AggregateYieldToken.#ctor(IEnumerable{HacknetSharp.Server.YieldToken})
   name.vb: AggregateYieldToken(IEnumerable(Of YieldToken))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AggregateYieldToken.AggregateYieldToken(System.Collections.Generic.IEnumerable<HacknetSharp.Server.YieldToken>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AggregateYieldToken.AggregateYieldToken(System.Collections.Generic.IEnumerable(Of HacknetSharp.Server.YieldToken))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AggregateYieldToken.AggregateYieldToken(IEnumerable<HacknetSharp.Server.YieldToken>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AggregateYieldToken.AggregateYieldToken(IEnumerable(Of HacknetSharp.Server.YieldToken))
   nameWithType: Executable<TExecutableContext>.AggregateYieldToken.AggregateYieldToken(IEnumerable<YieldToken>)
   nameWithType.vb: Executable(Of TExecutableContext).AggregateYieldToken.AggregateYieldToken(IEnumerable(Of YieldToken))
 - uid: HacknetSharp.Server.Executable`1.AggregateYieldToken.#ctor*
@@ -2421,6 +2424,85 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AggregateYieldToken.Yield
   nameWithType: Executable<TExecutableContext>.AggregateYieldToken.Yield
   nameWithType.vb: Executable(Of TExecutableContext).AggregateYieldToken.Yield
+- uid: HacknetSharp.Server.Executable`1.Any(IEnumerable{HacknetSharp.Server.YieldToken})
+  name: Any(IEnumerable<YieldToken>)
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Any_IEnumerable_HacknetSharp_Server_YieldToken__
+  commentId: M:HacknetSharp.Server.Executable`1.Any(IEnumerable{HacknetSharp.Server.YieldToken})
+  name.vb: Any(IEnumerable(Of YieldToken))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Any(IEnumerable<HacknetSharp.Server.YieldToken>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Any(IEnumerable(Of HacknetSharp.Server.YieldToken))
+  nameWithType: Executable<TExecutableContext>.Any(IEnumerable<YieldToken>)
+  nameWithType.vb: Executable(Of TExecutableContext).Any(IEnumerable(Of YieldToken))
+- uid: HacknetSharp.Server.Executable`1.Any*
+  name: Any
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Any_
+  commentId: Overload:HacknetSharp.Server.Executable`1.Any
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Any
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Any
+  nameWithType: Executable<TExecutableContext>.Any
+  nameWithType.vb: Executable(Of TExecutableContext).Any
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken
+  name: Executable<TExecutableContext>.AnyYieldToken
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html
+  commentId: T:HacknetSharp.Server.Executable`1.AnyYieldToken
+  name.vb: Executable(Of TExecutableContext).AnyYieldToken
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken.#ctor(IEnumerable{HacknetSharp.Server.YieldToken})
+  name: AnyYieldToken(IEnumerable<YieldToken>)
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html#HacknetSharp_Server_Executable_1_AnyYieldToken__ctor_IEnumerable_HacknetSharp_Server_YieldToken__
+  commentId: M:HacknetSharp.Server.Executable`1.AnyYieldToken.#ctor(IEnumerable{HacknetSharp.Server.YieldToken})
+  name.vb: AnyYieldToken(IEnumerable(Of YieldToken))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken.AnyYieldToken(IEnumerable<HacknetSharp.Server.YieldToken>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken.AnyYieldToken(IEnumerable(Of HacknetSharp.Server.YieldToken))
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken.AnyYieldToken(IEnumerable<YieldToken>)
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken.AnyYieldToken(IEnumerable(Of YieldToken))
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken.#ctor*
+  name: AnyYieldToken
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html#HacknetSharp_Server_Executable_1_AnyYieldToken__ctor_
+  commentId: Overload:HacknetSharp.Server.Executable`1.AnyYieldToken.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken.AnyYieldToken
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken.AnyYieldToken
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken.AnyYieldToken
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken.AnyYieldToken
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken.Tokens
+  name: Tokens
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html#HacknetSharp_Server_Executable_1_AnyYieldToken_Tokens
+  commentId: P:HacknetSharp.Server.Executable`1.AnyYieldToken.Tokens
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken.Tokens
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken.Tokens
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken.Tokens
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken.Tokens
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken.Tokens*
+  name: Tokens
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html#HacknetSharp_Server_Executable_1_AnyYieldToken_Tokens_
+  commentId: Overload:HacknetSharp.Server.Executable`1.AnyYieldToken.Tokens
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken.Tokens
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken.Tokens
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken.Tokens
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken.Tokens
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken.Yield(HacknetSharp.Server.IWorld)
+  name: Yield(IWorld)
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html#HacknetSharp_Server_Executable_1_AnyYieldToken_Yield_HacknetSharp_Server_IWorld_
+  commentId: M:HacknetSharp.Server.Executable`1.AnyYieldToken.Yield(HacknetSharp.Server.IWorld)
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken.Yield(HacknetSharp.Server.IWorld)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken.Yield(HacknetSharp.Server.IWorld)
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken.Yield(IWorld)
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken.Yield(IWorld)
+- uid: HacknetSharp.Server.Executable`1.AnyYieldToken.Yield*
+  name: Yield
+  href: api/HacknetSharp.Server.Executable-1.AnyYieldToken.html#HacknetSharp_Server_Executable_1_AnyYieldToken_Yield_
+  commentId: Overload:HacknetSharp.Server.Executable`1.AnyYieldToken.Yield
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.AnyYieldToken.Yield
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).AnyYieldToken.Yield
+  nameWithType: Executable<TExecutableContext>.AnyYieldToken.Yield
+  nameWithType.vb: Executable(Of TExecutableContext).AnyYieldToken.Yield
 - uid: HacknetSharp.Server.Executable`1.Combine(System.String,System.String)
   name: Combine(String, String)
   href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Combine_System_String_System_String_
@@ -2463,13 +2545,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Combine
   nameWithType: Executable<TExecutableContext>.Combine
   nameWithType.vb: Executable(Of TExecutableContext).Combine
-- uid: HacknetSharp.Server.Executable`1.Condition(System.Func{System.Boolean})
+- uid: HacknetSharp.Server.Executable`1.Condition(Func{System.Boolean})
   name: Condition(Func<Boolean>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Condition_System_Func_System_Boolean__
-  commentId: M:HacknetSharp.Server.Executable`1.Condition(System.Func{System.Boolean})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Condition_Func_System_Boolean__
+  commentId: M:HacknetSharp.Server.Executable`1.Condition(Func{System.Boolean})
   name.vb: Condition(Func(Of Boolean))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Condition(System.Func<System.Boolean>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Condition(System.Func(Of System.Boolean))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Condition(Func<System.Boolean>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Condition(Func(Of System.Boolean))
   nameWithType: Executable<TExecutableContext>.Condition(Func<Boolean>)
   nameWithType.vb: Executable(Of TExecutableContext).Condition(Func(Of Boolean))
 - uid: HacknetSharp.Server.Executable`1.Condition*
@@ -2490,13 +2572,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ConditionYieldToken
   nameWithType: Executable<TExecutableContext>.ConditionYieldToken
   nameWithType.vb: Executable(Of TExecutableContext).ConditionYieldToken
-- uid: HacknetSharp.Server.Executable`1.ConditionYieldToken.#ctor(System.Func{System.Boolean})
+- uid: HacknetSharp.Server.Executable`1.ConditionYieldToken.#ctor(Func{System.Boolean})
   name: ConditionYieldToken(Func<Boolean>)
-  href: api/HacknetSharp.Server.Executable-1.ConditionYieldToken.html#HacknetSharp_Server_Executable_1_ConditionYieldToken__ctor_System_Func_System_Boolean__
-  commentId: M:HacknetSharp.Server.Executable`1.ConditionYieldToken.#ctor(System.Func{System.Boolean})
+  href: api/HacknetSharp.Server.Executable-1.ConditionYieldToken.html#HacknetSharp_Server_Executable_1_ConditionYieldToken__ctor_Func_System_Boolean__
+  commentId: M:HacknetSharp.Server.Executable`1.ConditionYieldToken.#ctor(Func{System.Boolean})
   name.vb: ConditionYieldToken(Func(Of Boolean))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.ConditionYieldToken.ConditionYieldToken(System.Func<System.Boolean>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ConditionYieldToken.ConditionYieldToken(System.Func(Of System.Boolean))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.ConditionYieldToken.ConditionYieldToken(Func<System.Boolean>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).ConditionYieldToken.ConditionYieldToken(Func(Of System.Boolean))
   nameWithType: Executable<TExecutableContext>.ConditionYieldToken.ConditionYieldToken(Func<Boolean>)
   nameWithType.vb: Executable(Of TExecutableContext).ConditionYieldToken.ConditionYieldToken(Func(Of Boolean))
 - uid: HacknetSharp.Server.Executable`1.ConditionYieldToken.#ctor*
@@ -2645,12 +2727,12 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).EditYieldToken
   nameWithType: Executable<TExecutableContext>.EditYieldToken
   nameWithType.vb: Executable(Of TExecutableContext).EditYieldToken
-- uid: HacknetSharp.Server.Executable`1.EditYieldToken.#ctor(HacknetSharp.Server.IPersonContext,System.Guid)
+- uid: HacknetSharp.Server.Executable`1.EditYieldToken.#ctor(HacknetSharp.Server.IPersonContext,Guid)
   name: EditYieldToken(IPersonContext, Guid)
-  href: api/HacknetSharp.Server.Executable-1.EditYieldToken.html#HacknetSharp_Server_Executable_1_EditYieldToken__ctor_HacknetSharp_Server_IPersonContext_System_Guid_
-  commentId: M:HacknetSharp.Server.Executable`1.EditYieldToken.#ctor(HacknetSharp.Server.IPersonContext,System.Guid)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.EditYieldToken.EditYieldToken(HacknetSharp.Server.IPersonContext, System.Guid)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).EditYieldToken.EditYieldToken(HacknetSharp.Server.IPersonContext, System.Guid)
+  href: api/HacknetSharp.Server.Executable-1.EditYieldToken.html#HacknetSharp_Server_Executable_1_EditYieldToken__ctor_HacknetSharp_Server_IPersonContext_Guid_
+  commentId: M:HacknetSharp.Server.Executable`1.EditYieldToken.#ctor(HacknetSharp.Server.IPersonContext,Guid)
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.EditYieldToken.EditYieldToken(HacknetSharp.Server.IPersonContext, Guid)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).EditYieldToken.EditYieldToken(HacknetSharp.Server.IPersonContext, Guid)
   nameWithType: Executable<TExecutableContext>.EditYieldToken.EditYieldToken(IPersonContext, Guid)
   nameWithType.vb: Executable(Of TExecutableContext).EditYieldToken.EditYieldToken(IPersonContext, Guid)
 - uid: HacknetSharp.Server.Executable`1.EditYieldToken.#ctor*
@@ -2730,14 +2812,15 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).EditYieldToken.Yield
   nameWithType: Executable<TExecutableContext>.EditYieldToken.Yield
   nameWithType.vb: Executable(Of TExecutableContext).EditYieldToken.Yield
-- uid: HacknetSharp.Server.Executable`1.GetDirectoryName(System.String)
-  name: GetDirectoryName(String)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_GetDirectoryName_System_String_
-  commentId: M:HacknetSharp.Server.Executable`1.GetDirectoryName(System.String)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.GetDirectoryName(System.String)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).GetDirectoryName(System.String)
-  nameWithType: Executable<TExecutableContext>.GetDirectoryName(String)
-  nameWithType.vb: Executable(Of TExecutableContext).GetDirectoryName(String)
+- uid: HacknetSharp.Server.Executable`1.GetDirectoryName(System.Nullable{System.String})
+  name: GetDirectoryName(Nullable<String>)
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_GetDirectoryName_System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.Executable`1.GetDirectoryName(System.Nullable{System.String})
+  name.vb: GetDirectoryName(Nullable(Of String))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.GetDirectoryName(System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).GetDirectoryName(System.Nullable(Of System.String))
+  nameWithType: Executable<TExecutableContext>.GetDirectoryName(Nullable<String>)
+  nameWithType.vb: Executable(Of TExecutableContext).GetDirectoryName(Nullable(Of String))
 - uid: HacknetSharp.Server.Executable`1.GetDirectoryName*
   name: GetDirectoryName
   href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_GetDirectoryName_
@@ -2832,12 +2915,12 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).InputYieldToken
   nameWithType: Executable<TExecutableContext>.InputYieldToken
   nameWithType.vb: Executable(Of TExecutableContext).InputYieldToken
-- uid: HacknetSharp.Server.Executable`1.InputYieldToken.#ctor(HacknetSharp.Server.IPersonContext,System.Guid)
+- uid: HacknetSharp.Server.Executable`1.InputYieldToken.#ctor(HacknetSharp.Server.IPersonContext,Guid)
   name: InputYieldToken(IPersonContext, Guid)
-  href: api/HacknetSharp.Server.Executable-1.InputYieldToken.html#HacknetSharp_Server_Executable_1_InputYieldToken__ctor_HacknetSharp_Server_IPersonContext_System_Guid_
-  commentId: M:HacknetSharp.Server.Executable`1.InputYieldToken.#ctor(HacknetSharp.Server.IPersonContext,System.Guid)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.InputYieldToken.InputYieldToken(HacknetSharp.Server.IPersonContext, System.Guid)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).InputYieldToken.InputYieldToken(HacknetSharp.Server.IPersonContext, System.Guid)
+  href: api/HacknetSharp.Server.Executable-1.InputYieldToken.html#HacknetSharp_Server_Executable_1_InputYieldToken__ctor_HacknetSharp_Server_IPersonContext_Guid_
+  commentId: M:HacknetSharp.Server.Executable`1.InputYieldToken.#ctor(HacknetSharp.Server.IPersonContext,Guid)
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.InputYieldToken.InputYieldToken(HacknetSharp.Server.IPersonContext, Guid)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).InputYieldToken.InputYieldToken(HacknetSharp.Server.IPersonContext, Guid)
   nameWithType: Executable<TExecutableContext>.InputYieldToken.InputYieldToken(IPersonContext, Guid)
   nameWithType.vb: Executable(Of TExecutableContext).InputYieldToken.InputYieldToken(IPersonContext, Guid)
 - uid: HacknetSharp.Server.Executable`1.InputYieldToken.#ctor*
@@ -2917,13 +3000,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).InputYieldToken.Yield
   nameWithType: Executable<TExecutableContext>.InputYieldToken.Yield
   nameWithType.vb: Executable(Of TExecutableContext).InputYieldToken.Yield
-- uid: HacknetSharp.Server.Executable`1.IsPathFullyQualified(System.ReadOnlySpan{System.Char})
+- uid: HacknetSharp.Server.Executable`1.IsPathFullyQualified(ReadOnlySpan{System.Char})
   name: IsPathFullyQualified(ReadOnlySpan<Char>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_IsPathFullyQualified_System_ReadOnlySpan_System_Char__
-  commentId: M:HacknetSharp.Server.Executable`1.IsPathFullyQualified(System.ReadOnlySpan{System.Char})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_IsPathFullyQualified_ReadOnlySpan_System_Char__
+  commentId: M:HacknetSharp.Server.Executable`1.IsPathFullyQualified(ReadOnlySpan{System.Char})
   name.vb: IsPathFullyQualified(ReadOnlySpan(Of Char))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.IsPathFullyQualified(System.ReadOnlySpan<System.Char>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).IsPathFullyQualified(System.ReadOnlySpan(Of System.Char))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.IsPathFullyQualified(ReadOnlySpan<System.Char>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).IsPathFullyQualified(ReadOnlySpan(Of System.Char))
   nameWithType: Executable<TExecutableContext>.IsPathFullyQualified(ReadOnlySpan<Char>)
   nameWithType.vb: Executable(Of TExecutableContext).IsPathFullyQualified(ReadOnlySpan(Of Char))
 - uid: HacknetSharp.Server.Executable`1.IsPathFullyQualified(System.String)
@@ -2943,13 +3026,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).IsPathFullyQualified
   nameWithType: Executable<TExecutableContext>.IsPathFullyQualified
   nameWithType.vb: Executable(Of TExecutableContext).IsPathFullyQualified
-- uid: HacknetSharp.Server.Executable`1.IsPathRooted(System.ReadOnlySpan{System.Char})
+- uid: HacknetSharp.Server.Executable`1.IsPathRooted(ReadOnlySpan{System.Char})
   name: IsPathRooted(ReadOnlySpan<Char>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_IsPathRooted_System_ReadOnlySpan_System_Char__
-  commentId: M:HacknetSharp.Server.Executable`1.IsPathRooted(System.ReadOnlySpan{System.Char})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_IsPathRooted_ReadOnlySpan_System_Char__
+  commentId: M:HacknetSharp.Server.Executable`1.IsPathRooted(ReadOnlySpan{System.Char})
   name.vb: IsPathRooted(ReadOnlySpan(Of Char))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.IsPathRooted(System.ReadOnlySpan<System.Char>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).IsPathRooted(System.ReadOnlySpan(Of System.Char))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.IsPathRooted(ReadOnlySpan<System.Char>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).IsPathRooted(ReadOnlySpan(Of System.Char))
   nameWithType: Executable<TExecutableContext>.IsPathRooted(ReadOnlySpan<Char>)
   nameWithType.vb: Executable(Of TExecutableContext).IsPathRooted(ReadOnlySpan(Of Char))
 - uid: HacknetSharp.Server.Executable`1.IsPathRooted*
@@ -2961,66 +3044,69 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).IsPathRooted
   nameWithType: Executable<TExecutableContext>.IsPathRooted
   nameWithType.vb: Executable(Of TExecutableContext).IsPathRooted
-- uid: HacknetSharp.Server.Executable`1.Join(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char})
+- uid: HacknetSharp.Server.Executable`1.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})
   name: Join(ReadOnlySpan<Char>, ReadOnlySpan<Char>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__
+  commentId: M:HacknetSharp.Server.Executable`1.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})
   name.vb: Join(ReadOnlySpan(Of Char), ReadOnlySpan(Of Char))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.ReadOnlySpan<System.Char>, System.ReadOnlySpan<System.Char>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.ReadOnlySpan(Of System.Char), System.ReadOnlySpan(Of System.Char))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(ReadOnlySpan<System.Char>, ReadOnlySpan<System.Char>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(ReadOnlySpan(Of System.Char), ReadOnlySpan(Of System.Char))
   nameWithType: Executable<TExecutableContext>.Join(ReadOnlySpan<Char>, ReadOnlySpan<Char>)
   nameWithType.vb: Executable(Of TExecutableContext).Join(ReadOnlySpan(Of Char), ReadOnlySpan(Of Char))
-- uid: HacknetSharp.Server.Executable`1.Join(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char})
+- uid: HacknetSharp.Server.Executable`1.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})
   name: Join(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__
+  commentId: M:HacknetSharp.Server.Executable`1.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})
   name.vb: Join(ReadOnlySpan(Of Char), ReadOnlySpan(Of Char), ReadOnlySpan(Of Char))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.ReadOnlySpan<System.Char>, System.ReadOnlySpan<System.Char>, System.ReadOnlySpan<System.Char>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.ReadOnlySpan(Of System.Char), System.ReadOnlySpan(Of System.Char), System.ReadOnlySpan(Of System.Char))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(ReadOnlySpan<System.Char>, ReadOnlySpan<System.Char>, ReadOnlySpan<System.Char>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(ReadOnlySpan(Of System.Char), ReadOnlySpan(Of System.Char), ReadOnlySpan(Of System.Char))
   nameWithType: Executable<TExecutableContext>.Join(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>)
   nameWithType.vb: Executable(Of TExecutableContext).Join(ReadOnlySpan(Of Char), ReadOnlySpan(Of Char), ReadOnlySpan(Of Char))
-- uid: HacknetSharp.Server.Executable`1.Join(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char})
+- uid: HacknetSharp.Server.Executable`1.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})
   name: Join(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__
+  commentId: M:HacknetSharp.Server.Executable`1.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})
   name.vb: Join(ReadOnlySpan(Of Char), ReadOnlySpan(Of Char), ReadOnlySpan(Of Char), ReadOnlySpan(Of Char))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.ReadOnlySpan<System.Char>, System.ReadOnlySpan<System.Char>, System.ReadOnlySpan<System.Char>, System.ReadOnlySpan<System.Char>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.ReadOnlySpan(Of System.Char), System.ReadOnlySpan(Of System.Char), System.ReadOnlySpan(Of System.Char), System.ReadOnlySpan(Of System.Char))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(ReadOnlySpan<System.Char>, ReadOnlySpan<System.Char>, ReadOnlySpan<System.Char>, ReadOnlySpan<System.Char>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(ReadOnlySpan(Of System.Char), ReadOnlySpan(Of System.Char), ReadOnlySpan(Of System.Char), ReadOnlySpan(Of System.Char))
   nameWithType: Executable<TExecutableContext>.Join(ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>, ReadOnlySpan<Char>)
   nameWithType.vb: Executable(Of TExecutableContext).Join(ReadOnlySpan(Of Char), ReadOnlySpan(Of Char), ReadOnlySpan(Of Char), ReadOnlySpan(Of Char))
-- uid: HacknetSharp.Server.Executable`1.Join(System.String,System.String)
-  name: Join(String, String)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_String_System_String_
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.String,System.String)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.String, System.String)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.String, System.String)
-  nameWithType: Executable<TExecutableContext>.Join(String, String)
-  nameWithType.vb: Executable(Of TExecutableContext).Join(String, String)
-- uid: HacknetSharp.Server.Executable`1.Join(System.String,System.String,System.String)
-  name: Join(String, String, String)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_String_System_String_System_String_
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.String,System.String,System.String)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.String, System.String, System.String)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.String, System.String, System.String)
-  nameWithType: Executable<TExecutableContext>.Join(String, String, String)
-  nameWithType.vb: Executable(Of TExecutableContext).Join(String, String, String)
-- uid: HacknetSharp.Server.Executable`1.Join(System.String,System.String,System.String,System.String)
-  name: Join(String, String, String, String)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_String_System_String_System_String_System_String_
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.String,System.String,System.String,System.String)
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.String, System.String, System.String, System.String)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.String, System.String, System.String, System.String)
-  nameWithType: Executable<TExecutableContext>.Join(String, String, String, String)
-  nameWithType.vb: Executable(Of TExecutableContext).Join(String, String, String, String)
-- uid: HacknetSharp.Server.Executable`1.Join(System.String[])
-  name: Join(String[])
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_String___
-  commentId: M:HacknetSharp.Server.Executable`1.Join(System.String[])
-  name.vb: Join(String())
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.String[])
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.String())
-  nameWithType: Executable<TExecutableContext>.Join(String[])
-  nameWithType.vb: Executable(Of TExecutableContext).Join(String())
+- uid: HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String},System.Nullable{System.String})
+  name: Join(Nullable<String>, Nullable<String>)
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: Join(Nullable(Of String), Nullable(Of String))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: Executable<TExecutableContext>.Join(Nullable<String>, Nullable<String>)
+  nameWithType.vb: Executable(Of TExecutableContext).Join(Nullable(Of String), Nullable(Of String))
+- uid: HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String})
+  name: Join(Nullable<String>, Nullable<String>, Nullable<String>)
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: Join(Nullable(Of String), Nullable(Of String), Nullable(Of String))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.Nullable<System.String>, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.Nullable(Of System.String), System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: Executable<TExecutableContext>.Join(Nullable<String>, Nullable<String>, Nullable<String>)
+  nameWithType.vb: Executable(Of TExecutableContext).Join(Nullable(Of String), Nullable(Of String), Nullable(Of String))
+- uid: HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String})
+  name: Join(Nullable<String>, Nullable<String>, Nullable<String>, Nullable<String>)
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: Join(Nullable(Of String), Nullable(Of String), Nullable(Of String), Nullable(Of String))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.Nullable<System.String>, System.Nullable<System.String>, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.Nullable(Of System.String), System.Nullable(Of System.String), System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: Executable<TExecutableContext>.Join(Nullable<String>, Nullable<String>, Nullable<String>, Nullable<String>)
+  nameWithType.vb: Executable(Of TExecutableContext).Join(Nullable(Of String), Nullable(Of String), Nullable(Of String), Nullable(Of String))
+- uid: HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String}[])
+  name: Join(Nullable<String>[])
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_System_Nullable_System_String____
+  commentId: M:HacknetSharp.Server.Executable`1.Join(System.Nullable{System.String}[])
+  name.vb: Join(Nullable(Of String)())
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Join(System.Nullable<System.String>[])
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Join(System.Nullable(Of System.String)())
+  nameWithType: Executable<TExecutableContext>.Join(Nullable<String>[])
+  nameWithType.vb: Executable(Of TExecutableContext).Join(Nullable(Of String)())
 - uid: HacknetSharp.Server.Executable`1.Join*
   name: Join
   href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Join_
@@ -3047,13 +3133,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Run
   nameWithType: Executable<TExecutableContext>.Run
   nameWithType.vb: Executable(Of TExecutableContext).Run
-- uid: HacknetSharp.Server.Executable`1.Sequence(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+- uid: HacknetSharp.Server.Executable`1.Sequence(IEnumerable{HacknetSharp.Server.YieldToken})
   name: Sequence(IEnumerable<YieldToken>)
-  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Sequence_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__
-  commentId: M:HacknetSharp.Server.Executable`1.Sequence(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+  href: api/HacknetSharp.Server.Executable-1.html#HacknetSharp_Server_Executable_1_Sequence_IEnumerable_HacknetSharp_Server_YieldToken__
+  commentId: M:HacknetSharp.Server.Executable`1.Sequence(IEnumerable{HacknetSharp.Server.YieldToken})
   name.vb: Sequence(IEnumerable(Of YieldToken))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Sequence(System.Collections.Generic.IEnumerable<HacknetSharp.Server.YieldToken>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Sequence(System.Collections.Generic.IEnumerable(Of HacknetSharp.Server.YieldToken))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.Sequence(IEnumerable<HacknetSharp.Server.YieldToken>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).Sequence(IEnumerable(Of HacknetSharp.Server.YieldToken))
   nameWithType: Executable<TExecutableContext>.Sequence(IEnumerable<YieldToken>)
   nameWithType.vb: Executable(Of TExecutableContext).Sequence(IEnumerable(Of YieldToken))
 - uid: HacknetSharp.Server.Executable`1.Sequence*
@@ -3074,13 +3160,13 @@ references:
   fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).SequenceYieldToken
   nameWithType: Executable<TExecutableContext>.SequenceYieldToken
   nameWithType.vb: Executable(Of TExecutableContext).SequenceYieldToken
-- uid: HacknetSharp.Server.Executable`1.SequenceYieldToken.#ctor(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+- uid: HacknetSharp.Server.Executable`1.SequenceYieldToken.#ctor(IEnumerable{HacknetSharp.Server.YieldToken})
   name: SequenceYieldToken(IEnumerable<YieldToken>)
-  href: api/HacknetSharp.Server.Executable-1.SequenceYieldToken.html#HacknetSharp_Server_Executable_1_SequenceYieldToken__ctor_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__
-  commentId: M:HacknetSharp.Server.Executable`1.SequenceYieldToken.#ctor(System.Collections.Generic.IEnumerable{HacknetSharp.Server.YieldToken})
+  href: api/HacknetSharp.Server.Executable-1.SequenceYieldToken.html#HacknetSharp_Server_Executable_1_SequenceYieldToken__ctor_IEnumerable_HacknetSharp_Server_YieldToken__
+  commentId: M:HacknetSharp.Server.Executable`1.SequenceYieldToken.#ctor(IEnumerable{HacknetSharp.Server.YieldToken})
   name.vb: SequenceYieldToken(IEnumerable(Of YieldToken))
-  fullName: HacknetSharp.Server.Executable<TExecutableContext>.SequenceYieldToken.SequenceYieldToken(System.Collections.Generic.IEnumerable<HacknetSharp.Server.YieldToken>)
-  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).SequenceYieldToken.SequenceYieldToken(System.Collections.Generic.IEnumerable(Of HacknetSharp.Server.YieldToken))
+  fullName: HacknetSharp.Server.Executable<TExecutableContext>.SequenceYieldToken.SequenceYieldToken(IEnumerable<HacknetSharp.Server.YieldToken>)
+  fullName.vb: HacknetSharp.Server.Executable(Of TExecutableContext).SequenceYieldToken.SequenceYieldToken(IEnumerable(Of HacknetSharp.Server.YieldToken))
   nameWithType: Executable<TExecutableContext>.SequenceYieldToken.SequenceYieldToken(IEnumerable<YieldToken>)
   nameWithType.vb: Executable(Of TExecutableContext).SequenceYieldToken.SequenceYieldToken(IEnumerable(Of YieldToken))
 - uid: HacknetSharp.Server.Executable`1.SequenceYieldToken.#ctor*
@@ -3132,11 +3218,11 @@ references:
   commentId: T:HacknetSharp.Server.IPAddressRange
   fullName: HacknetSharp.Server.IPAddressRange
   nameWithType: IPAddressRange
-- uid: HacknetSharp.Server.IPAddressRange.#ctor(System.Net.IPAddress)
+- uid: HacknetSharp.Server.IPAddressRange.#ctor(IPAddress)
   name: IPAddressRange(IPAddress)
-  href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange__ctor_System_Net_IPAddress_
-  commentId: M:HacknetSharp.Server.IPAddressRange.#ctor(System.Net.IPAddress)
-  fullName: HacknetSharp.Server.IPAddressRange.IPAddressRange(System.Net.IPAddress)
+  href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange__ctor_IPAddress_
+  commentId: M:HacknetSharp.Server.IPAddressRange.#ctor(IPAddress)
+  fullName: HacknetSharp.Server.IPAddressRange.IPAddressRange(IPAddress)
   nameWithType: IPAddressRange.IPAddressRange(IPAddress)
 - uid: HacknetSharp.Server.IPAddressRange.#ctor(System.String)
   name: IPAddressRange(String)
@@ -3157,11 +3243,11 @@ references:
   commentId: F:HacknetSharp.Server.IPAddressRange.AddressFamily
   fullName: HacknetSharp.Server.IPAddressRange.AddressFamily
   nameWithType: IPAddressRange.AddressFamily
-- uid: HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)
+- uid: HacknetSharp.Server.IPAddressRange.Contains(IPAddress)
   name: Contains(IPAddress)
-  href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange_Contains_System_Net_IPAddress_
-  commentId: M:HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)
-  fullName: HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)
+  href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange_Contains_IPAddress_
+  commentId: M:HacknetSharp.Server.IPAddressRange.Contains(IPAddress)
+  fullName: HacknetSharp.Server.IPAddressRange.Contains(IPAddress)
   nameWithType: IPAddressRange.Contains(IPAddress)
 - uid: HacknetSharp.Server.IPAddressRange.Contains*
   name: Contains
@@ -3176,12 +3262,15 @@ references:
   commentId: M:HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)
   fullName: HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)
   nameWithType: IPAddressRange.Equals(IPAddressRange)
-- uid: HacknetSharp.Server.IPAddressRange.Equals(System.Object)
-  name: Equals(Object)
-  href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange_Equals_System_Object_
-  commentId: M:HacknetSharp.Server.IPAddressRange.Equals(System.Object)
-  fullName: HacknetSharp.Server.IPAddressRange.Equals(System.Object)
-  nameWithType: IPAddressRange.Equals(Object)
+- uid: HacknetSharp.Server.IPAddressRange.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange_Equals_System_Nullable_System_Object__
+  commentId: M:HacknetSharp.Server.IPAddressRange.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: HacknetSharp.Server.IPAddressRange.Equals(System.Nullable<System.Object>)
+  fullName.vb: HacknetSharp.Server.IPAddressRange.Equals(System.Nullable(Of System.Object))
+  nameWithType: IPAddressRange.Equals(Nullable<Object>)
+  nameWithType.vb: IPAddressRange.Equals(Nullable(Of Object))
 - uid: HacknetSharp.Server.IPAddressRange.Equals*
   name: Equals
   href: api/HacknetSharp.Server.IPAddressRange.html#HacknetSharp_Server_IPAddressRange_Equals_
@@ -3353,13 +3442,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IServerDatabase.AddBulk
   nameWithType: IServerDatabase.AddBulk
-- uid: HacknetSharp.Server.IServerDatabase.AddBulk``1(System.Collections.Generic.IEnumerable{``0})
+- uid: HacknetSharp.Server.IServerDatabase.AddBulk``1(IEnumerable{``0})
   name: AddBulk<TEntry>(IEnumerable<TEntry>)
-  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_AddBulk__1_System_Collections_Generic_IEnumerable___0__
-  commentId: M:HacknetSharp.Server.IServerDatabase.AddBulk``1(System.Collections.Generic.IEnumerable{``0})
+  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_AddBulk__1_IEnumerable___0__
+  commentId: M:HacknetSharp.Server.IServerDatabase.AddBulk``1(IEnumerable{``0})
   name.vb: AddBulk(Of TEntry)(IEnumerable(Of TEntry))
-  fullName: HacknetSharp.Server.IServerDatabase.AddBulk<TEntry>(System.Collections.Generic.IEnumerable<TEntry>)
-  fullName.vb: HacknetSharp.Server.IServerDatabase.AddBulk(Of TEntry)(System.Collections.Generic.IEnumerable(Of TEntry))
+  fullName: HacknetSharp.Server.IServerDatabase.AddBulk<TEntry>(IEnumerable<TEntry>)
+  fullName.vb: HacknetSharp.Server.IServerDatabase.AddBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: IServerDatabase.AddBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: IServerDatabase.AddBulk(Of TEntry)(IEnumerable(Of TEntry))
 - uid: HacknetSharp.Server.IServerDatabase.Delete*
@@ -3385,13 +3474,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IServerDatabase.DeleteBulk
   nameWithType: IServerDatabase.DeleteBulk
-- uid: HacknetSharp.Server.IServerDatabase.DeleteBulk``1(System.Collections.Generic.IEnumerable{``0})
+- uid: HacknetSharp.Server.IServerDatabase.DeleteBulk``1(IEnumerable{``0})
   name: DeleteBulk<TEntry>(IEnumerable<TEntry>)
-  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_DeleteBulk__1_System_Collections_Generic_IEnumerable___0__
-  commentId: M:HacknetSharp.Server.IServerDatabase.DeleteBulk``1(System.Collections.Generic.IEnumerable{``0})
+  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_DeleteBulk__1_IEnumerable___0__
+  commentId: M:HacknetSharp.Server.IServerDatabase.DeleteBulk``1(IEnumerable{``0})
   name.vb: DeleteBulk(Of TEntry)(IEnumerable(Of TEntry))
-  fullName: HacknetSharp.Server.IServerDatabase.DeleteBulk<TEntry>(System.Collections.Generic.IEnumerable<TEntry>)
-  fullName.vb: HacknetSharp.Server.IServerDatabase.DeleteBulk(Of TEntry)(System.Collections.Generic.IEnumerable(Of TEntry))
+  fullName: HacknetSharp.Server.IServerDatabase.DeleteBulk<TEntry>(IEnumerable<TEntry>)
+  fullName.vb: HacknetSharp.Server.IServerDatabase.DeleteBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: IServerDatabase.DeleteBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: IServerDatabase.DeleteBulk(Of TEntry)(IEnumerable(Of TEntry))
 - uid: HacknetSharp.Server.IServerDatabase.GetAsync*
@@ -3417,13 +3506,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IServerDatabase.GetBulkAsync
   nameWithType: IServerDatabase.GetBulkAsync
-- uid: HacknetSharp.Server.IServerDatabase.GetBulkAsync``2(System.Collections.Generic.ICollection{``0})
+- uid: HacknetSharp.Server.IServerDatabase.GetBulkAsync``2(ICollection{``0})
   name: GetBulkAsync<TKey, TResult>(ICollection<TKey>)
-  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_GetBulkAsync__2_System_Collections_Generic_ICollection___0__
-  commentId: M:HacknetSharp.Server.IServerDatabase.GetBulkAsync``2(System.Collections.Generic.ICollection{``0})
+  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_GetBulkAsync__2_ICollection___0__
+  commentId: M:HacknetSharp.Server.IServerDatabase.GetBulkAsync``2(ICollection{``0})
   name.vb: GetBulkAsync(Of TKey, TResult)(ICollection(Of TKey))
-  fullName: HacknetSharp.Server.IServerDatabase.GetBulkAsync<TKey, TResult>(System.Collections.Generic.ICollection<TKey>)
-  fullName.vb: HacknetSharp.Server.IServerDatabase.GetBulkAsync(Of TKey, TResult)(System.Collections.Generic.ICollection(Of TKey))
+  fullName: HacknetSharp.Server.IServerDatabase.GetBulkAsync<TKey, TResult>(ICollection<TKey>)
+  fullName.vb: HacknetSharp.Server.IServerDatabase.GetBulkAsync(Of TKey, TResult)(ICollection(Of TKey))
   nameWithType: IServerDatabase.GetBulkAsync<TKey, TResult>(ICollection<TKey>)
   nameWithType.vb: IServerDatabase.GetBulkAsync(Of TKey, TResult)(ICollection(Of TKey))
 - uid: HacknetSharp.Server.IServerDatabase.SyncAsync
@@ -3462,13 +3551,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IServerDatabase.UpdateBulk
   nameWithType: IServerDatabase.UpdateBulk
-- uid: HacknetSharp.Server.IServerDatabase.UpdateBulk``1(System.Collections.Generic.IEnumerable{``0})
+- uid: HacknetSharp.Server.IServerDatabase.UpdateBulk``1(IEnumerable{``0})
   name: UpdateBulk<TEntry>(IEnumerable<TEntry>)
-  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_UpdateBulk__1_System_Collections_Generic_IEnumerable___0__
-  commentId: M:HacknetSharp.Server.IServerDatabase.UpdateBulk``1(System.Collections.Generic.IEnumerable{``0})
+  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_UpdateBulk__1_IEnumerable___0__
+  commentId: M:HacknetSharp.Server.IServerDatabase.UpdateBulk``1(IEnumerable{``0})
   name.vb: UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
-  fullName: HacknetSharp.Server.IServerDatabase.UpdateBulk<TEntry>(System.Collections.Generic.IEnumerable<TEntry>)
-  fullName.vb: HacknetSharp.Server.IServerDatabase.UpdateBulk(Of TEntry)(System.Collections.Generic.IEnumerable(Of TEntry))
+  fullName: HacknetSharp.Server.IServerDatabase.UpdateBulk<TEntry>(IEnumerable<TEntry>)
+  fullName.vb: HacknetSharp.Server.IServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: IServerDatabase.UpdateBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: IServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
 - uid: HacknetSharp.Server.IWorld
@@ -3516,12 +3605,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IWorld.ExecuteCommand
   nameWithType: IWorld.ExecuteCommand
-- uid: HacknetSharp.Server.IWorld.GetProgramInfo(System.String)
-  name: GetProgramInfo(String)
-  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_GetProgramInfo_System_String_
-  commentId: M:HacknetSharp.Server.IWorld.GetProgramInfo(System.String)
-  fullName: HacknetSharp.Server.IWorld.GetProgramInfo(System.String)
-  nameWithType: IWorld.GetProgramInfo(String)
+- uid: HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable{System.String})
+  name: GetProgramInfo(Nullable<String>)
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_GetProgramInfo_System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable{System.String})
+  name.vb: GetProgramInfo(Nullable(Of String))
+  fullName: HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable(Of System.String))
+  nameWithType: IWorld.GetProgramInfo(Nullable<String>)
+  nameWithType.vb: IWorld.GetProgramInfo(Nullable(Of String))
 - uid: HacknetSharp.Server.IWorld.GetProgramInfo*
   name: GetProgramInfo
   href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_GetProgramInfo_
@@ -3753,11 +3845,11 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.FileModel.CanWrite
   nameWithType: FileModel.CanWrite
-- uid: HacknetSharp.Server.Models.FileModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.FileModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.FileModel.html#HacknetSharp_Server_Models_FileModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.FileModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.FileModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.FileModel.html#HacknetSharp_Server_Models_FileModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.FileModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.FileModel.ConfigureModel(ModelBuilder)
   nameWithType: FileModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.FileModel.ConfigureModel*
   name: ConfigureModel
@@ -3945,11 +4037,11 @@ references:
   commentId: T:HacknetSharp.Server.Models.KnownSystemModel
   fullName: HacknetSharp.Server.Models.KnownSystemModel
   nameWithType: KnownSystemModel
-- uid: HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.KnownSystemModel.html#HacknetSharp_Server_Models_KnownSystemModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.KnownSystemModel.html#HacknetSharp_Server_Models_KnownSystemModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel(ModelBuilder)
   nameWithType: KnownSystemModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.KnownSystemModel.ConfigureModel*
   name: ConfigureModel
@@ -4042,11 +4134,11 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.LoginModel.Admin
   nameWithType: LoginModel.Admin
-- uid: HacknetSharp.Server.Models.LoginModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.LoginModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.LoginModel.html#HacknetSharp_Server_Models_LoginModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.LoginModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.LoginModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.LoginModel.html#HacknetSharp_Server_Models_LoginModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.LoginModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.LoginModel.ConfigureModel(ModelBuilder)
   nameWithType: LoginModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.LoginModel.ConfigureModel*
   name: ConfigureModel
@@ -4126,11 +4218,11 @@ references:
   commentId: T:HacknetSharp.Server.Models.PersonModel
   fullName: HacknetSharp.Server.Models.PersonModel
   nameWithType: PersonModel
-- uid: HacknetSharp.Server.Models.PersonModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.PersonModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.PersonModel.html#HacknetSharp_Server_Models_PersonModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.PersonModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.PersonModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.PersonModel.html#HacknetSharp_Server_Models_PersonModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.PersonModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.PersonModel.ConfigureModel(ModelBuilder)
   nameWithType: PersonModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.PersonModel.ConfigureModel*
   name: ConfigureModel
@@ -4236,11 +4328,11 @@ references:
   commentId: T:HacknetSharp.Server.Models.RegistrationToken
   fullName: HacknetSharp.Server.Models.RegistrationToken
   nameWithType: RegistrationToken
-- uid: HacknetSharp.Server.Models.RegistrationToken.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.RegistrationToken.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.RegistrationToken.html#HacknetSharp_Server_Models_RegistrationToken_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.RegistrationToken.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.RegistrationToken.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.RegistrationToken.html#HacknetSharp_Server_Models_RegistrationToken_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.RegistrationToken.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.RegistrationToken.ConfigureModel(ModelBuilder)
   nameWithType: RegistrationToken.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.RegistrationToken.ConfigureModel*
   name: ConfigureModel
@@ -4294,11 +4386,11 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.BootTime
   nameWithType: SystemModel.BootTime
-- uid: HacknetSharp.Server.Models.SystemModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.SystemModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.SystemModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.SystemModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.SystemModel.ConfigureModel(ModelBuilder)
   nameWithType: SystemModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.SystemModel.ConfigureModel*
   name: ConfigureModel
@@ -4605,11 +4697,11 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.UserModel.Admin
   nameWithType: UserModel.Admin
-- uid: HacknetSharp.Server.Models.UserModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.UserModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.UserModel.html#HacknetSharp_Server_Models_UserModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.UserModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.UserModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.UserModel.html#HacknetSharp_Server_Models_UserModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.UserModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.UserModel.ConfigureModel(ModelBuilder)
   nameWithType: UserModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.UserModel.ConfigureModel*
   name: ConfigureModel
@@ -4663,11 +4755,11 @@ references:
   commentId: T:HacknetSharp.Server.Models.VulnerabilityModel
   fullName: HacknetSharp.Server.Models.VulnerabilityModel
   nameWithType: VulnerabilityModel
-- uid: HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.VulnerabilityModel.html#HacknetSharp_Server_Models_VulnerabilityModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.VulnerabilityModel.html#HacknetSharp_Server_Models_VulnerabilityModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel(ModelBuilder)
   nameWithType: VulnerabilityModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.VulnerabilityModel.ConfigureModel*
   name: ConfigureModel
@@ -4773,11 +4865,11 @@ references:
   commentId: T:HacknetSharp.Server.Models.WorldModel
   fullName: HacknetSharp.Server.Models.WorldModel
   nameWithType: WorldModel
-- uid: HacknetSharp.Server.Models.WorldModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.Models.WorldModel.ConfigureModel(ModelBuilder)
   name: ConfigureModel(ModelBuilder)
-  href: api/HacknetSharp.Server.Models.WorldModel.html#HacknetSharp_Server_Models_WorldModel_ConfigureModel_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.Models.WorldModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.Models.WorldModel.ConfigureModel(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.Models.WorldModel.html#HacknetSharp_Server_Models_WorldModel_ConfigureModel_ModelBuilder_
+  commentId: M:HacknetSharp.Server.Models.WorldModel.ConfigureModel(ModelBuilder)
+  fullName: HacknetSharp.Server.Models.WorldModel.ConfigureModel(ModelBuilder)
   nameWithType: WorldModel.ConfigureModel(ModelBuilder)
 - uid: HacknetSharp.Server.Models.WorldModel.ConfigureModel*
   name: ConfigureModel
@@ -4915,13 +5007,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.PathFilter.Filter.Test
   nameWithType: PathFilter.Filter.Test
-- uid: HacknetSharp.Server.PathFilter.GenerateFilter(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+- uid: HacknetSharp.Server.PathFilter.GenerateFilter(IEnumerable{System.String},System.Boolean)
   name: GenerateFilter(IEnumerable<String>, Boolean)
-  href: api/HacknetSharp.Server.PathFilter.html#HacknetSharp_Server_PathFilter_GenerateFilter_System_Collections_Generic_IEnumerable_System_String__System_Boolean_
-  commentId: M:HacknetSharp.Server.PathFilter.GenerateFilter(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  href: api/HacknetSharp.Server.PathFilter.html#HacknetSharp_Server_PathFilter_GenerateFilter_IEnumerable_System_String__System_Boolean_
+  commentId: M:HacknetSharp.Server.PathFilter.GenerateFilter(IEnumerable{System.String},System.Boolean)
   name.vb: GenerateFilter(IEnumerable(Of String), Boolean)
-  fullName: HacknetSharp.Server.PathFilter.GenerateFilter(System.Collections.Generic.IEnumerable<System.String>, System.Boolean)
-  fullName.vb: HacknetSharp.Server.PathFilter.GenerateFilter(System.Collections.Generic.IEnumerable(Of System.String), System.Boolean)
+  fullName: HacknetSharp.Server.PathFilter.GenerateFilter(IEnumerable<System.String>, System.Boolean)
+  fullName.vb: HacknetSharp.Server.PathFilter.GenerateFilter(IEnumerable(Of System.String), System.Boolean)
   nameWithType: PathFilter.GenerateFilter(IEnumerable<String>, Boolean)
   nameWithType.vb: PathFilter.GenerateFilter(IEnumerable(Of String), Boolean)
 - uid: HacknetSharp.Server.PathFilter.GenerateFilter*
@@ -5168,15 +5260,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Program.SignalUnbindProcess
   nameWithType: Program.SignalUnbindProcess
-- uid: HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext,System.String,HacknetSharp.Server.Models.SystemModel@)
-  name: TryGetSystemOrOutput(ProgramContext, String, out SystemModel)
-  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystemOrOutput_HacknetSharp_Server_ProgramContext_System_String_HacknetSharp_Server_Models_SystemModel__
-  commentId: M:HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext,System.String,HacknetSharp.Server.Models.SystemModel@)
-  name.vb: TryGetSystemOrOutput(ProgramContext, String, ByRef SystemModel)
-  fullName: HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext, System.String, out HacknetSharp.Server.Models.SystemModel)
-  fullName.vb: HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext, System.String, ByRef HacknetSharp.Server.Models.SystemModel)
-  nameWithType: Program.TryGetSystemOrOutput(ProgramContext, String, out SystemModel)
-  nameWithType.vb: Program.TryGetSystemOrOutput(ProgramContext, String, ByRef SystemModel)
+- uid: HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext,System.Nullable{System.String},HacknetSharp.Server.Models.SystemModel@)
+  name: TryGetSystemOrOutput(ProgramContext, Nullable<String>, out SystemModel)
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystemOrOutput_HacknetSharp_Server_ProgramContext_System_Nullable_System_String__HacknetSharp_Server_Models_SystemModel__
+  commentId: M:HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext,System.Nullable{System.String},HacknetSharp.Server.Models.SystemModel@)
+  name.vb: TryGetSystemOrOutput(ProgramContext, Nullable(Of String), ByRef SystemModel)
+  fullName: HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext, System.Nullable<System.String>, out HacknetSharp.Server.Models.SystemModel)
+  fullName.vb: HacknetSharp.Server.Program.TryGetSystemOrOutput(HacknetSharp.Server.ProgramContext, System.Nullable(Of System.String), ByRef HacknetSharp.Server.Models.SystemModel)
+  nameWithType: Program.TryGetSystemOrOutput(ProgramContext, Nullable<String>, out SystemModel)
+  nameWithType.vb: Program.TryGetSystemOrOutput(ProgramContext, Nullable(Of String), ByRef SystemModel)
 - uid: HacknetSharp.Server.Program.TryGetSystemOrOutput*
   name: TryGetSystemOrOutput
   href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystemOrOutput_
@@ -5531,13 +5623,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerDatabase.AddBulk
   nameWithType: ServerDatabase.AddBulk
-- uid: HacknetSharp.Server.ServerDatabase.AddBulk``1(System.Collections.Generic.IEnumerable{``0})
+- uid: HacknetSharp.Server.ServerDatabase.AddBulk``1(IEnumerable{``0})
   name: AddBulk<TEntry>(IEnumerable<TEntry>)
-  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_AddBulk__1_System_Collections_Generic_IEnumerable___0__
-  commentId: M:HacknetSharp.Server.ServerDatabase.AddBulk``1(System.Collections.Generic.IEnumerable{``0})
+  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_AddBulk__1_IEnumerable___0__
+  commentId: M:HacknetSharp.Server.ServerDatabase.AddBulk``1(IEnumerable{``0})
   name.vb: AddBulk(Of TEntry)(IEnumerable(Of TEntry))
-  fullName: HacknetSharp.Server.ServerDatabase.AddBulk<TEntry>(System.Collections.Generic.IEnumerable<TEntry>)
-  fullName.vb: HacknetSharp.Server.ServerDatabase.AddBulk(Of TEntry)(System.Collections.Generic.IEnumerable(Of TEntry))
+  fullName: HacknetSharp.Server.ServerDatabase.AddBulk<TEntry>(IEnumerable<TEntry>)
+  fullName.vb: HacknetSharp.Server.ServerDatabase.AddBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: ServerDatabase.AddBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: ServerDatabase.AddBulk(Of TEntry)(IEnumerable(Of TEntry))
 - uid: HacknetSharp.Server.ServerDatabase.Delete*
@@ -5563,13 +5655,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerDatabase.DeleteBulk
   nameWithType: ServerDatabase.DeleteBulk
-- uid: HacknetSharp.Server.ServerDatabase.DeleteBulk``1(System.Collections.Generic.IEnumerable{``0})
+- uid: HacknetSharp.Server.ServerDatabase.DeleteBulk``1(IEnumerable{``0})
   name: DeleteBulk<TEntry>(IEnumerable<TEntry>)
-  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_DeleteBulk__1_System_Collections_Generic_IEnumerable___0__
-  commentId: M:HacknetSharp.Server.ServerDatabase.DeleteBulk``1(System.Collections.Generic.IEnumerable{``0})
+  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_DeleteBulk__1_IEnumerable___0__
+  commentId: M:HacknetSharp.Server.ServerDatabase.DeleteBulk``1(IEnumerable{``0})
   name.vb: DeleteBulk(Of TEntry)(IEnumerable(Of TEntry))
-  fullName: HacknetSharp.Server.ServerDatabase.DeleteBulk<TEntry>(System.Collections.Generic.IEnumerable<TEntry>)
-  fullName.vb: HacknetSharp.Server.ServerDatabase.DeleteBulk(Of TEntry)(System.Collections.Generic.IEnumerable(Of TEntry))
+  fullName: HacknetSharp.Server.ServerDatabase.DeleteBulk<TEntry>(IEnumerable<TEntry>)
+  fullName.vb: HacknetSharp.Server.ServerDatabase.DeleteBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: ServerDatabase.DeleteBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: ServerDatabase.DeleteBulk(Of TEntry)(IEnumerable(Of TEntry))
 - uid: HacknetSharp.Server.ServerDatabase.GetAsync*
@@ -5595,13 +5687,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerDatabase.GetBulkAsync
   nameWithType: ServerDatabase.GetBulkAsync
-- uid: HacknetSharp.Server.ServerDatabase.GetBulkAsync``2(System.Collections.Generic.ICollection{``0})
+- uid: HacknetSharp.Server.ServerDatabase.GetBulkAsync``2(ICollection{``0})
   name: GetBulkAsync<TKey, TResult>(ICollection<TKey>)
-  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_GetBulkAsync__2_System_Collections_Generic_ICollection___0__
-  commentId: M:HacknetSharp.Server.ServerDatabase.GetBulkAsync``2(System.Collections.Generic.ICollection{``0})
+  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_GetBulkAsync__2_ICollection___0__
+  commentId: M:HacknetSharp.Server.ServerDatabase.GetBulkAsync``2(ICollection{``0})
   name.vb: GetBulkAsync(Of TKey, TResult)(ICollection(Of TKey))
-  fullName: HacknetSharp.Server.ServerDatabase.GetBulkAsync<TKey, TResult>(System.Collections.Generic.ICollection<TKey>)
-  fullName.vb: HacknetSharp.Server.ServerDatabase.GetBulkAsync(Of TKey, TResult)(System.Collections.Generic.ICollection(Of TKey))
+  fullName: HacknetSharp.Server.ServerDatabase.GetBulkAsync<TKey, TResult>(ICollection<TKey>)
+  fullName.vb: HacknetSharp.Server.ServerDatabase.GetBulkAsync(Of TKey, TResult)(ICollection(Of TKey))
   nameWithType: ServerDatabase.GetBulkAsync<TKey, TResult>(ICollection<TKey>)
   nameWithType.vb: ServerDatabase.GetBulkAsync(Of TKey, TResult)(ICollection(Of TKey))
 - uid: HacknetSharp.Server.ServerDatabase.SyncAsync
@@ -5640,13 +5732,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerDatabase.UpdateBulk
   nameWithType: ServerDatabase.UpdateBulk
-- uid: HacknetSharp.Server.ServerDatabase.UpdateBulk``1(System.Collections.Generic.IEnumerable{``0})
+- uid: HacknetSharp.Server.ServerDatabase.UpdateBulk``1(IEnumerable{``0})
   name: UpdateBulk<TEntry>(IEnumerable<TEntry>)
-  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_UpdateBulk__1_System_Collections_Generic_IEnumerable___0__
-  commentId: M:HacknetSharp.Server.ServerDatabase.UpdateBulk``1(System.Collections.Generic.IEnumerable{``0})
+  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_UpdateBulk__1_IEnumerable___0__
+  commentId: M:HacknetSharp.Server.ServerDatabase.UpdateBulk``1(IEnumerable{``0})
   name.vb: UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
-  fullName: HacknetSharp.Server.ServerDatabase.UpdateBulk<TEntry>(System.Collections.Generic.IEnumerable<TEntry>)
-  fullName.vb: HacknetSharp.Server.ServerDatabase.UpdateBulk(Of TEntry)(System.Collections.Generic.IEnumerable(Of TEntry))
+  fullName: HacknetSharp.Server.ServerDatabase.UpdateBulk<TEntry>(IEnumerable<TEntry>)
+  fullName.vb: HacknetSharp.Server.ServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: ServerDatabase.UpdateBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: ServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
 - uid: HacknetSharp.Server.ServerDatabaseContext
@@ -5655,13 +5747,13 @@ references:
   commentId: T:HacknetSharp.Server.ServerDatabaseContext
   fullName: HacknetSharp.Server.ServerDatabaseContext
   nameWithType: ServerDatabaseContext
-- uid: HacknetSharp.Server.ServerDatabaseContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions,System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type})
+- uid: HacknetSharp.Server.ServerDatabaseContext.#ctor(DbContextOptions,IEnumerable{Type},IEnumerable{Type})
   name: ServerDatabaseContext(DbContextOptions, IEnumerable<Type>, IEnumerable<Type>)
-  href: api/HacknetSharp.Server.ServerDatabaseContext.html#HacknetSharp_Server_ServerDatabaseContext__ctor_Microsoft_EntityFrameworkCore_DbContextOptions_System_Collections_Generic_IEnumerable_System_Type__System_Collections_Generic_IEnumerable_System_Type__
-  commentId: M:HacknetSharp.Server.ServerDatabaseContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions,System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type})
+  href: api/HacknetSharp.Server.ServerDatabaseContext.html#HacknetSharp_Server_ServerDatabaseContext__ctor_DbContextOptions_IEnumerable_Type__IEnumerable_Type__
+  commentId: M:HacknetSharp.Server.ServerDatabaseContext.#ctor(DbContextOptions,IEnumerable{Type},IEnumerable{Type})
   name.vb: ServerDatabaseContext(DbContextOptions, IEnumerable(Of Type), IEnumerable(Of Type))
-  fullName: HacknetSharp.Server.ServerDatabaseContext.ServerDatabaseContext(Microsoft.EntityFrameworkCore.DbContextOptions, System.Collections.Generic.IEnumerable<System.Type>, System.Collections.Generic.IEnumerable<System.Type>)
-  fullName.vb: HacknetSharp.Server.ServerDatabaseContext.ServerDatabaseContext(Microsoft.EntityFrameworkCore.DbContextOptions, System.Collections.Generic.IEnumerable(Of System.Type), System.Collections.Generic.IEnumerable(Of System.Type))
+  fullName: HacknetSharp.Server.ServerDatabaseContext.ServerDatabaseContext(DbContextOptions, IEnumerable<Type>, IEnumerable<Type>)
+  fullName.vb: HacknetSharp.Server.ServerDatabaseContext.ServerDatabaseContext(DbContextOptions, IEnumerable(Of Type), IEnumerable(Of Type))
   nameWithType: ServerDatabaseContext.ServerDatabaseContext(DbContextOptions, IEnumerable<Type>, IEnumerable<Type>)
   nameWithType.vb: ServerDatabaseContext.ServerDatabaseContext(DbContextOptions, IEnumerable(Of Type), IEnumerable(Of Type))
 - uid: HacknetSharp.Server.ServerDatabaseContext.#ctor*
@@ -5677,11 +5769,11 @@ references:
   commentId: T:HacknetSharp.Server.ServerDatabaseContext.ModelBuilderDelegate
   fullName: HacknetSharp.Server.ServerDatabaseContext.ModelBuilderDelegate
   nameWithType: ServerDatabaseContext.ModelBuilderDelegate
-- uid: HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
+- uid: HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(DbContextOptionsBuilder)
   name: OnConfiguring(DbContextOptionsBuilder)
-  href: api/HacknetSharp.Server.ServerDatabaseContext.html#HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_Microsoft_EntityFrameworkCore_DbContextOptionsBuilder_
-  commentId: M:HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
-  fullName: HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
+  href: api/HacknetSharp.Server.ServerDatabaseContext.html#HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_DbContextOptionsBuilder_
+  commentId: M:HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(DbContextOptionsBuilder)
+  fullName: HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(DbContextOptionsBuilder)
   nameWithType: ServerDatabaseContext.OnConfiguring(DbContextOptionsBuilder)
 - uid: HacknetSharp.Server.ServerDatabaseContext.OnConfiguring*
   name: OnConfiguring
@@ -5690,11 +5782,11 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerDatabaseContext.OnConfiguring
   nameWithType: ServerDatabaseContext.OnConfiguring
-- uid: HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
+- uid: HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(ModelBuilder)
   name: OnModelCreating(ModelBuilder)
-  href: api/HacknetSharp.Server.ServerDatabaseContext.html#HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_Microsoft_EntityFrameworkCore_ModelBuilder_
-  commentId: M:HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
-  fullName: HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
+  href: api/HacknetSharp.Server.ServerDatabaseContext.html#HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_ModelBuilder_
+  commentId: M:HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(ModelBuilder)
+  fullName: HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(ModelBuilder)
   nameWithType: ServerDatabaseContext.OnModelCreating(ModelBuilder)
 - uid: HacknetSharp.Server.ServerDatabaseContext.OnModelCreating*
   name: OnModelCreating
@@ -5984,11 +6076,11 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.GenerateUser
   nameWithType: ServerUtil.GenerateUser
-- uid: HacknetSharp.Server.ServerUtil.GetTypes(System.Type,System.Reflection.Assembly)
+- uid: HacknetSharp.Server.ServerUtil.GetTypes(Type,Assembly)
   name: GetTypes(Type, Assembly)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_GetTypes_System_Type_System_Reflection_Assembly_
-  commentId: M:HacknetSharp.Server.ServerUtil.GetTypes(System.Type,System.Reflection.Assembly)
-  fullName: HacknetSharp.Server.ServerUtil.GetTypes(System.Type, System.Reflection.Assembly)
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_GetTypes_Type_Assembly_
+  commentId: M:HacknetSharp.Server.ServerUtil.GetTypes(Type,Assembly)
+  fullName: HacknetSharp.Server.ServerUtil.GetTypes(Type, Assembly)
   nameWithType: ServerUtil.GetTypes(Type, Assembly)
 - uid: HacknetSharp.Server.ServerUtil.GetTypes*
   name: GetTypes
@@ -6013,13 +6105,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.HashPassword
   nameWithType: ServerUtil.HashPassword
-- uid: HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld,System.Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
+- uid: HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld,Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
   name: InitProgramContext(IWorld, Guid, IPersonContext, PersonModel, LoginModel, String[], ProgramContext.InvocationType, Int32)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_InitProgramContext_HacknetSharp_Server_IWorld_System_Guid_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_LoginModel_System_String___HacknetSharp_Server_ProgramContext_InvocationType_System_Int32_
-  commentId: M:HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld,System.Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_InitProgramContext_HacknetSharp_Server_IWorld_Guid_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_LoginModel_System_String___HacknetSharp_Server_ProgramContext_InvocationType_System_Int32_
+  commentId: M:HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld,Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
   name.vb: InitProgramContext(IWorld, Guid, IPersonContext, PersonModel, LoginModel, String(), ProgramContext.InvocationType, Int32)
-  fullName: HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld, System.Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String[], HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
-  fullName.vb: HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld, System.Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String(), HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
+  fullName: HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld, Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String[], HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
+  fullName.vb: HacknetSharp.Server.ServerUtil.InitProgramContext(HacknetSharp.Server.IWorld, Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String(), HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
   nameWithType: ServerUtil.InitProgramContext(IWorld, Guid, IPersonContext, PersonModel, LoginModel, String[], ProgramContext.InvocationType, Int32)
   nameWithType.vb: ServerUtil.InitProgramContext(IWorld, Guid, IPersonContext, PersonModel, LoginModel, String(), ProgramContext.InvocationType, Int32)
 - uid: HacknetSharp.Server.ServerUtil.InitProgramContext*
@@ -6029,13 +6121,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.InitProgramContext
   nameWithType: ServerUtil.InitProgramContext
-- uid: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld,System.Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
+- uid: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld,Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
   name: InitTentativeProgramContext(IWorld, Guid, IPersonContext, PersonModel, String[], ProgramContext.InvocationType, Int32)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_InitTentativeProgramContext_HacknetSharp_Server_IWorld_System_Guid_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_System_String___HacknetSharp_Server_ProgramContext_InvocationType_System_Int32_
-  commentId: M:HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld,System.Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_InitTentativeProgramContext_HacknetSharp_Server_IWorld_Guid_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_System_String___HacknetSharp_Server_ProgramContext_InvocationType_System_Int32_
+  commentId: M:HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld,Guid,HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,System.String[],HacknetSharp.Server.ProgramContext.InvocationType,System.Int32)
   name.vb: InitTentativeProgramContext(IWorld, Guid, IPersonContext, PersonModel, String(), ProgramContext.InvocationType, Int32)
-  fullName: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld, System.Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, System.String[], HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
-  fullName.vb: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld, System.Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, System.String(), HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
+  fullName: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld, Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, System.String[], HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
+  fullName.vb: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext(HacknetSharp.Server.IWorld, Guid, HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, System.String(), HacknetSharp.Server.ProgramContext.InvocationType, System.Int32)
   nameWithType: ServerUtil.InitTentativeProgramContext(IWorld, Guid, IPersonContext, PersonModel, String[], ProgramContext.InvocationType, Int32)
   nameWithType.vb: ServerUtil.InitTentativeProgramContext(IWorld, Guid, IPersonContext, PersonModel, String(), ProgramContext.InvocationType, Int32)
 - uid: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext*
@@ -6045,12 +6137,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.InitTentativeProgramContext
   nameWithType: ServerUtil.InitTentativeProgramContext
-- uid: HacknetSharp.Server.ServerUtil.IsSubclass(System.Type,System.Type)
-  name: IsSubclass(Type, Type)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_IsSubclass_System_Type_System_Type_
-  commentId: M:HacknetSharp.Server.ServerUtil.IsSubclass(System.Type,System.Type)
-  fullName: HacknetSharp.Server.ServerUtil.IsSubclass(System.Type, System.Type)
-  nameWithType: ServerUtil.IsSubclass(Type, Type)
+- uid: HacknetSharp.Server.ServerUtil.IsSubclass(Type,System.Nullable{Type})
+  name: IsSubclass(Type, Nullable<Type>)
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_IsSubclass_Type_System_Nullable_Type__
+  commentId: M:HacknetSharp.Server.ServerUtil.IsSubclass(Type,System.Nullable{Type})
+  name.vb: IsSubclass(Type, Nullable(Of Type))
+  fullName: HacknetSharp.Server.ServerUtil.IsSubclass(Type, System.Nullable<Type>)
+  fullName.vb: HacknetSharp.Server.ServerUtil.IsSubclass(Type, System.Nullable(Of Type))
+  nameWithType: ServerUtil.IsSubclass(Type, Nullable<Type>)
+  nameWithType.vb: ServerUtil.IsSubclass(Type, Nullable(Of Type))
 - uid: HacknetSharp.Server.ServerUtil.IsSubclass*
   name: IsSubclass
   href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_IsSubclass_
@@ -6058,13 +6153,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.IsSubclass
   nameWithType: ServerUtil.IsSubclass
-- uid: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String,System.Collections.Generic.IReadOnlyList{System.Type})
+- uid: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String,IReadOnlyList{Type})
   name: LoadTypesFromFolder(String, IReadOnlyList<Type>)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_LoadTypesFromFolder_System_String_System_Collections_Generic_IReadOnlyList_System_Type__
-  commentId: M:HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String,System.Collections.Generic.IReadOnlyList{System.Type})
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_LoadTypesFromFolder_System_String_IReadOnlyList_Type__
+  commentId: M:HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String,IReadOnlyList{Type})
   name.vb: LoadTypesFromFolder(String, IReadOnlyList(Of Type))
-  fullName: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String, System.Collections.Generic.IReadOnlyList<System.Type>)
-  fullName.vb: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String, System.Collections.Generic.IReadOnlyList(Of System.Type))
+  fullName: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String, IReadOnlyList<Type>)
+  fullName.vb: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder(System.String, IReadOnlyList(Of Type))
   nameWithType: ServerUtil.LoadTypesFromFolder(String, IReadOnlyList<Type>)
   nameWithType.vb: ServerUtil.LoadTypesFromFolder(String, IReadOnlyList(Of Type))
 - uid: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder*
@@ -6074,13 +6169,13 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.LoadTypesFromFolder
   nameWithType: ServerUtil.LoadTypesFromFolder
-- uid: HacknetSharp.Server.ServerUtil.SelectWeighted(System.Collections.Generic.Dictionary{System.String,System.Single})
+- uid: HacknetSharp.Server.ServerUtil.SelectWeighted(Dictionary{System.String,System.Single})
   name: SelectWeighted(Dictionary<String, Single>)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_SelectWeighted_System_Collections_Generic_Dictionary_System_String_System_Single__
-  commentId: M:HacknetSharp.Server.ServerUtil.SelectWeighted(System.Collections.Generic.Dictionary{System.String,System.Single})
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_SelectWeighted_Dictionary_System_String_System_Single__
+  commentId: M:HacknetSharp.Server.ServerUtil.SelectWeighted(Dictionary{System.String,System.Single})
   name.vb: SelectWeighted(Dictionary(Of String, Single))
-  fullName: HacknetSharp.Server.ServerUtil.SelectWeighted(System.Collections.Generic.Dictionary<System.String, System.Single>)
-  fullName.vb: HacknetSharp.Server.ServerUtil.SelectWeighted(System.Collections.Generic.Dictionary(Of System.String, System.Single))
+  fullName: HacknetSharp.Server.ServerUtil.SelectWeighted(Dictionary<System.String, System.Single>)
+  fullName.vb: HacknetSharp.Server.ServerUtil.SelectWeighted(Dictionary(Of System.String, System.Single))
   nameWithType: ServerUtil.SelectWeighted(Dictionary<String, Single>)
   nameWithType.vb: ServerUtil.SelectWeighted(Dictionary(Of String, Single))
 - uid: HacknetSharp.Server.ServerUtil.SelectWeighted*
@@ -6103,15 +6198,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.SplitCommandLine
   nameWithType: ServerUtil.SplitCommandLine
-- uid: HacknetSharp.Server.ServerUtil.TryParseConString(System.String,System.UInt16,System.String@,System.String@,System.UInt16@,System.String@,System.String,System.String)
-  name: TryParseConString(String, UInt16, out String, out String, out UInt16, out String, String, String)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_TryParseConString_System_String_System_UInt16_System_String__System_String__System_UInt16__System_String__System_String_System_String_
-  commentId: M:HacknetSharp.Server.ServerUtil.TryParseConString(System.String,System.UInt16,System.String@,System.String@,System.UInt16@,System.String@,System.String,System.String)
-  name.vb: TryParseConString(String, UInt16, ByRef String, ByRef String, ByRef UInt16, ByRef String, String, String)
-  fullName: HacknetSharp.Server.ServerUtil.TryParseConString(System.String, System.UInt16, out System.String, out System.String, out System.UInt16, out System.String, System.String, System.String)
-  fullName.vb: HacknetSharp.Server.ServerUtil.TryParseConString(System.String, System.UInt16, ByRef System.String, ByRef System.String, ByRef System.UInt16, ByRef System.String, System.String, System.String)
-  nameWithType: ServerUtil.TryParseConString(String, UInt16, out String, out String, out UInt16, out String, String, String)
-  nameWithType.vb: ServerUtil.TryParseConString(String, UInt16, ByRef String, ByRef String, ByRef UInt16, ByRef String, String, String)
+- uid: HacknetSharp.Server.ServerUtil.TryParseConString(System.String,System.UInt16,System.Nullable{System.String}@,System.Nullable{System.String}@,System.UInt16@,System.Nullable{System.String}@,System.Nullable{System.String},System.Nullable{System.String})
+  name: TryParseConString(String, UInt16, out Nullable<String>, out Nullable<String>, out UInt16, out Nullable<String>, Nullable<String>, Nullable<String>)
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_TryParseConString_System_String_System_UInt16_System_Nullable_System_String___System_Nullable_System_String___System_UInt16__System_Nullable_System_String___System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.ServerUtil.TryParseConString(System.String,System.UInt16,System.Nullable{System.String}@,System.Nullable{System.String}@,System.UInt16@,System.Nullable{System.String}@,System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: TryParseConString(String, UInt16, ByRef Nullable(Of String), ByRef Nullable(Of String), ByRef UInt16, ByRef Nullable(Of String), Nullable(Of String), Nullable(Of String))
+  fullName: HacknetSharp.Server.ServerUtil.TryParseConString(System.String, System.UInt16, out System.Nullable<System.String>, out System.Nullable<System.String>, out System.UInt16, out System.Nullable<System.String>, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.ServerUtil.TryParseConString(System.String, System.UInt16, ByRef System.Nullable(Of System.String), ByRef System.Nullable(Of System.String), ByRef System.UInt16, ByRef System.Nullable(Of System.String), System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: ServerUtil.TryParseConString(String, UInt16, out Nullable<String>, out Nullable<String>, out UInt16, out Nullable<String>, Nullable<String>, Nullable<String>)
+  nameWithType.vb: ServerUtil.TryParseConString(String, UInt16, ByRef Nullable(Of String), ByRef Nullable(Of String), ByRef UInt16, ByRef Nullable(Of String), Nullable(Of String), Nullable(Of String))
 - uid: HacknetSharp.Server.ServerUtil.TryParseConString*
   name: TryParseConString
   href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_TryParseConString_
@@ -6119,15 +6214,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.TryParseConString
   nameWithType: ServerUtil.TryParseConString
-- uid: HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String,System.String@,System.String@,System.String@,System.String@,System.String,System.String)
-  name: TryParseScpConString(String, out String, out String, out String, out String, String, String)
-  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_TryParseScpConString_System_String_System_String__System_String__System_String__System_String__System_String_System_String_
-  commentId: M:HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String,System.String@,System.String@,System.String@,System.String@,System.String,System.String)
-  name.vb: TryParseScpConString(String, ByRef String, ByRef String, ByRef String, ByRef String, String, String)
-  fullName: HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String, out System.String, out System.String, out System.String, out System.String, System.String, System.String)
-  fullName.vb: HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String, ByRef System.String, ByRef System.String, ByRef System.String, ByRef System.String, System.String, System.String)
-  nameWithType: ServerUtil.TryParseScpConString(String, out String, out String, out String, out String, String, String)
-  nameWithType.vb: ServerUtil.TryParseScpConString(String, ByRef String, ByRef String, ByRef String, ByRef String, String, String)
+- uid: HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String,System.Nullable{System.String}@,System.Nullable{System.String}@,System.Nullable{System.String}@,System.Nullable{System.String}@,System.Nullable{System.String},System.Nullable{System.String})
+  name: TryParseScpConString(String, out Nullable<String>, out Nullable<String>, out Nullable<String>, out Nullable<String>, Nullable<String>, Nullable<String>)
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_TryParseScpConString_System_String_System_Nullable_System_String___System_Nullable_System_String___System_Nullable_System_String___System_Nullable_System_String___System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String,System.Nullable{System.String}@,System.Nullable{System.String}@,System.Nullable{System.String}@,System.Nullable{System.String}@,System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: TryParseScpConString(String, ByRef Nullable(Of String), ByRef Nullable(Of String), ByRef Nullable(Of String), ByRef Nullable(Of String), Nullable(Of String), Nullable(Of String))
+  fullName: HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String, out System.Nullable<System.String>, out System.Nullable<System.String>, out System.Nullable<System.String>, out System.Nullable<System.String>, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.ServerUtil.TryParseScpConString(System.String, ByRef System.Nullable(Of System.String), ByRef System.Nullable(Of System.String), ByRef System.Nullable(Of System.String), ByRef System.Nullable(Of System.String), System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: ServerUtil.TryParseScpConString(String, out Nullable<String>, out Nullable<String>, out Nullable<String>, out Nullable<String>, Nullable<String>, Nullable<String>)
+  nameWithType.vb: ServerUtil.TryParseScpConString(String, ByRef Nullable(Of String), ByRef Nullable(Of String), ByRef Nullable(Of String), ByRef Nullable(Of String), Nullable(Of String), Nullable(Of String))
 - uid: HacknetSharp.Server.ServerUtil.TryParseScpConString*
   name: TryParseScpConString
   href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_TryParseScpConString_
@@ -6337,15 +6432,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ShellProcess.ProgramContext
   nameWithType: ShellProcess.ProgramContext
-- uid: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String,System.String@)
-  name: TryGetVariable(String, out String)
-  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_TryGetVariable_System_String_System_String__
-  commentId: M:HacknetSharp.Server.ShellProcess.TryGetVariable(System.String,System.String@)
-  name.vb: TryGetVariable(String, ByRef String)
-  fullName: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String, out System.String)
-  fullName.vb: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String, ByRef System.String)
-  nameWithType: ShellProcess.TryGetVariable(String, out String)
-  nameWithType.vb: ShellProcess.TryGetVariable(String, ByRef String)
+- uid: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String,System.Nullable{System.String}@)
+  name: TryGetVariable(String, out Nullable<String>)
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_TryGetVariable_System_String_System_Nullable_System_String___
+  commentId: M:HacknetSharp.Server.ShellProcess.TryGetVariable(System.String,System.Nullable{System.String}@)
+  name.vb: TryGetVariable(String, ByRef Nullable(Of String))
+  fullName: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String, out System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String, ByRef System.Nullable(Of System.String))
+  nameWithType: ShellProcess.TryGetVariable(String, out Nullable<String>)
+  nameWithType.vb: ShellProcess.TryGetVariable(String, ByRef Nullable(Of String))
 - uid: HacknetSharp.Server.ShellProcess.TryGetVariable*
   name: TryGetVariable
   href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_TryGetVariable_
@@ -6485,13 +6580,13 @@ references:
   commentId: T:HacknetSharp.Server.StorageDependenciesAttribute
   fullName: HacknetSharp.Server.StorageDependenciesAttribute
   nameWithType: StorageDependenciesAttribute
-- uid: HacknetSharp.Server.StorageDependenciesAttribute.#ctor(System.Type[])
+- uid: HacknetSharp.Server.StorageDependenciesAttribute.#ctor(Type[])
   name: StorageDependenciesAttribute(Type[])
-  href: api/HacknetSharp.Server.StorageDependenciesAttribute.html#HacknetSharp_Server_StorageDependenciesAttribute__ctor_System_Type___
-  commentId: M:HacknetSharp.Server.StorageDependenciesAttribute.#ctor(System.Type[])
+  href: api/HacknetSharp.Server.StorageDependenciesAttribute.html#HacknetSharp_Server_StorageDependenciesAttribute__ctor_Type___
+  commentId: M:HacknetSharp.Server.StorageDependenciesAttribute.#ctor(Type[])
   name.vb: StorageDependenciesAttribute(Type())
-  fullName: HacknetSharp.Server.StorageDependenciesAttribute.StorageDependenciesAttribute(System.Type[])
-  fullName.vb: HacknetSharp.Server.StorageDependenciesAttribute.StorageDependenciesAttribute(System.Type())
+  fullName: HacknetSharp.Server.StorageDependenciesAttribute.StorageDependenciesAttribute(Type[])
+  fullName.vb: HacknetSharp.Server.StorageDependenciesAttribute.StorageDependenciesAttribute(Type())
   nameWithType: StorageDependenciesAttribute.StorageDependenciesAttribute(Type[])
   nameWithType.vb: StorageDependenciesAttribute.StorageDependenciesAttribute(Type())
 - uid: HacknetSharp.Server.StorageDependenciesAttribute.#ctor*
@@ -6655,12 +6750,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Templates.PersonTemplate.FleetTemplates
   nameWithType: PersonTemplate.FleetTemplates
-- uid: HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.TemplateGroup,System.String)
-  name: Generate(WorldSpawn, TemplateGroup, String)
-  href: api/HacknetSharp.Server.Templates.PersonTemplate.html#HacknetSharp_Server_Templates_PersonTemplate_Generate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_TemplateGroup_System_String_
-  commentId: M:HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.TemplateGroup,System.String)
-  fullName: HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.TemplateGroup, System.String)
-  nameWithType: PersonTemplate.Generate(WorldSpawn, TemplateGroup, String)
+- uid: HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.TemplateGroup,System.Nullable{System.String})
+  name: Generate(WorldSpawn, TemplateGroup, Nullable<String>)
+  href: api/HacknetSharp.Server.Templates.PersonTemplate.html#HacknetSharp_Server_Templates_PersonTemplate_Generate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_TemplateGroup_System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.TemplateGroup,System.Nullable{System.String})
+  name.vb: Generate(WorldSpawn, TemplateGroup, Nullable(Of String))
+  fullName: HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.TemplateGroup, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.TemplateGroup, System.Nullable(Of System.String))
+  nameWithType: PersonTemplate.Generate(WorldSpawn, TemplateGroup, Nullable<String>)
+  nameWithType.vb: PersonTemplate.Generate(WorldSpawn, TemplateGroup, Nullable(Of String))
 - uid: HacknetSharp.Server.Templates.PersonTemplate.Generate*
   name: Generate
   href: api/HacknetSharp.Server.Templates.PersonTemplate.html#HacknetSharp_Server_Templates_PersonTemplate_Generate_
@@ -6849,15 +6947,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Templates.SystemTemplate.AddressRange
   nameWithType: SystemTemplate.AddressRange
-- uid: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.PersonModel,System.Byte[],System.Byte[],System.Collections.Generic.Dictionary{System.String,System.String})
-  name: ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte[], Byte[], Dictionary<String, String>)
-  href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate_ApplyTemplate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_PersonModel_System_Byte___System_Byte___System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.PersonModel,System.Byte[],System.Byte[],System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte(), Byte(), Dictionary(Of String, String))
-  fullName: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.PersonModel, System.Byte[], System.Byte[], System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.PersonModel, System.Byte(), System.Byte(), System.Collections.Generic.Dictionary(Of System.String, System.String))
-  nameWithType: SystemTemplate.ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte[], Byte[], Dictionary<String, String>)
-  nameWithType.vb: SystemTemplate.ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte(), Byte(), Dictionary(Of String, String))
+- uid: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.PersonModel,System.Byte[],System.Byte[],System.Nullable{Dictionary{System.String,System.String}})
+  name: ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte[], Byte[], Nullable<Dictionary<String, String>>)
+  href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate_ApplyTemplate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_PersonModel_System_Byte___System_Byte___System_Nullable_Dictionary_System_String_System_String___
+  commentId: M:HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.PersonModel,System.Byte[],System.Byte[],System.Nullable{Dictionary{System.String,System.String}})
+  name.vb: ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte(), Byte(), Nullable(Of Dictionary(Of String, String)))
+  fullName: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.PersonModel, System.Byte[], System.Byte[], System.Nullable<Dictionary<System.String, System.String>>)
+  fullName.vb: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate(HacknetSharp.Server.WorldSpawn, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.PersonModel, System.Byte(), System.Byte(), System.Nullable(Of Dictionary(Of System.String, System.String)))
+  nameWithType: SystemTemplate.ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte[], Byte[], Nullable<Dictionary<String, String>>)
+  nameWithType.vb: SystemTemplate.ApplyTemplate(WorldSpawn, SystemModel, PersonModel, Byte(), Byte(), Nullable(Of Dictionary(Of String, String)))
 - uid: HacknetSharp.Server.Templates.SystemTemplate.ApplyTemplate*
   name: ApplyTemplate
   href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate_ApplyTemplate_
@@ -7359,12 +7457,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.TextFile
   nameWithType: WorldSpawn.TextFile
-- uid: HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel,System.String,System.String,System.Int32,System.String)
-  name: Vulnerability(SystemModel, String, String, Int32, String)
-  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Vulnerability_HacknetSharp_Server_Models_SystemModel_System_String_System_String_System_Int32_System_String_
-  commentId: M:HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel,System.String,System.String,System.Int32,System.String)
-  fullName: HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel, System.String, System.String, System.Int32, System.String)
-  nameWithType: WorldSpawn.Vulnerability(SystemModel, String, String, Int32, String)
+- uid: HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel,System.String,System.String,System.Int32,System.Nullable{System.String})
+  name: Vulnerability(SystemModel, String, String, Int32, Nullable<String>)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Vulnerability_HacknetSharp_Server_Models_SystemModel_System_String_System_String_System_Int32_System_Nullable_System_String__
+  commentId: M:HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel,System.String,System.String,System.Int32,System.Nullable{System.String})
+  name.vb: Vulnerability(SystemModel, String, String, Int32, Nullable(Of String))
+  fullName: HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel, System.String, System.String, System.Int32, System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.WorldSpawn.Vulnerability(HacknetSharp.Server.Models.SystemModel, System.String, System.String, System.Int32, System.Nullable(Of System.String))
+  nameWithType: WorldSpawn.Vulnerability(SystemModel, String, String, Int32, Nullable<String>)
+  nameWithType.vb: WorldSpawn.Vulnerability(SystemModel, String, String, Int32, Nullable(Of String))
 - uid: HacknetSharp.Server.WorldSpawn.Vulnerability*
   name: Vulnerability
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Vulnerability_
@@ -7460,11 +7561,11 @@ references:
   commentId: M:HacknetSharp.Util.Caf(System.Threading.Tasks.Task)
   fullName: HacknetSharp.Util.Caf(System.Threading.Tasks.Task)
   nameWithType: Util.Caf(Task)
-- uid: HacknetSharp.Util.Caf(System.Threading.Tasks.ValueTask)
+- uid: HacknetSharp.Util.Caf(ValueTask)
   name: Caf(ValueTask)
-  href: api/HacknetSharp.Util.html#HacknetSharp_Util_Caf_System_Threading_Tasks_ValueTask_
-  commentId: M:HacknetSharp.Util.Caf(System.Threading.Tasks.ValueTask)
-  fullName: HacknetSharp.Util.Caf(System.Threading.Tasks.ValueTask)
+  href: api/HacknetSharp.Util.html#HacknetSharp_Util_Caf_ValueTask_
+  commentId: M:HacknetSharp.Util.Caf(ValueTask)
+  fullName: HacknetSharp.Util.Caf(ValueTask)
   nameWithType: Util.Caf(ValueTask)
 - uid: HacknetSharp.Util.Caf*
   name: Caf
@@ -7482,13 +7583,13 @@ references:
   fullName.vb: HacknetSharp.Util.Caf(Of T)(System.Threading.Tasks.Task(Of T))
   nameWithType: Util.Caf<T>(Task<T>)
   nameWithType.vb: Util.Caf(Of T)(Task(Of T))
-- uid: HacknetSharp.Util.Caf``1(System.Threading.Tasks.ValueTask{``0})
+- uid: HacknetSharp.Util.Caf``1(ValueTask{``0})
   name: Caf<T>(ValueTask<T>)
-  href: api/HacknetSharp.Util.html#HacknetSharp_Util_Caf__1_System_Threading_Tasks_ValueTask___0__
-  commentId: M:HacknetSharp.Util.Caf``1(System.Threading.Tasks.ValueTask{``0})
+  href: api/HacknetSharp.Util.html#HacknetSharp_Util_Caf__1_ValueTask___0__
+  commentId: M:HacknetSharp.Util.Caf``1(ValueTask{``0})
   name.vb: Caf(Of T)(ValueTask(Of T))
-  fullName: HacknetSharp.Util.Caf<T>(System.Threading.Tasks.ValueTask<T>)
-  fullName.vb: HacknetSharp.Util.Caf(Of T)(System.Threading.Tasks.ValueTask(Of T))
+  fullName: HacknetSharp.Util.Caf<T>(ValueTask<T>)
+  fullName.vb: HacknetSharp.Util.Caf(Of T)(ValueTask(Of T))
   nameWithType: Util.Caf<T>(ValueTask<T>)
   nameWithType.vb: Util.Caf(Of T)(ValueTask(Of T))
 - uid: HacknetSharp.Util.Confirm(System.String)
