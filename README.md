@@ -1,12 +1,8 @@
-# HacknetSharp
- multiplayer hacknet-like game-like thing
-
 [![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/The-Council-of-Wills/HacknetSharp/actions?workflow=.NET+Build)
+[![Nuget](https://img.shields.io/nuget/v/HacknetSharp?label=HacknetSharp&logo=Nuget)](https://www.nuget.org/packages/HacknetSharp/)
+[![Nuget](https://img.shields.io/nuget/v/HacknetSharp.Server?label=HacknetSharp.Server&logo=Nuget)](https://www.nuget.org/packages/HacknetSharp.Server/)
 
-| Package                | Release |
-|------------------------|---------|
-| `Fp`           | [![NuGet](https://img.shields.io/nuget/v/HacknetSharp.svg)](https://www.nuget.org/packages/HacknetSharp/)|
-| `Fp.Templates` | [![NuGet](https://img.shields.io/nuget/v/HacknetSharp.Server.svg)](https://www.nuget.org/packages/HacknetSharp.Server/) |
+# Multiplayer hacknet-like game-like thing
 
 [API Reference](https://the-council-of-wills.github.io/HacknetSharp/api/index.html)
 
