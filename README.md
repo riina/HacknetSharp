@@ -1,4 +1,5 @@
 # HacknetSharp
+ multiplayer hacknet-like game-like thing
 
 [![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/The-Council-of-Wills/HacknetSharp/actions?workflow=.NET+Build)
 
@@ -9,17 +10,18 @@
 
 [API Reference](https://the-council-of-wills.github.io/HacknetSharp/api/index.html)
 
-This project aims to deliver a multiplayer [Hacknet](http://hacknet-os.com/) experience
-to WILLs everywhere.
+## Current Status
 
-This project was started purely because tarche created
-[HacknetPlusPlus](https://github.com/The-Council-of-Wills/HacknetPlusPlus).
-All the WILL homies are having fun making their own
-Hacknet, it's almost like Hackerjam 3 except nobody wins this time.
+Most significant programs are implemented:
+-Filesystem interaction (cd/cat/edit/mv/cp/rm)
+-Environment variables (set)
+-Process management (ps/kill)
+-Network (ssh/exit/scan/map)
+-Port hacking (probe/`<one-size-fits-all core:hack>`/porthack)
+-Utility (echo/help)
 
-Server implementation hasn't been tested nor is it anywhere near
-feature complete, there's even less of a warranty on this than
-the standard "none." As a wise Jedi once said, "Don't try it."
+There are still some features missing, listed on the
+[MVP project board](https://github.com/The-Council-of-Wills/HacknetSharp/projects/1).
 
 ## Client
 
