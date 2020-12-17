@@ -4412,19 +4412,6 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.ConnectCommandLine
   nameWithType: SystemModel.ConnectCommandLine
-- uid: HacknetSharp.Server.Models.SystemModel.DirectoryExists(System.String,System.Boolean)
-  name: DirectoryExists(String, Boolean)
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_DirectoryExists_System_String_System_Boolean_
-  commentId: M:HacknetSharp.Server.Models.SystemModel.DirectoryExists(System.String,System.Boolean)
-  fullName: HacknetSharp.Server.Models.SystemModel.DirectoryExists(System.String, System.Boolean)
-  nameWithType: SystemModel.DirectoryExists(String, Boolean)
-- uid: HacknetSharp.Server.Models.SystemModel.DirectoryExists*
-  name: DirectoryExists
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_DirectoryExists_
-  commentId: Overload:HacknetSharp.Server.Models.SystemModel.DirectoryExists
-  isSpec: "True"
-  fullName: HacknetSharp.Server.Models.SystemModel.DirectoryExists
-  nameWithType: SystemModel.DirectoryExists
 - uid: HacknetSharp.Server.Models.SystemModel.EnumerateDirectory(System.String,System.Boolean)
   name: EnumerateDirectory(String, Boolean)
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_EnumerateDirectory_System_String_System_Boolean_
@@ -4438,19 +4425,6 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.EnumerateDirectory
   nameWithType: SystemModel.EnumerateDirectory
-- uid: HacknetSharp.Server.Models.SystemModel.FileExists(System.String,System.Boolean,System.Boolean)
-  name: FileExists(String, Boolean, Boolean)
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_FileExists_System_String_System_Boolean_System_Boolean_
-  commentId: M:HacknetSharp.Server.Models.SystemModel.FileExists(System.String,System.Boolean,System.Boolean)
-  fullName: HacknetSharp.Server.Models.SystemModel.FileExists(System.String, System.Boolean, System.Boolean)
-  nameWithType: SystemModel.FileExists(String, Boolean, Boolean)
-- uid: HacknetSharp.Server.Models.SystemModel.FileExists*
-  name: FileExists
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_FileExists_
-  commentId: Overload:HacknetSharp.Server.Models.SystemModel.FileExists
-  isSpec: "True"
-  fullName: HacknetSharp.Server.Models.SystemModel.FileExists
-  nameWithType: SystemModel.FileExists
 - uid: HacknetSharp.Server.Models.SystemModel.Files
   name: Files
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_Files
@@ -4477,12 +4451,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.GetAvailablePid
   nameWithType: SystemModel.GetAvailablePid
-- uid: HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String,HacknetSharp.Server.Models.LoginModel,System.Boolean)
-  name: GetClosestWithReadableParent(String, LoginModel, Boolean)
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_GetClosestWithReadableParent_System_String_HacknetSharp_Server_Models_LoginModel_System_Boolean_
-  commentId: M:HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String,HacknetSharp.Server.Models.LoginModel,System.Boolean)
-  fullName: HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String, HacknetSharp.Server.Models.LoginModel, System.Boolean)
-  nameWithType: SystemModel.GetClosestWithReadableParent(String, LoginModel, Boolean)
+- uid: HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.Models.FileModel@,System.Boolean,System.Boolean)
+  name: GetClosestWithReadableParent(String, LoginModel, out FileModel, Boolean, Boolean)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_GetClosestWithReadableParent_System_String_HacknetSharp_Server_Models_LoginModel_HacknetSharp_Server_Models_FileModel__System_Boolean_System_Boolean_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.Models.FileModel@,System.Boolean,System.Boolean)
+  name.vb: GetClosestWithReadableParent(String, LoginModel, ByRef FileModel, Boolean, Boolean)
+  fullName: HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String, HacknetSharp.Server.Models.LoginModel, out HacknetSharp.Server.Models.FileModel, System.Boolean, System.Boolean)
+  fullName.vb: HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent(System.String, HacknetSharp.Server.Models.LoginModel, ByRef HacknetSharp.Server.Models.FileModel, System.Boolean, System.Boolean)
+  nameWithType: SystemModel.GetClosestWithReadableParent(String, LoginModel, out FileModel, Boolean, Boolean)
+  nameWithType.vb: SystemModel.GetClosestWithReadableParent(String, LoginModel, ByRef FileModel, Boolean, Boolean)
 - uid: HacknetSharp.Server.Models.SystemModel.GetClosestWithReadableParent*
   name: GetClosestWithReadableParent
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_GetClosestWithReadableParent_
@@ -4636,22 +4613,22 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.RequiredExploits
   nameWithType: SystemModel.RequiredExploits
-- uid: HacknetSharp.Server.Models.SystemModel.TryGetWithAccess(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.ReadAccessResult@,HacknetSharp.Server.Models.FileModel@,System.Boolean)
-  name: TryGetWithAccess(String, LoginModel, out ReadAccessResult, out FileModel, Boolean)
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetWithAccess_System_String_HacknetSharp_Server_Models_LoginModel_HacknetSharp_Server_ReadAccessResult__HacknetSharp_Server_Models_FileModel__System_Boolean_
-  commentId: M:HacknetSharp.Server.Models.SystemModel.TryGetWithAccess(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.ReadAccessResult@,HacknetSharp.Server.Models.FileModel@,System.Boolean)
-  name.vb: TryGetWithAccess(String, LoginModel, ByRef ReadAccessResult, ByRef FileModel, Boolean)
-  fullName: HacknetSharp.Server.Models.SystemModel.TryGetWithAccess(System.String, HacknetSharp.Server.Models.LoginModel, out HacknetSharp.Server.ReadAccessResult, out HacknetSharp.Server.Models.FileModel, System.Boolean)
-  fullName.vb: HacknetSharp.Server.Models.SystemModel.TryGetWithAccess(System.String, HacknetSharp.Server.Models.LoginModel, ByRef HacknetSharp.Server.ReadAccessResult, ByRef HacknetSharp.Server.Models.FileModel, System.Boolean)
-  nameWithType: SystemModel.TryGetWithAccess(String, LoginModel, out ReadAccessResult, out FileModel, Boolean)
-  nameWithType.vb: SystemModel.TryGetWithAccess(String, LoginModel, ByRef ReadAccessResult, ByRef FileModel, Boolean)
-- uid: HacknetSharp.Server.Models.SystemModel.TryGetWithAccess*
-  name: TryGetWithAccess
-  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetWithAccess_
-  commentId: Overload:HacknetSharp.Server.Models.SystemModel.TryGetWithAccess
+- uid: HacknetSharp.Server.Models.SystemModel.TryGetFile(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.ReadAccessResult@,System.String@,HacknetSharp.Server.Models.FileModel@,System.Boolean,System.Boolean)
+  name: TryGetFile(String, LoginModel, out ReadAccessResult, out String, out FileModel, Boolean, Boolean)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetFile_System_String_HacknetSharp_Server_Models_LoginModel_HacknetSharp_Server_ReadAccessResult__System_String__HacknetSharp_Server_Models_FileModel__System_Boolean_System_Boolean_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.TryGetFile(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.ReadAccessResult@,System.String@,HacknetSharp.Server.Models.FileModel@,System.Boolean,System.Boolean)
+  name.vb: TryGetFile(String, LoginModel, ByRef ReadAccessResult, ByRef String, ByRef FileModel, Boolean, Boolean)
+  fullName: HacknetSharp.Server.Models.SystemModel.TryGetFile(System.String, HacknetSharp.Server.Models.LoginModel, out HacknetSharp.Server.ReadAccessResult, out System.String, out HacknetSharp.Server.Models.FileModel, System.Boolean, System.Boolean)
+  fullName.vb: HacknetSharp.Server.Models.SystemModel.TryGetFile(System.String, HacknetSharp.Server.Models.LoginModel, ByRef HacknetSharp.Server.ReadAccessResult, ByRef System.String, ByRef HacknetSharp.Server.Models.FileModel, System.Boolean, System.Boolean)
+  nameWithType: SystemModel.TryGetFile(String, LoginModel, out ReadAccessResult, out String, out FileModel, Boolean, Boolean)
+  nameWithType.vb: SystemModel.TryGetFile(String, LoginModel, ByRef ReadAccessResult, ByRef String, ByRef FileModel, Boolean, Boolean)
+- uid: HacknetSharp.Server.Models.SystemModel.TryGetFile*
+  name: TryGetFile
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetFile_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.TryGetFile
   isSpec: "True"
-  fullName: HacknetSharp.Server.Models.SystemModel.TryGetWithAccess
-  nameWithType: SystemModel.TryGetWithAccess
+  fullName: HacknetSharp.Server.Models.SystemModel.TryGetFile
+  nameWithType: SystemModel.TryGetFile
 - uid: HacknetSharp.Server.Models.SystemModel.Vulnerabilities
   name: Vulnerabilities
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_Vulnerabilities
@@ -5901,19 +5878,19 @@ references:
   commentId: T:HacknetSharp.Server.ServerSettings
   fullName: HacknetSharp.Server.ServerSettings
   nameWithType: ServerSettings
-- uid: HacknetSharp.Server.ServerSettings.DatabaseProperties
-  name: DatabaseProperties
-  href: api/HacknetSharp.Server.ServerSettings.html#HacknetSharp_Server_ServerSettings_DatabaseProperties
-  commentId: P:HacknetSharp.Server.ServerSettings.DatabaseProperties
-  fullName: HacknetSharp.Server.ServerSettings.DatabaseProperties
-  nameWithType: ServerSettings.DatabaseProperties
-- uid: HacknetSharp.Server.ServerSettings.DatabaseProperties*
-  name: DatabaseProperties
-  href: api/HacknetSharp.Server.ServerSettings.html#HacknetSharp_Server_ServerSettings_DatabaseProperties_
-  commentId: Overload:HacknetSharp.Server.ServerSettings.DatabaseProperties
+- uid: HacknetSharp.Server.ServerSettings.Database
+  name: Database
+  href: api/HacknetSharp.Server.ServerSettings.html#HacknetSharp_Server_ServerSettings_Database
+  commentId: P:HacknetSharp.Server.ServerSettings.Database
+  fullName: HacknetSharp.Server.ServerSettings.Database
+  nameWithType: ServerSettings.Database
+- uid: HacknetSharp.Server.ServerSettings.Database*
+  name: Database
+  href: api/HacknetSharp.Server.ServerSettings.html#HacknetSharp_Server_ServerSettings_Database_
+  commentId: Overload:HacknetSharp.Server.ServerSettings.Database
   isSpec: "True"
-  fullName: HacknetSharp.Server.ServerSettings.DatabaseProperties
-  nameWithType: ServerSettings.DatabaseProperties
+  fullName: HacknetSharp.Server.ServerSettings.Database
+  nameWithType: ServerSettings.Database
 - uid: HacknetSharp.Server.ServerSettings.DefaultWorld
   name: DefaultWorld
   href: api/HacknetSharp.Server.ServerSettings.html#HacknetSharp_Server_ServerSettings_DefaultWorld
