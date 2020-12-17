@@ -468,13 +468,13 @@ namespace HacknetSharp.Server
             bool hidden = false)
         {
             var system = file.System;
-            if (!system.TryGetWithAccess(file.FullPath, login, out var result, out _, out _, hidden: hidden) ||
+            if (!system.TryGetFile(file.FullPath, login, out var result, out _, out _, hidden: hidden) ||
                 !file.CanWrite(login))
                 throw new IOException("Permission denied");
 
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
                 throw new IOException($"The specified path already exists: {Program.Combine(targetPath, targetName)}");
-            system.TryGetWithAccess(targetPath, login, out result, out _, out _, hidden: hidden);
+            system.TryGetFile(targetPath, login, out result, out _, out _, hidden: hidden);
             switch (result)
             {
                 case ReadAccessResult.Readable:

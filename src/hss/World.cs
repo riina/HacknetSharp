@@ -170,7 +170,7 @@ namespace hss
             }
 
             string exe = $"/bin/{programContext.Argv[0]}";
-            systemModel.TryGetWithAccess(exe, loginModel, out var result, out var closestStr, out var fse,
+            systemModel.TryGetFile(exe, loginModel, out var result, out var closestStr, out var fse,
                 caseInsensitive: true);
             switch (result)
             {
@@ -209,7 +209,7 @@ namespace hss
                 Login = loginModel
             };
             string exe = $"/bin/{serviceContext.Argv[0]}";
-            if (!systemModel.TryGetWithAccess(exe, loginModel, out _, out _, out var fse, caseInsensitive: true))
+            if (!systemModel.TryGetFile(exe, loginModel, out _, out _, out var fse, caseInsensitive: true))
                 return null;
             if (fse.Kind != FileModel.FileKind.ProgFile || !Server.Services.TryGetValue(
                 systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
@@ -279,7 +279,7 @@ namespace hss
                 }
 
                 string exe = $"/bin/{programContext.Argv[0]}";
-                systemModel.TryGetWithAccess(exe, programContext.Login, out var result, out var closestStr, out var fse,
+                systemModel.TryGetFile(exe, programContext.Login, out var result, out var closestStr, out var fse,
                     caseInsensitive: true, hidden: programContext.Type == ProgramContext.InvocationType.StartUp);
                 switch (result)
                 {

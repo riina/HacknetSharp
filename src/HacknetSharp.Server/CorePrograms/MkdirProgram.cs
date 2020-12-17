@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     string inputFmt = GetNormalized(Combine(workDir, input));
                     if (inputFmt == "/") continue;
-                    system.TryGetWithAccess(inputFmt, login, out var result, out var closestStr, out _);
+                    system.TryGetFile(inputFmt, login, out var result, out var closestStr, out _);
                     {
                         switch (result)
                         {

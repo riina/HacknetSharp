@@ -38,7 +38,7 @@ namespace HacknetSharp.Server.CorePrograms
                     continue;
                 }
 
-                if (system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out var closest))
+                if (system.TryGetFile(path, context.Login, out var result, out var closestStr, out var closest))
                     switch (closest.Kind)
                     {
                         case FileModel.FileKind.TextFile:

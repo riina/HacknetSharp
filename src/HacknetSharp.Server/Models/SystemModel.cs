@@ -132,7 +132,7 @@ namespace HacknetSharp.Server.Models
         /// <param name="caseInsensitive">If true, use case-insensitive filename matching.</param>
         /// <param name="hidden">If true, checks for hidden files.</param>
         /// <returns>True if file and all parents are readable.</returns>
-        public bool TryGetWithAccess(string path, LoginModel login, out ReadAccessResult result, out string closest,
+        public bool TryGetFile(string path, LoginModel login, out ReadAccessResult result, out string closest,
             [NotNullWhen(true)] out FileModel? readable, bool caseInsensitive = false, bool hidden = false)
         {
             closest = GetClosestWithReadableParent(path, login, out readable, caseInsensitive, hidden);

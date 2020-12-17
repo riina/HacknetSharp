@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (path == "/")
                 context.Shell.WorkingDirectory = "/";
-            else if (system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out var closest))
+            else if (system.TryGetFile(path, context.Login, out var result, out var closestStr, out var closest))
                 switch (closest.Kind)
                 {
                     case FileModel.FileKind.TextFile:

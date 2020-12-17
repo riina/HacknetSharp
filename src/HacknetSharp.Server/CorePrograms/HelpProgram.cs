@@ -23,7 +23,7 @@ namespace HacknetSharp.Server.CorePrograms
             var world = context.World;
             var replacements = new Dictionary<string, string>();
 
-            if (system.TryGetWithAccess("/bin", login, out var result, out var closestStr, out _))
+            if (system.TryGetFile("/bin", login, out var result, out var closestStr, out _))
             {
                 var sb = new StringBuilder();
                 if (argv.Length == 1)
@@ -45,7 +45,7 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     string name = argv[1];
                     ProgramInfoAttribute? info;
-                    system.TryGetWithAccess($"/bin/{name}", login, out _, out _, out var program, true);
+                    system.TryGetFile($"/bin/{name}", login, out _, out _, out var program, true);
                     if (program != null)
                     {
                         info = world.GetProgramInfo(program.Content);

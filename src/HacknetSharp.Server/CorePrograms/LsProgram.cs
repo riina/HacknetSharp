@@ -33,7 +33,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (path != "/" && !system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out _))
+            if (path != "/" && !system.TryGetFile(path, context.Login, out var result, out var closestStr, out _))
                 switch (result)
                 {
                     case ReadAccessResult.NotReadable:

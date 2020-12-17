@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.CorePrograms
                 foreach (var input in argv[1..])
                 {
                     string inputFmt = GetNormalized(Combine(workDir, input));
-                    if (system.TryGetWithAccess(inputFmt, login, out var result, out var closestStr, out var closest))
+                    if (system.TryGetFile(inputFmt, login, out var result, out var closestStr, out var closest))
                     {
                         try
                         {

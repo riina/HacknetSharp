@@ -96,7 +96,7 @@ namespace HacknetSharp.Server.CorePrograms
                 var system = context.System;
 
                 string inputFmt = GetNormalized(path);
-                if (rSystem.TryGetWithAccess(inputFmt, rLogin, out var result, out var closestStr, out var closest))
+                if (rSystem.TryGetFile(inputFmt, rLogin, out var result, out var closestStr, out var closest))
                 {
                     try
                     {
