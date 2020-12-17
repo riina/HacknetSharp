@@ -21,5 +21,6 @@ password and obtained registration token.
 ## Forging tokens (admin users only)
 
 Admin users can request registration tokens.
+
 `hsh -f username@server[:port]`
 

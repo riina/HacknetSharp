@@ -1,4 +1,3 @@
 # HacknetSharp
 
-## Quick Start
-TODO...
+Intro document is available [here](articles/intro.md).

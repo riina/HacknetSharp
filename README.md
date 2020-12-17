@@ -4,6 +4,8 @@
 
 # Multiplayer hacknet-like game-like thing
 
+[Documentation](https://the-council-of-wills.github.io/HacknetSharp/articles/intro.html)
+
 [API Reference](https://the-council-of-wills.github.io/HacknetSharp/api/index.html)
 
 ## Current Status
