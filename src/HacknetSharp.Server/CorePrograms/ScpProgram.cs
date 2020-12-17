@@ -96,7 +96,7 @@ namespace HacknetSharp.Server.CorePrograms
                 var system = context.System;
 
                 string inputFmt = GetNormalized(path);
-                if (rSystem.TryGetWithAccess(inputFmt, rLogin, out var result, out var closest))
+                if (rSystem.TryGetWithAccess(inputFmt, rLogin, out var result, out var closestStr, out var closest))
                 {
                     try
                     {
@@ -116,7 +116,7 @@ namespace HacknetSharp.Server.CorePrograms
                             lclName = GetFileName(target);
                         }
 
-                        Console.WriteLine($"Duplicating to [{lclTarget}] [{lclName}]");
+                        //Console.WriteLine($"Duplicating to [{lclTarget}] [{lclName}]");
 
                         spawn.Duplicate(system, login, lclName, lclTarget, closest);
                     }
@@ -129,10 +129,8 @@ namespace HacknetSharp.Server.CorePrograms
                 else
                     switch (result)
                     {
-                        case ReadAccessResult.Readable:
-                            break;
                         case ReadAccessResult.NotReadable:
-                            user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
+                            user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
                             user.FlushSafeAsync();
                             yield break;
                         case ReadAccessResult.NoExist:

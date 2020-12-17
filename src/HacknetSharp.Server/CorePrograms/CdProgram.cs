@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (path == "/")
                 context.Shell.WorkingDirectory = "/";
-            else if (system.TryGetWithAccess(path, context.Login, out var result, out var closest))
+            else if (system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out var closest))
                 switch (closest.Kind)
                 {
                     case FileModel.FileKind.TextFile:
@@ -47,10 +47,8 @@ namespace HacknetSharp.Server.CorePrograms
             else
                 switch (result)
                 {
-                    case ReadAccessResult.Readable:
-                        break;
                     case ReadAccessResult.NotReadable:
-                        user.WriteEventSafe(Output($"cd: {path}: Permission denied\n"));
+                        user.WriteEventSafe(Output($"cd: {closestStr}: Permission denied\n"));
                         user.FlushSafeAsync();
                         yield break;
                     case ReadAccessResult.NoExist:

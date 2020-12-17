@@ -57,7 +57,7 @@ namespace System.IO
             if (normalized)
                 return path;
 
-            StringBuilder builder = new StringBuilder(path.Length);
+            StringBuilder builder = new(path.Length);
 
             for (int i = 0; i < path.Length; i++)
             {

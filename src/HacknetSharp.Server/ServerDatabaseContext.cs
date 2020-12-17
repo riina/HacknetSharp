@@ -30,8 +30,8 @@ namespace HacknetSharp.Server
             base(options)
         {
             _configureList = new List<ModelBuilderDelegate>();
-            HashSet<Type> programSet = new HashSet<Type>();
-            HashSet<Type> initSet = new HashSet<Type>();
+            HashSet<Type> programSet = new();
+            HashSet<Type> initSet = new();
 
             void AddDepTypes(IEnumerable<Type> depTypes)
             {

@@ -33,7 +33,7 @@ namespace hss.Runnables
         private static readonly
             Dictionary<string, (bool nameRequired, Func<Options, (string path, object result)> action)>
             _templateGenerators =
-                new Dictionary<string, (bool nameRequired, Func<Options, (string path, object result)> action)>
+                new()
                 {
                     {
                         "system", (true, options => (
@@ -99,7 +99,7 @@ namespace hss.Runnables
                                     PlayerAddressRange = Constants.DefaultAddressRange,
                                     People = new List<WorldTemplate.PersonGroup>
                                     {
-                                        new WorldTemplate.PersonGroup {Count = 3, Template = "personTemplate2"}
+                                        new() {Count = 3, Template = "personTemplate2"}
                                     }
                                 }
                                 : new WorldTemplate()))
@@ -112,7 +112,7 @@ namespace hss.Runnables
                                 ? new ServerSettings
                                 {
                                     Host = "127.0.0.1",
-                                    DatabaseProperties = new Dictionary<string, string>
+                                    Database = new Dictionary<string, string>
                                     {
                                         {"Kind", "sqlite"}, {"SqliteFile", "hakase.db"}
                                     },

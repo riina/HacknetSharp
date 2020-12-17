@@ -49,13 +49,13 @@ namespace HacknetSharp.Server
             assembly.GetTypes().Where(type => IsSubclass(t, type) && !type.IsAbstract);
 
         private static readonly HashSet<Type> _defaultModels =
-            new HashSet<Type>(GetTypes(typeof(Model<>), typeof(Model<>).Assembly));
+            new(GetTypes(typeof(Model<>), typeof(Model<>).Assembly));
 
         private static readonly HashSet<Type> _defaultPrograms =
-            new HashSet<Type>(GetTypes(typeof(Program), typeof(Program).Assembly));
+            new(GetTypes(typeof(Program), typeof(Program).Assembly));
 
         private static readonly HashSet<Type> _defaultServices =
-            new HashSet<Type>(GetTypes(typeof(Service), typeof(Service).Assembly));
+            new(GetTypes(typeof(Service), typeof(Service).Assembly));
 
         /// <summary>
         /// Standard model types.
@@ -80,7 +80,7 @@ namespace HacknetSharp.Server
         /// <returns>List of lists of types</returns>
         public static List<List<Type>> LoadTypesFromFolder(string folder, IReadOnlyList<Type> types)
         {
-            List<List<Type>> ret = new List<List<Type>>();
+            List<List<Type>> ret = new();
             for (int i = 0; i < types.Count; i++)
                 ret.Add(new List<Type>());
             if (!Directory.Exists(folder)) return ret;
@@ -170,7 +170,7 @@ namespace HacknetSharp.Server
         /// <param name="shell">Shell to use.</param>
         /// <returns>Output event with formatted address and CWD.</returns>
         public static OutputEvent CreatePromptEvent(ShellProcess shell) =>
-            new OutputEvent {Text = $"{UintToAddress(shell.ProgramContext.System.Address)}:{shell.WorkingDirectory}> "};
+            new() {Text = $"{UintToAddress(shell.ProgramContext.System.Address)}:{shell.WorkingDirectory}> "};
 
         /// <summary>
         /// Format an IPv4 address.
@@ -318,7 +318,7 @@ namespace HacknetSharp.Server
             PersonModel person, LoginModel login, string[] line,
             ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
         {
-            return new ProgramContext
+            return new()
             {
                 World = world,
                 Person = person,
@@ -347,7 +347,7 @@ namespace HacknetSharp.Server
             PersonModel person, string[] line,
             ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
         {
-            return new ProgramContext
+            return new()
             {
                 World = world,
                 Person = person,

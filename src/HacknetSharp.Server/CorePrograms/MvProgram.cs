@@ -47,7 +47,7 @@ namespace HacknetSharp.Server.CorePrograms
                 foreach (var input in argv[1..^1])
                 {
                     string inputFmt = GetNormalized(Combine(workDir, input));
-                    if (system.TryGetWithAccess(inputFmt, login, out var result, out var closest))
+                    if (system.TryGetWithAccess(inputFmt, login, out var result, out var closestStr, out var closest))
                     {
                         try
                         {
@@ -79,10 +79,8 @@ namespace HacknetSharp.Server.CorePrograms
                     else
                         switch (result)
                         {
-                            case ReadAccessResult.Readable:
-                                break;
                             case ReadAccessResult.NotReadable:
-                                user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
+                                user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
                                 user.FlushSafeAsync();
                                 yield break;
                             case ReadAccessResult.NoExist:

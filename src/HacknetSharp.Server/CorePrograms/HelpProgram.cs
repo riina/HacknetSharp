@@ -23,7 +23,7 @@ namespace HacknetSharp.Server.CorePrograms
             var world = context.World;
             var replacements = new Dictionary<string, string>();
 
-            if (system.TryGetWithAccess("/bin", login, out var result, out _))
+            if (system.TryGetWithAccess("/bin", login, out var result, out var closestStr, out _))
             {
                 var sb = new StringBuilder();
                 if (argv.Length == 1)
@@ -45,16 +45,9 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     string name = argv[1];
                     ProgramInfoAttribute? info;
-                    var program = system.Files.FirstOrDefault(f => f.Path == "/bin" && f.Name == name && !f.Hidden);
+                    system.TryGetWithAccess($"/bin/{name}", login, out _, out _, out var program, true);
                     if (program != null)
                     {
-                        if (!program.CanRead(login))
-                        {
-                            user.WriteEventSafe(Output("Permission denied\n"));
-                            user.FlushSafeAsync();
-                            yield break;
-                        }
-
                         info = world.GetProgramInfo(program.Content);
                         GenReplacements(replacements, program.Content!);
                     }
@@ -87,10 +80,8 @@ namespace HacknetSharp.Server.CorePrograms
 
             switch (result)
             {
-                case ReadAccessResult.Readable:
-                    break;
                 case ReadAccessResult.NotReadable:
-                    user.WriteEventSafe(Output("/bin: Permission denied\n"));
+                    user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
                     user.FlushSafeAsync();
                     yield break;
                 case ReadAccessResult.NoExist:

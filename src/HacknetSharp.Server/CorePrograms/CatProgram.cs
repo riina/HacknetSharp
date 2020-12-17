@@ -11,7 +11,7 @@ namespace HacknetSharp.Server.CorePrograms
         "[files...]", false)]
     public class CatProgram : Program
     {
-        private static readonly OutputEvent _newlineOutput = new OutputEvent {Text = "\n"};
+        private static readonly OutputEvent _newlineOutput = new() {Text = "\n"};
 
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
@@ -38,7 +38,7 @@ namespace HacknetSharp.Server.CorePrograms
                     continue;
                 }
 
-                if (system.TryGetWithAccess(path, context.Login, out var result, out var closest))
+                if (system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out var closest))
                     switch (closest.Kind)
                     {
                         case FileModel.FileKind.TextFile:
@@ -58,10 +58,8 @@ namespace HacknetSharp.Server.CorePrograms
                 else
                     switch (result)
                     {
-                        case ReadAccessResult.Readable:
-                            break;
                         case ReadAccessResult.NotReadable:
-                            user.WriteEventSafe(Output($"cat: {path}: Permission denied\n"));
+                            user.WriteEventSafe(Output($"cat: {closestStr}: Permission denied\n"));
                             user.FlushSafeAsync();
                             yield break;
                         case ReadAccessResult.NoExist:

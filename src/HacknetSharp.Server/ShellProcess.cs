@@ -31,13 +31,13 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Shell variables.
         /// </summary>
-        public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Variables { get; set; } = new();
 
         /// <summary>
         /// Open vulnerabilities by system address.
         /// </summary>
         public Dictionary<uint, HashSet<VulnerabilityModel>> OpenVulnerabilities { get; set; } =
-            new Dictionary<uint, HashSet<VulnerabilityModel>>();
+            new();
 
         private bool _cleaned;
 

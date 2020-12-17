@@ -19,7 +19,7 @@ namespace HacknetSharp.Server
         /// <param name="message">Message to use.</param>
         /// <returns>Event with provided message.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OutputEvent Output(string message) => new OutputEvent {Text = message};
+        public static OutputEvent Output(string message) => new() {Text = message};
 
         /// <summary>
         /// Tries to find a system on the network with the specified address (or $TARGET). Additionally sends output events on failure.

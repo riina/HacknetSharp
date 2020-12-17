@@ -50,42 +50,42 @@ namespace HacknetSharp.Server
         /// <param name="token">Embedded delegate.</param>
         /// <returns>Yield token.</returns>
         public static ActWaitYieldToken ActWait(Action action, YieldToken token) =>
-            new ActWaitYieldToken(action, token);
+            new(action, token);
 
         /// <summary>
         /// Creates a yield token with the specified yield tokens. Once each yield token in turn is done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
-        public static SequenceYieldToken Sequence(IEnumerable<YieldToken> tokens) => new SequenceYieldToken(tokens);
+        public static SequenceYieldToken Sequence(IEnumerable<YieldToken> tokens) => new(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified yield tokens. Once all yield tokens are done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
-        public static AggregateYieldToken Aggregate(IEnumerable<YieldToken> tokens) => new AggregateYieldToken(tokens);
+        public static AggregateYieldToken Aggregate(IEnumerable<YieldToken> tokens) => new(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified yield tokens. Once any yield token is done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
-        public static AnyYieldToken Any(IEnumerable<YieldToken> tokens) => new AnyYieldToken(tokens);
+        public static AnyYieldToken Any(IEnumerable<YieldToken> tokens) => new(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified delay. Once the delay has completed (<see cref="DelayYieldToken.Delay"/> &gt; 0), execution is resumed.
         /// </summary>
         /// <param name="delay">Delay in seconds.</param>
         /// <returns>Yield token.</returns>
-        public static DelayYieldToken Delay(float delay) => new DelayYieldToken(delay);
+        public static DelayYieldToken Delay(float delay) => new(delay);
 
         /// <summary>
         /// Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.
         /// </summary>
         /// <param name="condition">Delegate, triggers execution once it returns true.</param>
         /// <returns>Yield token.</returns>
-        public static ConditionYieldToken Condition(Func<bool> condition) => new ConditionYieldToken(condition);
+        public static ConditionYieldToken Condition(Func<bool> condition) => new(condition);
 
         /// <summary>
         /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.

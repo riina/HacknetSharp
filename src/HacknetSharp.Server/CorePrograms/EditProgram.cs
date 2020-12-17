@@ -35,7 +35,7 @@ namespace HacknetSharp.Server.CorePrograms
                     continue;
                 }
 
-                if (system.TryGetWithAccess(path, context.Login, out var result, out var closest))
+                if (system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out var closest))
                     switch (closest.Kind)
                     {
                         case FileModel.FileKind.TextFile:
@@ -65,10 +65,11 @@ namespace HacknetSharp.Server.CorePrograms
                         case ReadAccessResult.Readable:
                             break;
                         case ReadAccessResult.NotReadable:
-                            user.WriteEventSafe(Output($"{path}: Permission denied\n"));
+                            user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
                             user.FlushSafeAsync();
                             yield break;
                         case ReadAccessResult.NoExist:
+                            // TODO access folder on write-protected folder
                             var (directory, name) = SystemModel.GetDirectoryAndName(path);
                             closest = context.World.Spawn.TextFile(context.System, context.Login, name, directory, "");
                             bool editable = closest.CanWrite(context.Login);

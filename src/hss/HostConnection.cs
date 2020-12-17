@@ -59,7 +59,7 @@ namespace hss
                 cancellationToken.Register(Dispose);
                 // Authenticate the server but don't require the client to authenticate
                 SslServerAuthenticationOptions opts =
-                    new SslServerAuthenticationOptions
+                    new()
                     {
                         ServerCertificate = _server.Cert,
                         ClientCertificateRequired = false,

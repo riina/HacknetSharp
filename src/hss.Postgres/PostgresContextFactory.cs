@@ -74,20 +74,20 @@ namespace hss.Postgres
         public override ServerDatabaseContext CreateDbContext(string[] args)
         {
             string? host = Environment.GetEnvironmentVariable(EnvStorageHost);
-            if (host == null && ServerYaml?.DatabaseProperties != null &&
-                ServerYaml.DatabaseProperties.TryGetValue("PostgresHost", out var postgresHost))
+            if (host == null && ServerYaml?.Database != null &&
+                ServerYaml.Database.TryGetValue("PostgresHost", out var postgresHost))
                 host = postgresHost;
             host ??= !_fromMain ? "kagura" : throw new ApplicationException($"ENV {EnvStorageHost} not set");
 
             string? database = Environment.GetEnvironmentVariable(EnvStorageDatabase);
-            if (database == null && ServerYaml?.DatabaseProperties != null &&
-                ServerYaml.DatabaseProperties.TryGetValue("PostgresDatabase", out var postgresDatabase))
+            if (database == null && ServerYaml?.Database != null &&
+                ServerYaml.Database.TryGetValue("PostgresDatabase", out var postgresDatabase))
                 database = postgresDatabase;
             database ??= !_fromMain ? "sakaki" : throw new ApplicationException($"ENV {EnvStorageDatabase} not set");
 
             string? user = Environment.GetEnvironmentVariable(EnvStorageUser);
-            if (user == null && ServerYaml?.DatabaseProperties != null &&
-                ServerYaml.DatabaseProperties.TryGetValue("PostgresDatabase", out var postgresUser))
+            if (user == null && ServerYaml?.Database != null &&
+                ServerYaml.Database.TryGetValue("PostgresDatabase", out var postgresUser))
                 user = postgresUser;
             user ??= !_fromMain ? "tomo" : throw new ApplicationException($"ENV {EnvStorageUser} not set");
 

@@ -41,7 +41,7 @@ namespace hss
 
         public static void LoadTemplates(TemplateGroup templates, string dir)
         {
-            Dictionary<string, Action<string, string>> templateLoadDict = new Dictionary<string, Action<string, string>>
+            Dictionary<string, Action<string, string>> templateLoadDict = new()
             {
                 {
                     ".world.yaml",
@@ -61,8 +61,8 @@ namespace hss
 
         private static void LoadTree(string root, Dictionary<string, Action<string, string>> actionDict)
         {
-            Queue<string> dQueue = new Queue<string>();
-            Queue<string> fQueue = new Queue<string>();
+            Queue<string> dQueue = new();
+            Queue<string> fQueue = new();
             dQueue.Enqueue("");
             while (fQueue.Count != 0 || dQueue.Count != 0)
             {

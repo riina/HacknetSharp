@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     string inputFmt = GetNormalized(Combine(workDir, input));
                     if (inputFmt == "/") continue;
-                    system.TryGetWithAccess(inputFmt, login, out var result, out _);
+                    system.TryGetWithAccess(inputFmt, login, out var result, out var closestStr, out _);
                     {
                         switch (result)
                         {
@@ -45,7 +45,7 @@ namespace HacknetSharp.Server.CorePrograms
                                 user.FlushSafeAsync();
                                 yield break;
                             case ReadAccessResult.NotReadable:
-                                user.WriteEventSafe(Output($"{inputFmt}: Permission denied\n"));
+                                user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
                                 user.FlushSafeAsync();
                                 yield break;
                             case ReadAccessResult.NoExist:

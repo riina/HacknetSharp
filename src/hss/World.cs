@@ -169,10 +169,21 @@ namespace hss
                 return proc;
             }
 
-            if (!systemModel.DirectoryExists("/bin")) return null;
             string exe = $"/bin/{programContext.Argv[0]}";
-            if (!systemModel.FileExists(exe, true)) return null;
-            var fse = systemModel.GetFileSystemEntry(exe);
+            systemModel.TryGetWithAccess(exe, loginModel, out var result, out var closestStr, out var fse,
+                caseInsensitive: true);
+            switch (result)
+            {
+                case ReadAccessResult.NotReadable:
+                    personContext.WriteEventSafe(Program.Output($"{closestStr}: Permission denied\n"));
+                    personContext.FlushSafeAsync();
+                    return null;
+                case ReadAccessResult.NoExist:
+                    personContext.WriteEventSafe(Program.Output($"{closestStr}: No such file or directory\n"));
+                    personContext.FlushSafeAsync();
+                    return null;
+            }
+
             if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !TryGetProgramWithHargs(
                 systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                 out var res))
@@ -197,11 +208,10 @@ namespace hss
                 Person = personModel,
                 Login = loginModel
             };
-            if (!systemModel.DirectoryExists("/bin")) return null;
             string exe = $"/bin/{serviceContext.Argv[0]}";
-            if (!systemModel.FileExists(exe, true)) return null;
-            var fse = systemModel.GetFileSystemEntry(exe);
-            if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !Server.Services.TryGetValue(
+            if (!systemModel.TryGetWithAccess(exe, loginModel, out _, out _, out var fse, caseInsensitive: true))
+                return null;
+            if (fse.Kind != FileModel.FileKind.ProgFile || !Server.Services.TryGetValue(
                 systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                 out var res))
                 return null;
@@ -268,20 +278,12 @@ namespace hss
                     return;
                 }
 
-                if (programContext.Type != ProgramContext.InvocationType.StartUp &&
-                    !systemModel.DirectoryExists("/bin"))
+                string exe = $"/bin/{programContext.Argv[0]}";
+                systemModel.TryGetWithAccess(exe, programContext.Login, out var result, out var closestStr, out var fse,
+                    caseInsensitive: true, hidden: programContext.Type == ProgramContext.InvocationType.StartUp);
+                switch (result)
                 {
-                    if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
-                        programContext.User.WriteEventSafe(new OutputEvent {Text = "/bin not found\n"});
-                }
-                else
-                {
-                    string exe = $"/bin/{programContext.Argv[0]}";
-                    if (systemModel.FileExists(exe, true) ||
-                        programContext.Type == ProgramContext.InvocationType.StartUp &&
-                        systemModel.FileExists(exe, true, true))
-                    {
-                        var fse = systemModel.GetFileSystemEntry(exe);
+                    case ReadAccessResult.Readable:
                         if (fse != null && fse.Kind == FileModel.FileKind.ProgFile &&
                             TryGetProgramWithHargs(systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                                 out var res))
@@ -294,15 +296,27 @@ namespace hss
                         }
 
                         // If a program with a matching progCode isn't found, just return operation complete.
-                    }
-                    else
-                    {
+                        break;
+                    case ReadAccessResult.NotReadable:
                         if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
                             programContext.User.WriteEventSafe(new OutputEvent
                             {
-                                Text = $"{programContext.Argv[0]}: command not found\n"
+                                Text = $"{closestStr}: permission denied\n"
                             });
-                    }
+                        break;
+                    case ReadAccessResult.NoExist:
+                        if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
+                            if (closestStr == "/bin")
+                                programContext.User.WriteEventSafe(new OutputEvent
+                                {
+                                    Text = $"{closestStr}: not found\n"
+                                });
+                            else
+                                programContext.User.WriteEventSafe(new OutputEvent
+                                {
+                                    Text = $"{programContext.Argv[0]}: command not found\n"
+                                });
+                        break;
                 }
             }
 

@@ -34,7 +34,7 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Sequence of active shells for the user, from oldest to newest.
         /// </summary>
-        public List<ShellProcess> ShellChain { get; set; } = new List<ShellProcess>();
+        public List<ShellProcess> ShellChain { get; set; } = new();
 
         /// <summary>
         /// If true, this user has completed registration.

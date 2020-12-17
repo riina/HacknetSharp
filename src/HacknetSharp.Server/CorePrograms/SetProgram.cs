@@ -13,7 +13,7 @@ namespace HacknetSharp.Server.CorePrograms
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
 
-        private static readonly Regex _exportRegex = new Regex(@"([A-Za-z0-9]+)=([\S\s]*)");
+        private static readonly Regex _exportRegex = new(@"([A-Za-z0-9]+)=([\S\s]*)");
 
         private static string SanitizeBody(string str)
         {

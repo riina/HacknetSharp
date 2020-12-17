@@ -27,12 +27,12 @@ namespace hsh
 
         public static EditorResult Open(IEnumerable<string> lines, bool readOnly)
         {
-            StringBuilder menuSb = new StringBuilder();
+            StringBuilder menuSb = new();
             bool menu = false;
-            EditorView editorView = new EditorView(lines, Console.BufferWidth, Console.WindowHeight - 1);
+            EditorView editorView = new(lines, Console.BufferWidth, Console.WindowHeight - 1);
             editorView.Redraw();
             editorView.PlaceCursor();
-            List<BlockChange?> changes = new List<BlockChange?>();
+            List<BlockChange?> changes = new();
             while (true)
             {
                 var key = Console.ReadKey(true);
@@ -376,7 +376,7 @@ namespace hsh
                 int row = _viewStartRow;
                 int rowDisplay = GetDisplayRow(row);
                 int availableSubRows = Math.Min(_height, _totalHeight - rowDisplay);
-                Range displayed = new Range(_viewStartRow, _viewStartRow + availableSubRows);
+                Range displayed = new(_viewStartRow, _viewStartRow + availableSubRows);
                 if (change._viewRows.Start.Value > displayed.End.Value) return;
                 if (!change._viewRows.End.IsFromEnd && change._viewRows.End.Value < displayed.Start.Value) return;
                 bool cascading = change._viewRows.End.IsFromEnd;
@@ -436,7 +436,7 @@ namespace hsh
                 int row = _viewStartRow;
                 int rowDisplay = GetDisplayRow(row);
                 int availableSubRows = Math.Min(_height, _totalHeight - rowDisplay);
-                Range displayed = new Range(_viewStartRow, _viewStartRow + availableSubRows);
+                Range displayed = new(_viewStartRow, _viewStartRow + availableSubRows);
                 int sub = 0;
                 int subTotal = 0;
                 while (rowDisplay < displayed.Start.Value)

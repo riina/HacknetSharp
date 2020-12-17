@@ -97,8 +97,8 @@ namespace HacknetSharp.Server.Templates
             public string? Cve { get; set; }
         }
 
-        private static readonly Regex _userRegex = new Regex(@"([A-Za-z]+)(\+)?");
-        private static readonly Regex _fileRegex = new Regex(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
+        private static readonly Regex _userRegex = new(@"([A-Za-z]+)(\+)?");
+        private static readonly Regex _fileRegex = new(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
         /// <summary>
         /// Applies this template to a system.

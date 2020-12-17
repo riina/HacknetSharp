@@ -147,7 +147,7 @@ name, this is only for listing the worlds with `hss world list`).
 
 * Host(`string`): external hostname to bind to.
 * Port(`ushort`): external port to bind to.
-* DatabaseProperties(`Dictionary<string, string>`): database properties.
+* Database(`Dictionary<string, string>`): database properties.
 * DefaultWorld(`string`): default world for new players to join.
 * EnableLoggin(`bool`): if true, enable logging.
 

@@ -148,6 +148,6 @@ namespace hss
         /// Creates new <see cref="Server"/> instance using this configuration.
         /// </summary>
         /// <returns>Server instance.</returns>
-        public Server CreateInstance() => new Server(this);
+        public Server CreateInstance() => new(this);
     }
 }

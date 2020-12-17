@@ -78,7 +78,7 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Processes currently running on this system.
         /// </summary>
-        public Dictionary<uint, Process> Processes { get; set; } = new Dictionary<uint, Process>();
+        public Dictionary<uint, Process> Processes { get; set; } = new();
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -121,107 +121,27 @@ namespace HacknetSharp.Server.Models
         private static (string, string) GetDirectoryAndNameInternal(string path) => (
             Program.GetDirectoryName(path) ?? "/", Program.GetFileName(path));
 
-        /*public bool CanRead(string path, LoginModel login)
-        {
-            var (nPath, nName) = GetDirectoryAndName(path);
-            if (nPath == "/" && nName == "") return true;
-            var entry = Files
-                .FirstOrDefault(f => f.Hidden == false && f.Path == nPath && f.Name == nName);
-            var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
-            return CanReadInternal(pPath, pName, login) && (entry != null
-                ? entry!.CanRead(login)
-                : throw new FileNotFoundException($"{path} not found."));
-        }
-
-        public bool CanWrite(string path, LoginModel login)
-        {
-            var (nPath, nName) = GetDirectoryAndName(path);
-            if (nPath == "/" && nName == "") return true;
-            var entry = Files
-                .FirstOrDefault(f => f.Hidden == false && f.Path == nPath && f.Name == nName);
-            var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
-            return CanReadInternal(pPath, pName, login) && (entry != null
-                ? entry!.CanWrite(login)
-                : throw new FileNotFoundException($"{path} not found."));
-        }
-
-        public bool CanExecute(string path, LoginModel login)
-        {
-            var (nPath, nName) = GetDirectoryAndName(path);
-            if (nPath == "/" && nName == "") return true;
-            var entry = Files
-                .FirstOrDefault(f => f.Hidden == false && f.Path == nPath && f.Name == nName);
-            var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
-            return CanReadInternal(pPath, pName, login) && (entry != null
-                ? entry!.CanExecute(login)
-                : throw new FileNotFoundException($"{path} not found."));
-        }
-
-        private bool CanReadInternal(string nPath, string nName, LoginModel login)
-        {
-            if (nPath == "/" && nName == "") return true;
-            if (nPath != "/")
-            {
-                var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
-                if (!CanReadInternal(pPath, pName, login)) return false;
-            }
-
-            return Files
-                .FirstOrDefault(f => f.Hidden == false && f.Path == nPath && f.Name == nName)?.CanRead(login) ?? false;
-        }*/
-
-        /// <summary>
-        /// Checks if a directory exists.
-        /// </summary>
-        /// <param name="path">Path to check.</param>
-        /// <param name="hidden">If true, check for hidden files.</param>
-        /// <returns>True if specified directory exists.</returns>
-        public bool DirectoryExists(string path, bool hidden = false)
-        {
-            // TODO replace use with TryGetWithAccess
-            var (nPath, nName) = GetDirectoryAndName(path);
-            if (nPath == "/" && nName == "") return true;
-            return Files
-                .Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName &&
-                          f.Kind == FileModel.FileKind.Folder);
-        }
-
-        /// <summary>
-        /// Checks if a file exists.
-        /// </summary>
-        /// <param name="path">Path to check.</param>
-        /// <param name="caseInsensitiveFile"></param>
-        /// <param name="hidden">If true, check for hidden files.</param>
-        /// <returns>True if specified file exists.</returns>
-        public bool FileExists(string path, bool caseInsensitiveFile = false, bool hidden = false)
-        {
-            // TODO replace use with TryGetWithAccess
-            var (nPath, nName) = GetDirectoryAndName(path);
-            var comparison = caseInsensitiveFile
-                ? StringComparison.InvariantCultureIgnoreCase
-                : StringComparison.InvariantCulture;
-            return Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name.Equals(nName, comparison) &&
-                                  (f.Kind == FileModel.FileKind.FileFile ||
-                                   f.Kind == FileModel.FileKind.ProgFile ||
-                                   f.Kind == FileModel.FileKind.TextFile));
-        }
-
         /// <summary>
         /// Attempts to get a file with a specified login.
         /// </summary>
         /// <param name="path">Desired file path.</param>
         /// <param name="login">Login to check with.</param>
         /// <param name="result">Access result.</param>
-        /// <param name="closest">Closest matching parent, null, or file if matched.</param>
+        /// <param name="closest">Closest filepath with a readable parent.</param>
+        /// <param name="readable">Closest readable file, if any.</param>
+        /// <param name="caseInsensitive">If true, use case-insensitive filename matching.</param>
         /// <param name="hidden">If true, checks for hidden files.</param>
         /// <returns>True if file and all parents are readable.</returns>
-        public bool TryGetWithAccess(string path, LoginModel login, out ReadAccessResult result,
-            [NotNullWhen(true)] out FileModel? closest, bool hidden = false)
+        public bool TryGetWithAccess(string path, LoginModel login, out ReadAccessResult result, out string closest,
+            [NotNullWhen(true)] out FileModel? readable, bool caseInsensitive = false, bool hidden = false)
         {
-            // TODO add case insensitivity for file
-            closest = GetClosestWithReadableParent(path, login, hidden);
-            result = !closest?.CanRead(login) ?? false ? ReadAccessResult.NotReadable :
-                closest == null || closest.FullPath != path ? ReadAccessResult.NoExist : ReadAccessResult.Readable;
+            closest = GetClosestWithReadableParent(path, login, out readable, caseInsensitive, hidden);
+            var comparison = caseInsensitive
+                ? StringComparison.InvariantCultureIgnoreCase
+                : StringComparison.InvariantCulture;
+            result = readable != null && readable.FullPath != closest ? ReadAccessResult.NotReadable :
+                readable == null || !readable.FullPath.Equals(path, comparison) ? ReadAccessResult.NoExist :
+                ReadAccessResult.Readable;
 #pragma warning disable 8762
             return result == ReadAccessResult.Readable;
 #pragma warning restore 8762
@@ -232,30 +152,48 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         /// <param name="path">Path to check.</param>
         /// <param name="login">Login to test against.</param>
+        /// <param name="readable">Closest readable file, if any.</param>
+        /// <param name="caseInsensitive">If true, use case-insensitive filename matching.</param>
         /// <param name="hidden">If true, checks for hidden files.</param>
         /// <returns>Closest file with a readable parent (may be the file itself) or null.</returns>
-        public FileModel? GetClosestWithReadableParent(string path, LoginModel login, bool hidden = false)
+        public string GetClosestWithReadableParent(string path, LoginModel login, out FileModel? readable,
+            bool caseInsensitive = false, bool hidden = false)
         {
             var (nPath, nName) = GetDirectoryAndName(path);
-            return GetClosestWithReadableParentInternal(nPath, nName, login, hidden);
+            return GetClosestWithReadableParentInternal(nPath, nName, login, out readable, caseInsensitive, hidden);
         }
 
-        private FileModel? GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login,
-            bool hidden)
+        private string GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login,
+            out FileModel? readable, bool caseInsensitive, bool hidden)
         {
-            if (nPath == "/" && nName == "") return null;
-            FileModel? top;
+            readable = null;
+            if (nPath == "/" && nName == "") return "/";
+            string topPath;
+            FileModel? topReadable;
             if (nPath != "/")
             {
                 var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
-                top = GetClosestWithReadableParentInternal(pPath, pName, login, hidden);
+                topPath = GetClosestWithReadableParentInternal(pPath, pName, login, out topReadable, false, hidden);
             }
             else
-                top = null;
+            {
+                topReadable = null;
+                topPath = "/";
+            }
 
+            var comparison = caseInsensitive
+                ? StringComparison.InvariantCultureIgnoreCase
+                : StringComparison.InvariantCulture;
             var self = Files
-                .FirstOrDefault(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName);
-            return self != null && (top == null || top.CanRead(login) && top.FullPath == nPath) ? self : top;
+                .FirstOrDefault(f => f.Hidden == hidden && f.Path == nPath && f.Name.Equals(nName, comparison));
+            if (self != null && (topReadable == null || topReadable.FullPath == nPath))
+            {
+                readable = self.CanRead(login) ? self : topReadable;
+                return self.FullPath;
+            }
+
+            readable = topReadable;
+            return topPath;
         }
 
         /// <summary>

@@ -33,13 +33,11 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (path != "/" && !system.TryGetWithAccess(path, context.Login, out var result, out _))
+            if (path != "/" && !system.TryGetWithAccess(path, context.Login, out var result, out var closestStr, out _))
                 switch (result)
                 {
-                    case ReadAccessResult.Readable:
-                        break;
                     case ReadAccessResult.NotReadable:
-                        user.WriteEventSafe(Output($"ls: {path}: Permission denied\n"));
+                        user.WriteEventSafe(Output($"ls: {closestStr}: Permission denied\n"));
                         user.FlushSafeAsync();
                         yield break;
                     case ReadAccessResult.NoExist:
@@ -48,7 +46,7 @@ namespace HacknetSharp.Server.CorePrograms
                         yield break;
                 }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             var fileList = new List<string>(system.EnumerateDirectory(path).Select(f => f.Name));
             if (fileList.Count == 0) yield break;

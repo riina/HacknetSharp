@@ -20,7 +20,7 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Database properties.
         /// </summary>
-        public Dictionary<string, string>? DatabaseProperties { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string>? Database { get; set; } = new();
 
         /// <summary>
         /// Default world players are added to.

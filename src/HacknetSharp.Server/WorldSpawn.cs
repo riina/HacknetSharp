@@ -57,7 +57,7 @@ namespace HacknetSharp.Server
             return person;
         }
 
-        private readonly Random _random = new Random();
+        private readonly Random _random = new();
 
         /// <summary>
         /// Creates a new system.
@@ -84,7 +84,7 @@ namespace HacknetSharp.Server
 
                 uint invSubnetMask = ~subnetMask;
                 uint gen;
-                Span<byte> span = new Span<byte>((byte*)&gen, 4);
+                Span<byte> span = new((byte*)&gen, 4);
                 int i = -1;
                 do _random.NextBytes(span);
                 while (++i < 10 && systems.Contains(gen & invSubnetMask));
@@ -468,12 +468,13 @@ namespace HacknetSharp.Server
             bool hidden = false)
         {
             var system = file.System;
-            if (!system.TryGetWithAccess(file.FullPath, login, out var result, out _, hidden) || !file.CanWrite(login))
+            if (!system.TryGetWithAccess(file.FullPath, login, out var result, out _, out _, hidden: hidden) ||
+                !file.CanWrite(login))
                 throw new IOException("Permission denied");
 
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
                 throw new IOException($"The specified path already exists: {Program.Combine(targetPath, targetName)}");
-            system.TryGetWithAccess(targetPath, login, out result, out _, hidden);
+            system.TryGetWithAccess(targetPath, login, out result, out _, out _, hidden: hidden);
             switch (result)
             {
                 case ReadAccessResult.Readable:
@@ -497,7 +498,7 @@ namespace HacknetSharp.Server
             {
                 var toModify = new List<FileModel>();
                 string rootPath = file.FullPath;
-                Queue<FileModel> queue = new Queue<FileModel>();
+                Queue<FileModel> queue = new();
                 queue.Enqueue(file);
                 while (queue.TryDequeue(out var f))
                 {
