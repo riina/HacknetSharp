@@ -18,7 +18,7 @@ namespace hsh
         private static async Task Main(string[] args)
             => await Parser.Default
                 .ParseArguments<Options>(args)
-                .MapResult(Run, errs => Task.FromResult(1)).Caf();
+                .MapResult(Run, _ => Task.FromResult(1)).Caf();
 
         private class Options
         {
@@ -98,7 +98,7 @@ namespace hsh
                             _ => "UNKNOWN ALERT TYPE"
                         };
                         List<string> lines = new(alert.Body.Split('\n'));
-                        lines.Insert(0, $"{alertKind} : {alert.Header}");
+                        lines.Insert(0, $"{alertKind} : {alert.Header.ToUpperInvariant()}");
                         int longest = lines.Select(l => l.Length).Max();
                         lines[0] = lines[0] + new string('-', longest - lines[0].Length);
                         var sb = new StringBuilder();

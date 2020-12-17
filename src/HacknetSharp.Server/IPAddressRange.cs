@@ -285,14 +285,15 @@ namespace HacknetSharp.Server
         [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
         {
-            Span<byte> prefix;
             fixed (byte* pp = _prefix)
-                prefix = new Span<byte>(pp, 16);
-            int p1 = BinaryPrimitives.ReadInt32BigEndian(prefix);
-            int p2 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(4, 4));
-            int p3 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(8, 4));
-            int p4 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(12, 4));
-            return HashCode.Combine(p1, p2, p3, p4, (int)AddressFamily, PrefixBits);
+            {
+                Span<byte> prefix = new(pp, 16);
+                int p1 = BinaryPrimitives.ReadInt32BigEndian(prefix);
+                int p2 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(4, 4));
+                int p3 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(8, 4));
+                int p4 = BinaryPrimitives.ReadInt32BigEndian(prefix.Slice(12, 4));
+                return HashCode.Combine(p1, p2, p3, p4, (int)AddressFamily, PrefixBits);
+            }
         }
 
         /// <inheritdoc />

@@ -28,7 +28,7 @@ namespace hss.Runnables
                 }
 
                 Console.WriteLine(
-                    $"Found cert in {cert.Value.Item1.Location}:{cert.Value.Item1.Location} - {cert.Value.Item2.Subject}");
+                    $"Found cert in {cert.Value.Item1.Location}:{cert.Value.Item1.Name} - {cert.Value.Item2.Subject}");
                 return Task.FromResult(0);
             }
         }
