@@ -43,6 +43,11 @@
           "icon.png",
           "favicon.ico"
         ]
+      },
+      {
+        "files": [
+          "assets/**"
+        ]
       }
     ],
     "overwrite": [

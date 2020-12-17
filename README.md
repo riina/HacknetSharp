@@ -20,13 +20,13 @@ There are still some features missing, listed on the
 [MVP project board](https://github.com/The-Council-of-Wills/HacknetSharp/projects/1).
 
 ## Client
-[Usage](meta/usage-client.md)
+[Usage](docfx_project/articles/usage-client.md)
 
 `hsh` is the main terminal client. It supports .NET 5
 ([install .NET 5 runtime here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 
 ## Server
-[Usage](meta/usage-server.md)
+[Usage](docfx_project/articles/usage-server.md)
 
 `hss` is the main server program. It supports .NET 5
 ([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).

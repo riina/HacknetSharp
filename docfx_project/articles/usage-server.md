@@ -23,7 +23,7 @@ keystore.
 * Local server
   - For development / testing, make a self-signed root certificate for
 localhost/127.0.0.1 with a request file
-([example here](examplereq.cnf)).
+([example here](../assets/examplereq.cnf)).
 
 ```
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt -config req.cnf -extensions 'req_ext'
@@ -62,7 +62,7 @@ to specify the filename).
 Templates go in folders under the server directory's `content/`
 folder.
 
-See the [samples](../sample/) folder for template examples.
+See the samples folder for template examples.
 
 ### System templates
 
