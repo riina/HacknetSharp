@@ -150,6 +150,8 @@ name, this is only for listing the worlds with `hss world list`).
 * Database(`Dictionary<string, string>`): database properties.
 * DefaultWorld(`string`): default world for new players to join.
 * EnableLoggin(`bool`): if true, enable logging.
+* Motd(`string?`): Message of the day, sent to all clients during
+  initial command.
 
 ## Database operations
 
