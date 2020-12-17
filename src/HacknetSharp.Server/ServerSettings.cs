@@ -31,5 +31,10 @@ namespace HacknetSharp.Server
         /// If true, enable logging features (primarily database query logging).
         /// </summary>
         public bool? EnableLogging { get; set; }
+
+        /// <summary>
+        /// Optional MOTD to send to users on connect.
+        /// </summary>
+        public string? Motd { get; set; }
     }
 }

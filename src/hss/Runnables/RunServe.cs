@@ -60,7 +60,8 @@ namespace hss.Runnables
                 .WithDefaultWorld(servConf.DefaultWorld)
                 .WithPort(servConf.Port)
                 .WithTemplates(templates)
-                .WithCertificate(cert.Value.Item2);
+                .WithCertificate(cert.Value.Item2)
+                .WithMotd(servConf.Motd);
             var instance = conf.CreateInstance();
             _ = instance.Start();
 

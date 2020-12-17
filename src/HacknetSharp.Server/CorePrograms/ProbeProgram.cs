@@ -23,7 +23,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (!TryGetSystemOrOutput(context, argv.Length != 1 ? argv[1] : null, out var system))
                 yield break;
 
-            user.WriteEventSafe(Output($"Probing {ServerUtil.UintToAddress(system.Address)}...\n"));
+            user.WriteEventSafe(Output($"Probing {Util.UintToAddress(system.Address)}...\n"));
             user.FlushSafeAsync();
 
             yield return Delay(1.0f);

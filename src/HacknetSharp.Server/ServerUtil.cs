@@ -169,16 +169,8 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="shell">Shell to use.</param>
         /// <returns>Output event with formatted address and CWD.</returns>
-        public static OutputEvent CreatePromptEvent(ShellProcess shell) =>
-            new() {Text = $"{UintToAddress(shell.ProgramContext.System.Address)}:{shell.WorkingDirectory}> "};
-
-        /// <summary>
-        /// Format an IPv4 address.
-        /// </summary>
-        /// <param name="value">32-bit unsigned value with highest order byte representing first octet, etc.</param>
-        /// <returns>IPv4 address (a.b.c.d).</returns>
-        public static string UintToAddress(uint value) =>
-            $"{(byte)(value >> 24)}.{(byte)(value >> 16)}.{(byte)(value >> 8)}.{(byte)value}";
+        public static ShellPromptEvent CreatePromptEvent(ShellProcess shell) =>
+            new() {Address = shell.ProgramContext.System.Address, WorkingDirectory = shell.WorkingDirectory};
 
         /// <summary>
         /// Attempts to parse a connection string (e.g. user@host[:port]).

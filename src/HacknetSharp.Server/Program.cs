@@ -89,8 +89,6 @@ namespace HacknetSharp.Server
         /// <param name="process">Associated process (used to check <see cref="Process.Completed"/>).</param>
         public static void SignalUnbindProcess(ProgramContext programContext, Process? process)
         {
-            uint addr = 0;
-            string path = "/";
             try
             {
                 // just ignore shells
@@ -103,16 +101,11 @@ namespace HacknetSharp.Server
                 var topShell = chain[^1];
                 // Shell is popped before signalled, so check if we're either in the top shell or our shell has been popped
                 if (topShell != programContext.Shell && chain.Contains(programContext.Shell)) return;
-                addr = topShell.ProgramContext.System.Address;
-                path = topShell.WorkingDirectory;
                 programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(topShell));
             }
             finally
             {
-                programContext.User.WriteEventSafe(new OperationCompleteEvent
-                {
-                    Operation = programContext.OperationId, Address = addr, Path = path
-                });
+                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
                 programContext.User.FlushSafeAsync();
             }
         }

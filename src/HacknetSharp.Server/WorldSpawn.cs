@@ -243,7 +243,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -285,7 +285,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -328,7 +328,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -371,7 +371,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -417,7 +417,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                var (nPath, nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }

@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 var filter = PathFilter.GenerateFilter(argv.Skip(1));
                 systems = context.System.KnownSystems.Select(s => s.To)
-                    .Where(s => filter.Test(ServerUtil.UintToAddress(s.Address)) || filter.Test(s.Name));
+                    .Where(s => filter.Test(Util.UintToAddress(s.Address)) || filter.Test(s.Name));
             }
             else
                 systems = context.System.KnownSystems.Select(s => s.To);
@@ -39,7 +39,7 @@ namespace HacknetSharp.Server.CorePrograms
             var sb = new StringBuilder();
             foreach (var s in systems)
             {
-                sb.Append($"{ServerUtil.UintToAddress(s.Address),16}")
+                sb.Append($"{Util.UintToAddress(s.Address),16}")
                     .Append(' ')
                     .Append(s.Name)
                     .Append('\n');

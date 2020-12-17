@@ -1,10 +1,17 @@
 Host: 127.0.0.1
 Port: 42069
+DefaultWorld: main
+#EnableLogging: true
+Motd: |-
+  Karada wo mushibamu kiban goto kowase
+  Kodawari sutetara
+  Memory kaihou sokonoke daionryou (furu boryuumu)
+  Hora ne hora ne
+
+  Welcome to HacknetSharp
 Database:
   Kind: sqlite
   SqliteFile: hakase.db
   #PostgresHost: 
   #PostgresDatabase: 
   #PostgresUser: 
-DefaultWorld: main
-#EnableLogging: true

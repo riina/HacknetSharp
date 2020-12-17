@@ -41,6 +41,7 @@ namespace hss
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
         public Spawn Spawn { get; }
+        public string? Motd { get; }
 
         protected internal Server(ServerConfig config)
         {
@@ -63,6 +64,7 @@ namespace hss
             }
 
             DefaultWorld = defaultWorld ?? throw new ApplicationException("No world matching name found");
+            Motd = config.Motd;
             _programTypes = new HashSet<Type>(ServerUtil.DefaultPrograms);
             _programTypes.UnionWith(config.Programs);
             _serviceTypes = new HashSet<Type>(ServerUtil.DefaultServices);

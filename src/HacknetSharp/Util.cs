@@ -229,6 +229,8 @@ namespace HacknetSharp
             RegisterCommand<ServerDisconnectEvent>(Command.SC_Disconnect);
             RegisterCommand<UserInfoEvent>(Command.SC_UserInfo);
             RegisterCommand<EditRequestEvent>(Command.SC_EditRequest);
+            RegisterCommand<ShellPromptEvent>(Command.SC_ShellPrompt);
+            RegisterCommand<AlertEvent>(Command.SC_Alert);
         }
 
         private static void RegisterCommand<TEvent>(Command key) where TEvent : Event, new()
@@ -554,5 +556,13 @@ namespace HacknetSharp
             ApplyShellReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
             _shellReplacementRegex.Replace(str,
                 m => replacements.TryGetValue(m.Groups[1].Value, out var rep) ? rep : m.Value);
+
+        /// <summary>
+        /// Format an IPv4 address.
+        /// </summary>
+        /// <param name="value">32-bit unsigned value with highest order byte representing first octet, etc.</param>
+        /// <returns>IPv4 address (a.b.c.d).</returns>
+        public static string UintToAddress(uint value) =>
+            $"{(byte)(value >> 24)}.{(byte)(value >> 16)}.{(byte)(value >> 8)}.{(byte)value}";
     }
 }

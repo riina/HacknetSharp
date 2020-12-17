@@ -42,6 +42,11 @@ namespace hss
         public X509Certificate? Certificate { get; set; }
 
         /// <summary>
+        /// Message of the day.
+        /// </summary>
+        public string? Motd { get; set; }
+
+        /// <summary>
         /// TCP port.
         /// </summary>
         public ushort Port { get; set; }
@@ -141,6 +146,17 @@ namespace hss
         public ServerConfig WithCertificate(X509Certificate certificate)
         {
             Certificate = certificate;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets message of the dsy.
+        /// </summary>
+        /// <returns>Certificate.</returns>
+        /// <param name="motd">Message of the day.</param>
+        public ServerConfig WithMotd(string? motd)
+        {
+            Motd = motd;
             return this;
         }
 

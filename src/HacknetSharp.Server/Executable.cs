@@ -249,6 +249,8 @@ namespace HacknetSharp.Server
             /// </summary>
             public double Delay { get; set; }
 
+            private bool _condition;
+
             /// <summary>
             /// Creates a yield token with the specified delay. Once the delay has completed (<see cref="DelayYieldToken.Delay"/> &gt; 0), execution is resumed.
             /// </summary>
@@ -259,7 +261,8 @@ namespace HacknetSharp.Server
             }
 
             /// <inheritdoc />
-            public override bool Yield(IWorld world) => (Delay -= world.Time - world.PreviousTime) <= 0.0;
+            public override bool Yield(IWorld world) =>
+                _condition || (_condition = (Delay -= world.Time - world.PreviousTime) <= 0.0);
         }
 
         /// <summary>
@@ -272,6 +275,8 @@ namespace HacknetSharp.Server
             /// </summary>
             public Func<bool> Condition { get; }
 
+            private bool _condition;
+
             /// <summary>
             /// Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.
             /// </summary>
@@ -282,7 +287,7 @@ namespace HacknetSharp.Server
             }
 
             /// <inheritdoc />
-            public override bool Yield(IWorld world) => Condition();
+            public override bool Yield(IWorld world) => _condition || (_condition = Condition());
         }
 
         /// <summary>

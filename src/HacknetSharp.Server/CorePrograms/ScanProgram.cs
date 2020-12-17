@@ -65,7 +65,7 @@ namespace HacknetSharp.Server.CorePrograms
         private static void PrintForSystem(SystemModel system, StringBuilder sb, double curTime)
         {
             sb.Append(system.BootTime > curTime ? "DOWN" : "UP  ")
-                .Append($"{ServerUtil.UintToAddress(system.Address),16}")
+                .Append($"{Util.UintToAddress(system.Address),16}")
                 .Append(' ')
                 .Append(system.Name)
                 .Append('\n');

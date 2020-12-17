@@ -92,5 +92,15 @@ namespace HacknetSharp
         /// Corresponds to <see cref="EditRequestEvent"/>
         /// </summary>
         SC_EditRequest = 0x80_00_00_09,
+
+        /// <summary>
+        /// Corresponds to <see cref="ShellPromptEvent"/>
+        /// </summary>
+        SC_ShellPrompt = 0x80_00_00_0A,
+
+        /// <summary>
+        /// Corresponds to <see cref="AlertEvent"/>
+        /// </summary>
+        SC_Alert = 0x80_00_00_0B,
     }
 }

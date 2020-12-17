@@ -66,7 +66,7 @@ namespace HacknetSharp.Server
                 _programContext.User.FlushSafeAsync();
             }
 
-            var chainLine = _programContext.ChainLine;
+            string[]? chainLine = _programContext.ChainLine;
             if (_programContext.Type == ProgramContext.InvocationType.StartUp &&
                 _programContext.System.ConnectCommandLine != null)
                 chainLine ??= ServerUtil.SplitCommandLine(_programContext.System.ConnectCommandLine);

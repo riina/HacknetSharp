@@ -80,6 +80,23 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public Dictionary<uint, Process> Processes { get; set; } = new();
 
+        /// <summary>
+        /// System event delegate, used for trap signals etc.
+        /// </summary>
+        public Action<object> Pulse { get; set; } = null!;
+
+        /// <summary>
+        /// Represents a trap signal sent to <see cref="SystemModel.Pulse"/>.
+        /// </summary>
+        public class TrapSignal
+        {
+            /// <summary>
+            /// Singleton object for this type.
+            /// </summary>
+            public static readonly TrapSignal Singleton = new TrapSignal();
+        }
+
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
@@ -91,6 +108,7 @@ namespace HacknetSharp.Server.Models
                 x.HasMany(y => y.Logins).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(y => y.Vulnerabilities).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(y => y.Processes);
+                x.Ignore(y => y.Pulse);
             });
 #pragma warning restore 1591
         /// <summary>

@@ -33,6 +33,7 @@ namespace hss
         private readonly ConcurrentQueue<ReadOnlyMemory<byte>> _writeQueue;
         private bool _closed;
         private bool _connected;
+        private bool _ranInit;
 
         public HostConnection(Server server, TcpClient client)
         {
@@ -149,7 +150,7 @@ namespace hss
                         {
                             var op = forgeRequest.Operation;
                             var random = new Random();
-                            var arr = new byte[32];
+                            byte[] arr = new byte[32];
                             if (_user == null) continue;
                             if (!_user.Admin)
                             {
@@ -179,7 +180,22 @@ namespace hss
                                 break;
                             }
 
-                            _server.QueueConnectCommand(this, _user, op, command.ConWidth);
+                            if (!_ranInit)
+                            {
+                                if (_server.Motd != null)
+                                {
+                                    WriteEvent(new AlertEvent
+                                    {
+                                        AlertKind = AlertEvent.Kind.System,
+                                        Body = _server.Motd,
+                                        Header = "Message of the day"
+                                    });
+                                }
+
+                                _server.QueueConnectCommand(this, _user, op, command.ConWidth);
+                                _ranInit = true;
+                            }
+
                             break;
                         }
                         case CommandEvent command:
@@ -191,14 +207,20 @@ namespace hss
                                 break;
                             }
 
-                            _server.QueueCommand(this, _user, op, command.ConWidth,
-                                ServerUtil.SplitCommandLine(command.Text));
+                            if (!_ranInit)
+                            {
+                                _server.QueueConnectCommand(this, _user, op, command.ConWidth);
+                                _ranInit = true;
+                            }
+                            else
+                                _server.QueueCommand(this, _user, op, command.ConWidth,
+                                    ServerUtil.SplitCommandLine(command.Text));
 
                             break;
                         }
                         case ClientResponseEvent response:
                         {
-                            Responses.AddOrUpdate(response.Operation, response, (id, e) => e);
+                            Responses.AddOrUpdate(response.Operation, response, (_, e) => e);
                             break;
                         }
                     }

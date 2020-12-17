@@ -113,7 +113,7 @@ namespace hss
 
             if (context is ProgramContext pc)
             {
-                var chainLine = pc.ChainLine;
+                string[]? chainLine = pc.ChainLine;
                 if (chainLine != null && completionKind == Process.CompletionKind.Normal)
                 {
                     var genPc = ServerUtil.InitTentativeProgramContext(pc.World, pc.OperationId, pc.User, pc.Person,
@@ -133,7 +133,7 @@ namespace hss
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel,
                     ServerUtil.SplitCommandLine(line));
-            var pid = systemModel.GetAvailablePid();
+            uint? pid = systemModel.GetAvailablePid();
             if (pid == null) return null;
             programContext.Pid = pid.Value;
             var process = new ShellProcess(programContext);

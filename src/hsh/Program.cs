@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
@@ -85,6 +88,30 @@ namespace hsh
             {
                 switch (e)
                 {
+                    case AlertEvent alert:
+                        string alertKind = alert.AlertKind switch
+                        {
+                            AlertEvent.Kind.System => "SYSTEM ALERT",
+                            AlertEvent.Kind.Intrusion => "INTRUSION DETECTED",
+                            AlertEvent.Kind.UserMessage => "PRIVATE MESSAGE",
+                            AlertEvent.Kind.AdminMessage => "ADMIN MESSAGE",
+                            _ => "UNKNOWN ALERT TYPE"
+                        };
+                        List<string> lines = new(alert.Body.Split('\n'));
+                        lines.Insert(0, $"{alertKind} : {alert.Header}");
+                        int longest = lines.Select(l => l.Length).Max();
+                        lines[0] = lines[0] + new string('-', longest - lines[0].Length);
+                        var sb = new StringBuilder();
+                        for (int i = 0; i < lines.Count; i++)
+                            sb.AppendLine(
+                                string.Format(CultureInfo.InvariantCulture,
+                                    i == 0 ? $"»» {{0,{-longest}}} ««" : $"»  {{0,{-longest}}}  «", lines[i]));
+                        sb.Append("»» ").Append('-', longest).AppendLine(" ««");
+                        Console.Write(sb.ToString());
+                        break;
+                    case ShellPromptEvent shellPrompt:
+                        Console.Write($"{Util.UintToAddress(shellPrompt.Address)}:{shellPrompt.WorkingDirectory}> ");
+                        break;
                     case OutputEvent output:
                         Console.Write(output.Text);
                         break;
@@ -113,15 +140,7 @@ namespace hsh
             connection.OnDisconnect += e =>
             {
                 Console.WriteLine($"Disconnected by server. Reason: {e.Reason}");
-                try
-                {
-                    connection.DisposeAsync().Wait();
-                }
-                catch
-                {
-                    // ignored
-                }
-
+                connection.DisposeAsync().Wait();
                 Environment.Exit(0);
             };
             (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
