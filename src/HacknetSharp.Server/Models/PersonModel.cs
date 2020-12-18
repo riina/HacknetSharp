@@ -46,6 +46,11 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
+        /// <summary>
+        /// Reboot duration in seconds.
+        /// </summary>
+        public virtual double RebootDuration { get; set; }
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591

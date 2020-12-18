@@ -76,6 +76,36 @@ namespace HacknetSharp.Server.Models
         public virtual HashSet<KnownSystemModel> KnowingSystems { get; set; } = null!;
 
         /// <summary>
+        /// Reboot duration in seconds.
+        /// </summary>
+        public virtual double RebootDuration { get; set; }
+
+        /// <summary>
+        /// System disk capacity.
+        /// </summary>
+        public virtual int DiskCapacity { get; set; }
+
+        /// <summary>
+        /// Number of firewall iterations required for full decode.
+        /// </summary>
+        public virtual int FirewallIterations { get; set; }
+
+        /// <summary>
+        /// Length of firewall string.
+        /// </summary>
+        public virtual int FirewallLength { get; set; }
+
+        /// <summary>
+        /// Additional delay per firewall step.
+        /// </summary>
+        public virtual double FirewallDelay { get; set; }
+
+        /// <summary>
+        /// Fixed firewall string.
+        /// </summary>
+        public virtual string? FixedFirewall { get; set; }
+
+        /// <summary>
         /// Processes currently running on this system.
         /// </summary>
         public Dictionary<uint, Process> Processes { get; set; } = new();
@@ -241,5 +271,11 @@ namespace HacknetSharp.Server.Models
         /// <returns>Process ID or null if all are exhausted.</returns>
         public uint? GetAvailablePid() =>
             (uint?)Enumerable.Range(1, int.MaxValue).FirstOrDefault(v => Processes.Keys.All(k => k != v));
+
+        /// <summary>
+        /// Get currently used disk space of system.
+        /// </summary>
+        /// <returns>Used disk space.</returns>
+        public int GetUsedDiskSpace() => Files.Count(f => f.Kind != FileModel.FileKind.Folder);
     }
 }

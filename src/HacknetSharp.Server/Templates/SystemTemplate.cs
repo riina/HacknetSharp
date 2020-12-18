@@ -72,6 +72,36 @@ namespace HacknetSharp.Server.Templates
         public Dictionary<string, List<string>>? Filesystem { get; set; }
 
         /// <summary>
+        /// Reboot duration in seconds.
+        /// </summary>
+        public double RebootDuration { get; set; }
+
+        /// <summary>
+        /// System disk capacity.
+        /// </summary>
+        public int DiskCapacity { get; set; }
+
+        /// <summary>
+        /// Number of firewall iterations required for full decode.
+        /// </summary>
+        public int FirewallIterations { get; set; }
+
+        /// <summary>
+        /// Length of firewall string.
+        /// </summary>
+        public int FirewallLength { get; set; }
+
+        /// <summary>
+        /// Additional delay per firewall step.
+        /// </summary>
+        public double FirewallDelay { get; set; }
+
+        /// <summary>
+        /// Fixed firewall string.
+        /// </summary>
+        public string? FixedFirewall { get; set; }
+
+        /// <summary>
         /// Represents a vulnerability on the system.
         /// </summary>
         public class Vulnerability
@@ -117,13 +147,16 @@ namespace HacknetSharp.Server.Templates
             var repDict = configuration != null
                 ? new Dictionary<string, string>(configuration)
                 : new Dictionary<string, string>();
-            repDict.Add("Owner.Name", owner.Name);
-            repDict.Add("Owner.UserName", owner.UserName);
+            repDict["Owner.Name"] = owner.Name;
+            repDict["Owner.UserName"] = owner.UserName;
             model.Name = (Name ?? throw new InvalidOperationException($"{nameof(Name)} is null."))
                 .ApplyReplacements(repDict);
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
             model.ConnectCommandLine = ConnectCommandLine?.ApplyReplacements(repDict);
             model.RequiredExploits = RequiredExploits;
+            model.RebootDuration =
+                RebootDuration > 0 ? RebootDuration :
+                owner.RebootDuration > 0 ? owner.RebootDuration : model.World.RebootDuration;
             var unameToLoginDict = new Dictionary<string, LoginModel>
             {
                 {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}

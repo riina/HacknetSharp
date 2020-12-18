@@ -92,6 +92,7 @@ See the samples folder for template examples.
   - Exploits(`int`): # exploits this vulnerability grants.
   - Cve(`string?`): Real-world CVE for fun.
 * RequiredExploits(`int`): # required exploits for system access.
+* RebootDuration(`double`): System reboot duration in seconds.
 
 Default replacements:
 * `Owner.UserName` - system owner's username
@@ -125,6 +126,7 @@ selected (weighted)
     replacements to pass to system template
   - Links(`List<string>?`): Links (uni-directional) to create to
     other systems
+* RebootDuration(`double`): System reboot duration in seconds.
 
 ### World templates
 
@@ -140,6 +142,7 @@ name, this is only for listing the worlds with `hss world list`).
   - Count(`int?`): Number of persons to generate with this template 
   (default 1).
   - AddressRange(`string?`): CIDR range string for address pool
+* RebootDuration(`double`): System reboot duration in seconds.
 
 ### Server configuration
 

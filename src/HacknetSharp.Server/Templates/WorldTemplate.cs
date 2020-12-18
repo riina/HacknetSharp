@@ -35,6 +35,11 @@ namespace HacknetSharp.Server.Templates
         public List<PersonGroup>? People { get; set; }
 
         /// <summary>
+        /// Reboot duration in seconds.
+        /// </summary>
+        public double RebootDuration { get; set; }
+
+        /// <summary>
         /// Represents a group of 1 or more NPCs or networks to generate.
         /// </summary>
         public class PersonGroup
@@ -72,6 +77,7 @@ namespace HacknetSharp.Server.Templates
             world.StartupCommandLine = StartupCommandLine ??
                                        throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
+            world.RebootDuration = RebootDuration;
             var worldSpawn = new WorldSpawn(database, world);
             if (People == null) return;
             foreach (var generator in People)

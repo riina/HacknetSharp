@@ -16,6 +16,11 @@ namespace HacknetSharp.Server
         public const string ShellName = "wsh";
 
         /// <summary>
+        /// Maximum file length.
+        /// </summary>
+        public const int MaxFileLength = 2000;
+
+        /// <summary>
         /// Log recording shell login.
         /// </summary>
         public const string LogKind_Login = "login";

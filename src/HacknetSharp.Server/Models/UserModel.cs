@@ -26,6 +26,16 @@ namespace HacknetSharp.Server.Models
         public virtual bool Admin { get; set; }
 
         /// <summary>
+        /// Active password reset token.
+        /// </summary>
+        public virtual string? PasswordResetToken { get; set; }
+
+        /// <summary>
+        /// Expiry time of token in milliseconds since unix epoch.
+        /// </summary>
+        public virtual long PasswordResetTokenExpiry { get; set; }
+
+        /// <summary>
         /// World this user is currently active in.
         /// </summary>
         public virtual Guid ActiveWorld { get; set; }

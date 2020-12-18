@@ -46,6 +46,11 @@ namespace HacknetSharp.Server.Models
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
         /// <summary>
+        /// Default reboot duration in seconds.
+        /// </summary>
+        public virtual double RebootDuration { get; set; }
+
+        /// <summary>
         /// Current world time.
         /// </summary>
         public virtual double Now { get; set; }

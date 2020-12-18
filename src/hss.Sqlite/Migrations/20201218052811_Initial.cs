@@ -15,9 +15,14 @@ namespace hss.Sqlite.Migrations
                     Hash = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Salt = table.Column<byte[]>(type: "BLOB", nullable: false),
                     Admin = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PasswordResetToken = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordResetTokenExpiry = table.Column<long>(type: "INTEGER", nullable: false),
                     ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -29,9 +34,13 @@ namespace hss.Sqlite.Migrations
                     PlayerSystemTemplate = table.Column<string>(type: "TEXT", nullable: false),
                     StartupCommandLine = table.Column<string>(type: "TEXT", nullable: false),
                     PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false),
+                    RebootDuration = table.Column<double>(type: "REAL", nullable: false),
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
@@ -61,6 +70,7 @@ namespace hss.Sqlite.Migrations
                     UserKey = table.Column<string>(type: "TEXT", nullable: true),
                     DefaultSystem = table.Column<Guid>(type: "TEXT", nullable: false),
                     StartedUp = table.Column<bool>(type: "INTEGER", nullable: false),
+                    RebootDuration = table.Column<double>(type: "REAL", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -92,6 +102,12 @@ namespace hss.Sqlite.Migrations
                     BootTime = table.Column<double>(type: "REAL", nullable: false),
                     RequiredExploits = table.Column<int>(type: "INTEGER", nullable: false),
                     OwnerKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    RebootDuration = table.Column<double>(type: "REAL", nullable: false),
+                    DiskCapacity = table.Column<int>(type: "INTEGER", nullable: false),
+                    FirewallIterations = table.Column<int>(type: "INTEGER", nullable: false),
+                    FirewallLength = table.Column<int>(type: "INTEGER", nullable: false),
+                    FirewallDelay = table.Column<double>(type: "REAL", nullable: false),
+                    FixedFirewall = table.Column<string>(type: "TEXT", nullable: true),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -123,7 +139,7 @@ namespace hss.Sqlite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KnownSystemModel", x => new {x.FromKey, x.ToKey});
+                    table.PrimaryKey("PK_KnownSystemModel", x => new { x.FromKey, x.ToKey });
                     table.ForeignKey(
                         name: "FK_KnownSystemModel_SystemModel_FromKey",
                         column: x => x.FromKey,

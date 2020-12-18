@@ -82,6 +82,11 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         public List<NetworkEntry>? Network { get; set; }
 
+        /// <summary>
+        /// Reboot duration in seconds.
+        /// </summary>
+        public virtual double RebootDuration { get; set; }
+
         [ThreadStatic] private static Random? _random;
 
         private static Random Random => _random ??= new Random();
@@ -140,6 +145,7 @@ namespace HacknetSharp.Server.Templates
                                            AddressRange ??
                                            Constants.DefaultAddressRange);
             var person = spawn.Person(username, username);
+            person.RebootDuration = RebootDuration;
             var (hash, salt) = ServerUtil.HashPassword(password);
 
             if (Network != null)

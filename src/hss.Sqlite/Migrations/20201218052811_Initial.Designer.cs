@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
-    [Migration("20201211235918_Initial")]
+    [Migration("20201218052811_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,6 +148,9 @@ namespace hss.Sqlite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("RebootDuration")
+                        .HasColumnType("REAL");
+
                     b.Property<bool>("StartedUp")
                         .HasColumnType("INTEGER");
 
@@ -200,6 +203,21 @@ namespace hss.Sqlite.Migrations
                     b.Property<string>("ConnectCommandLine")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("DiskCapacity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("FirewallDelay")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("FirewallIterations")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("FirewallLength")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FixedFirewall")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -210,6 +228,9 @@ namespace hss.Sqlite.Migrations
 
                     b.Property<Guid>("OwnerKey")
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("RebootDuration")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("RequiredExploits")
                         .HasColumnType("INTEGER");
@@ -240,6 +261,12 @@ namespace hss.Sqlite.Migrations
                     b.Property<byte[]>("Hash")
                         .IsRequired()
                         .HasColumnType("BLOB");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("PasswordResetTokenExpiry")
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
@@ -309,6 +336,9 @@ namespace hss.Sqlite.Migrations
                     b.Property<string>("PlayerSystemTemplate")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("RebootDuration")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("StartupCommandLine")
                         .IsRequired()

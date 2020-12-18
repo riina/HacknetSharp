@@ -98,9 +98,12 @@ namespace HacknetSharp.Server.CorePrograms
                             bool editable = closest.CanWrite(context.Login);
                             var edit = Edit(user, !editable, closest.Content ?? "");
                             yield return edit;
-                            if (editable)
+                            var edited = edit.Edit!;
+                            if (editable && edited.Write)
                             {
                                 closest.Content = edit.Edit!.Content;
+                                if (closest.Content.Length > ServerConstants.MaxFileLength)
+                                    closest.Content = closest.Content[..ServerConstants.MaxFileLength];
                                 context.World.Database.Update(closest);
                             }
 
