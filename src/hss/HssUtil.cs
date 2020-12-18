@@ -39,6 +39,15 @@ namespace hss
         internal static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
         internal static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
 
+
+        public static void LoadTemplates(TemplateGroup templates, ServerSettings settings, string dir)
+        {
+            LoadTemplates(templates, Path.Combine(dir, HssConstants.ContentFolder));
+            if (settings.ContentFolders == null) return;
+            foreach (var path in settings.ContentFolders)
+                LoadTemplates(templates, Path.Combine(dir, path));
+        }
+
         public static void LoadTemplates(TemplateGroup templates, string dir)
         {
             Dictionary<string, Action<string, string>> templateLoadDict = new()

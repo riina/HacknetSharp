@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -26,6 +27,14 @@ namespace hss.Runnables
 
             public async Task<int> Run(Executor executor)
             {
+                if (!File.Exists(HssConstants.ServerYamlFile))
+                {
+                    Console.WriteLine($"Could not find {HssConstants.ServerYamlFile}");
+                    return 8;
+                }
+
+                var (_, servConf) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
+
                 var factory = executor.ServerDatabaseContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
 
@@ -37,7 +46,8 @@ namespace hss.Runnables
                 }
 
                 var templates = new TemplateGroup();
-                HssUtil.LoadTemplates(templates, HssConstants.ContentFolder);
+
+                HssUtil.LoadTemplates(templates, servConf, ".");
                 if (!templates.WorldTemplates.TryGetValue(Template, out var template))
                 {
                     Console.WriteLine("Could not find a template with the specified name.");
@@ -111,6 +121,6 @@ namespace hss.Runnables
         public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Create, Remove, List>(args)
                 .MapResult<Executor.ISelfRunnable, Task<int>>(x => x.Run(executor),
-                    x => Task.FromResult(1)).Caf();
+                    _ => Task.FromResult(1)).Caf();
     }
 }

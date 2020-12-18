@@ -473,7 +473,8 @@ namespace HacknetSharp.Server
                 throw new IOException("Permission denied");
 
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
-                throw new IOException($"The specified path already exists: {Executable.Combine(targetPath, targetName)}");
+                throw new IOException(
+                    $"The specified path already exists: {Executable.Combine(targetPath, targetName)}");
             system.TryGetFile(targetPath, login, out result, out _, out _, hidden: hidden);
             switch (result)
             {

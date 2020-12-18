@@ -140,7 +140,7 @@ namespace HacknetSharp.Server.Models
         /// <param name="hidden">If true, checks for hidden files.</param>
         /// <returns>True if file and all parents are readable.</returns>
         public bool TryGetFile(string path, LoginModel login, out ReadAccessResult result, out string closest,
-            [NotNullWhen(true)] out FileModel? readable, bool caseInsensitive = false, bool hidden = false)
+            [NotNullWhen(true)] out FileModel? readable, bool caseInsensitive = false, bool? hidden = false)
         {
             closest = GetClosestWithReadableParent(path, login, out readable, caseInsensitive, hidden);
             var comparison = caseInsensitive
@@ -164,14 +164,14 @@ namespace HacknetSharp.Server.Models
         /// <param name="hidden">If true, checks for hidden files.</param>
         /// <returns>Closest file with a readable parent (may be the file itself) or null.</returns>
         public string GetClosestWithReadableParent(string path, LoginModel login, out FileModel? readable,
-            bool caseInsensitive = false, bool hidden = false)
+            bool caseInsensitive = false, bool? hidden = false)
         {
             var (nPath, nName) = Executable.GetDirectoryAndName(path);
             return GetClosestWithReadableParentInternal(nPath, nName, login, out readable, caseInsensitive, hidden);
         }
 
         private string GetClosestWithReadableParentInternal(string nPath, string nName, LoginModel login,
-            out FileModel? readable, bool caseInsensitive, bool hidden)
+            out FileModel? readable, bool caseInsensitive, bool? hidden)
         {
             readable = null;
             if (nPath == "/" && nName == "") return "/";
@@ -192,7 +192,7 @@ namespace HacknetSharp.Server.Models
                 ? StringComparison.InvariantCultureIgnoreCase
                 : StringComparison.InvariantCulture;
             var self = Files
-                .FirstOrDefault(f => f.Hidden == hidden && f.Path == nPath && f.Name.Equals(nName, comparison));
+                .FirstOrDefault(f => (hidden == null || f.Hidden == hidden) && f.Path == nPath && f.Name.Equals(nName, comparison));
             if (self != null && (topReadable == null || topReadable.FullPath == nPath))
             {
                 readable = self.CanRead(login) ? self : topReadable;

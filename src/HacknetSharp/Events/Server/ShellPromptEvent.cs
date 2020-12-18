@@ -13,6 +13,7 @@ namespace HacknetSharp.Events.Server
         /// Server IPv4 address (big-endian, highest-order octet = first byte).
         /// </summary>
         public uint Address { get; set; }
+
         /// <summary>
         /// Current working directory for shell.
         /// </summary>

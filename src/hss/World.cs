@@ -157,7 +157,7 @@ namespace hss
                 return null;
 
             var shell = personModel.ShellChain[^1];
-            var argv = ServerUtil.SplitCommandLine(line);
+            string[] argv = ServerUtil.SplitCommandLine(line);
 
             uint? pid;
             if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0]) ||
@@ -230,7 +230,7 @@ namespace hss
         public ProgramInfoAttribute? GetProgramInfo(string? argv)
         {
             if (argv == null) return null;
-            var line = ServerUtil.SplitCommandLine(argv);
+            string[] line = ServerUtil.SplitCommandLine(argv);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
             if (Server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
                 return prog.Item2;
@@ -286,7 +286,7 @@ namespace hss
 
                 string exe = $"/bin/{programContext.Argv[0]}";
                 systemModel.TryGetFile(exe, programContext.Login, out var result, out var closestStr, out var fse,
-                    caseInsensitive: true, hidden: programContext.Type == ProgramContext.InvocationType.StartUp);
+                    caseInsensitive: true, hidden: programContext.Type == ProgramContext.InvocationType.StartUp ? null : false);
                 switch (result)
                 {
                     case ReadAccessResult.Readable:
@@ -334,7 +334,7 @@ namespace hss
 
         private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute, string[]) result)
         {
-            var line = ServerUtil.SplitCommandLine(command);
+            string[] line = ServerUtil.SplitCommandLine(command);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
             {
                 result = default;

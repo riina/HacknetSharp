@@ -51,7 +51,7 @@ namespace hss.Runnables
                 $"Found cert in {cert.Value.Item1.Location}:{cert.Value.Item1.Name} - {cert.Value.Item2.Subject}");
 
             var templates = new TemplateGroup();
-            HssUtil.LoadTemplates(templates, HssConstants.ContentFolder);
+            HssUtil.LoadTemplates(templates, servConf, ".");
 
             var conf = new ServerConfig()
                 .WithPrograms(executor.ServerDatabaseContextFactory.Programs.Concat(executor.CustomPrograms))
@@ -86,6 +86,6 @@ namespace hss.Runnables
 
         public async Task<int> Run(Executor executor, IEnumerable<string> args) => await Parser
             .Default.ParseArguments<Options>(args)
-            .MapResult(x => Start(executor, x), x => Task.FromResult(1)).Caf();
+            .MapResult(x => Start(executor, x), _ => Task.FromResult(1)).Caf();
     }
 }

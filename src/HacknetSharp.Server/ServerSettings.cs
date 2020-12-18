@@ -18,6 +18,11 @@ namespace HacknetSharp.Server
         public ushort Port { get; set; } = Constants.DefaultPort;
 
         /// <summary>
+        /// Additional content folders to scan.
+        /// </summary>
+        public List<string>? ContentFolders { get; set; } = new();
+
+        /// <summary>
         /// Database properties.
         /// </summary>
         public Dictionary<string, string>? Database { get; set; } = new();

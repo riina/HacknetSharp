@@ -107,6 +107,6 @@ namespace hss.Runnables
         public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Create, Remove, List>(args)
                 .MapResult<Executor.ISelfRunnable, Task<int>>(x => x.Run(executor),
-                    x => Task.FromResult(1)).Caf();
+                    _ => Task.FromResult(1)).Caf();
     }
 }

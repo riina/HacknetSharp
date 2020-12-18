@@ -152,6 +152,7 @@ name, this is only for listing the worlds with `hss world list`).
 * EnableLoggin(`bool`): if true, enable logging.
 * Motd(`string?`): Message of the day, sent to all clients during
   initial command.
+* ContentFolders(`List<string>?`): Additional content directories to search.
 
 ## Database operations
 
