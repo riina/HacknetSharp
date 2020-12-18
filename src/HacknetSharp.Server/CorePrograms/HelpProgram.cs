@@ -45,11 +45,10 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     string name = argv[1];
                     ProgramInfoAttribute? info;
-                    system.TryGetFile($"/bin/{name}", login, out _, out _, out var program, true);
-                    if (program != null)
+                    if (system.TryGetFile($"/bin/{name}", login, out _, out _, out var program, true))
                     {
                         info = world.GetProgramInfo(program.Content);
-                        GenReplacements(replacements, program.Content!);
+                        GenReplacements(replacements, program.Content ?? name);
                     }
                     else
                     {
@@ -94,7 +93,7 @@ namespace HacknetSharp.Server.CorePrograms
         private static void GenReplacements(Dictionary<string, string> replacements, string content)
         {
             replacements.Clear();
-            var line = ServerUtil.SplitCommandLine(content);
+            string[] line = ServerUtil.SplitCommandLine(content);
             for (int i = 0; i < line.Length; i++) replacements[$"HARG:{i}"] = line[i];
         }
     }

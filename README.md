@@ -15,7 +15,10 @@ Most significant programs are implemented:
 * Environment variables (set)
 * Process management (ps/kill)
 * Network (ssh/exit/scan/map)
-* Port hacking (probe/`<one-size-fits-all core:hack>`/porthack)
+* Hacking
+  - Ports (`<one-size-fits-all core:hack>`)
+  - Firewall (analyze/solve)
+  - General (probe/porthack)
 * Utility (echo/help)
 
 There are still some features missing, listed on the
