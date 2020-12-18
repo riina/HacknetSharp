@@ -95,9 +95,9 @@ namespace hss
             }
         }
 
-        public void CompleteRecurse(Process process, Process.CompletionKind completionKind)
+        public bool CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
-            if (process.Completed != null) return;
+            if (process.Completed != null) return true;
             var context = process.Context;
             var processes = context.System.Processes;
             uint pid = context.Pid;
@@ -110,7 +110,7 @@ namespace hss
                     chain.RemoveRange(shellIdx, chain.Count - shellIdx);
             }
 
-            process.Complete(completionKind);
+            if (!process.Complete(completionKind)) return false;
 
             if (context is ProgramContext pc)
             {
@@ -126,6 +126,7 @@ namespace hss
             var toKill = processes.Values.Where(p => p.Context.ParentPid == pid).ToList();
             foreach (var p in toKill)
                 CompleteRecurse(p, completionKind);
+            return true;
         }
 
         public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,

@@ -45,11 +45,12 @@ namespace HacknetSharp.Server
         double PreviousTime { get; }
 
         /// <summary>
-        /// Completes the specified process recursively with the specified completion kind.
+        /// Attempts to complete the specified process recursively with the specified completion kind.
         /// </summary>
         /// <param name="process">Process to complete.</param>
         /// <param name="completionKind">Completion kind.</param>
-        void CompleteRecurse(Process process, Process.CompletionKind completionKind);
+        /// <returns>False if the process failed to terminate.</returns>
+        bool CompleteRecurse(Process process, Process.CompletionKind completionKind);
 
         /// <summary>
         /// Attempts to start a shell.

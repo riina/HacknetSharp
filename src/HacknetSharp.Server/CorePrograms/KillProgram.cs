@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             var login = context.Login;
             var system = context.System;
             var world = context.World;

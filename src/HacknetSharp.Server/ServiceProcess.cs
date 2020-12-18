@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HacknetSharp.Server
 {
@@ -9,6 +10,7 @@ namespace HacknetSharp.Server
     {
         private readonly ServiceContext _context;
         private readonly IEnumerator<YieldToken?> _enumerator;
+        private readonly Func<ServiceContext, bool> _shutdownCallback;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
@@ -21,6 +23,7 @@ namespace HacknetSharp.Server
         {
             _context = context;
             _enumerator = service.Run(context);
+            _shutdownCallback = service.OnShutdown;
         }
 
         /// <inheritdoc />
@@ -41,11 +44,17 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc />
-        public override void Complete(CompletionKind completionKind)
+        public override bool Complete(CompletionKind completionKind)
         {
-            if (_cleaned) return;
+            if (_cleaned) return true;
             _cleaned = true;
-            Completed = completionKind;
+            if (_shutdownCallback(_context))
+            {
+                Completed = completionKind;
+                return true;
+            }
+
+            return false;
         }
     }
 }

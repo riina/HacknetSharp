@@ -47,15 +47,15 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc />
-        public override void Complete(CompletionKind completionKind)
+        public override bool Complete(CompletionKind completionKind)
         {
-            if (_cleaned) return;
+            if (_cleaned) return true;
             _cleaned = true;
             Completed = completionKind;
 
-            if (_programContext.IsAi) return;
+            if (_programContext.IsAi) return true;
 
-            if (!_programContext.User.Connected) return;
+            if (!_programContext.User.Connected) return true;
 
             if (_programContext.Type == ProgramContext.InvocationType.StartUp) _programContext.Person.StartedUp = true;
 
@@ -73,10 +73,11 @@ namespace HacknetSharp.Server
             if (chainLine != null && chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
             {
                 _programContext.ChainLine = chainLine;
-                return;
+                return true;
             }
 
             Program.SignalUnbindProcess(_programContext, this);
+            return true;
         }
     }
 }

@@ -136,9 +136,9 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc />
-        public override void Complete(CompletionKind completionKind)
+        public override bool Complete(CompletionKind completionKind)
         {
-            if (_cleaned) return;
+            if (_cleaned) return true;
             _cleaned = true;
             Completed = completionKind;
             if (completionKind != CompletionKind.Normal)
@@ -154,6 +154,7 @@ namespace HacknetSharp.Server
             }
 
             Program.SignalUnbindProcess(ProgramContext, this);
+            return true;
         }
     }
 }

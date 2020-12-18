@@ -35,7 +35,8 @@
         /// Complete operation
         /// </summary>
         /// <param name="completionKind">Completion kind</param>
-        public abstract void Complete(CompletionKind completionKind);
+        /// <returns>False if process refuses to complete.</returns>
+        public abstract bool Complete(CompletionKind completionKind);
 
         /// <summary>
         /// The way a process was completed.
