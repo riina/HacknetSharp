@@ -80,6 +80,9 @@ namespace HacknetSharp.Server
             try
             {
                 log = spawn.TextFile(system, login, fn, "/log", logBody);
+                log.Read = FileModel.AccessLevel.Everyone;
+                log.Write = FileModel.AccessLevel.Owner;
+                log.Execute = FileModel.AccessLevel.Everyone;
                 return true;
             }
             catch (Exception e)

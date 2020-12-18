@@ -77,7 +77,6 @@ namespace HacknetSharp.Server.CorePrograms
 
             sb.Append('\n');
             user.WriteEventSafe(Output(sb.ToString()));
-
             user.FlushSafeAsync();
         }
     }
