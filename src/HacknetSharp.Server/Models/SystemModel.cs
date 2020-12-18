@@ -192,7 +192,8 @@ namespace HacknetSharp.Server.Models
                 ? StringComparison.InvariantCultureIgnoreCase
                 : StringComparison.InvariantCulture;
             var self = Files
-                .FirstOrDefault(f => (hidden == null || f.Hidden == hidden) && f.Path == nPath && f.Name.Equals(nName, comparison));
+                .FirstOrDefault(f =>
+                    (hidden == null || f.Hidden == hidden) && f.Path == nPath && f.Name.Equals(nName, comparison));
             if (self != null && (topReadable == null || topReadable.FullPath == nPath))
             {
                 readable = self.CanRead(login) ? self : topReadable;

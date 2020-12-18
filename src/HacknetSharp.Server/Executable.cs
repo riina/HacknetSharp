@@ -34,6 +34,50 @@ namespace HacknetSharp.Server
         public static string GetFileName(string path) => Path.GetFileName(path);
 
         /// <summary>
+        /// Gets deepest common path between two paths.
+        /// </summary>
+        /// <param name="left">First path.</param>
+        /// <param name="right">Second path.</param>
+        /// <returns>Deepest common path.</returns>
+        /// <remarks>Examples:
+        /// <br/>
+        /// "/path/d/something", "/path/d/something" -> "/path/d"
+        /// "/path/d/something", "/path/drawl/something" -> "/path"
+        /// "/left/something", "/right/something" -> "/"
+        /// </remarks>
+        public static string GetPathInCommon(string left, string right)
+        {
+            // Normalized guarantees at least len 1 where both start with /
+            left = GetNormalized(left);
+            right = GetNormalized(right);
+            if (left == right) return left;
+            int min = Math.Min(left.Length, right.Length);
+            int prevLenCommonChar = 1;
+            int lenCommonChar = 1;
+            if (right.Length < left.Length)
+            {
+                string tmp = right;
+                right = left;
+                left = tmp;
+            }
+
+            while (lenCommonChar < min && left[lenCommonChar] == right[lenCommonChar])
+            {
+                if (IsSplit(left, lenCommonChar))
+                    prevLenCommonChar = lenCommonChar;
+                lenCommonChar++;
+            }
+
+            return left.Length != right.Length && IsSplit(right, lenCommonChar)
+                ? right[..lenCommonChar]
+                : left[..prevLenCommonChar];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsSplit(ReadOnlySpan<char> span, int idx) =>
+            span[idx] == '/' && (idx == 0 || span[idx - 1] != '\\');
+
+        /// <summary>
         /// Splits a path into its directory and filename.
         /// </summary>
         /// <param name="path">Path to split.</param>

@@ -43,6 +43,12 @@ namespace HacknetSharp.Test
             Assert.AreEqual(("/", "shadow"), Executable.GetDirectoryAndName("/shadow"));
             Assert.AreEqual(("/shadow", "absorber"),
                 Executable.GetDirectoryAndName("/shadow/absorber"));
+            Assert.AreEqual("/", Executable.GetPathInCommon("/b", "/"));
+            Assert.AreEqual("/", Executable.GetPathInCommon("/b", "/z"));
+            Assert.AreEqual("/faber", Executable.GetPathInCommon("/faber/of/will", "/faber/and/might"));
+            Assert.AreEqual("/faber", Executable.GetPathInCommon("/faber/and/might", "/faber/of/will"));
+            Assert.AreEqual("/dark/ness", Executable.GetPathInCommon("/dark/ness/lalatina", "/dark/ness/overlord"));
+            Assert.AreEqual("/well", Executable.GetPathInCommon("/well/waitforit", "/well/waitfor"));
         }
 
 

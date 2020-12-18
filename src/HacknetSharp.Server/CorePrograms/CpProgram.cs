@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var system = context.System;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             if (argv.Length < 3)
             {
                 user.WriteEventSafe(
@@ -49,6 +49,14 @@ namespace HacknetSharp.Server.CorePrograms
                     string inputFmt = GetNormalized(Combine(workDir, input));
                     if (system.TryGetFile(inputFmt, login, out var result, out var closestStr, out var closest))
                     {
+                        // Prevent copying common root to subdirectory
+                        if (GetPathInCommon(inputFmt, target) == inputFmt)
+                        {
+                            user.WriteEventSafe(Output($"{inputFmt}: Cannot copy to {target}\n"));
+                            user.FlushSafeAsync();
+                            yield break;
+                        }
+
                         try
                         {
                             var targetExisting =

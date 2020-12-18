@@ -49,6 +49,14 @@ namespace HacknetSharp.Server.CorePrograms
                     string inputFmt = GetNormalized(Combine(workDir, input));
                     if (system.TryGetFile(inputFmt, login, out var result, out var closestStr, out var closest))
                     {
+                        // Prevent moving common root to subdirectory
+                        if (GetPathInCommon(inputFmt, target) == inputFmt)
+                        {
+                            user.WriteEventSafe(Output($"{inputFmt}: Cannot move to {target}\n"));
+                            user.FlushSafeAsync();
+                            yield break;
+                        }
+
                         try
                         {
                             var targetExisting =
