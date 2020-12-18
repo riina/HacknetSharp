@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Models;
 
@@ -31,13 +33,20 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Shell variables.
         /// </summary>
-        public Dictionary<string, string> Variables { get; set; } = new();
+        private readonly Dictionary<string, string> _variables = new();
+
+        private readonly Dictionary<string, Func<string>> _builtinVariables;
 
         /// <summary>
         /// Open vulnerabilities by system address.
         /// </summary>
         public Dictionary<uint, HashSet<VulnerabilityModel>> OpenVulnerabilities { get; set; } =
             new();
+
+        /// <summary>
+        /// Firewall iterations by system address.
+        /// </summary>
+        public Dictionary<uint, (string solution, int iterations, bool solved)> FirewallStates { get; set; } = new();
 
         private bool _cleaned;
 
@@ -60,6 +69,10 @@ namespace HacknetSharp.Server
         public ShellProcess(ProgramContext context) : base(context)
         {
             ProgramContext = context;
+            _builtinVariables = new Dictionary<string, Func<string>>
+            {
+                ["PWD"] = () => WorkingDirectory, ["USER"] = () => Context.Login.User
+            };
         }
 
         /// <inheritdoc />
@@ -75,6 +88,37 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
+        /// Get all variables.
+        /// </summary>
+        /// <returns>All variables.</returns>
+        public IEnumerable<KeyValuePair<string, string>> GetVariables()
+        {
+            return _builtinVariables
+                .Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value()))
+                .Concat(_variables);
+        }
+
+        /// <summary>
+        /// Sets a variable.
+        /// </summary>
+        /// <param name="key">Variable name.</param>
+        /// <param name="value">Variable value.</param>
+        public void SetVariable(string key, string value)
+        {
+            if (!_builtinVariables.ContainsKey(key))
+                _variables[key] = value;
+        }
+
+        /// <summary>
+        /// Removes specified variable.
+        /// </summary>
+        /// <param name="key">Variable name.</param>
+        public void RemoveVariable(string key)
+        {
+            _variables.Remove(key);
+        }
+
+        /// <summary>
         /// Attempts to get a variable.
         /// </summary>
         /// <param name="key">Variable name.</param>
@@ -82,7 +126,7 @@ namespace HacknetSharp.Server
         /// <returns>True if variable was retrieved.</returns>
         public bool TryGetVariable(string key, [NotNullWhen(true)] out string? value)
         {
-            if (Variables.TryGetValue(key, out value))
+            if (_variables.TryGetValue(key, out value))
                 return true;
             /*int shIdx = ProgramContext.Person.ShellChain.IndexOf(ProgramContext.Shell);
             foreach (var sh in ProgramContext.Person.ShellChain.Take(shIdx).Reverse())

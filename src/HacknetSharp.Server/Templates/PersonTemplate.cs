@@ -85,7 +85,12 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
-        public virtual double RebootDuration { get; set; }
+        public double RebootDuration { get; set; }
+
+        /// <summary>
+        /// System disk capacity.
+        /// </summary>
+        public int DiskCapacity { get; set; }
 
         [ThreadStatic] private static Random? _random;
 
@@ -146,6 +151,7 @@ namespace HacknetSharp.Server.Templates
                                            Constants.DefaultAddressRange);
             var person = spawn.Person(username, username);
             person.RebootDuration = RebootDuration;
+            person.DiskCapacity = DiskCapacity;
             var (hash, salt) = ServerUtil.HashPassword(password);
 
             if (Network != null)

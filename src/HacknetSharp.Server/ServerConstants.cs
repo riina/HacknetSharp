@@ -21,6 +21,11 @@ namespace HacknetSharp.Server
         public const int MaxFileLength = 2000;
 
         /// <summary>
+        /// Default disk capacity.
+        /// </summary>
+        public const int DefaultDiskCapacity = 10_000;
+
+        /// <summary>
         /// Log recording shell login.
         /// </summary>
         public const string LogKind_Login = "login";

@@ -40,6 +40,11 @@ namespace HacknetSharp.Server.Templates
         public double RebootDuration { get; set; }
 
         /// <summary>
+        /// System disk capacity.
+        /// </summary>
+        public int DiskCapacity { get; set; }
+
+        /// <summary>
         /// Represents a group of 1 or more NPCs or networks to generate.
         /// </summary>
         public class PersonGroup
@@ -78,6 +83,7 @@ namespace HacknetSharp.Server.Templates
                                        throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
             world.RebootDuration = RebootDuration;
+            world.DiskCapacity = DiskCapacity;
             var worldSpawn = new WorldSpawn(database, world);
             if (People == null) return;
             foreach (var generator in People)

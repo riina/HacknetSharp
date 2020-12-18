@@ -51,6 +51,11 @@ namespace HacknetSharp.Server.Models
         public virtual double RebootDuration { get; set; }
 
         /// <summary>
+        /// System disk capacity.
+        /// </summary>
+        public virtual int DiskCapacity { get; set; }
+
+        /// <summary>
         /// Current world time.
         /// </summary>
         public virtual double Now { get; set; }

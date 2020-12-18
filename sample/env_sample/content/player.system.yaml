@@ -36,4 +36,6 @@ Filesystem:
   - prog:/bin/porthack core:porthack
   - prog:/bin/sshdk core:hack ssh 5.0
   - prog:/bin/ftpftw core:hack ftp 7.0
+  - prog:/bin/solve core:solve
+  - prog:/bin/analyze core:analyze
   - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

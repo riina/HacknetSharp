@@ -286,7 +286,8 @@ namespace hss
 
                 string exe = $"/bin/{programContext.Argv[0]}";
                 systemModel.TryGetFile(exe, programContext.Login, out var result, out var closestStr, out var fse,
-                    caseInsensitive: true, hidden: programContext.Type == ProgramContext.InvocationType.StartUp ? null : false);
+                    caseInsensitive: true,
+                    hidden: programContext.Type == ProgramContext.InvocationType.StartUp ? null : false);
                 switch (result)
                 {
                     case ReadAccessResult.Readable:

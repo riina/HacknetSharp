@@ -51,6 +51,11 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public virtual double RebootDuration { get; set; }
 
+        /// <summary>
+        /// System disk capacity.
+        /// </summary>
+        public virtual int DiskCapacity { get; set; }
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591

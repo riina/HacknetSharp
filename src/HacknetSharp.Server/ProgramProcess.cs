@@ -20,8 +20,8 @@ namespace HacknetSharp.Server
         public ProgramProcess(ProgramContext context, Program program) : base(context)
         {
             _programContext = context;
-            var argv = context.Argv;
-            var env = context.Shell.Variables;
+            string[] argv = context.Argv;
+            var env = new Dictionary<string, string>(context.Shell.GetVariables());
             int count = argv.Length;
             for (int i = 0; i < count; i++)
                 argv[i] = argv[i].ApplyShellReplacements(env);

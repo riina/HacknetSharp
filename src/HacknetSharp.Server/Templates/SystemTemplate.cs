@@ -87,7 +87,7 @@ namespace HacknetSharp.Server.Templates
         public int FirewallIterations { get; set; }
 
         /// <summary>
-        /// Length of firewall string.
+        /// Length of firewall analysis string.
         /// </summary>
         public int FirewallLength { get; set; }
 
@@ -154,9 +154,18 @@ namespace HacknetSharp.Server.Templates
             model.OsName = OsName ?? throw new InvalidOperationException($"{nameof(OsName)} is null.");
             model.ConnectCommandLine = ConnectCommandLine?.ApplyReplacements(repDict);
             model.RequiredExploits = RequiredExploits;
+            model.FirewallIterations = FirewallIterations;
+            model.FirewallLength = FirewallLength;
+            model.FirewallDelay = FirewallDelay;
+            model.FixedFirewall = FixedFirewall;
+            if (FixedFirewall != null)
+                model.FirewallIterations = FixedFirewall.Length;
             model.RebootDuration =
                 RebootDuration > 0 ? RebootDuration :
                 owner.RebootDuration > 0 ? owner.RebootDuration : model.World.RebootDuration;
+            model.DiskCapacity = DiskCapacity > 0 ? DiskCapacity :
+                owner.DiskCapacity > 0 ? owner.DiskCapacity :
+                model.World.DiskCapacity > 0 ? model.World.DiskCapacity : ServerConstants.DefaultDiskCapacity;
             var unameToLoginDict = new Dictionary<string, LoginModel>
             {
                 {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}

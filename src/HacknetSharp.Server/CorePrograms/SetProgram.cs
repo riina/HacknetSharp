@@ -32,13 +32,7 @@ namespace HacknetSharp.Server.CorePrograms
             var sb = new StringBuilder();
             if (argv.Length == 1)
             {
-                foreach (var kvp in shell.Variables)
-                {
-                    sb.Append(kvp.Key).Append('=').Append(kvp.Value).Append('\n');
-                }
-
-                if (shell.Variables.Count == 0)
-                    sb.Append('\n');
+                foreach (var kvp in shell.GetVariables()) sb.Append(kvp.Key).Append('=').Append(kvp.Value).Append('\n');
 
                 user.WriteEventSafe(Output(sb.ToString()));
                 user.FlushSafeAsync();
@@ -51,9 +45,9 @@ namespace HacknetSharp.Server.CorePrograms
                     string key = match.Groups[1].Value;
                     string value = match.Groups[2].Value;
                     if (value.Length == 0)
-                        shell.Variables.Remove(key);
+                        shell.RemoveVariable(key);
                     else
-                        shell.Variables[key] = SanitizeBody(value);
+                        shell.SetVariable(key, SanitizeBody(value));
                 }
                 else
                 {

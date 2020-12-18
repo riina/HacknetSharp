@@ -93,6 +93,12 @@ See the samples folder for template examples.
   - Cve(`string?`): Real-world CVE for fun.
 * RequiredExploits(`int`): # required exploits for system access.
 * RebootDuration(`double`): System reboot duration in seconds.
+* DiskCapacity(`int`): System disk capacity.
+* FirewallIterations(`int`): Number of firewall iterations required
+  for full decode.
+* FirewallLength(`int`): Length of firewall analysis string.
+* FirewallDelay(`double`): Additional delay per firewall step.
+* FixedFirewall(`string?`): Fixed firewall string.
 
 Default replacements:
 * `Owner.UserName` - system owner's username

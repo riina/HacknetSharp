@@ -91,7 +91,7 @@ namespace HacknetSharp.Server.Models
         public virtual int FirewallIterations { get; set; }
 
         /// <summary>
-        /// Length of firewall string.
+        /// Length of firewall analysis string.
         /// </summary>
         public virtual int FirewallLength { get; set; }
 

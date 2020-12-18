@@ -207,7 +207,7 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="delay">Delay in seconds.</param>
         /// <returns>Yield token.</returns>
-        public static DelayYieldToken Delay(float delay) => new(delay);
+        public static DelayYieldToken Delay(double delay) => new(delay);
 
         /// <summary>
         /// Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.

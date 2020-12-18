@@ -11,6 +11,10 @@ Vulnerabilities:
   Protocol: ssh
   Exploits: 1
   Cve: CVE-2020-3200
+#FirewallIterations: 9
+FirewallLength: 14
+FirewallDelay: 0.05
+FixedFirewall: pleasure
 Filesystem:
   "{Owner.UserName}":
   - fold*+*:/bin
@@ -38,7 +42,6 @@ Filesystem:
   - prog:/bin/mv core:mv
   - prog:/bin/rm core:rm
   - prog:/bin/mkdir core:mkdir
-  - prog:/bin/probe core:probe
   - prog:/bin/kill core:kill
   - prog:/bin/scp core:scp
   - prog:/bin/edit core:edit

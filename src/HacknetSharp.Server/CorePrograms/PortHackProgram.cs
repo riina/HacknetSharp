@@ -7,7 +7,7 @@ namespace HacknetSharp.Server.CorePrograms
     [ProgramInfo("core:porthack", "PortHack", "bruteforce login",
         "Obtains an administrator login on\nthe target system\n\n" +
         "target system can be assumed from environment\nvariable \"TARGET\"",
-        "[target] <port/entrypoint>", false)]
+        "[target]", false)]
     public class PortHackProgram : Program
     {
         /// <inheritdoc />
@@ -18,6 +18,7 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             string[] argv = context.Argv;
+            var shell = context.Shell;
 
             if (!TryGetVariable(context, argv.Length != 1 ? argv[1] : null, "TARGET", out string? addr))
             {
@@ -33,12 +34,22 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            context.Shell.OpenVulnerabilities.TryGetValue(system.Address, out var openVulns);
+            if (system.FirewallIterations > 0 &&
+                (!shell.FirewallStates.TryGetValue(system.Address, out var firewallState) ||
+                 !firewallState.solved))
+            {
+                user.WriteEventSafe(Output(
+                    "Failed: Firewall active.\n"));
+                user.FlushSafeAsync();
+                yield break;
+            }
+
+            shell.OpenVulnerabilities.TryGetValue(system.Address, out var openVulns);
             int sum = openVulns?.Aggregate(0, (c, v) => c + v.Exploits) ?? 0;
             if (sum < system.RequiredExploits)
             {
                 user.WriteEventSafe(Output(
-                    $"Insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n"));
+                    $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n"));
                 user.FlushSafeAsync();
                 yield break;
             }
@@ -52,10 +63,9 @@ namespace HacknetSharp.Server.CorePrograms
             string pw = ServerUtil.GeneratePassword();
             var pwHashSalt = ServerUtil.HashPassword(pw);
             context.World.Spawn.Login(system, un, pwHashSalt.hash, pwHashSalt.salt, true);
-            var env = context.Shell.Variables;
-            env["USER"] = un;
-            env["PASS"] = pw;
-            user.WriteEventSafe(Output($"\n«««« OPERATION COMPLETE »»»»\n$USER: {un}\n$PASS: {pw}\n"));
+            shell.SetVariable("NAME", un);
+            shell.SetVariable("PASS", pw);
+            user.WriteEventSafe(Output($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n"));
             user.FlushSafeAsync();
         }
     }

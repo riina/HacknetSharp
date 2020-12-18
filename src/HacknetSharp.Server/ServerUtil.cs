@@ -293,6 +293,58 @@ namespace HacknetSharp.Server
             return new string(chars);
         }
 
+        private static readonly char[] _firewallChars =
+            Enumerable.Range('1', '9' - '1' + 1)
+                .Concat(Enumerable.Range('1', '9' - '1' + 1))
+                .Concat(Enumerable.Range('1', '9' - '1' + 1))
+                .Concat(Enumerable.Range('a', 'z' - 'a' + 1))
+                .Select(i => (char)i).ToArray();
+
+        /// <summary>
+        /// Generates a firewall solution string.
+        /// </summary>
+        /// <param name="length">Firewall solution length.</param>
+        /// <returns>Generated solution.</returns>
+        public static string GenerateFirewallSolution(int length)
+        {
+            int top = _firewallChars.Length;
+            length = Math.Min(32, length);
+            Span<char> chars = stackalloc char[length];
+            for (int i = 0; i < length; i++)
+                chars[i] = _firewallChars[Random.Next(0, top)];
+            return new string(chars);
+        }
+
+
+        /// <summary>
+        /// Generates firewall analysis strings.
+        /// </summary>
+        /// <param name="solution">Firewall solution.</param>
+        /// <param name="iterations">Current firewall iterations.</param>
+        /// <param name="length">Firewall analyzer length.</param>
+        /// <returns>Generated analysis strings.</returns>
+        public static string[] GenerateFirewallAnalysis(string solution, int iterations, int length)
+        {
+            int top = _firewallChars.Length;
+            int count = solution.Length;
+            iterations = Math.Clamp(iterations, 0, count);
+            string[] res = new string[solution.Length];
+            length = Math.Max(Math.Min(32, length), count + 1);
+            Span<char> chars = stackalloc char[length];
+            int obfuscatedLength = length * (count - iterations) / count;
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = 0; j < obfuscatedLength; j++)
+                    chars[j] = _firewallChars[Random.Next(0, top)];
+                chars.Slice(obfuscatedLength).Fill('0');
+                if (count - iterations <= i)
+                    chars[Random.Next(0, length)] = solution[i];
+                res[i] = new string(chars);
+            }
+
+            return res;
+        }
+
         /// <summary>
         /// Initializes a program context.
         /// </summary>

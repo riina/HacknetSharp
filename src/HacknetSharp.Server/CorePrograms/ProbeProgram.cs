@@ -40,6 +40,16 @@ namespace HacknetSharp.Server.CorePrograms
             yield return Delay(1.0f);
 
             var sb = new StringBuilder();
+
+            if (system.FirewallIterations > 0)
+            {
+                if (context.Shell.FirewallStates.TryGetValue(system.Address, out var firewallState) &&
+                    firewallState.solved)
+                    sb.Append("\nFirewall: BYPASSED\n");
+                else
+                    sb.Append("\nFirewall: ACTIVE\n");
+            }
+
             sb.Append("\nVulnerabilities:\n");
             context.Shell.OpenVulnerabilities.TryGetValue(system.Address, out var vulns);
             foreach (var vuln in system.Vulnerabilities)
