@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -350,6 +349,20 @@ namespace HacknetSharp.Server
                 ConWidth = conWidth
             };
         }
+
+        /// <summary>
+        /// Gets millisecond timestamp from a floating-point second value.
+        /// </summary>
+        /// <param name="time">Value in seconds.</param>
+        /// <returns>Millisecond-floor timestamp.</returns>
+        public static long GetTimestamp(double time) => (long)Math.Floor(time * 1000.0);
+
+        /// <summary>
+        /// Gets hexadecimal millisecond timestamp from a floating-point second value.
+        /// </summary>
+        /// <param name="time">Value in seconds.</param>
+        /// <returns>Hexadecimal millisecond-floor timestamp.</returns>
+        public static string GetHexTimestamp(double time) => $"{(long)Math.Floor(time * 1000.0):X16}";
 
         /// <summary>
         /// Splits a command line into its components.

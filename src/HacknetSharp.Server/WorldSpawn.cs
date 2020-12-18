@@ -227,7 +227,7 @@ namespace HacknetSharp.Server
         public FileModel Folder(SystemModel system, LoginModel owner, string name, string path, bool hidden = false)
         {
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
+                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -243,7 +243,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -268,7 +268,7 @@ namespace HacknetSharp.Server
             bool hidden = false)
         {
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
+                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -285,7 +285,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -311,7 +311,7 @@ namespace HacknetSharp.Server
             bool hidden = false)
         {
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
+                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -328,7 +328,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -354,7 +354,7 @@ namespace HacknetSharp.Server
             bool hidden = false)
         {
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
+                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -371,7 +371,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -400,7 +400,7 @@ namespace HacknetSharp.Server
             if (existing.Kind == FileModel.FileKind.Folder)
                 throw new IOException($"Cannot copy folder {existing.FullPath}");
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Program.Combine(path, name)}");
+                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -417,7 +417,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (path != "/")
             {
-                (string? nPath, var nName) = (Program.GetDirectoryName(path)!, Program.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -473,7 +473,7 @@ namespace HacknetSharp.Server
                 throw new IOException("Permission denied");
 
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
-                throw new IOException($"The specified path already exists: {Program.Combine(targetPath, targetName)}");
+                throw new IOException($"The specified path already exists: {Executable.Combine(targetPath, targetName)}");
             system.TryGetFile(targetPath, login, out result, out _, out _, hidden: hidden);
             switch (result)
             {
@@ -489,7 +489,7 @@ namespace HacknetSharp.Server
             // Generate dependent folders
             if (targetPath != "/")
             {
-                var (parentPath, parentName) = SystemModel.GetDirectoryAndName(targetPath);
+                var (parentPath, parentName) = Executable.GetDirectoryAndName(targetPath);
                 if (system.Files.All(f => f.Hidden != hidden || f.Path != parentPath || f.Name != parentName))
                     Folder(system, login, parentName, parentPath, hidden);
             }
@@ -512,9 +512,9 @@ namespace HacknetSharp.Server
                     }
                 }
 
-                string targetFp = Program.GetNormalized(Program.Combine(targetPath, targetName));
+                string targetFp = Executable.GetNormalized(Executable.Combine(targetPath, targetName));
                 foreach (var f in toModify)
-                    f.Path = Program.Combine(targetFp, Path.GetRelativePath(rootPath, f.Path));
+                    f.Path = Executable.Combine(targetFp, Path.GetRelativePath(rootPath, f.Path));
 
                 Database.UpdateBulk(toModify);
             }

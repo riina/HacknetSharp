@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -51,7 +50,7 @@ namespace HacknetSharp.Server.CorePrograms
                             case ReadAccessResult.NoExist:
                                 try
                                 {
-                                    var (path, name) = SystemModel.GetDirectoryAndName(inputFmt);
+                                    var (path, name) = GetDirectoryAndName(inputFmt);
                                     spawn.Folder(system, login, name, path);
                                 }
                                 catch (IOException e)

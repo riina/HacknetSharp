@@ -129,17 +129,6 @@ namespace HacknetSharp.Server.Models
         }
 
         /// <summary>
-        /// Splits a path into its directory and filename.
-        /// </summary>
-        /// <param name="path">Path to split.</param>
-        /// <returns>Tuple containing directory and filename.</returns>
-        public static (string, string) GetDirectoryAndName(string path) => (
-            Program.GetNormalized(Program.GetDirectoryName(path) ?? "/"), Program.GetFileName(path));
-
-        private static (string, string) GetDirectoryAndNameInternal(string path) => (
-            Program.GetDirectoryName(path) ?? "/", Program.GetFileName(path));
-
-        /// <summary>
         /// Attempts to get a file with a specified login.
         /// </summary>
         /// <param name="path">Desired file path.</param>
@@ -177,7 +166,7 @@ namespace HacknetSharp.Server.Models
         public string GetClosestWithReadableParent(string path, LoginModel login, out FileModel? readable,
             bool caseInsensitive = false, bool hidden = false)
         {
-            var (nPath, nName) = GetDirectoryAndName(path);
+            var (nPath, nName) = Executable.GetDirectoryAndName(path);
             return GetClosestWithReadableParentInternal(nPath, nName, login, out readable, caseInsensitive, hidden);
         }
 
@@ -190,7 +179,7 @@ namespace HacknetSharp.Server.Models
             FileModel? topReadable;
             if (nPath != "/")
             {
-                var (pPath, pName) = GetDirectoryAndNameInternal(nPath);
+                var (pPath, pName) = Executable.GetDirectoryAndName(nPath, false);
                 topPath = GetClosestWithReadableParentInternal(pPath, pName, login, out topReadable, false, hidden);
             }
             else
@@ -222,7 +211,7 @@ namespace HacknetSharp.Server.Models
         /// <returns>File or null if not found.</returns>
         public FileModel? GetFileSystemEntry(string path, bool hidden = false)
         {
-            var (nPath, nName) = GetDirectoryAndName(path);
+            var (nPath, nName) = Executable.GetDirectoryAndName(path);
             return Files.FirstOrDefault(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName);
         }
 
@@ -235,10 +224,10 @@ namespace HacknetSharp.Server.Models
         /// <exception cref="DirectoryNotFoundException">Thrown if specified directory does not exist.</exception>
         public IEnumerable<FileModel> EnumerateDirectory(string path, bool hidden = false)
         {
-            var (nPath, nName) = GetDirectoryAndName(path);
+            var (nPath, nName) = Executable.GetDirectoryAndName(path);
             if (nPath == "/" && nName == "")
                 return Files.Where(f => f.Hidden == hidden && f.Path == nPath);
-            string bPath = Program.Combine(nPath, nName);
+            string bPath = Executable.Combine(nPath, nName);
             return Files.Where(f => f.Hidden == hidden && f.Path == nPath)
                 .Any(f => f.Name == nName && f.Kind == FileModel.FileKind.Folder)
                 ? Files.Where(f => f.Hidden == hidden && f.Path == bPath)

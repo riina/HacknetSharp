@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
     /// <summary>
-    /// Represents an executable with a <see cref="Run"/> method.
+    /// Represents the base type for executables, with related convenience methods.
     /// </summary>
-    /// <typeparam name="TExecutableContext">Context type.</typeparam>
-    public abstract partial class Executable<TExecutableContext> where TExecutableContext : ProcessContext
+    public abstract partial class Executable
     {
-        /// <summary>
-        /// Run this executable with the given context.
-        /// </summary>
-        /// <param name="context">Context to use with this execution.</param>
-        /// <returns>Enumerator that divides execution steps.</returns>
-        public abstract IEnumerator<YieldToken?> Run(TExecutableContext context);
-
         #region Utility methods
 
         /// <summary>
@@ -38,6 +32,94 @@ namespace HacknetSharp.Server
         /// <returns>Extracted filename.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetFileName(string path) => Path.GetFileName(path);
+
+        /// <summary>
+        /// Splits a path into its directory and filename.
+        /// </summary>
+        /// <param name="path">Path to split.</param>
+        /// <param name="normalize">If true, apply normalization to output.</param>
+        /// <returns>Tuple containing directory and filename.</returns>
+        public static (string, string) GetDirectoryAndName(string path, bool normalize = true)
+        {
+            string dir = GetDirectoryName(path) ?? "/";
+            return (normalize ? GetNormalized(dir) : dir, GetFileName(path));
+        }
+
+        /// <summary>
+        /// Attempt to write log to /log directory.
+        /// </summary>
+        /// <param name="spawn">Active spawn manager.</param>
+        /// <param name="time">Log timestamp.</param>
+        /// <param name="system">Active system.</param>
+        /// <param name="login">Active login.</param>
+        /// <param name="logKind">Log kind.</param>
+        /// <param name="logBody">Log body.</param>
+        /// <param name="log">Generated log.</param>
+        /// <returns>True if successful.</returns>
+        public static bool TryWriteLog(WorldSpawn spawn, double time, SystemModel system, LoginModel login,
+            string logKind, string logBody, [NotNullWhen(true)] out FileModel? log)
+        {
+            if (system.GetFileSystemEntry("/log") == null)
+            {
+                // /log does not exist, make it
+                var logDir = spawn.Folder(system, login, "log", "/");
+                logDir.Read = FileModel.AccessLevel.Everyone;
+                logDir.Write = FileModel.AccessLevel.Everyone;
+                logDir.Execute = FileModel.AccessLevel.Everyone;
+            }
+
+            string fn = $"{ServerUtil.GetHexTimestamp(time)}_{logKind}_{login.User}.log";
+            system.TryGetFile($"/log/{fn}", login, out var accessResult, out _, out var readable);
+            if (accessResult != ReadAccessResult.NoExist ||
+                readable == null || readable.FullPath != "/log" || readable.Kind != FileModel.FileKind.Folder)
+            {
+                log = null;
+                return false;
+            }
+
+            try
+            {
+                log = spawn.TextFile(system, login, fn, "/log", logBody);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unexpected failure in {nameof(Executable)}{nameof(TryWriteLog)}:\n{e}");
+                log = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tries to find a system on the network with the specified address.
+        /// </summary>
+        /// <param name="worldModel">World model to search.</param>
+        /// <param name="addr">Target address.</param>
+        /// <param name="system">Found system.</param>
+        /// <param name="errorMessage">Error message if failed.</param>
+        /// <returns>True if matching system was found.</returns>
+        public static bool TryGetSystem(WorldModel worldModel, string addr,
+            [NotNullWhen(true)] out SystemModel? system,
+            [NotNullWhen(false)] out string? errorMessage)
+        {
+            if (!IPAddressRange.TryParse(addr, false, out var ip) ||
+                !ip.TryGetIPv4HostAndSubnetMask(out uint host, out _))
+            {
+                errorMessage = "Invalid address format";
+                system = null;
+                return false;
+            }
+
+            system = worldModel.Systems.FirstOrDefault(s => s.Address == host);
+            if (system == null)
+            {
+                errorMessage = "No route to host";
+                return false;
+            }
+
+            errorMessage = null;
+            return true;
+        }
 
         #endregion
 

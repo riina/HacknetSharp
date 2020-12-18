@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -20,7 +21,7 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var system = context.System;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             string path;
             try
             {
@@ -33,7 +34,8 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (path != "/" && !system.TryGetFile(path, context.Login, out var result, out var closestStr, out _))
+            if (!system.TryGetFile(path, context.Login, out var result, out var closestStr, out var readable) &&
+                path != "/")
                 switch (result)
                 {
                     case ReadAccessResult.NotReadable:
@@ -44,11 +46,15 @@ namespace HacknetSharp.Server.CorePrograms
                         user.WriteEventSafe(Output($"ls: {path}: No such file or directory\n"));
                         user.FlushSafeAsync();
                         yield break;
+                    default:
+                        yield break;
                 }
 
             StringBuilder sb = new();
 
-            var fileList = new List<string>(system.EnumerateDirectory(path).Select(f => f.Name));
+            List<string> fileList = readable == null || readable.Kind == FileModel.FileKind.Folder
+                ? new List<string>(system.EnumerateDirectory(path).Select(f => f.Name))
+                : new List<string> {readable.Name};
             if (fileList.Count == 0) yield break;
             int conWidth = context.ConWidth;
             fileList.Sort(StringComparer.InvariantCulture);

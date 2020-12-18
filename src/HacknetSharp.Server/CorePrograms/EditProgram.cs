@@ -69,7 +69,7 @@ namespace HacknetSharp.Server.CorePrograms
                             user.FlushSafeAsync();
                             yield break;
                         case ReadAccessResult.NoExist:
-                            var (directory, name) = SystemModel.GetDirectoryAndName(path);
+                            var (directory, name) = GetDirectoryAndName(path);
                             if (!system.TryGetFile(directory, context.Login, out var result2,
                                 out string closest2Str, out var closest2))
                             {

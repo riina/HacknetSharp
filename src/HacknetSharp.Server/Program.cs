@@ -1,16 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Server;
-using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
     /// <summary>
     /// Represents an executable that depends on a shell and related state.
     /// </summary>
-    public abstract class Program : Executable<ProgramContext>
+    public abstract class Program : Executable
     {
+        /// <summary>
+        /// Run this executable with the given context.
+        /// </summary>
+        /// <param name="context">Context to use with this execution.</param>
+        /// <returns>Enumerator that divides execution steps.</returns>
+        public abstract IEnumerator<YieldToken?> Run(ProgramContext context);
+
         #region Utility methods
 
         /// <summary>
@@ -22,64 +28,30 @@ namespace HacknetSharp.Server
         public static OutputEvent Output(string message) => new() {Text = message};
 
         /// <summary>
-        /// Tries to find a system on the network with the specified address (or $TARGET). Additionally sends output events on failure.
+        /// Try to obtain a value with a shell variable as backup.
         /// </summary>
-        /// <param name="context">Context to use.</param>
-        /// <param name="addr">Target address.</param>
-        /// <param name="system">Found system.</param>
-        /// <returns>True if matching system was found.</returns>
-        public static bool TryGetSystemOrOutput(ProgramContext context, string? addr,
-            [NotNullWhen(true)] out SystemModel? system)
+        /// <param name="context">Program context.</param>
+        /// <param name="value">Known value (passed through if not null).</param>
+        /// <param name="shellVariable">Shell variable to check.</param>
+        /// <param name="result">Known value from passed or shell variables.</param>
+        /// <returns>True if value is known.</returns>
+        public static bool TryGetVariable(ProgramContext context, string? value, string shellVariable,
+            [NotNullWhen(true)] out string? result)
         {
-            var user = context.User;
-            if (addr != null)
+            if (value != null)
             {
-                if (!IPAddressRange.TryParse(addr, false, out var ip) ||
-                    !ip.TryGetIPv4HostAndSubnetMask(out uint host, out _))
-                {
-                    user.WriteEventSafe(Output("Invalid address format.\n"));
-                    user.FlushSafeAsync();
-                    system = null;
-                    return false;
-                }
-
-                system = context.World.Model.Systems.FirstOrDefault(s => s.Address == host);
-                if (system == null)
-                {
-                    user.WriteEventSafe(Output("No route to host\n"));
-                    user.FlushSafeAsync();
-                    return false;
-                }
-
+                result = value;
                 return true;
             }
 
-            if (!context.Shell.Variables.TryGetValue("TARGET", out addr))
+            if (context.Shell.TryGetVariable(shellVariable, out string? variableResult))
             {
-                user.WriteEventSafe(Output("No host address provided.\n"));
-                user.FlushSafeAsync();
-                system = null;
-                return false;
+                result = variableResult;
+                return true;
             }
 
-            if (!IPAddressRange.TryParse(addr, false, out var ip2) ||
-                !ip2.TryGetIPv4HostAndSubnetMask(out uint host2, out _))
-            {
-                user.WriteEventSafe(Output("Invalid address format.\n"));
-                user.FlushSafeAsync();
-                system = null;
-                return false;
-            }
-
-            system = context.World.Model.Systems.FirstOrDefault(s => s.Address == host2);
-            if (system == null)
-            {
-                user.WriteEventSafe(Output("No route to host\n"));
-                user.FlushSafeAsync();
-                return false;
-            }
-
-            return true;
+            result = null;
+            return false;
         }
 
         /// <summary>

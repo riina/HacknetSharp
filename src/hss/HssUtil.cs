@@ -79,9 +79,9 @@ namespace hss
                     string absDir = Path.Combine(root, curDir);
                     if (!Directory.Exists(absDir)) continue;
                     foreach (string file in Directory.EnumerateFiles(absDir))
-                        fQueue.Enqueue(Program.Combine(curDir, Path.GetFileName(file)));
+                        fQueue.Enqueue(Executable.Combine(curDir, Path.GetFileName(file)));
                     foreach (string folder in Directory.EnumerateDirectories(absDir))
-                        dQueue.Enqueue(Program.Combine(curDir, Path.GetFileName(folder)));
+                        dQueue.Enqueue(Executable.Combine(curDir, Path.GetFileName(folder)));
                 }
             }
         }

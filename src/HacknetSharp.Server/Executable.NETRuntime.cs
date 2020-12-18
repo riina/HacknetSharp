@@ -8,7 +8,7 @@ using System.Text;
 
 namespace HacknetSharp.Server
 {
-    public partial class Executable<TExecutableContext> where TExecutableContext : ProcessContext
+    public partial class Executable
     {
         /*
          * Code pulled from https://github.com/dotnet/runtime

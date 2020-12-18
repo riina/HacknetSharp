@@ -31,18 +31,18 @@ namespace HacknetSharp.Test
         [Test]
         public void Test_Paths()
         {
-            Assert.AreEqual("/", Program.GetNormalized("/test/.."));
-            Assert.AreEqual("/test/path", Program.GetNormalized("/test/../test/path/"));
-            Assert.AreEqual("/test", Program.GetDirectoryName("/test/me"));
-            Assert.AreEqual("/test", Program.GetNormalized(Program.GetDirectoryName("/test/me/../harder")!));
-            Assert.AreEqual(null, Program.GetDirectoryName("/"));
-            Assert.AreEqual("", Program.GetFileName("/"));
-            Assert.AreEqual("/", Program.Combine("/", ""));
-            Assert.AreEqual("/", Program.GetNormalized(Program.Combine("/", "")));
-            Assert.AreEqual(("/", ""), SystemModel.GetDirectoryAndName("/"));
-            Assert.AreEqual(("/", "shadow"), SystemModel.GetDirectoryAndName("/shadow"));
+            Assert.AreEqual("/", Executable.GetNormalized("/test/.."));
+            Assert.AreEqual("/test/path", Executable.GetNormalized("/test/../test/path/"));
+            Assert.AreEqual("/test", Executable.GetDirectoryName("/test/me"));
+            Assert.AreEqual("/test", Executable.GetNormalized(Executable.GetDirectoryName("/test/me/../harder")!));
+            Assert.AreEqual(null, Executable.GetDirectoryName("/"));
+            Assert.AreEqual("", Executable.GetFileName("/"));
+            Assert.AreEqual("/", Executable.Combine("/", ""));
+            Assert.AreEqual("/", Executable.GetNormalized(Executable.Combine("/", "")));
+            Assert.AreEqual(("/", ""), Executable.GetDirectoryAndName("/"));
+            Assert.AreEqual(("/", "shadow"), Executable.GetDirectoryAndName("/shadow"));
             Assert.AreEqual(("/shadow", "absorber"),
-                SystemModel.GetDirectoryAndName("/shadow/absorber"));
+                Executable.GetDirectoryAndName("/shadow/absorber"));
         }
 
 

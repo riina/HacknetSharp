@@ -18,10 +18,21 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
 
-            if (!TryGetSystemOrOutput(context, argv.Length != 1 ? argv[1] : null, out var system))
+            if (!TryGetVariable(context, argv.Length != 1 ? argv[1] : null, "TARGET", out string? addr))
+            {
+                user.WriteEventSafe(Output("No address provided\n"));
+                user.FlushSafeAsync();
                 yield break;
+            }
+
+            if (!TryGetSystem(context.World.Model, addr, out var system, out string? systemConnectError))
+            {
+                user.WriteEventSafe(Output($"{systemConnectError}\n"));
+                user.FlushSafeAsync();
+                yield break;
+            }
 
             user.WriteEventSafe(Output($"Probing {Util.UintToAddress(system.Address)}...\n"));
             user.FlushSafeAsync();

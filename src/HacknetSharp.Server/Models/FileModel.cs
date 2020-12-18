@@ -100,7 +100,7 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Full file path with both directory and name.
         /// </summary>
-        public string FullPath => Program.Combine(Path, Name);
+        public string FullPath => Executable.Combine(Path, Name);
 
         /// <summary>
         /// File type.

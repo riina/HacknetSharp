@@ -166,10 +166,10 @@ namespace HacknetSharp.Server.Templates
                         var args = ServerUtil.SplitCommandLine(match.Groups[3].Value);
                         if (args.Length == 0)
                             throw new ApplicationException($"Not enough arguments to file entry {file}");
-                        string mainPath = Program.GetNormalized(args[0]).ApplyReplacements(repDict);
-                        string path = Program.GetDirectoryName(mainPath) ??
+                        string mainPath = Executable.GetNormalized(args[0]).ApplyReplacements(repDict);
+                        string path = Executable.GetDirectoryName(mainPath) ??
                                       throw new ApplicationException($"Path cannot be {mainPath}");
-                        string name = Program.GetFileName(mainPath);
+                        string name = Executable.GetFileName(mainPath);
                         FileModel fileModel;
                         string content = new StringBuilder().AppendJoin(' ', args.Skip(1)).ToString()
                             .ApplyReplacements(repDict);

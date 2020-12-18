@@ -19,7 +19,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var hargv = context.HArgv;
+            string[] hargv = context.HArgv;
 
             // Need harg[1] = protocol to hack harg[2] hack time
             if (hargv.Length < 3 || !float.TryParse(hargv[2], out float hackTime))
@@ -29,7 +29,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             if (argv.Length != 2 && argv.Length != 3)
             {
                 user.WriteEventSafe(Output("1 or 2 operands are required by this command\n"));
@@ -37,8 +37,19 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!TryGetSystemOrOutput(context, argv.Length == 3 ? argv[1] : null, out var system))
+            if (!TryGetVariable(context, argv.Length == 3 ? argv[1] : null, "TARGET", out string? addr))
+            {
+                user.WriteEventSafe(Output("No address provided\n"));
+                user.FlushSafeAsync();
                 yield break;
+            }
+
+            if (!TryGetSystem(context.World.Model, addr, out var system, out string? systemConnectError))
+            {
+                user.WriteEventSafe(Output($"{systemConnectError}\n"));
+                user.FlushSafeAsync();
+                yield break;
+            }
 
             string entryPoint = argv.Length == 2 ? argv[1] : argv[2];
 

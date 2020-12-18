@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HacknetSharp;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
@@ -139,8 +140,13 @@ namespace hss
             var process = new ShellProcess(programContext);
             programContext.Shell = process;
             systemModel.Processes.Add(pid.Value, process);
-            personModel.ShellChain.Add(process);
+            var chain = personModel.ShellChain;
+            string src = chain.Count != 0 ? Util.UintToAddress(chain[^1].ProgramContext.System.Address) : "<external>";
+            double time = Time;
+            string logBody = $"User={loginModel.User}\nOrigin={src}\nTime={time}\n";
+            chain.Add(process);
             _shellProcesses.Add(process);
+            Executable.TryWriteLog(Spawn, time, systemModel, loginModel, ServerConstants.LogKind_Login, logBody, out _);
             return process;
         }
 
@@ -307,10 +313,8 @@ namespace hss
                     case ReadAccessResult.NoExist:
                         if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
                             if (closestStr == "/bin")
-                                programContext.User.WriteEventSafe(new OutputEvent
-                                {
-                                    Text = $"{closestStr}: not found\n"
-                                });
+                                programContext.User.WriteEventSafe(
+                                    new OutputEvent {Text = $"{closestStr}: not found\n"});
                             else
                                 programContext.User.WriteEventSafe(new OutputEvent
                                 {
