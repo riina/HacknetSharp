@@ -533,8 +533,33 @@ namespace HacknetSharp
             return true;
         }
 
-        private static readonly Regex _replacementRegex = new Regex(@"{((?:[^{}\\]|\\.)*)}");
+        private static readonly Regex _replacementRegex = new Regex(@"((?:^|[^\\])(?:\\\\)*){((?:[^{}\\]|\\.)*)}");
         private static readonly Regex _shellReplacementRegex = new Regex(@"\$([A-Za-z0-9]+)");
+
+        /// <summary>
+        /// Apply replacement splitting.
+        /// </summary>
+        /// <param name="source">Source text.</param>
+        /// <returns>List of text segments.</returns>
+        public static List<(bool replacement, int start, int count)> SplitReplacements(this string source)
+        {
+            var result = new List<(bool replacement, int start, int count)>();
+            Match match;
+            int i = 0;
+            while ((match = _replacementRegex.Match(source, i)).Success)
+            {
+                var preGroup = match.Groups[1];
+                var postGroup = match.Groups[2];
+                if (match.Index != i || preGroup.Length != 0)
+                    result.Add((false, i, preGroup.Index + preGroup.Length - i));
+                result.Add((true, postGroup.Index, postGroup.Length));
+                i = match.Index + match.Length;
+            }
+
+            if (i != source.Length)
+                result.Add((false, i, source.Length - i));
+            return result;
+        }
 
         /// <summary>
         /// Applies replacements using curly bracket syntax.
@@ -544,7 +569,7 @@ namespace HacknetSharp
         /// <returns>String with replacements applied.</returns>
         public static string ApplyReplacements(this string str, IReadOnlyDictionary<string, string> replacements) =>
             _replacementRegex.Replace(str,
-                m => replacements.TryGetValue(m.Groups[1].Value, out var rep) ? rep : m.Value);
+                m => replacements.TryGetValue(m.Groups[2].Value, out var rep) ? m.Groups[1] + rep : m.Value);
 
         /// <summary>
         /// Applies replacements using dollar sign syntax.
