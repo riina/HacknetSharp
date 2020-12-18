@@ -82,6 +82,11 @@ namespace HacknetSharp.Server.Templates
         public int DiskCapacity { get; set; }
 
         /// <summary>
+        /// System memory (bytes).
+        /// </summary>
+        public long SystemMemory { get; set; }
+
+        /// <summary>
         /// Number of firewall iterations required for full decode.
         /// </summary>
         public int FirewallIterations { get; set; }
@@ -166,6 +171,9 @@ namespace HacknetSharp.Server.Templates
             model.DiskCapacity = DiskCapacity > 0 ? DiskCapacity :
                 owner.DiskCapacity > 0 ? owner.DiskCapacity :
                 model.World.DiskCapacity > 0 ? model.World.DiskCapacity : ServerConstants.DefaultDiskCapacity;
+            model.SystemMemory = SystemMemory > 0 ? SystemMemory :
+                owner.SystemMemory > 0 ? owner.SystemMemory :
+                model.World.SystemMemory > 0 ? model.World.SystemMemory : ServerConstants.DefaultSystemMemory;
             var unameToLoginDict = new Dictionary<string, LoginModel>
             {
                 {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}

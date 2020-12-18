@@ -170,6 +170,13 @@ implemented.</li>
 </ul>
 </li>
 <li>RequiredExploits(<code>int</code>): # required exploits for system access.</li>
+<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
+<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
+<li>FirewallIterations(<code>int</code>): Number of firewall iterations required
+for full decode.</li>
+<li>FirewallLength(<code>int</code>): Length of firewall analysis string.</li>
+<li>FirewallDelay(<code>double</code>): Additional delay per firewall step.</li>
+<li>FixedFirewall(<code>string?</code>): Fixed firewall string.</li>
 </ul>
 <p>Default replacements:</p>
 <ul>
@@ -207,6 +214,7 @@ replacements to pass to system template</li>
 other systems</li>
 </ul>
 </li>
+<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
 </ul>
 <h3 id="world-templates">World templates</h3>
 <p><code>hss new world -n &lt;templateName&gt;</code></p>
@@ -224,6 +232,7 @@ name, this is only for listing the worlds with <code>hss world list</code>).</li
 <li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
 </ul>
 </li>
+<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
 </ul>
 <h3 id="server-configuration">Server configuration</h3>
 <p><code>hss new server [-n &lt;configName&gt;]</code></p>
@@ -233,6 +242,9 @@ name, this is only for listing the worlds with <code>hss world list</code>).</li
 <li>Database(<code>Dictionary&lt;string, string&gt;</code>): database properties.</li>
 <li>DefaultWorld(<code>string</code>): default world for new players to join.</li>
 <li>EnableLoggin(<code>bool</code>): if true, enable logging.</li>
+<li>Motd(<code>string?</code>): Message of the day, sent to all clients during
+initial command.</li>
+<li>ContentFolders(<code>List&lt;string&gt;?</code>): Additional content directories to search.</li>
 </ul>
 <h2 id="database-operations">Database operations</h2>
 <p>The program / EF Core migrations work with a database, and require a

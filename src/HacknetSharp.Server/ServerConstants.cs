@@ -26,6 +26,11 @@ namespace HacknetSharp.Server
         public const int DefaultDiskCapacity = 10_000;
 
         /// <summary>
+        /// Default system memory (bytes).
+        /// </summary>
+        public const long DefaultSystemMemory = 4_000_000_000;
+
+        /// <summary>
         /// Log recording shell login.
         /// </summary>
         public const string LogKind_Login = "login";

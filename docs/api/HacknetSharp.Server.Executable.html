@@ -1,0 +1,1846 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Executable
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Executable
+   ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="HacknetSharp.Server.Executable">
+  
+  
+  <h1 id="HacknetSharp_Server_Executable" data-uid="HacknetSharp.Server.Executable" class="text-break">Class Executable
+  </h1>
+  <div class="markdown level0 summary"><p>Represents the base type for executables, with related convenience methods.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Executable</span></div>
+      <div class="level2"><a class="xref" href="HacknetSharp.Server.Program.html">Program</a></div>
+      <div class="level2"><a class="xref" href="HacknetSharp.Server.Service.html">Service</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
+  <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
+  <h5 id="HacknetSharp_Server_Executable_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class Executable : object</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_ActWait_Action_HacknetSharp_Server_YieldToken_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.ActWait(Action%2CHacknetSharp.Server.YieldToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L181">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_ActWait_" data-uid="HacknetSharp.Server.Executable.ActWait*"></a>
+  <h4 id="HacknetSharp_Server_Executable_ActWait_Action_HacknetSharp_Server_YieldToken_" data-uid="HacknetSharp.Server.Executable.ActWait(Action,HacknetSharp.Server.YieldToken)">ActWait(Action, YieldToken)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with specified action and yield token. The action is evaluated on first yield.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.ActWaitYieldToken ActWait(Action action, YieldToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Action</span></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>One-off delegate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td><p>Embedded delegate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.ActWaitYieldToken.html">Executable.ActWaitYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Aggregate_IEnumerable_HacknetSharp_Server_YieldToken__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Aggregate(IEnumerable%7BHacknetSharp.Server.YieldToken%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L196">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Aggregate_" data-uid="HacknetSharp.Server.Executable.Aggregate*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Aggregate_IEnumerable_HacknetSharp_Server_YieldToken__" data-uid="HacknetSharp.Server.Executable.Aggregate(IEnumerable{HacknetSharp.Server.YieldToken})">Aggregate(IEnumerable&lt;YieldToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified yield tokens. Once all yield tokens are done yielding, execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.AggregateYieldToken Aggregate(IEnumerable&lt;YieldToken&gt; tokens)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
+        <td><span class="parametername">tokens</span></td>
+        <td><p>Embedded yield tokens.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.AggregateYieldToken.html">Executable.AggregateYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Any_IEnumerable_HacknetSharp_Server_YieldToken__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Any(IEnumerable%7BHacknetSharp.Server.YieldToken%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L203">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Any_" data-uid="HacknetSharp.Server.Executable.Any*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Any_IEnumerable_HacknetSharp_Server_YieldToken__" data-uid="HacknetSharp.Server.Executable.Any(IEnumerable{HacknetSharp.Server.YieldToken})">Any(IEnumerable&lt;YieldToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified yield tokens. Once any yield token is done yielding, execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.AnyYieldToken Any(IEnumerable&lt;YieldToken&gt; tokens)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
+        <td><span class="parametername">tokens</span></td>
+        <td><p>Embedded yield tokens.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.AnyYieldToken.html">Executable.AnyYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Combine_System_String_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Combine(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L95">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Combine_" data-uid="HacknetSharp.Server.Executable.Combine*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Combine_System_String_System_String_" data-uid="HacknetSharp.Server.Executable.Combine(System.String,System.String)">Combine(String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Combine(string path1, string path2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Combine_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Combine(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L103">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Combine_" data-uid="HacknetSharp.Server.Executable.Combine*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Combine_System_String_System_String_System_String_" data-uid="HacknetSharp.Server.Executable.Combine(System.String,System.String,System.String)">Combine(String, String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Combine(string path1, string path2, string path3)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Combine_System_String_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Combine(System.String%2CSystem.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L112">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Combine_" data-uid="HacknetSharp.Server.Executable.Combine*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Combine_System_String_System_String_System_String_System_String_" data-uid="HacknetSharp.Server.Executable.Combine(System.String,System.String,System.String,System.String)">Combine(String, String, String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Combine(string path1, string path2, string path3, string path4)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path4</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Combine_System_String___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Combine(System.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L122">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Combine_" data-uid="HacknetSharp.Server.Executable.Combine*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Combine_System_String___" data-uid="HacknetSharp.Server.Executable.Combine(System.String[])">Combine(String[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Combine(params string[] paths)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">paths</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Condition_Func_System_Boolean__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Condition(Func%7BSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L217">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Condition_" data-uid="HacknetSharp.Server.Executable.Condition*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Condition_Func_System_Boolean__" data-uid="HacknetSharp.Server.Executable.Condition(Func{System.Boolean})">Condition(Func&lt;Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.ConditionYieldToken Condition(Func&lt;bool&gt; condition)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">condition</span></td>
+        <td><p>Delegate, triggers execution once it returns true.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.ConditionYieldToken.html">Executable.ConditionYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Delay_System_Double_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Delay(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L210">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Delay_" data-uid="HacknetSharp.Server.Executable.Delay*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Delay_System_Double_" data-uid="HacknetSharp.Server.Executable.Delay(System.Double)">Delay(Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified delay. Once the delay has completed (<a class="xref" href="HacknetSharp.Server.Executable.DelayYieldToken.html#HacknetSharp_Server_Executable_DelayYieldToken_Delay">Delay</a> &gt; 0), execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.DelayYieldToken Delay(double delay)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">delay</span></td>
+        <td><p>Delay in seconds.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.DelayYieldToken.html">Executable.DelayYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Edit_HacknetSharp_Server_IPersonContext_System_Boolean_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Edit(HacknetSharp.Server.IPersonContext%2CSystem.Boolean%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L240">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Edit_" data-uid="HacknetSharp.Server.Executable.Edit*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Edit_HacknetSharp_Server_IPersonContext_System_Boolean_System_String_" data-uid="HacknetSharp.Server.Executable.Edit(HacknetSharp.Server.IPersonContext,System.Boolean,System.String)">Edit(IPersonContext, Boolean, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.EditYieldToken Edit(IPersonContext context, bool readOnly, string content)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPersonContext.html">IPersonContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context to check for messages in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">readOnly</span></td>
+        <td><p>True if only read access is allowed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>Content to edit.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.EditYieldToken.html">Executable.EditYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetDirectoryAndName_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetDirectoryAndName(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L86">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetDirectoryAndName_" data-uid="HacknetSharp.Server.Executable.GetDirectoryAndName*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetDirectoryAndName_System_String_System_Boolean_" data-uid="HacknetSharp.Server.Executable.GetDirectoryAndName(System.String,System.Boolean)">GetDirectoryAndName(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Splits a path into its directory and filename.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (string, string) GetDirectoryAndName(string path, bool normalize = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Path to split.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">normalize</span></td>
+        <td><p>If true, apply normalization to output.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+        <td><p>Tuple containing directory and filename.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetDirectoryName_System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetDirectoryName(System.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L41">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetDirectoryName_" data-uid="HacknetSharp.Server.Executable.GetDirectoryName*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetDirectoryName_System_Nullable_System_String__" data-uid="HacknetSharp.Server.Executable.GetDirectoryName(System.Nullable{System.String})">GetDirectoryName(Nullable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns the directory portion of a file path. This method effectively
+removes the last segment of the given file path, i.e. it returns a
+string consisting of all characters up to but not including the last
+backslash (&quot;&amp;quot;) in the file path. The returned value is null if the
+specified path is null, empty, or a root (such as &quot;&amp;quot;, &quot;C:&quot;, or
+&quot;\server\share&quot;).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string? GetDirectoryName(string? path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="HacknetSharp_Server_Executable_GetDirectoryName_System_Nullable_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Directory separators are normalized in the returned string.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetFileName_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetFileName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L33">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetFileName_" data-uid="HacknetSharp.Server.Executable.GetFileName*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetFileName_System_String_" data-uid="HacknetSharp.Server.Executable.GetFileName(System.String)">GetFileName(String)</h4>
+  <div class="markdown level1 summary"><p>Gets filename from path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetFileName(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Input path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>Extracted filename.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetFullPath_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetFullPath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L472">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetFullPath_" data-uid="HacknetSharp.Server.Executable.GetFullPath*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetFullPath_System_String_" data-uid="HacknetSharp.Server.Executable.GetFullPath(System.String)">GetFullPath(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetFullPath(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetFullPath_System_String_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetFullPath(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L502">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetFullPath_" data-uid="HacknetSharp.Server.Executable.GetFullPath*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetFullPath_System_String_System_String_" data-uid="HacknetSharp.Server.Executable.GetFullPath(System.String,System.String)">GetFullPath(String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetFullPath(string path, string basePath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">basePath</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetNormalized_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetNormalized(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L25">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetNormalized_" data-uid="HacknetSharp.Server.Executable.GetNormalized*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetNormalized_System_String_" data-uid="HacknetSharp.Server.Executable.GetNormalized(System.String)">GetNormalized(String)</h4>
+  <div class="markdown level1 summary"><p>Gets normalized filesystem path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetNormalized(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>Input path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>Normalized path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_GetPathInCommon_System_String_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.GetPathInCommon(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L48">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_GetPathInCommon_" data-uid="HacknetSharp.Server.Executable.GetPathInCommon*"></a>
+  <h4 id="HacknetSharp_Server_Executable_GetPathInCommon_System_String_System_String_" data-uid="HacknetSharp.Server.Executable.GetPathInCommon(System.String,System.String)">GetPathInCommon(String, String)</h4>
+  <div class="markdown level1 summary"><p>Gets deepest common path between two paths.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetPathInCommon(string left, string right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">left</span></td>
+        <td><p>First path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">right</span></td>
+        <td><p>Second path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>Deepest common path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="HacknetSharp_Server_Executable_GetPathInCommon_System_String_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Examples:
+<br>
+&quot;/path/d/something&quot;, &quot;/path/d/something&quot; -&gt; &quot;/path/d&quot;
+&quot;/path/d/something&quot;, &quot;/path/drawl/something&quot; -&gt; &quot;/path&quot;
+&quot;/left/something&quot;, &quot;/right/something&quot; -&gt; &quot;/&quot;</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Input_HacknetSharp_Server_IPersonContext_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Input(HacknetSharp.Server.IPersonContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L225">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Input_" data-uid="HacknetSharp.Server.Executable.Input*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Input_HacknetSharp_Server_IPersonContext_System_Boolean_" data-uid="HacknetSharp.Server.Executable.Input(HacknetSharp.Server.IPersonContext,System.Boolean)">Input(IPersonContext, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.InputYieldToken Input(IPersonContext context, bool hidden)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IPersonContext.html">IPersonContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context to check for messages in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">hidden</span></td>
+        <td><p>Use hidden input (passwords).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.InputYieldToken.html">Executable.InputYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_IsPathFullyQualified_ReadOnlySpan_System_Char__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.IsPathFullyQualified(ReadOnlySpan%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L90">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_IsPathFullyQualified_" data-uid="HacknetSharp.Server.Executable.IsPathFullyQualified*"></a>
+  <h4 id="HacknetSharp_Server_Executable_IsPathFullyQualified_ReadOnlySpan_System_Char__" data-uid="HacknetSharp.Server.Executable.IsPathFullyQualified(ReadOnlySpan{System.Char})">IsPathFullyQualified(ReadOnlySpan&lt;Char&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsPathFullyQualified(ReadOnlySpan&lt;char&gt; path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_IsPathFullyQualified_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.IsPathFullyQualified(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L82">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_IsPathFullyQualified_" data-uid="HacknetSharp.Server.Executable.IsPathFullyQualified*"></a>
+  <h4 id="HacknetSharp_Server_Executable_IsPathFullyQualified_System_String_" data-uid="HacknetSharp.Server.Executable.IsPathFullyQualified(System.String)">IsPathFullyQualified(String)</h4>
+  <div class="markdown level1 summary"><p>Returns true if the path is fixed to a specific drive or UNC path. This method does no
+validation of the path (URIs will be returned as relative as a result).
+Returns false if the path specified is relative to the current drive or working directory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsPathFullyQualified(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="HacknetSharp_Server_Executable_IsPathFullyQualified_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Handles paths that use the alternate directory separator.  It is a frequent mistake to
+assume that rooted paths <see cref="!:Path.IsPathRooted(string)"></see> are not relative.  This isn't the case.
+&quot;C:a&quot; is drive relative- meaning that it will be resolved against the current directory
+for C: (rooted, but relative). &quot;C:\a&quot; is rooted and not relative (the current directory
+will not be used to modify the path).</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_IsPathRooted_ReadOnlySpan_System_Char__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.IsPathRooted(ReadOnlySpan%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L522">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_IsPathRooted_" data-uid="HacknetSharp.Server.Executable.IsPathRooted*"></a>
+  <h4 id="HacknetSharp_Server_Executable_IsPathRooted_ReadOnlySpan_System_Char__" data-uid="HacknetSharp.Server.Executable.IsPathRooted(ReadOnlySpan{System.Char})">IsPathRooted(ReadOnlySpan&lt;Char&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsPathRooted(ReadOnlySpan&lt;char&gt; path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(ReadOnlySpan%7BSystem.Char%7D%2CReadOnlySpan%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L195">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__" data-uid="HacknetSharp.Server.Executable.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})">Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(ReadOnlySpan&lt;char&gt; path1, ReadOnlySpan&lt;char&gt; path2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(ReadOnlySpan%7BSystem.Char%7D%2CReadOnlySpan%7BSystem.Char%7D%2CReadOnlySpan%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L205">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__" data-uid="HacknetSharp.Server.Executable.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})">Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(ReadOnlySpan&lt;char&gt; path1, ReadOnlySpan&lt;char&gt; path2, ReadOnlySpan&lt;char&gt; path3)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(ReadOnlySpan%7BSystem.Char%7D%2CReadOnlySpan%7BSystem.Char%7D%2CReadOnlySpan%7BSystem.Char%7D%2CReadOnlySpan%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L219">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__" data-uid="HacknetSharp.Server.Executable.Join(ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char},ReadOnlySpan{System.Char})">Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(ReadOnlySpan&lt;char&gt; path1, ReadOnlySpan&lt;char&gt; path2, ReadOnlySpan&lt;char&gt; path3, ReadOnlySpan&lt;char&gt; path4)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">path4</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(System.Nullable%7BSystem.String%7D%2CSystem.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L237">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__" data-uid="HacknetSharp.Server.Executable.Join(System.Nullable{System.String},System.Nullable{System.String})">Join(Nullable&lt;String&gt;, Nullable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(string? path1, string? path2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(System.Nullable%7BSystem.String%7D%2CSystem.Nullable%7BSystem.String%7D%2CSystem.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L242">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__" data-uid="HacknetSharp.Server.Executable.Join(System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String})">Join(Nullable&lt;String&gt;, Nullable&lt;String&gt;, Nullable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(string? path1, string? path2, string? path3)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(System.Nullable%7BSystem.String%7D%2CSystem.Nullable%7BSystem.String%7D%2CSystem.Nullable%7BSystem.String%7D%2CSystem.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L247">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__" data-uid="HacknetSharp.Server.Executable.Join(System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String},System.Nullable{System.String})">Join(Nullable&lt;String&gt;, Nullable&lt;String&gt;, Nullable&lt;String&gt;, Nullable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(string? path1, string? path2, string? path3, string? path4)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">path4</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Join_System_Nullable_System_String____.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Join(System.Nullable%7BSystem.String%7D%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L252">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Join_" data-uid="HacknetSharp.Server.Executable.Join*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Join_System_Nullable_System_String____" data-uid="HacknetSharp.Server.Executable.Join(System.Nullable{System.String}[])">Join(Nullable&lt;String&gt;[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string Join(params string? [] paths)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;[]</td>
+        <td><span class="parametername">paths</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_Sequence_IEnumerable_HacknetSharp_Server_YieldToken__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.Sequence(IEnumerable%7BHacknetSharp.Server.YieldToken%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L189">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_Sequence_" data-uid="HacknetSharp.Server.Executable.Sequence*"></a>
+  <h4 id="HacknetSharp_Server_Executable_Sequence_IEnumerable_HacknetSharp_Server_YieldToken__" data-uid="HacknetSharp.Server.Executable.Sequence(IEnumerable{HacknetSharp.Server.YieldToken})">Sequence(IEnumerable&lt;YieldToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a yield token with the specified yield tokens. Once each yield token in turn is done yielding, execution is resumed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Executable.SequenceYieldToken Sequence(IEnumerable&lt;YieldToken&gt; tokens)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
+        <td><span class="parametername">tokens</span></td>
+        <td><p>Embedded yield tokens.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Executable.SequenceYieldToken.html">Executable.SequenceYieldToken</a></td>
+        <td><p>Yield token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_String_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel%2CSystem.String%2CHacknetSharp.Server.Models.SystemModel%40%2CSystem.Nullable%7BSystem.String%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L148">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_TryGetSystem_" data-uid="HacknetSharp.Server.Executable.TryGetSystem*"></a>
+  <h4 id="HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_String_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___" data-uid="HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel,System.String,HacknetSharp.Server.Models.SystemModel@,System.Nullable{System.String}@)">TryGetSystem(WorldModel, String, out SystemModel, out Nullable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Tries to find a system on the network with the specified address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetSystem(WorldModel worldModel, string addr, out SystemModel system, out string? errorMessage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.WorldModel.html">WorldModel</a></td>
+        <td><span class="parametername">worldModel</span></td>
+        <td><p>World model to search.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">addr</span></td>
+        <td><p>Target address.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>Found system.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">errorMessage</span></td>
+        <td><p>Error message if failed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if matching system was found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable_TryWriteLog_HacknetSharp_Server_WorldSpawn_System_Double_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.WorldSpawn%2CSystem.Double%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CHacknetSharp.Server.Models.FileModel%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.cs/#L103">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Executable_TryWriteLog_" data-uid="HacknetSharp.Server.Executable.TryWriteLog*"></a>
+  <h4 id="HacknetSharp_Server_Executable_TryWriteLog_HacknetSharp_Server_WorldSpawn_System_Double_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel__" data-uid="HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.WorldSpawn,System.Double,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel@)">TryWriteLog(WorldSpawn, Double, SystemModel, LoginModel, String, String, out FileModel)</h4>
+  <div class="markdown level1 summary"><p>Attempt to write log to /log directory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryWriteLog(WorldSpawn spawn, double time, SystemModel system, LoginModel login, string logKind, string logBody, out FileModel log)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.WorldSpawn.html">WorldSpawn</a></td>
+        <td><span class="parametername">spawn</span></td>
+        <td><p>Active spawn manager.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">time</span></td>
+        <td><p>Log timestamp.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td><span class="parametername">system</span></td>
+        <td><p>Active system.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td><span class="parametername">login</span></td>
+        <td><p>Active login.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">logKind</span></td>
+        <td><p>Log kind.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">logBody</span></td>
+        <td><p>Log body.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.FileModel.html">FileModel</a></td>
+        <td><span class="parametername">log</span></td>
+        <td><p>Generated log.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if successful.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Executable.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Executable.NETRuntime.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

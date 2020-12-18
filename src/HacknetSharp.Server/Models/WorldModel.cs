@@ -56,6 +56,11 @@ namespace HacknetSharp.Server.Models
         public virtual int DiskCapacity { get; set; }
 
         /// <summary>
+        /// System memory (bytes).
+        /// </summary>
+        public virtual long SystemMemory { get; set; }
+
+        /// <summary>
         /// Current world time.
         /// </summary>
         public virtual double Now { get; set; }

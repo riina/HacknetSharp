@@ -86,6 +86,11 @@ namespace HacknetSharp.Server.Models
         public virtual int DiskCapacity { get; set; }
 
         /// <summary>
+        /// System memory (bytes).
+        /// </summary>
+        public virtual long SystemMemory { get; set; }
+
+        /// <summary>
         /// Number of firewall iterations required for full decode.
         /// </summary>
         public virtual int FirewallIterations { get; set; }

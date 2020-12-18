@@ -56,6 +56,11 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public virtual int DiskCapacity { get; set; }
 
+        /// <summary>
+        /// System memory (bytes).
+        /// </summary>
+        public virtual long SystemMemory { get; set; }
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
