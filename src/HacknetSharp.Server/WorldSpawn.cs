@@ -218,28 +218,28 @@ namespace HacknetSharp.Server
         /// Creates a folder.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="path">Target path.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel Folder(SystemModel system, LoginModel owner, string path, bool hidden = false)
+        public FileModel Folder(SystemModel system, LoginModel login, string path, bool hidden = false)
         {
             var (dir, name) = Executable.GetDirectoryAndName(path);
-            return Folder(system, owner, name, dir, hidden);
+            return Folder(system, login, name, dir, hidden);
         }
 
         /// <summary>
         /// Creates a folder.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="name">Filename.</param>
         /// <param name="dir">Directory.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel Folder(SystemModel system, LoginModel owner, string name, string dir, bool hidden = false)
+        public FileModel Folder(SystemModel system, LoginModel login, string name, string dir, bool hidden = false)
         {
             if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
                 throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
@@ -250,7 +250,7 @@ namespace HacknetSharp.Server
                 Name = name,
                 Path = dir,
                 System = system,
-                Owner = owner,
+                Owner = login,
                 World = World,
                 Hidden = hidden
             };
@@ -260,7 +260,7 @@ namespace HacknetSharp.Server
             {
                 (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(system, owner, nName, nPath, hidden);
+                    Folder(system, login, nName, nPath, hidden);
             }
 
             system.Files.Add(model);
@@ -272,34 +272,41 @@ namespace HacknetSharp.Server
         /// Creates a file-backed file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="path">Target path.</param>
         /// <param name="file">Source file.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel FileFile(SystemModel system, LoginModel owner, string path, string file, bool hidden = false)
+        public FileModel FileFile(SystemModel system, LoginModel login, string path, string file, bool hidden = false)
         {
             var (dir, name) = Executable.GetDirectoryAndName(path);
-            return FileFile(system, owner, name, dir, file, hidden);
+            return FileFile(system, login, name, dir, file, hidden);
         }
 
         /// <summary>
         /// Creates a file-backed file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="name">Filename.</param>
         /// <param name="dir">Directory.</param>
         /// <param name="file">Source file.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel FileFile(SystemModel system, LoginModel owner, string name, string dir, string file,
+        public FileModel FileFile(SystemModel system, LoginModel login, string name, string dir, string file,
             bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
+            string target = Executable.Combine(dir, name);
+            if (system.TryGetFile(target, login, out var result, out _, out _, hidden: hidden))
+                throw new IOException(
+                    $"The specified path already exists: {target}");
+            if (result == ReadAccessResult.NotReadable)
+                throw new IOException("Permission denied");
+            if (system.GetUsedDiskSpace() + 1 > system.DiskCapacity)
+                throw new IOException("Disk full.");
+
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -307,7 +314,7 @@ namespace HacknetSharp.Server
                 Name = name,
                 Path = dir,
                 System = system,
-                Owner = owner,
+                Owner = login,
                 World = World,
                 Content = file,
                 Hidden = hidden
@@ -318,7 +325,7 @@ namespace HacknetSharp.Server
             {
                 (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(system, owner, nName, nPath, hidden);
+                    Folder(system, login, nName, nPath, hidden);
             }
 
             system.Files.Add(model);
@@ -330,35 +337,42 @@ namespace HacknetSharp.Server
         /// Creates a text file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="path">Target path.</param>
         /// <param name="content">Text content.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel TextFile(SystemModel system, LoginModel owner, string path, string content,
+        public FileModel TextFile(SystemModel system, LoginModel login, string path, string content,
             bool hidden = false)
         {
             var (dir, name) = Executable.GetDirectoryAndName(path);
-            return TextFile(system, owner, name, dir, content, hidden);
+            return TextFile(system, login, name, dir, content, hidden);
         }
 
         /// <summary>
         /// Creates a text file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="name">Filename.</param>
         /// <param name="dir">Directory.</param>
         /// <param name="content">Text content.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel TextFile(SystemModel system, LoginModel owner, string name, string dir, string content,
+        public FileModel TextFile(SystemModel system, LoginModel login, string name, string dir, string content,
             bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
+            string target = Executable.Combine(dir, name);
+            if (system.TryGetFile(target, login, out var result, out _, out _, hidden: hidden))
+                throw new IOException(
+                    $"The specified path already exists: {target}");
+            if (result == ReadAccessResult.NotReadable)
+                throw new IOException("Permission denied");
+            if (system.GetUsedDiskSpace() + 1 > system.DiskCapacity)
+                throw new IOException("Disk full.");
+
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -366,7 +380,7 @@ namespace HacknetSharp.Server
                 Name = name,
                 Path = dir,
                 System = system,
-                Owner = owner,
+                Owner = login,
                 World = World,
                 Content = content,
                 Hidden = hidden
@@ -377,7 +391,7 @@ namespace HacknetSharp.Server
             {
                 (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(system, owner, nName, nPath, hidden);
+                    Folder(system, login, nName, nPath, hidden);
             }
 
             system.Files.Add(model);
@@ -389,35 +403,42 @@ namespace HacknetSharp.Server
         /// Creates a program file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="path">Target path.</param>
         /// <param name="progCode">ProgCode or hargv (hidden argv).</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel ProgFile(SystemModel system, LoginModel owner, string path, string progCode,
+        public FileModel ProgFile(SystemModel system, LoginModel login, string path, string progCode,
             bool hidden = false)
         {
             var (dir, name) = Executable.GetDirectoryAndName(path);
-            return ProgFile(system, owner, name, dir, progCode, hidden);
+            return ProgFile(system, login, name, dir, progCode, hidden);
         }
 
         /// <summary>
         /// Creates a program file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
+        /// <param name="login">File owner.</param>
         /// <param name="name">Filename.</param>
         /// <param name="dir">Directory.</param>
         /// <param name="progCode">ProgCode or hargv (hidden argv).</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel ProgFile(SystemModel system, LoginModel owner, string name, string dir, string progCode,
+        public FileModel ProgFile(SystemModel system, LoginModel login, string name, string dir, string progCode,
             bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
+            string target = Executable.Combine(dir, name);
+            if (system.TryGetFile(target, login, out var result, out _, out _, hidden: hidden))
+                throw new IOException(
+                    $"The specified path already exists: {target}");
+            if (result == ReadAccessResult.NotReadable)
+                throw new IOException("Permission denied");
+            if (system.GetUsedDiskSpace() + 1 > system.DiskCapacity)
+                throw new IOException("Disk full.");
+
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
@@ -425,7 +446,7 @@ namespace HacknetSharp.Server
                 Name = name,
                 Path = dir,
                 System = system,
-                Owner = owner,
+                Owner = login,
                 World = World,
                 Content = progCode,
                 Hidden = hidden
@@ -436,7 +457,7 @@ namespace HacknetSharp.Server
             {
                 (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(system, owner, nName, nPath, hidden);
+                    Folder(system, login, nName, nPath, hidden);
             }
 
             system.Files.Add(model);
@@ -485,7 +506,7 @@ namespace HacknetSharp.Server
                 throw new IOException("Permission denied");
             if (system.TryGetFile(target, login, out result, out _, out _, hidden: hidden))
                 throw new IOException(
-                    $"The specified path already exists: {Executable.Combine(dir, name)}");
+                    $"The specified path already exists: {target}");
             if (result == ReadAccessResult.NotReadable)
                 throw new IOException("Permission denied");
 
@@ -501,6 +522,10 @@ namespace HacknetSharp.Server
                         queue.Enqueue(fx);
                 toCopy.Add(f);
             }
+
+            if (system.GetUsedDiskSpace() +
+                toCopy.Count > system.DiskCapacity)
+                throw new IOException("Disk full.");
 
             // Generate dependent folders
             if (dir != "/")
@@ -572,7 +597,7 @@ namespace HacknetSharp.Server
                 throw new IOException("Permission denied");
             if (system.TryGetFile(target, login, out result, out _, out _, hidden: hidden))
                 throw new IOException(
-                    $"The specified path already exists: {Executable.Combine(dir, name)}");
+                    $"The specified path already exists: {target}");
             if (result == ReadAccessResult.NotReadable)
                 throw new IOException("Permission denied");
 

@@ -281,6 +281,10 @@ namespace HacknetSharp.Server.Models
         /// Get currently used disk space of system.
         /// </summary>
         /// <returns>Used disk space.</returns>
-        public int GetUsedDiskSpace() => Files.Count(f => f.Kind != FileModel.FileKind.Folder);
+        public int GetUsedDiskSpace()
+        {
+            return Files.Count;
+            //return Files.Count(f => f.Kind != FileModel.FileKind.Folder);
+        }
     }
 }

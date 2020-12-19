@@ -18,6 +18,11 @@ namespace HacknetSharp.Server
         public uint Pid { get; set; }
 
         /// <summary>
+        /// Memory used by this process.
+        /// </summary>
+        public long Memory { get; set; }
+
+        /// <summary>
         /// World for the process.
         /// </summary>
         public IWorld World { get; set; } = null!;

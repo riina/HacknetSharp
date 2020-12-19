@@ -30,7 +30,6 @@
         /// <returns>True when operation is complete.</returns>
         public abstract bool Update(IWorld world);
 
-
         /// <summary>
         /// Complete operation
         /// </summary>
