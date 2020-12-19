@@ -135,6 +135,26 @@ namespace HacknetSharp.Server.Templates
         private static readonly Regex _userRegex = new(@"([A-Za-z]+)(\+)?");
         private static readonly Regex _fileRegex = new(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
+
+        /// <summary>
+        /// efault constructor for deserialization only.
+        /// </summary>
+        public SystemTemplate()
+        {
+        }
+
+
+        /// <summary>
+        /// efault constructor for deserialization only.
+        /// </summary>
+        /// <param name="name">Format-able system name.</param>
+        /// <param name="osName">OS name.</param>
+        public SystemTemplate(string name, string osName)
+        {
+            Name = name;
+            OsName = osName;
+        }
+
         /// <summary>
         /// Applies this template to a system.
         /// </summary>

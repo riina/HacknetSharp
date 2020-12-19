@@ -219,11 +219,11 @@ other systems</li>
 <h3 id="world-templates">World templates</h3>
 <p><code>hss new world -n &lt;templateName&gt;</code></p>
 <ul>
-<li>Label(<code>string</code>): label to use on world (just name it your template's
-name, this is only for listing the worlds with <code>hss world list</code>).</li>
 <li>PlayerSystemTemplate(<code>string</code>): template to use for players.</li>
-<li>PlayerAddressRange(<code>string</code>): CIDR range string for address pool</li>
-<li>StartupCommandLine(<code>string</code>): Initial command for clients to execute.</li>
+<li>PlayerAddressRange(<code>string?</code>): CIDR range string for address pool</li>
+<li>StartupCommandLine(<code>string?</code>): Initial command for clients to execute.</li>
+<li>Label(<code>string?</code>): label to use on world (just name it your template's
+name, this is only for listing the worlds with <code>hss world list</code>).</li>
 <li>People(<code>List&lt;PersonGroup&gt;?</code>): Person generators to populate world.
 <ul>
 <li>PersonTemplate(<code>string</code>): Person template to generate with.</li>

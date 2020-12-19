@@ -6610,6 +6610,19 @@ references:
   commentId: T:HacknetSharp.Server.Service
   fullName: HacknetSharp.Server.Service
   nameWithType: Service
+- uid: HacknetSharp.Server.Service.OnShutdown(HacknetSharp.Server.ServiceContext)
+  name: OnShutdown(ServiceContext)
+  href: api/HacknetSharp.Server.Service.html#HacknetSharp_Server_Service_OnShutdown_HacknetSharp_Server_ServiceContext_
+  commentId: M:HacknetSharp.Server.Service.OnShutdown(HacknetSharp.Server.ServiceContext)
+  fullName: HacknetSharp.Server.Service.OnShutdown(HacknetSharp.Server.ServiceContext)
+  nameWithType: Service.OnShutdown(ServiceContext)
+- uid: HacknetSharp.Server.Service.OnShutdown*
+  name: OnShutdown
+  href: api/HacknetSharp.Server.Service.html#HacknetSharp_Server_Service_OnShutdown_
+  commentId: Overload:HacknetSharp.Server.Service.OnShutdown
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Service.OnShutdown
+  nameWithType: Service.OnShutdown
 - uid: HacknetSharp.Server.Service.Run(HacknetSharp.Server.ServiceContext)
   name: Run(ServiceContext)
   href: api/HacknetSharp.Server.Service.html#HacknetSharp_Server_Service_Run_HacknetSharp_Server_ServiceContext_
@@ -7069,6 +7082,19 @@ references:
   commentId: T:HacknetSharp.Server.Templates.PersonTemplate
   fullName: HacknetSharp.Server.Templates.PersonTemplate
   nameWithType: PersonTemplate
+- uid: HacknetSharp.Server.Templates.PersonTemplate.#ctor
+  name: PersonTemplate()
+  href: api/HacknetSharp.Server.Templates.PersonTemplate.html#HacknetSharp_Server_Templates_PersonTemplate__ctor
+  commentId: M:HacknetSharp.Server.Templates.PersonTemplate.#ctor
+  fullName: HacknetSharp.Server.Templates.PersonTemplate.PersonTemplate()
+  nameWithType: PersonTemplate.PersonTemplate()
+- uid: HacknetSharp.Server.Templates.PersonTemplate.#ctor*
+  name: PersonTemplate
+  href: api/HacknetSharp.Server.Templates.PersonTemplate.html#HacknetSharp_Server_Templates_PersonTemplate__ctor_
+  commentId: Overload:HacknetSharp.Server.Templates.PersonTemplate.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Templates.PersonTemplate.PersonTemplate
+  nameWithType: PersonTemplate.PersonTemplate
 - uid: HacknetSharp.Server.Templates.PersonTemplate.AddressRange
   name: AddressRange
   href: api/HacknetSharp.Server.Templates.PersonTemplate.html#HacknetSharp_Server_Templates_PersonTemplate_AddressRange
@@ -7370,6 +7396,25 @@ references:
   commentId: T:HacknetSharp.Server.Templates.SystemTemplate
   fullName: HacknetSharp.Server.Templates.SystemTemplate
   nameWithType: SystemTemplate
+- uid: HacknetSharp.Server.Templates.SystemTemplate.#ctor
+  name: SystemTemplate()
+  href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate__ctor
+  commentId: M:HacknetSharp.Server.Templates.SystemTemplate.#ctor
+  fullName: HacknetSharp.Server.Templates.SystemTemplate.SystemTemplate()
+  nameWithType: SystemTemplate.SystemTemplate()
+- uid: HacknetSharp.Server.Templates.SystemTemplate.#ctor(System.String,System.String)
+  name: SystemTemplate(String, String)
+  href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate__ctor_System_String_System_String_
+  commentId: M:HacknetSharp.Server.Templates.SystemTemplate.#ctor(System.String,System.String)
+  fullName: HacknetSharp.Server.Templates.SystemTemplate.SystemTemplate(System.String, System.String)
+  nameWithType: SystemTemplate.SystemTemplate(String, String)
+- uid: HacknetSharp.Server.Templates.SystemTemplate.#ctor*
+  name: SystemTemplate
+  href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate__ctor_
+  commentId: Overload:HacknetSharp.Server.Templates.SystemTemplate.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Templates.SystemTemplate.SystemTemplate
+  nameWithType: SystemTemplate.SystemTemplate
 - uid: HacknetSharp.Server.Templates.SystemTemplate.AddressRange
   name: AddressRange
   href: api/HacknetSharp.Server.Templates.SystemTemplate.html#HacknetSharp_Server_Templates_SystemTemplate_AddressRange
@@ -7645,6 +7690,25 @@ references:
   commentId: T:HacknetSharp.Server.Templates.WorldTemplate
   fullName: HacknetSharp.Server.Templates.WorldTemplate
   nameWithType: WorldTemplate
+- uid: HacknetSharp.Server.Templates.WorldTemplate.#ctor
+  name: WorldTemplate()
+  href: api/HacknetSharp.Server.Templates.WorldTemplate.html#HacknetSharp_Server_Templates_WorldTemplate__ctor
+  commentId: M:HacknetSharp.Server.Templates.WorldTemplate.#ctor
+  fullName: HacknetSharp.Server.Templates.WorldTemplate.WorldTemplate()
+  nameWithType: WorldTemplate.WorldTemplate()
+- uid: HacknetSharp.Server.Templates.WorldTemplate.#ctor(System.String)
+  name: WorldTemplate(String)
+  href: api/HacknetSharp.Server.Templates.WorldTemplate.html#HacknetSharp_Server_Templates_WorldTemplate__ctor_System_String_
+  commentId: M:HacknetSharp.Server.Templates.WorldTemplate.#ctor(System.String)
+  fullName: HacknetSharp.Server.Templates.WorldTemplate.WorldTemplate(System.String)
+  nameWithType: WorldTemplate.WorldTemplate(String)
+- uid: HacknetSharp.Server.Templates.WorldTemplate.#ctor*
+  name: WorldTemplate
+  href: api/HacknetSharp.Server.Templates.WorldTemplate.html#HacknetSharp_Server_Templates_WorldTemplate__ctor_
+  commentId: Overload:HacknetSharp.Server.Templates.WorldTemplate.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Templates.WorldTemplate.WorldTemplate
+  nameWithType: WorldTemplate.WorldTemplate
 - uid: HacknetSharp.Server.Templates.WorldTemplate.ApplyTemplate(HacknetSharp.Server.IServerDatabase,HacknetSharp.Server.TemplateGroup,HacknetSharp.Server.Models.WorldModel)
   name: ApplyTemplate(IServerDatabase, TemplateGroup, WorldModel)
   href: api/HacknetSharp.Server.Templates.WorldTemplate.html#HacknetSharp_Server_Templates_WorldTemplate_ApplyTemplate_HacknetSharp_Server_IServerDatabase_HacknetSharp_Server_TemplateGroup_HacknetSharp_Server_Models_WorldModel_
@@ -7839,6 +7903,25 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.Connection
   nameWithType: WorldSpawn.Connection
+- uid: HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
+  name: CopyFile(FileModel, SystemModel, LoginModel, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_CopyFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.Boolean)
+  nameWithType: WorldSpawn.CopyFile(FileModel, SystemModel, LoginModel, String, Boolean)
+- uid: HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  name: CopyFile(FileModel, SystemModel, LoginModel, String, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_CopyFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, System.Boolean)
+  nameWithType: WorldSpawn.CopyFile(FileModel, SystemModel, LoginModel, String, String, Boolean)
+- uid: HacknetSharp.Server.WorldSpawn.CopyFile*
+  name: CopyFile
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_CopyFile_
+  commentId: Overload:HacknetSharp.Server.WorldSpawn.CopyFile
+  isSpec: "True"
+  fullName: HacknetSharp.Server.WorldSpawn.CopyFile
+  nameWithType: WorldSpawn.CopyFile
 - uid: HacknetSharp.Server.WorldSpawn.Database
   name: Database
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Database
@@ -7852,19 +7935,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.Database
   nameWithType: WorldSpawn.Database
-- uid: HacknetSharp.Server.WorldSpawn.Duplicate(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel,System.Boolean)
-  name: Duplicate(SystemModel, LoginModel, String, String, FileModel, Boolean)
-  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Duplicate_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel_System_Boolean_
-  commentId: M:HacknetSharp.Server.WorldSpawn.Duplicate(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel,System.Boolean)
-  fullName: HacknetSharp.Server.WorldSpawn.Duplicate(HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, HacknetSharp.Server.Models.FileModel, System.Boolean)
-  nameWithType: WorldSpawn.Duplicate(SystemModel, LoginModel, String, String, FileModel, Boolean)
-- uid: HacknetSharp.Server.WorldSpawn.Duplicate*
-  name: Duplicate
-  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Duplicate_
-  commentId: Overload:HacknetSharp.Server.WorldSpawn.Duplicate
-  isSpec: "True"
-  fullName: HacknetSharp.Server.WorldSpawn.Duplicate
-  nameWithType: WorldSpawn.Duplicate
+- uid: HacknetSharp.Server.WorldSpawn.FileFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  name: FileFile(SystemModel, LoginModel, String, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_FileFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.FileFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.FileFile(HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, System.Boolean)
+  nameWithType: WorldSpawn.FileFile(SystemModel, LoginModel, String, String, Boolean)
 - uid: HacknetSharp.Server.WorldSpawn.FileFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)
   name: FileFile(SystemModel, LoginModel, String, String, String, Boolean)
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_FileFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_
@@ -7878,6 +7954,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.FileFile
   nameWithType: WorldSpawn.FileFile
+- uid: HacknetSharp.Server.WorldSpawn.Folder(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
+  name: Folder(SystemModel, LoginModel, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Folder_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.Folder(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.Folder(HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.Boolean)
+  nameWithType: WorldSpawn.Folder(SystemModel, LoginModel, String, Boolean)
 - uid: HacknetSharp.Server.WorldSpawn.Folder(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
   name: Folder(SystemModel, LoginModel, String, String, Boolean)
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_Folder_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_
@@ -7907,12 +7989,18 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.Login
   nameWithType: WorldSpawn.Login
-- uid: HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,System.String,System.String,HacknetSharp.Server.Models.LoginModel,System.Boolean)
-  name: MoveFile(FileModel, String, String, LoginModel, Boolean)
-  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_System_String_System_String_HacknetSharp_Server_Models_LoginModel_System_Boolean_
-  commentId: M:HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,System.String,System.String,HacknetSharp.Server.Models.LoginModel,System.Boolean)
-  fullName: HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel, System.String, System.String, HacknetSharp.Server.Models.LoginModel, System.Boolean)
-  nameWithType: WorldSpawn.MoveFile(FileModel, String, String, LoginModel, Boolean)
+- uid: HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
+  name: MoveFile(FileModel, SystemModel, LoginModel, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.Boolean)
+  nameWithType: WorldSpawn.MoveFile(FileModel, SystemModel, LoginModel, String, Boolean)
+- uid: HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  name: MoveFile(FileModel, SystemModel, LoginModel, String, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, System.Boolean)
+  nameWithType: WorldSpawn.MoveFile(FileModel, SystemModel, LoginModel, String, String, Boolean)
 - uid: HacknetSharp.Server.WorldSpawn.MoveFile*
   name: MoveFile
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_MoveFile_
@@ -7933,6 +8021,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.Person
   nameWithType: WorldSpawn.Person
+- uid: HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  name: ProgFile(SystemModel, LoginModel, String, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, System.Boolean)
+  nameWithType: WorldSpawn.ProgFile(SystemModel, LoginModel, String, String, Boolean)
 - uid: HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)
   name: ProgFile(SystemModel, LoginModel, String, String, String, Boolean)
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_
@@ -8010,6 +8104,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.WorldSpawn.System
   nameWithType: WorldSpawn.System
+- uid: HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  name: TextFile(SystemModel, LoginModel, String, String, Boolean)
+  href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)
+  fullName: HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, System.Boolean)
+  nameWithType: WorldSpawn.TextFile(SystemModel, LoginModel, String, String, Boolean)
 - uid: HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)
   name: TextFile(SystemModel, LoginModel, String, String, String, Boolean)
   href: api/HacknetSharp.Server.WorldSpawn.html#HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_

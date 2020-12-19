@@ -71,6 +71,23 @@ namespace HacknetSharp.Server.Templates
         }
 
         /// <summary>
+        /// Default constructor for deserialization only.
+        /// </summary>
+        public WorldTemplate()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="WorldTemplate"/>.
+        /// </summary>
+        /// <param name="playerSystemTemplate">Player system template.</param>
+        public WorldTemplate(string playerSystemTemplate)
+        {
+            PlayerSystemTemplate = playerSystemTemplate;
+            People = new List<PersonGroup>();
+        }
+
+        /// <summary>
         /// Apply this template to a world.
         /// </summary>
         /// <param name="database">Database for the world.</param>
@@ -81,11 +98,11 @@ namespace HacknetSharp.Server.Templates
         /// <exception cref="ApplicationException">Thrown when failed to parse template contents.</exception>
         public virtual void ApplyTemplate(IServerDatabase database, TemplateGroup templates, WorldModel world)
         {
-            world.Label = Label ?? throw new InvalidOperationException($"{nameof(Label)} is null.");
-            world.PlayerSystemTemplate =
-                PlayerSystemTemplate ?? throw new InvalidOperationException($"{nameof(PlayerSystemTemplate)} is null.");
-            world.StartupCommandLine = StartupCommandLine ??
-                                       throw new InvalidOperationException($"{nameof(StartupCommandLine)} is null.");
+            world.PlayerSystemTemplate = PlayerSystemTemplate ??
+                                         throw new InvalidOperationException(
+                                             $"{nameof(PlayerSystemTemplate)} is null.");
+            world.StartupCommandLine = StartupCommandLine;
+            world.Label = Label ?? "Unlabeled Template";
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;
             world.RebootDuration = RebootDuration;
             world.DiskCapacity = DiskCapacity;

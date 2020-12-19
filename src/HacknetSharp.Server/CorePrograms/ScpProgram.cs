@@ -98,6 +98,14 @@ namespace HacknetSharp.Server.CorePrograms
                 string inputFmt = GetNormalized(path);
                 if (rSystem.TryGetFile(inputFmt, rLogin, out var result, out var closestStr, out var closest))
                 {
+                    // Prevent copying common root to subdirectory
+                    if (system == context.System && GetPathInCommon(inputFmt, target) == inputFmt)
+                    {
+                        user.WriteEventSafe(Output($"{inputFmt}: Cannot copy to {target}\n"));
+                        user.FlushSafeAsync();
+                        yield break;
+                    }
+
                     try
                     {
                         var targetExisting =
@@ -116,9 +124,7 @@ namespace HacknetSharp.Server.CorePrograms
                             lclName = GetFileName(target);
                         }
 
-                        //Console.WriteLine($"Duplicating to [{lclTarget}] [{lclName}]");
-
-                        spawn.Duplicate(system, login, lclName, lclTarget, closest);
+                        spawn.CopyFile(closest, system, login, lclName, lclTarget);
                     }
                     catch (IOException e)
                     {

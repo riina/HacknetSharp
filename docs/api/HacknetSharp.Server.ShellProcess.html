@@ -309,7 +309,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Complete(Process.CompletionKind completionKind)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Complete(Process.CompletionKind completionKind)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -325,6 +325,22 @@
         <td><a class="xref" href="HacknetSharp.Server.Process.CompletionKind.html">Process.CompletionKind</a></td>
         <td><span class="parametername">completionKind</span></td>
         <td><p>Completion kind</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>False if process refuses to complete.</p>
 </td>
       </tr>
     </tbody>

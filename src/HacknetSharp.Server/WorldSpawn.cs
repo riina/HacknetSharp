@@ -219,21 +219,36 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="system">System file resides on.</param>
         /// <param name="owner">File owner.</param>
-        /// <param name="name">Filename.</param>
-        /// <param name="path">Directory.</param>
+        /// <param name="path">Target path.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel Folder(SystemModel system, LoginModel owner, string name, string path, bool hidden = false)
+        public FileModel Folder(SystemModel system, LoginModel owner, string path, bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
+            var (dir, name) = Executable.GetDirectoryAndName(path);
+            return Folder(system, owner, name, dir, hidden);
+        }
+
+        /// <summary>
+        /// Creates a folder.
+        /// </summary>
+        /// <param name="system">System file resides on.</param>
+        /// <param name="owner">File owner.</param>
+        /// <param name="name">Filename.</param>
+        /// <param name="dir">Directory.</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <returns>Generated model.</returns>
+        /// <exception cref="IOException">File already exists.</exception>
+        public FileModel Folder(SystemModel system, LoginModel owner, string name, string dir, bool hidden = false)
+        {
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
+                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
                 Kind = FileModel.FileKind.Folder,
                 Name = name,
-                Path = path,
+                Path = dir,
                 System = system,
                 Owner = owner,
                 World = World,
@@ -241,9 +256,9 @@ namespace HacknetSharp.Server
             };
 
             // Generate dependent folders
-            if (path != "/")
+            if (dir != "/")
             {
-                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -258,23 +273,39 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="system">System file resides on.</param>
         /// <param name="owner">File owner.</param>
-        /// <param name="name">Filename.</param>
-        /// <param name="path">Directory.</param>
+        /// <param name="path">Target path.</param>
         /// <param name="file">Source file.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel FileFile(SystemModel system, LoginModel owner, string name, string path, string file,
+        public FileModel FileFile(SystemModel system, LoginModel owner, string path, string file, bool hidden = false)
+        {
+            var (dir, name) = Executable.GetDirectoryAndName(path);
+            return FileFile(system, owner, name, dir, file, hidden);
+        }
+
+        /// <summary>
+        /// Creates a file-backed file.
+        /// </summary>
+        /// <param name="system">System file resides on.</param>
+        /// <param name="owner">File owner.</param>
+        /// <param name="name">Filename.</param>
+        /// <param name="dir">Directory.</param>
+        /// <param name="file">Source file.</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <returns>Generated model.</returns>
+        /// <exception cref="IOException">File already exists.</exception>
+        public FileModel FileFile(SystemModel system, LoginModel owner, string name, string dir, string file,
             bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
+                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
                 Kind = FileModel.FileKind.FileFile,
                 Name = name,
-                Path = path,
+                Path = dir,
                 System = system,
                 Owner = owner,
                 World = World,
@@ -283,9 +314,9 @@ namespace HacknetSharp.Server
             };
 
             // Generate dependent folders
-            if (path != "/")
+            if (dir != "/")
             {
-                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -295,6 +326,22 @@ namespace HacknetSharp.Server
             return model;
         }
 
+        /// <summary>
+        /// Creates a text file.
+        /// </summary>
+        /// <param name="system">System file resides on.</param>
+        /// <param name="owner">File owner.</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="content">Text content.</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <returns>Generated model.</returns>
+        /// <exception cref="IOException">File already exists.</exception>
+        public FileModel TextFile(SystemModel system, LoginModel owner, string path, string content,
+            bool hidden = false)
+        {
+            var (dir, name) = Executable.GetDirectoryAndName(path);
+            return TextFile(system, owner, name, dir, content, hidden);
+        }
 
         /// <summary>
         /// Creates a text file.
@@ -302,22 +349,22 @@ namespace HacknetSharp.Server
         /// <param name="system">System file resides on.</param>
         /// <param name="owner">File owner.</param>
         /// <param name="name">Filename.</param>
-        /// <param name="path">Directory.</param>
+        /// <param name="dir">Directory.</param>
         /// <param name="content">Text content.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel TextFile(SystemModel system, LoginModel owner, string name, string path, string content,
+        public FileModel TextFile(SystemModel system, LoginModel owner, string name, string dir, string content,
             bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
+                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
                 Kind = FileModel.FileKind.TextFile,
                 Name = name,
-                Path = path,
+                Path = dir,
                 System = system,
                 Owner = owner,
                 World = World,
@@ -326,9 +373,9 @@ namespace HacknetSharp.Server
             };
 
             // Generate dependent folders
-            if (path != "/")
+            if (dir != "/")
             {
-                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -338,6 +385,22 @@ namespace HacknetSharp.Server
             return model;
         }
 
+        /// <summary>
+        /// Creates a program file.
+        /// </summary>
+        /// <param name="system">System file resides on.</param>
+        /// <param name="owner">File owner.</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="progCode">ProgCode or hargv (hidden argv).</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <returns>Generated model.</returns>
+        /// <exception cref="IOException">File already exists.</exception>
+        public FileModel ProgFile(SystemModel system, LoginModel owner, string path, string progCode,
+            bool hidden = false)
+        {
+            var (dir, name) = Executable.GetDirectoryAndName(path);
+            return ProgFile(system, owner, name, dir, progCode, hidden);
+        }
 
         /// <summary>
         /// Creates a program file.
@@ -345,22 +408,22 @@ namespace HacknetSharp.Server
         /// <param name="system">System file resides on.</param>
         /// <param name="owner">File owner.</param>
         /// <param name="name">Filename.</param>
-        /// <param name="path">Directory.</param>
+        /// <param name="dir">Directory.</param>
         /// <param name="progCode">ProgCode or hargv (hidden argv).</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="IOException">File already exists.</exception>
-        public FileModel ProgFile(SystemModel system, LoginModel owner, string name, string path, string progCode,
+        public FileModel ProgFile(SystemModel system, LoginModel owner, string name, string dir, string progCode,
             bool hidden = false)
         {
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
+            if (system.Files.Any(f => f.Hidden == hidden && f.Path == dir && f.Name == name))
+                throw new IOException($"The specified path already exists: {Executable.Combine(dir, name)}");
             var model = new FileModel
             {
                 Key = Guid.NewGuid(),
                 Kind = FileModel.FileKind.ProgFile,
                 Name = name,
-                Path = path,
+                Path = dir,
                 System = system,
                 Owner = owner,
                 World = World,
@@ -369,9 +432,9 @@ namespace HacknetSharp.Server
             };
 
             // Generate dependent folders
-            if (path != "/")
+            if (dir != "/")
             {
-                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
+                (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
                 if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
                     Folder(system, owner, nName, nPath, hidden);
             }
@@ -381,50 +444,166 @@ namespace HacknetSharp.Server
             return model;
         }
 
-
         /// <summary>
-        /// Duplicates a file, non-recursive.
+        /// Copies a file using file access.
         /// </summary>
-        /// <param name="system">System file resides on.</param>
-        /// <param name="owner">File owner.</param>
-        /// <param name="name">Filename.</param>
-        /// <param name="path">Directory.</param>
-        /// <param name="existing">Source file.</param>
+        /// <param name="file">File to copy.</param>
+        /// <param name="system">Target system.</param>
+        /// <param name="login">Login to attempt operation with.</param>
+        /// <param name="path">Target path.</param>
         /// <param name="hidden">If true, hide from normal filesystem.</param>
         /// <returns>Generated model.</returns>
-        /// <exception cref="IOException">File already exists.</exception>
-        public FileModel Duplicate(SystemModel system, LoginModel owner, string name, string path, FileModel existing,
+        /// <exception cref="IOException">Thrown when there is an issue preventing the operation (e.g. access or already existing).</exception>
+        public FileModel CopyFile(FileModel file, SystemModel system, LoginModel login, string path,
             bool hidden = false)
         {
-            // does not support duplicating file tree. "yet" but also probably won't
-            if (existing.Kind == FileModel.FileKind.Folder)
-                throw new IOException($"Cannot copy folder {existing.FullPath}");
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == path && f.Name == name))
-                throw new IOException($"The specified path already exists: {Executable.Combine(path, name)}");
-            var model = new FileModel
-            {
-                Key = Guid.NewGuid(),
-                Kind = existing.Kind,
-                Name = name,
-                Path = path,
-                System = system,
-                Owner = owner,
-                World = World,
-                Content = existing.Content,
-                Hidden = hidden
-            };
+            var (dir, name) = Executable.GetDirectoryAndName(path);
+            return CopyFile(file, system, login, name, dir, hidden);
+        }
 
-            // Generate dependent folders
-            if (path != "/")
+        /// <summary>
+        /// Copies a file using file access.
+        /// </summary>
+        /// <param name="file">File to copy.</param>
+        /// <param name="system">Target system.</param>
+        /// <param name="login">Login to attempt operation with.</param>
+        /// <param name="name">Target filename.</param>
+        /// <param name="dir">Target directory.</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <returns>Generated model.</returns>
+        /// <exception cref="IOException">Thrown when there is an issue preventing the operation (e.g. access or already existing).</exception>
+        public FileModel CopyFile(FileModel file, SystemModel system, LoginModel login, string name, string dir,
+            bool hidden = false)
+        {
+            string source = file.FullPath;
+            string target = Executable.Combine(dir, name);
+            // Prevent moving common root to subdirectory
+            if (system == file.System && Executable.GetPathInCommon(source, target) == source)
+                throw new IOException($"{source}: Cannot copy to {target}\n");
+            if (!system.TryGetFile(source, login, out var result, out _, out _, hidden: hidden) ||
+                !file.CanWrite(login))
+                throw new IOException("Permission denied");
+            if (system.TryGetFile(target, login, out result, out _, out _, hidden: hidden))
+                throw new IOException(
+                    $"The specified path already exists: {Executable.Combine(dir, name)}");
+            if (result == ReadAccessResult.NotReadable)
+                throw new IOException("Permission denied");
+
+            var toCopy = new List<FileModel>();
+            Queue<FileModel> queue = new();
+            queue.Enqueue(file);
+            while (queue.TryDequeue(out var f))
             {
-                (string? nPath, var nName) = (Executable.GetDirectoryName(path)!, Executable.GetFileName(path));
-                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
-                    Folder(system, owner, nName, nPath, hidden);
+                string fp = f.FullPath;
+                if (!f.CanWrite(login)) throw new IOException("Permission denied");
+                if (f.Kind == FileModel.FileKind.Folder)
+                    foreach (var fx in system.Files.Where(ft => ft.Path == fp))
+                        queue.Enqueue(fx);
+                toCopy.Add(f);
             }
 
-            system.Files.Add(model);
-            Database.Add(model);
-            return model;
+            // Generate dependent folders
+            if (dir != "/")
+            {
+                (string? nPath, var nName) = (Executable.GetDirectoryName(dir)!, Executable.GetFileName(dir));
+                if (!system.Files.Any(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName))
+                    Folder(system, login, nName, nPath, hidden);
+            }
+
+            string rootPath = file.FullPath;
+            var copied = new List<FileModel>(toCopy.Count);
+            foreach (var f in toCopy)
+                copied.Add(new FileModel
+                {
+                    Key = Guid.NewGuid(),
+                    Kind = f.Kind,
+                    Name = f.Name,
+                    Path = Executable.GetNormalized(
+                        Executable.Combine(target, Path.GetRelativePath(rootPath, f.Path))),
+                    System = system,
+                    Owner = login,
+                    World = World,
+                    Content = f.Content,
+                    Hidden = hidden
+                });
+
+            copied[0].Name = name;
+            system.Files.UnionWith(copied);
+            Database.AddBulk(copied);
+            return copied[0];
+        }
+
+        /// <summary>
+        /// Moves a file using file access.
+        /// </summary>
+        /// <param name="file">File to move.</param>
+        /// <param name="system">Target system.</param>
+        /// <param name="login">Login to attempt operation with.</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <exception cref="IOException">Thrown when there is an issue preventing the operation (e.g. access or already existing).</exception>
+        public void MoveFile(FileModel file, SystemModel system, LoginModel login, string path,
+            bool hidden = false)
+        {
+            var (dir, name) = Executable.GetDirectoryAndName(path);
+            MoveFile(file, system, login, name, dir, hidden);
+        }
+
+        /// <summary>
+        /// Moves a file using file access.
+        /// </summary>
+        /// <param name="file">File to move.</param>
+        /// <param name="system">Target system.</param>
+        /// <param name="login">Login to attempt operation with.</param>
+        /// <param name="name">Target filename.</param>
+        /// <param name="dir">Target directory.</param>
+        /// <param name="hidden">If true, hide from normal filesystem.</param>
+        /// <exception cref="IOException">Thrown when there is an issue preventing the operation (e.g. access or already existing).</exception>
+        public void MoveFile(FileModel file, SystemModel system, LoginModel login, string name, string dir,
+            bool hidden = false)
+        {
+            string source = file.FullPath;
+            string target = Executable.Combine(dir, name);
+            // Prevent moving common root to subdirectory
+            if (system == file.System && Executable.GetPathInCommon(source, target) == source)
+                throw new IOException($"{source}: Cannot move to {target}\n");
+            if (!system.TryGetFile(source, login, out var result, out _, out _, hidden: hidden) ||
+                !file.CanWrite(login))
+                throw new IOException("Permission denied");
+            if (system.TryGetFile(target, login, out result, out _, out _, hidden: hidden))
+                throw new IOException(
+                    $"The specified path already exists: {Executable.Combine(dir, name)}");
+            if (result == ReadAccessResult.NotReadable)
+                throw new IOException("Permission denied");
+
+            var toModify = new List<FileModel>();
+            Queue<FileModel> queue = new();
+            queue.Enqueue(file);
+            while (queue.TryDequeue(out var f))
+            {
+                string fp = f.FullPath;
+                if (!f.CanWrite(login)) throw new IOException("Permission denied");
+                if (f.Kind == FileModel.FileKind.Folder)
+                    foreach (var fx in system.Files.Where(ft => ft.Path == fp))
+                        queue.Enqueue(fx);
+                toModify.Add(f);
+            }
+
+            // Generate dependent folders
+            if (dir != "/")
+            {
+                var (parentPath, parentName) = Executable.GetDirectoryAndName(dir);
+                if (system.Files.All(f => f.Hidden != hidden || f.Path != parentPath || f.Name != parentName))
+                    Folder(system, login, parentName, parentPath, hidden);
+            }
+
+            string rootPath = file.FullPath;
+            foreach (var f in toModify)
+                f.Path = Executable.GetNormalized(
+                    Executable.Combine(target, Path.GetRelativePath(rootPath, f.Path)));
+
+            file.Name = name;
+            Database.UpdateBulk(toModify);
         }
 
         /// <summary>
@@ -456,91 +635,28 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
-        /// Moves a file using file access.
-        /// </summary>
-        /// <param name="file">File to move.</param>
-        /// <param name="targetName">Target filename.</param>
-        /// <param name="targetPath">Target directory.</param>
-        /// <param name="login">Login to attempt operation with.</param>
-        /// <param name="hidden">If true, hide from normal filesystem/</param>
-        /// <exception cref="IOException">Thrown when there is an issue preventing the operation (e.g. access or already existing).</exception>
-        public void MoveFile(FileModel file, string targetName, string targetPath, LoginModel login,
-            bool hidden = false)
-        {
-            var system = file.System;
-            if (!system.TryGetFile(file.FullPath, login, out var result, out _, out _, hidden: hidden) ||
-                !file.CanWrite(login))
-                throw new IOException("Permission denied");
-
-            if (system.Files.Any(f => f.Hidden == hidden && f.Path == targetPath && f.Name == targetName))
-                throw new IOException(
-                    $"The specified path already exists: {Executable.Combine(targetPath, targetName)}");
-            system.TryGetFile(targetPath, login, out result, out _, out _, hidden: hidden);
-            switch (result)
-            {
-                case ReadAccessResult.Readable:
-                    // Not possible if fs search didn't find one
-                    break;
-                case ReadAccessResult.NotReadable:
-                    throw new IOException("Permission denied");
-                case ReadAccessResult.NoExist:
-                    break;
-            }
-
-            // Generate dependent folders
-            if (targetPath != "/")
-            {
-                var (parentPath, parentName) = Executable.GetDirectoryAndName(targetPath);
-                if (system.Files.All(f => f.Hidden != hidden || f.Path != parentPath || f.Name != parentName))
-                    Folder(system, login, parentName, parentPath, hidden);
-            }
-
-            if (file.Kind == FileModel.FileKind.Folder)
-            {
-                var toModify = new List<FileModel>();
-                string rootPath = file.FullPath;
-                Queue<FileModel> queue = new();
-                queue.Enqueue(file);
-                while (queue.TryDequeue(out var f))
-                {
-                    string fp = f.FullPath;
-                    foreach (var fx in system.Files.Where(ft => ft.Path == fp))
-                    {
-                        if (!fx.CanWrite(login)) throw new IOException("Permission denied");
-                        if (fx.Kind == FileModel.FileKind.Folder)
-                            queue.Enqueue(fx);
-                        toModify.Add(fx);
-                    }
-                }
-
-                string targetFp = Executable.GetNormalized(Executable.Combine(targetPath, targetName));
-                foreach (var f in toModify)
-                    f.Path = Executable.Combine(targetFp, Path.GetRelativePath(rootPath, f.Path));
-
-                Database.UpdateBulk(toModify);
-            }
-
-            file.Path = targetPath;
-            file.Name = targetName;
-            Database.Update(file);
-        }
-
-
-        /// <summary>
         /// Removes a file from the world, recursively.
         /// </summary>
         /// <param name="file">Model to remove.</param>
         /// <param name="login">Login to attempt operation with.</param>
         public void RemoveFile(FileModel file, LoginModel login)
         {
-            if (!file.CanWrite(login)) throw new IOException("Permission denied");
-            string self = file.FullPath;
             var system = file.System;
-            var tmp = new List<FileModel>(system.Files.Where(f => f.Path == self));
-            foreach (var f in tmp)
-                RemoveFile(f, login);
-            system.Files.Remove(file);
-            Database.Delete(file);
+            var toRemove = new List<FileModel>();
+            Queue<FileModel> queue = new();
+            queue.Enqueue(file);
+            while (queue.TryDequeue(out var f))
+            {
+                string fp = f.FullPath;
+                if (!f.CanWrite(login)) throw new IOException("Permission denied");
+                if (f.Kind == FileModel.FileKind.Folder)
+                    foreach (var fx in system.Files.Where(ft => ft.Path == fp))
+                        queue.Enqueue(fx);
+                toRemove.Add(f);
+            }
+
+            system.Files.ExceptWith(toRemove);
+            Database.DeleteBulk(toRemove);
         }
     }
 }

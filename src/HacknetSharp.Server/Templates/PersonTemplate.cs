@@ -128,6 +128,13 @@ namespace HacknetSharp.Server.Templates
         }
 
         /// <summary>
+        /// efault constructor for deserialization only.
+        /// </summary>
+        public PersonTemplate()
+        {
+        }
+
+        /// <summary>
         /// Generates a person using this template.
         /// </summary>
         /// <param name="spawn">World spawner instance.</param>

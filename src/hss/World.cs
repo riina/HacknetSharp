@@ -264,7 +264,9 @@ namespace hss
                 ProgramContext.InvocationType.Connect => systemModel.ConnectCommandLine != null
                     ? ServerUtil.SplitCommandLine(systemModel.ConnectCommandLine)
                     : Array.Empty<string>(),
-                ProgramContext.InvocationType.StartUp => ServerUtil.SplitCommandLine(Model.StartupCommandLine),
+                ProgramContext.InvocationType.StartUp => Model.StartupCommandLine != null
+                    ? ServerUtil.SplitCommandLine(Model.StartupCommandLine)
+                    : Array.Empty<string>(),
                 _ => programContext.Argv
             };
 

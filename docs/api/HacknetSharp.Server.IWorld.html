@@ -308,16 +308,16 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IWorld_CompleteRecurse_HacknetSharp_Server_Process_HacknetSharp_Server_Process_CompletionKind_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.CompleteRecurse(HacknetSharp.Server.Process%2CHacknetSharp.Server.Process.CompletionKind)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L52">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L53">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_CompleteRecurse_" data-uid="HacknetSharp.Server.IWorld.CompleteRecurse*"></a>
   <h4 id="HacknetSharp_Server_IWorld_CompleteRecurse_HacknetSharp_Server_Process_HacknetSharp_Server_Process_CompletionKind_" data-uid="HacknetSharp.Server.IWorld.CompleteRecurse(HacknetSharp.Server.Process,HacknetSharp.Server.Process.CompletionKind)">CompleteRecurse(Process, Process.CompletionKind)</h4>
-  <div class="markdown level1 summary"><p>Completes the specified process recursively with the specified completion kind.</p>
+  <div class="markdown level1 summary"><p>Attempts to complete the specified process recursively with the specified completion kind.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void CompleteRecurse(Process process, Process.CompletionKind completionKind)</code></pre>
+    <pre><code class="lang-csharp hljs">bool CompleteRecurse(Process process, Process.CompletionKind completionKind)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -343,12 +343,28 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>False if the process failed to terminate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IWorld_ExecuteCommand_HacknetSharp_Server_ProgramContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.ExecuteCommand(HacknetSharp.Server.ProgramContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L112">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L113">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_ExecuteCommand_" data-uid="HacknetSharp.Server.IWorld.ExecuteCommand*"></a>
   <h4 id="HacknetSharp_Server_IWorld_ExecuteCommand_HacknetSharp_Server_ProgramContext_" data-uid="HacknetSharp.Server.IWorld.ExecuteCommand(HacknetSharp.Server.ProgramContext)">ExecuteCommand(ProgramContext)</h4>
@@ -382,7 +398,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IWorld_GetProgramInfo_System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L106">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L107">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_GetProgramInfo_" data-uid="HacknetSharp.Server.IWorld.GetProgramInfo*"></a>
   <h4 id="HacknetSharp_Server_IWorld_GetProgramInfo_System_Nullable_System_String__" data-uid="HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable{System.String})">GetProgramInfo(Nullable&lt;String&gt;)</h4>
@@ -432,7 +448,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IWorld_StartProgram_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.IPersonContext%2CHacknetSharp.Server.Models.PersonModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L82">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L83">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_StartProgram_" data-uid="HacknetSharp.Server.IWorld.StartProgram*"></a>
   <h4 id="HacknetSharp_Server_IWorld_StartProgram_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_" data-uid="HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String)">StartProgram(IPersonContext, PersonModel, SystemModel, LoginModel, String)</h4>
@@ -510,7 +526,7 @@ or the executable doesn't exist, or if there isn't an active shell.</p>
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IWorld_StartService_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.PersonModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L98">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L99">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_StartService_" data-uid="HacknetSharp.Server.IWorld.StartService*"></a>
   <h4 id="HacknetSharp_Server_IWorld_StartService_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_" data-uid="HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String)">StartService(PersonModel, SystemModel, LoginModel, String)</h4>
@@ -582,7 +598,7 @@ or the executable doesn't exist.</p>
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_IWorld_StartShell_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext%2CHacknetSharp.Server.Models.PersonModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L66">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/IWorld.cs/#L67">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_StartShell_" data-uid="HacknetSharp.Server.IWorld.StartShell*"></a>
   <h4 id="HacknetSharp_Server_IWorld_StartShell_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_" data-uid="HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String)">StartShell(IPersonContext, PersonModel, SystemModel, LoginModel, String)</h4>

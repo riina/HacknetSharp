@@ -75,7 +75,7 @@ namespace HacknetSharp.Server.CorePrograms
                                 lclName = GetFileName(target);
                             }
 
-                            spawn.MoveFile(closest, lclName, lclTarget, login);
+                            spawn.MoveFile(closest, system, login, lclName, lclTarget);
                         }
                         catch (IOException e)
                         {

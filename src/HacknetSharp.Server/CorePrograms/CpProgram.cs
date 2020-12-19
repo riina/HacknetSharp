@@ -75,7 +75,7 @@ namespace HacknetSharp.Server.CorePrograms
                                 lclName = GetFileName(target);
                             }
 
-                            spawn.Duplicate(system, login, lclName, lclTarget, closest);
+                            spawn.CopyFile(closest, system, login, lclName, lclTarget);
                         }
                         catch (IOException e)
                         {

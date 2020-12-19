@@ -138,11 +138,11 @@ selected (weighted)
 
 `hss new world -n <templateName>`
 
-* Label(`string`): label to use on world (just name it your template's
-name, this is only for listing the worlds with `hss world list`).
 * PlayerSystemTemplate(`string`): template to use for players.
-* PlayerAddressRange(`string`): CIDR range string for address pool
-* StartupCommandLine(`string`): Initial command for clients to execute.
+* PlayerAddressRange(`string?`): CIDR range string for address pool
+* StartupCommandLine(`string?`): Initial command for clients to execute.
+* Label(`string?`): label to use on world (just name it your template's
+  name, this is only for listing the worlds with `hss world list`).
 * People(`List<PersonGroup>?`): Person generators to populate world.
   - PersonTemplate(`string`): Person template to generate with.
   - Count(`int?`): Number of persons to generate with this template 

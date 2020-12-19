@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Command line for new players.
         /// </summary>
-        public virtual string StartupCommandLine { get; set; } = null!;
+        public virtual string? StartupCommandLine { get; set; } = null!;
 
         /// <summary>
         /// Address range for new players.

@@ -2,7 +2,7 @@ Name: "{Owner.UserName}_HOMEBASE KEKW"
 OsName: EncomOS
 Users:
   daphne+: andthenonedayIgotin
-  samwise: genshin
+  seiteki: genshin
 RequiredExploits: 10
 Filesystem:
   "{Owner.UserName}":
