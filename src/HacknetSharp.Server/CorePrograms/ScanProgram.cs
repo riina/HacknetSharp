@@ -25,7 +25,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             double curTime = context.World.Time;
             var sb = new StringBuilder();
             if (argv.Length != 1)

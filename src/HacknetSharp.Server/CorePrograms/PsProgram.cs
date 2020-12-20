@@ -19,7 +19,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             bool all = false;
             foreach (var arg in argv)
             {

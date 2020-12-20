@@ -19,7 +19,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
 
             if (!ServerUtil.TryParseScpConString(argv.Length == 2 ? "" : argv[1], out string? name, out string? host,
                 out string? path,

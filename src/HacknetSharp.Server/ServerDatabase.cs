@@ -95,7 +95,8 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc />
-        public async Task<List<TResult>> WhereAsync<TResult>(Expression<Func<TResult, bool>> predicate) where TResult : class
+        public async Task<List<TResult>> WhereAsync<TResult>(Expression<Func<TResult, bool>> predicate)
+            where TResult : class
         {
             _waitHandle.WaitOne();
             try

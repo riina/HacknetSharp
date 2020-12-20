@@ -417,6 +417,48 @@ namespace HacknetSharp.Server
         public static string GetHexTimestamp(double time) => $"{(long)Math.Floor(time * 1000.0):X16}";
 
         /// <summary>
+        /// Isolate flags from argument list.
+        /// </summary>
+        /// <param name="argv">Argument lines to sort.</param>
+        /// <returns>Options and arguments.</returns>
+        public static (HashSet<string> opts, List<string> args) IsolateFlags(IReadOnlyList<string> argv)
+        {
+            HashSet<string> opts = new();
+            List<string> args = new();
+            bool argTime = false;
+            foreach (var str in argv)
+            {
+                if (argTime)
+                {
+                    opts.Add(str);
+                    continue;
+                }
+
+                if (str.Length == 0 || str[0] != '-')
+                {
+                    args.Add(str);
+                    continue;
+                }
+
+                if (str.Length < 2) continue;
+                if (str[1] == '-')
+                {
+                    if (str.Length == 2)
+                    {
+                        argTime = true;
+                        continue;
+                    }
+
+                    opts.Add(str[2..]);
+                }
+                else
+                    opts.UnionWith(str.Skip(2).Select(c => c.ToString()));
+            }
+
+            return (opts, args);
+        }
+
+        /// <summary>
         /// Splits a command line into its components.
         /// </summary>
         /// <param name="line">String to split.</param>

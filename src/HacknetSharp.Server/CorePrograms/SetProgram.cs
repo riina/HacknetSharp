@@ -27,7 +27,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             var shell = context.Shell;
             var sb = new StringBuilder();
             if (argv.Length == 1)

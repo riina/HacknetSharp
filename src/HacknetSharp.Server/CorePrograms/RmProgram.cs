@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.CorePrograms
             var user = context.User;
             if (!user.Connected) yield break;
             var system = context.System;
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             if (argv.Length < 2)
             {
                 user.WriteEventSafe(Output("At least 1 operand is required by this command:\n\t<file>...\n"));

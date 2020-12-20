@@ -25,7 +25,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            var argv = context.Argv;
+            string[] argv = context.Argv;
             IEnumerable<SystemModel> systems;
             if (argv.Length != 1)
             {
