@@ -54,6 +54,7 @@ namespace hss
         private void TickOverflows<T>(HashSet<T> processes, HashSet<Process> tmpProcesses,
             HashSet<SystemModel> tmpSystems) where T : Process
         {
+            tmpSystems.Clear();
             foreach (var process in processes)
             {
                 var system = process.Context.System;
