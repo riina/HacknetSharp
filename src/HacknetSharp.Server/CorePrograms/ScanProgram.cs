@@ -40,8 +40,7 @@ namespace HacknetSharp.Server.CorePrograms
                     }
                     else
                     {
-                        var remote = context.World.Model.Systems.FirstOrDefault(s => s.Address == host);
-                        if (remote == null)
+                        if (!context.World.TryGetSystem(host, out var remote))
                         {
                             user.WriteEventSafe(Output($"Invalid host {addr}\n"));
                             user.FlushSafeAsync();

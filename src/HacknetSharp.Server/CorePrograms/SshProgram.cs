@@ -58,8 +58,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             user.WriteEventSafe(Output("Connecting...\n"));
-            var system = context.World.Model.Systems.FirstOrDefault(s => s.Address == hostUint);
-            if (system == null)
+            if (!context.World.TryGetSystem(hostUint, out var system))
             {
                 user.WriteEventSafe(Output("ssh: No route to host\n"));
                 user.FlushSafeAsync();

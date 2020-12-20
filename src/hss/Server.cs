@@ -230,7 +230,17 @@ namespace hss
             }
         }
 
-        public void QueueConnectCommand(HostConnection context, UserModel user, Guid operationId, int conWidth)
+        public bool DefaultSystemAvailable(UserModel userModel)
+        {
+            if (!Worlds.TryGetValue(userModel.ActiveWorld, out var world)) return false;
+            var worldModel = world.Model;
+            var person = userModel.Identities.FirstOrDefault(p => p.World == worldModel);
+            if (person == null) return false;
+            if (!world.TryGetSystem(person.DefaultSystem, out var system)) return false;
+            return system.BootTime <= world.Time;
+        }
+
+        public bool QueueConnectCommand(HostConnection context, UserModel user, Guid operationId, int conWidth)
         {
             _queueOp.WaitOne();
             try
@@ -242,6 +252,14 @@ namespace hss
                     Database.Update(user);
                 }
 
+                if (!DefaultSystemAvailable(user))
+                {
+                    context.WriteEventSafe(
+                        Program.Output("Your default system is not available, it may be restarting.\n"));
+                    _ = context.FlushSafeAsync();
+                    return false;
+                }
+
                 var person = context.GetPerson(world);
 
                 _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context, person,
@@ -249,6 +267,7 @@ namespace hss
                     invocationType: person.StartedUp
                         ? ProgramContext.InvocationType.Connect
                         : ProgramContext.InvocationType.StartUp, conWidth: conWidth));
+                return true;
             }
             finally
             {

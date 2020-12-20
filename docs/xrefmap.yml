@@ -2400,6 +2400,25 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.CorePrograms.SetProgram.Run
   nameWithType: SetProgram.Run
+- uid: HacknetSharp.Server.CorePrograms.ShellProgram
+  name: ShellProgram
+  href: api/HacknetSharp.Server.CorePrograms.ShellProgram.html
+  commentId: T:HacknetSharp.Server.CorePrograms.ShellProgram
+  fullName: HacknetSharp.Server.CorePrograms.ShellProgram
+  nameWithType: ShellProgram
+- uid: HacknetSharp.Server.CorePrograms.ShellProgram.Run(HacknetSharp.Server.ProgramContext)
+  name: Run(ProgramContext)
+  href: api/HacknetSharp.Server.CorePrograms.ShellProgram.html#HacknetSharp_Server_CorePrograms_ShellProgram_Run_HacknetSharp_Server_ProgramContext_
+  commentId: M:HacknetSharp.Server.CorePrograms.ShellProgram.Run(HacknetSharp.Server.ProgramContext)
+  fullName: HacknetSharp.Server.CorePrograms.ShellProgram.Run(HacknetSharp.Server.ProgramContext)
+  nameWithType: ShellProgram.Run(ProgramContext)
+- uid: HacknetSharp.Server.CorePrograms.ShellProgram.Run*
+  name: Run
+  href: api/HacknetSharp.Server.CorePrograms.ShellProgram.html#HacknetSharp_Server_CorePrograms_ShellProgram_Run_
+  commentId: Overload:HacknetSharp.Server.CorePrograms.ShellProgram.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CorePrograms.ShellProgram.Run
+  nameWithType: ShellProgram.Run
 - uid: HacknetSharp.Server.CorePrograms.SolveProgram
   name: SolveProgram
   href: api/HacknetSharp.Server.CorePrograms.SolveProgram.html
@@ -3606,6 +3625,22 @@ references:
   fullName.vb: HacknetSharp.Server.IServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: IServerDatabase.UpdateBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: IServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
+- uid: HacknetSharp.Server.IServerDatabase.WhereAsync*
+  name: WhereAsync
+  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_WhereAsync_
+  commentId: Overload:HacknetSharp.Server.IServerDatabase.WhereAsync
+  isSpec: "True"
+  fullName: HacknetSharp.Server.IServerDatabase.WhereAsync
+  nameWithType: IServerDatabase.WhereAsync
+- uid: HacknetSharp.Server.IServerDatabase.WhereAsync``1(Expression{Func{``0,System.Boolean}})
+  name: WhereAsync<TResult>(Expression<Func<TResult, Boolean>>)
+  href: api/HacknetSharp.Server.IServerDatabase.html#HacknetSharp_Server_IServerDatabase_WhereAsync__1_Expression_Func___0_System_Boolean___
+  commentId: M:HacknetSharp.Server.IServerDatabase.WhereAsync``1(Expression{Func{``0,System.Boolean}})
+  name.vb: WhereAsync(Of TResult)(Expression(Of Func(Of TResult, Boolean)))
+  fullName: HacknetSharp.Server.IServerDatabase.WhereAsync<TResult>(Expression<Func<TResult, System.Boolean>>)
+  fullName.vb: HacknetSharp.Server.IServerDatabase.WhereAsync(Of TResult)(Expression(Of Func(Of TResult, System.Boolean)))
+  nameWithType: IServerDatabase.WhereAsync<TResult>(Expression<Func<TResult, Boolean>>)
+  nameWithType.vb: IServerDatabase.WhereAsync(Of TResult)(Expression(Of Func(Of TResult, Boolean)))
 - uid: HacknetSharp.Server.IWorld
   name: IWorld
   href: api/HacknetSharp.Server.IWorld.html
@@ -3784,6 +3819,31 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IWorld.Time
   nameWithType: IWorld.Time
+- uid: HacknetSharp.Server.IWorld.TryGetSystem(Guid,HacknetSharp.Server.Models.SystemModel@)
+  name: TryGetSystem(Guid, out SystemModel)
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_TryGetSystem_Guid_HacknetSharp_Server_Models_SystemModel__
+  commentId: M:HacknetSharp.Server.IWorld.TryGetSystem(Guid,HacknetSharp.Server.Models.SystemModel@)
+  name.vb: TryGetSystem(Guid, ByRef SystemModel)
+  fullName: HacknetSharp.Server.IWorld.TryGetSystem(Guid, out HacknetSharp.Server.Models.SystemModel)
+  fullName.vb: HacknetSharp.Server.IWorld.TryGetSystem(Guid, ByRef HacknetSharp.Server.Models.SystemModel)
+  nameWithType: IWorld.TryGetSystem(Guid, out SystemModel)
+  nameWithType.vb: IWorld.TryGetSystem(Guid, ByRef SystemModel)
+- uid: HacknetSharp.Server.IWorld.TryGetSystem(System.UInt32,HacknetSharp.Server.Models.SystemModel@)
+  name: TryGetSystem(UInt32, out SystemModel)
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_TryGetSystem_System_UInt32_HacknetSharp_Server_Models_SystemModel__
+  commentId: M:HacknetSharp.Server.IWorld.TryGetSystem(System.UInt32,HacknetSharp.Server.Models.SystemModel@)
+  name.vb: TryGetSystem(UInt32, ByRef SystemModel)
+  fullName: HacknetSharp.Server.IWorld.TryGetSystem(System.UInt32, out HacknetSharp.Server.Models.SystemModel)
+  fullName.vb: HacknetSharp.Server.IWorld.TryGetSystem(System.UInt32, ByRef HacknetSharp.Server.Models.SystemModel)
+  nameWithType: IWorld.TryGetSystem(UInt32, out SystemModel)
+  nameWithType.vb: IWorld.TryGetSystem(UInt32, ByRef SystemModel)
+- uid: HacknetSharp.Server.IWorld.TryGetSystem*
+  name: TryGetSystem
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_TryGetSystem_
+  commentId: Overload:HacknetSharp.Server.IWorld.TryGetSystem
+  isSpec: "True"
+  fullName: HacknetSharp.Server.IWorld.TryGetSystem
+  nameWithType: IWorld.TryGetSystem
 - uid: HacknetSharp.Server.Model`1
   name: Model<T>
   href: api/HacknetSharp.Server.Model-1.html
@@ -6086,6 +6146,22 @@ references:
   fullName.vb: HacknetSharp.Server.ServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
   nameWithType: ServerDatabase.UpdateBulk<TEntry>(IEnumerable<TEntry>)
   nameWithType.vb: ServerDatabase.UpdateBulk(Of TEntry)(IEnumerable(Of TEntry))
+- uid: HacknetSharp.Server.ServerDatabase.WhereAsync*
+  name: WhereAsync
+  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_WhereAsync_
+  commentId: Overload:HacknetSharp.Server.ServerDatabase.WhereAsync
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ServerDatabase.WhereAsync
+  nameWithType: ServerDatabase.WhereAsync
+- uid: HacknetSharp.Server.ServerDatabase.WhereAsync``1(Expression{Func{``0,System.Boolean}})
+  name: WhereAsync<TResult>(Expression<Func<TResult, Boolean>>)
+  href: api/HacknetSharp.Server.ServerDatabase.html#HacknetSharp_Server_ServerDatabase_WhereAsync__1_Expression_Func___0_System_Boolean___
+  commentId: M:HacknetSharp.Server.ServerDatabase.WhereAsync``1(Expression{Func{``0,System.Boolean}})
+  name.vb: WhereAsync(Of TResult)(Expression(Of Func(Of TResult, Boolean)))
+  fullName: HacknetSharp.Server.ServerDatabase.WhereAsync<TResult>(Expression<Func<TResult, System.Boolean>>)
+  fullName.vb: HacknetSharp.Server.ServerDatabase.WhereAsync(Of TResult)(Expression(Of Func(Of TResult, System.Boolean)))
+  nameWithType: ServerDatabase.WhereAsync<TResult>(Expression<Func<TResult, Boolean>>)
+  nameWithType.vb: ServerDatabase.WhereAsync(Of TResult)(Expression(Of Func(Of TResult, Boolean)))
 - uid: HacknetSharp.Server.ServerDatabaseContext
   name: ServerDatabaseContext
   href: api/HacknetSharp.Server.ServerDatabaseContext.html

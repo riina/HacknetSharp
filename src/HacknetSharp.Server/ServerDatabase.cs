@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -86,6 +87,20 @@ namespace HacknetSharp.Server
             try
             {
                 return await _context.Set<TResult>().Where(u => keys.Contains(u.Key)).ToListAsync().Caf();
+            }
+            finally
+            {
+                _waitHandle.Set();
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<List<TResult>> WhereAsync<TResult>(Expression<Func<TResult, bool>> predicate) where TResult : class
+        {
+            _waitHandle.WaitOne();
+            try
+            {
+                return await _context.Set<TResult>().Where(predicate).ToListAsync().Caf();
             }
             finally
             {

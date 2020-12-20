@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HacknetSharp.Server
@@ -30,12 +31,19 @@ namespace HacknetSharp.Server
             where TResult : Model<TKey> where TKey : IEquatable<TKey>;
 
         /// <summary>
+        /// Filters based on predicate.
+        /// </summary>
+        /// <param name="predicate">Predicate to check.</param>
+        /// <typeparam name="TResult">Result type.</typeparam>
+        /// <returns>List of results.</returns>
+        Task<List<TResult>> WhereAsync<TResult>(Expression<Func<TResult, bool>> predicate) where TResult : class;
+
+        /// <summary>
         /// Adds an entity to the database.
         /// </summary>
         /// <param name="entity">Entity to add.</param>
         /// <typeparam name="TEntry">The entity type.</typeparam>
         void Add<TEntry>(TEntry entity) where TEntry : notnull;
-
 
         /// <summary>
         /// Adds a group of entities to the database.

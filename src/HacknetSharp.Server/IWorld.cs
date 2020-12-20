@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 
@@ -43,6 +45,22 @@ namespace HacknetSharp.Server
         /// Previous update's world time.
         /// </summary>
         double PreviousTime { get; }
+
+        /// <summary>
+        /// Attempts to find a system with the specified ID.
+        /// </summary>
+        /// <param name="id">System ID.</param>
+        /// <param name="system">Retrieved system.</param>
+        /// <returns>True if system found.</returns>
+        bool TryGetSystem(Guid id, [NotNullWhen(true)] out SystemModel? system);
+
+        /// <summary>
+        /// Attempts to find a system with the specified address.
+        /// </summary>
+        /// <param name="address">System address.</param>
+        /// <param name="system">Retrieved system.</param>
+        /// <returns>True if system found.</returns>
+        bool TryGetSystem(uint address, [NotNullWhen(true)] out SystemModel? system);
 
         /// <summary>
         /// Attempts to complete the specified process recursively with the specified completion kind.

@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Client.html",
-          "hash": "M+mVhgcONYggLZGWhBxcoQ=="
+          "hash": "/1tLXFDo40Ph1w2efBaN9w=="
         }
       },
       "is_incremental": false,
@@ -93,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.ClientDisconnectEvent.html",
-          "hash": "gY0yHb+3nnOdyYBSQzPdPg=="
+          "hash": "V56bpTz1f5bisAt25EMUrw=="
         }
       },
       "is_incremental": false,
@@ -105,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.ClientResponseEvent.html",
-          "hash": "zvtlpWGm9SkBa4Pn5DKNhQ=="
+          "hash": "EzJTmYSZUM1l66aXjhgLdw=="
         }
       },
       "is_incremental": false,
@@ -117,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.CommandEvent.html",
-          "hash": "FRxkDOdk9tLDN9wpLu3yoA=="
+          "hash": "lUoPG7Zp5qd3DDFdKD/F3Q=="
         }
       },
       "is_incremental": false,
@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.EditResponseEvent.html",
-          "hash": "sCzeCY7Z/XTGOw/YQct3Tg=="
+          "hash": "OUz5yHGUDaR416+XODWr6Q=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.InitialCommandEvent.html",
-          "hash": "XpizYVs2jbqCtYAR9JjqYQ=="
+          "hash": "F1zldsVv+WQZdvQCwGsU9g=="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.InputResponseEvent.html",
-          "hash": "GWzqdvAPrsjl7YuOEhQTjQ=="
+          "hash": "60IoiWpmORdjI/OfE5tW9Q=="
         }
       },
       "is_incremental": false,
@@ -165,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.LoginEvent.html",
-          "hash": "W5LW24+Vn1uJF5MFYaHUZA=="
+          "hash": "HDSz7vYlNFtJtGUGdUhG1g=="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Client.RegistrationTokenForgeRequestEvent.html",
-          "hash": "HZmHYfLukP0TWF/g78AKvw=="
+          "hash": "MjltusLl0EPkLAEOQ4i7zw=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.AlertEvent.html",
-          "hash": "zhlyCMCFEmiOSAnVBkG5kw=="
+          "hash": "mPPKSJUewPMq+YF/v5/erg=="
         }
       },
       "is_incremental": false,
@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.EditRequestEvent.html",
-          "hash": "LcwsnnaX75qZc1jZteqcPg=="
+          "hash": "+iVvHS50leI1SQTKaWGFxg=="
         }
       },
       "is_incremental": false,
@@ -249,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.FailBaseServerEvent.html",
-          "hash": "48qUnXqVmsS9ThDxbYwa3Q=="
+          "hash": "Xm+l35nlZvRj1zBY28sr8A=="
         }
       },
       "is_incremental": false,
@@ -261,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.InputRequestEvent.html",
-          "hash": "P8mDWCCV4blSiu4gGJVMzw=="
+          "hash": "Y2TJGEAJQtY+fOCZHc97Qw=="
         }
       },
       "is_incremental": false,
@@ -285,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.OperationCompleteEvent.html",
-          "hash": "W60SXGD6vSxiAb4F2M9x5A=="
+          "hash": "RNjGhOE7DzLxhact7JPU4Q=="
         }
       },
       "is_incremental": false,
@@ -297,7 +297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.OutputEvent.html",
-          "hash": "BAZXTABXycUF7MIZdEuB3g=="
+          "hash": "qg3ZgsTspLoWAlUAD9skow=="
         }
       },
       "is_incremental": false,
@@ -309,7 +309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.RegistrationTokenForgeResponseEvent.html",
-          "hash": "8WDP+11TzzIw8Pj6cGKnQw=="
+          "hash": "EGsTH5HTlNdaKWSekZALrw=="
         }
       },
       "is_incremental": false,
@@ -321,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.ServerDisconnectEvent.html",
-          "hash": "/aNv9QVRDqt6N8ptZNHi5A=="
+          "hash": "rHmRXVvt9pm4KpMi/Ce99A=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.ShellPromptEvent.html",
-          "hash": "86brRKnygQKN8AG0S8HvQw=="
+          "hash": "SOyYXwAakuMMOrqmb0RdVA=="
         }
       },
       "is_incremental": false,
@@ -345,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Events.Server.UserInfoEvent.html",
-          "hash": "e7wvP7WAiIX8wzZHanrptg=="
+          "hash": "nDWf8ZieeLypsEziQHdPwQ=="
         }
       },
       "is_incremental": false,
@@ -701,6 +701,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.Server.CorePrograms.ShellProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.Server.CorePrograms.ShellProgram.html",
+          "hash": "RXHfJUnFzTgpE/CFrKRFMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/HacknetSharp.Server.CorePrograms.SolveProgram.yml",
       "output": {
         ".html": {
@@ -729,7 +741,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.html",
-          "hash": "/LIQkp/1jdVugA1dARs2ow=="
+          "hash": "jE2+2C/Bqo3+ibhdbyM5cw=="
         }
       },
       "is_incremental": false,
@@ -873,7 +885,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.IServerDatabase.html",
-          "hash": "d8uHTR7VqOhUWhdELdoMUw=="
+          "hash": "hB34BpYc7S86YbrXrmnJWw=="
         }
       },
       "is_incremental": false,
@@ -885,7 +897,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.IWorld.html",
-          "hash": "GFaG7ci195H8Idf4lBlJNg=="
+          "hash": "fFgbohlR5y6Pr/uYJgcd/w=="
         }
       },
       "is_incremental": false,
@@ -1149,7 +1161,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Program.html",
-          "hash": "b6eCLl+vmzBwuQ4s8+wglA=="
+          "hash": "DD4Yi07Jk9qO6+h9PjCMAA=="
         }
       },
       "is_incremental": false,
@@ -1233,7 +1245,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.ServerDatabase.html",
-          "hash": "CF+pxeHWj/hzbqMC0wPGAA=="
+          "hash": "vJESTNwsLHI3im6S7ki8Ag=="
         }
       },
       "is_incremental": false,
@@ -1533,7 +1545,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Util.html",
-          "hash": "RockwO0DnXF5Wc+UEGEh8A=="
+          "hash": "4bGSI8cQyY8vl+bNKbvXrQ=="
         }
       },
       "is_incremental": false,
@@ -1569,7 +1581,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "9OKWe573lrTeUpBYf58SWA=="
+          "hash": "X4PKeAM4e9k+qG+sMldFWg=="
         }
       },
       "is_incremental": false,
@@ -1584,7 +1596,7 @@
           "hash": "4pG4iJB8Ln/KcXFePScifA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1608,7 +1620,7 @@
           "hash": "MyAMc3WEGL6hykhh3iuO7g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1620,7 +1632,7 @@
           "hash": "pzil7iXPMJLVqtGWQYsZQg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1665,7 +1677,7 @@
           "hash": "GcJPgXeMO5/lpcvbTKmwTA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1684,25 +1696,23 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because last build info is missing.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0,
-        "full_build_reason_code": "NoAvailableBuildCache"
+        "skipped_file_count": 0
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 5,
-          "skipped_file_count": 0
+          "skipped_file_count": 5
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 129,
-          "skipped_file_count": 0
+          "total_file_count": 130,
+          "skipped_file_count": 95
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
@@ -1722,8 +1732,8 @@
     },
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0

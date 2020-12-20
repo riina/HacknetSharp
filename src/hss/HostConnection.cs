@@ -192,7 +192,13 @@ namespace hss
                                     });
                                 }
 
-                                _server.QueueConnectCommand(this, _user, op, command.ConWidth);
+                                if (!_server.QueueConnectCommand(this, _user, op, command.ConWidth))
+                                {
+                                    WriteEvent(new ServerDisconnectEvent {Reason = "Default system unavailable."});
+                                    await FlushAsync(cancellationToken).Caf();
+                                    return;
+                                }
+
                                 _ranInit = true;
                             }
 
@@ -209,7 +215,13 @@ namespace hss
 
                             if (!_ranInit)
                             {
-                                _server.QueueConnectCommand(this, _user, op, command.ConWidth);
+                                if (!_server.QueueConnectCommand(this, _user, op, command.ConWidth))
+                                {
+                                    WriteEvent(new ServerDisconnectEvent {Reason = "Default system unavailable."});
+                                    await FlushAsync(cancellationToken).Caf();
+                                    return;
+                                }
+
                                 _ranInit = true;
                             }
                             else

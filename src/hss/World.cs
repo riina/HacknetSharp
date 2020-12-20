@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp;
 using HacknetSharp.Events.Server;
@@ -25,6 +26,7 @@ namespace hss
 
         private readonly HashSet<ShellProcess> _shellProcesses;
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
+        private readonly HashSet<SystemModel> _tmpSystems;
 
 
         internal World(Server server, WorldModel model, IServerDatabase database)
@@ -38,12 +40,30 @@ namespace hss
             _tmpProcesses = new HashSet<Process>();
             _shellProcesses = new HashSet<ShellProcess>();
             _tmpShellProcesses = new HashSet<ShellProcess>();
+            _tmpSystems = new HashSet<SystemModel>();
         }
 
         public void Tick()
         {
             TickSet(_processes, _tmpProcesses);
             TickSet(_shellProcesses, _tmpShellProcesses);
+            // Check processes for memory overflow (shells are static and therefore don't matter)
+            TickOverflows(_processes, _tmpProcesses, _tmpSystems);
+        }
+
+        private void TickOverflows<T>(HashSet<T> processes, HashSet<Process> tmpProcesses,
+            HashSet<SystemModel> tmpSystems) where T : Process
+        {
+            foreach (var process in processes)
+            {
+                var system = process.Context.System;
+                if (!tmpSystems.Add(system) || system.GetUsedMemory() <= system.SystemMemory) continue;
+                tmpProcesses.UnionWith(system.Processes.Values.Where(p => p.Context.ParentPid == 0));
+                foreach (var p in tmpProcesses)
+                    CompleteRecurse(p, Process.CompletionKind.KillRemote);
+                tmpProcesses.Clear();
+                system.BootTime = Time + Model.RebootDuration;
+            }
         }
 
         private void TickSet<T>(HashSet<T> processes, HashSet<T> tmpProcesses)
@@ -95,6 +115,20 @@ namespace hss
             }
         }
 
+        public bool TryGetSystem(Guid id, [NotNullWhen(true)] out SystemModel? system)
+        {
+            //system = Database.GetAsync<Guid, SystemModel>(id).Result;
+            system = Model.Systems.FirstOrDefault(f => f.Key == id);
+            return system != null;
+        }
+
+        public bool TryGetSystem(uint address, [NotNullWhen(true)] out SystemModel? system)
+        {
+            //system = Database.WhereAsync<SystemModel>(s => s.Address == address).Result.FirstOrDefault();
+            system = Model.Systems.FirstOrDefault(f => f.Address == address);
+            return system != null;
+        }
+
         public bool CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
             if (process.Completed != null) return true;
@@ -140,7 +174,7 @@ namespace hss
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel,
                     ServerUtil.SplitCommandLine(line));
-            return StartShell(programContext, Server.IntrinsicPrograms["shell"].Item1);
+            return StartShell(programContext, Server.IntrinsicPrograms[ServerConstants.ShellName].Item1);
         }
 
         public ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel,

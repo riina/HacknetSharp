@@ -62,8 +62,7 @@ namespace HacknetSharp.Server.CorePrograms
                 password = input.Input!.Input;
             }
 
-            var rSystem = context.World.Model.Systems.FirstOrDefault(s => s.Address == hostUint);
-            if (rSystem == null)
+            if (!context.World.TryGetSystem(hostUint, out var rSystem))
             {
                 user.WriteEventSafe(Output("scp: No route to host\n"));
                 user.FlushSafeAsync();
