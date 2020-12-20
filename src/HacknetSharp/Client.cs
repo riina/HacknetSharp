@@ -247,7 +247,9 @@ namespace HacknetSharp
         {
             if (sslPolicyErrors == SslPolicyErrors.None)
                 return true;
-            _logger.LogError($"Certificate error: {sslPolicyErrors}");
+            _logger.LogError($"Certificate error: {sslPolicyErrors}\n" +
+                             $"Certificate issuer: {certificate.Issuer}\n" +
+                             $"Certificate subject: {certificate.Subject}");
 
             // Do not allow this client to communicate with unauthenticated servers.
             return false;

@@ -262,7 +262,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_CopyFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L457">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L478">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_CopyFile_" data-uid="HacknetSharp.Server.WorldSpawn.CopyFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_CopyFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)">CopyFile(FileModel, SystemModel, LoginModel, String, Boolean)</h4>
@@ -336,7 +336,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_CopyFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L475">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L496">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_CopyFile_" data-uid="HacknetSharp.Server.WorldSpawn.CopyFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_CopyFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.CopyFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)">CopyFile(FileModel, SystemModel, LoginModel, String, String, Boolean)</h4>
@@ -425,7 +425,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel FileFile(SystemModel system, LoginModel owner, string path, string file, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel FileFile(SystemModel system, LoginModel login, string path, string file, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -445,7 +445,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -499,7 +499,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel FileFile(SystemModel system, LoginModel owner, string name, string dir, string file, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel FileFile(SystemModel system, LoginModel login, string name, string dir, string file, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -519,7 +519,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -579,7 +579,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel Folder(SystemModel system, LoginModel owner, string path, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel Folder(SystemModel system, LoginModel login, string path, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -599,7 +599,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -647,7 +647,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel Folder(SystemModel system, LoginModel owner, string name, string dir, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel Folder(SystemModel system, LoginModel login, string name, string dir, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -667,7 +667,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -792,7 +792,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L545">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L570">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_MoveFile_" data-uid="HacknetSharp.Server.WorldSpawn.MoveFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)">MoveFile(FileModel, SystemModel, LoginModel, String, Boolean)</h4>
@@ -850,7 +850,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel%2CHacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L562">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L587">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_MoveFile_" data-uid="HacknetSharp.Server.WorldSpawn.MoveFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_MoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.MoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)">MoveFile(FileModel, SystemModel, LoginModel, String, String, Boolean)</h4>
@@ -976,7 +976,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L398">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L412">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_ProgFile_" data-uid="HacknetSharp.Server.WorldSpawn.ProgFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)">ProgFile(SystemModel, LoginModel, String, String, Boolean)</h4>
@@ -985,7 +985,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel ProgFile(SystemModel system, LoginModel owner, string path, string progCode, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel ProgFile(SystemModel system, LoginModel login, string path, string progCode, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1005,7 +1005,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -1050,7 +1050,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L416">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L430">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_ProgFile_" data-uid="HacknetSharp.Server.WorldSpawn.ProgFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_ProgFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.ProgFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)">ProgFile(SystemModel, LoginModel, String, String, String, Boolean)</h4>
@@ -1059,7 +1059,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel ProgFile(SystemModel system, LoginModel owner, string name, string dir, string progCode, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel ProgFile(SystemModel system, LoginModel login, string name, string dir, string progCode, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1079,7 +1079,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -1130,7 +1130,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_RemoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_LoginModel_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.RemoveFile(HacknetSharp.Server.Models.FileModel%2CHacknetSharp.Server.Models.LoginModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L642">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L667">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_RemoveFile_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_RemoveFile_HacknetSharp_Server_Models_FileModel_HacknetSharp_Server_Models_LoginModel_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveFile(HacknetSharp.Server.Models.FileModel,HacknetSharp.Server.Models.LoginModel)">RemoveFile(FileModel, LoginModel)</h4>
@@ -1170,7 +1170,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_RemovePerson_HacknetSharp_Server_Models_PersonModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.RemovePerson(HacknetSharp.Server.Models.PersonModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L629">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L654">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_RemovePerson_" data-uid="HacknetSharp.Server.WorldSpawn.RemovePerson*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_RemovePerson_HacknetSharp_Server_Models_PersonModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.RemovePerson(HacknetSharp.Server.Models.PersonModel,System.Boolean)">RemovePerson(PersonModel, Boolean)</h4>
@@ -1210,7 +1210,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_RemoveSystem_HacknetSharp_Server_Models_SystemModel_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.RemoveSystem(HacknetSharp.Server.Models.SystemModel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L614">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L639">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_RemoveSystem_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveSystem*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_RemoveSystem_HacknetSharp_Server_Models_SystemModel_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.RemoveSystem(HacknetSharp.Server.Models.SystemModel,System.Boolean)">RemoveSystem(SystemModel, Boolean)</h4>
@@ -1398,7 +1398,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L339">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L346">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_TextFile_" data-uid="HacknetSharp.Server.WorldSpawn.TextFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.Boolean)">TextFile(SystemModel, LoginModel, String, String, Boolean)</h4>
@@ -1407,7 +1407,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel TextFile(SystemModel system, LoginModel owner, string path, string content, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel TextFile(SystemModel system, LoginModel login, string path, string content, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1427,7 +1427,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>
@@ -1472,7 +1472,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel%2CHacknetSharp.Server.Models.LoginModel%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L357">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/WorldSpawn.cs/#L364">View Source</a>
   </span>
   <a id="HacknetSharp_Server_WorldSpawn_TextFile_" data-uid="HacknetSharp.Server.WorldSpawn.TextFile*"></a>
   <h4 id="HacknetSharp_Server_WorldSpawn_TextFile_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_System_String_System_Boolean_" data-uid="HacknetSharp.Server.WorldSpawn.TextFile(HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,System.String,System.Boolean)">TextFile(SystemModel, LoginModel, String, String, String, Boolean)</h4>
@@ -1481,7 +1481,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FileModel TextFile(SystemModel system, LoginModel owner, string name, string dir, string content, bool hidden = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public FileModel TextFile(SystemModel system, LoginModel login, string name, string dir, string content, bool hidden = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1501,7 +1501,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
-        <td><span class="parametername">owner</span></td>
+        <td><span class="parametername">login</span></td>
         <td><p>File owner.</p>
 </td>
       </tr>

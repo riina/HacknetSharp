@@ -4643,6 +4643,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.GetUsedDiskSpace
   nameWithType: SystemModel.GetUsedDiskSpace
+- uid: HacknetSharp.Server.Models.SystemModel.GetUsedMemory
+  name: GetUsedMemory()
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_GetUsedMemory
+  commentId: M:HacknetSharp.Server.Models.SystemModel.GetUsedMemory
+  fullName: HacknetSharp.Server.Models.SystemModel.GetUsedMemory()
+  nameWithType: SystemModel.GetUsedMemory()
+- uid: HacknetSharp.Server.Models.SystemModel.GetUsedMemory*
+  name: GetUsedMemory
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_GetUsedMemory_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.GetUsedMemory
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.GetUsedMemory
+  nameWithType: SystemModel.GetUsedMemory
 - uid: HacknetSharp.Server.Models.SystemModel.KnowingSystems
   name: KnowingSystems
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_KnowingSystems
@@ -5406,6 +5419,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ProcessContext.Login
   nameWithType: ProcessContext.Login
+- uid: HacknetSharp.Server.ProcessContext.Memory
+  name: Memory
+  href: api/HacknetSharp.Server.ProcessContext.html#HacknetSharp_Server_ProcessContext_Memory
+  commentId: P:HacknetSharp.Server.ProcessContext.Memory
+  fullName: HacknetSharp.Server.ProcessContext.Memory
+  nameWithType: ProcessContext.Memory
+- uid: HacknetSharp.Server.ProcessContext.Memory*
+  name: Memory
+  href: api/HacknetSharp.Server.ProcessContext.html#HacknetSharp_Server_ProcessContext_Memory_
+  commentId: Overload:HacknetSharp.Server.ProcessContext.Memory
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ProcessContext.Memory
+  nameWithType: ProcessContext.Memory
 - uid: HacknetSharp.Server.ProcessContext.ParentPid
   name: ParentPid
   href: api/HacknetSharp.Server.ProcessContext.html#HacknetSharp_Server_ProcessContext_ParentPid
@@ -5477,6 +5503,32 @@ references:
   commentId: T:HacknetSharp.Server.Program
   fullName: HacknetSharp.Server.Program
   nameWithType: Program
+- uid: HacknetSharp.Server.Program.GetStartupMemory(HacknetSharp.Server.ProgramContext)
+  name: GetStartupMemory(ProgramContext)
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_GetStartupMemory_HacknetSharp_Server_ProgramContext_
+  commentId: M:HacknetSharp.Server.Program.GetStartupMemory(HacknetSharp.Server.ProgramContext)
+  fullName: HacknetSharp.Server.Program.GetStartupMemory(HacknetSharp.Server.ProgramContext)
+  nameWithType: Program.GetStartupMemory(ProgramContext)
+- uid: HacknetSharp.Server.Program.GetStartupMemory*
+  name: GetStartupMemory
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_GetStartupMemory_
+  commentId: Overload:HacknetSharp.Server.Program.GetStartupMemory
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Program.GetStartupMemory
+  nameWithType: Program.GetStartupMemory
+- uid: HacknetSharp.Server.Program.OnShutdown(HacknetSharp.Server.ProgramContext)
+  name: OnShutdown(ProgramContext)
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_OnShutdown_HacknetSharp_Server_ProgramContext_
+  commentId: M:HacknetSharp.Server.Program.OnShutdown(HacknetSharp.Server.ProgramContext)
+  fullName: HacknetSharp.Server.Program.OnShutdown(HacknetSharp.Server.ProgramContext)
+  nameWithType: Program.OnShutdown(ProgramContext)
+- uid: HacknetSharp.Server.Program.OnShutdown*
+  name: OnShutdown
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_OnShutdown_
+  commentId: Overload:HacknetSharp.Server.Program.OnShutdown
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Program.OnShutdown
+  nameWithType: Program.OnShutdown
 - uid: HacknetSharp.Server.Program.Output(System.String)
   name: Output(String)
   href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Output_System_String_
@@ -5711,6 +5763,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ProgramInfoAttribute.LongDescription
   nameWithType: ProgramInfoAttribute.LongDescription
+- uid: HacknetSharp.Server.ProgramInfoAttribute.Memory
+  name: Memory
+  href: api/HacknetSharp.Server.ProgramInfoAttribute.html#HacknetSharp_Server_ProgramInfoAttribute_Memory
+  commentId: P:HacknetSharp.Server.ProgramInfoAttribute.Memory
+  fullName: HacknetSharp.Server.ProgramInfoAttribute.Memory
+  nameWithType: ProgramInfoAttribute.Memory
+- uid: HacknetSharp.Server.ProgramInfoAttribute.Memory*
+  name: Memory
+  href: api/HacknetSharp.Server.ProgramInfoAttribute.html#HacknetSharp_Server_ProgramInfoAttribute_Memory_
+  commentId: Overload:HacknetSharp.Server.ProgramInfoAttribute.Memory
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ProgramInfoAttribute.Memory
+  nameWithType: ProgramInfoAttribute.Memory
 - uid: HacknetSharp.Server.ProgramInfoAttribute.Name
   name: Name
   href: api/HacknetSharp.Server.ProgramInfoAttribute.html#HacknetSharp_Server_ProgramInfoAttribute_Name
@@ -6610,6 +6675,19 @@ references:
   commentId: T:HacknetSharp.Server.Service
   fullName: HacknetSharp.Server.Service
   nameWithType: Service
+- uid: HacknetSharp.Server.Service.GetStartupMemory(HacknetSharp.Server.ServiceContext)
+  name: GetStartupMemory(ServiceContext)
+  href: api/HacknetSharp.Server.Service.html#HacknetSharp_Server_Service_GetStartupMemory_HacknetSharp_Server_ServiceContext_
+  commentId: M:HacknetSharp.Server.Service.GetStartupMemory(HacknetSharp.Server.ServiceContext)
+  fullName: HacknetSharp.Server.Service.GetStartupMemory(HacknetSharp.Server.ServiceContext)
+  nameWithType: Service.GetStartupMemory(ServiceContext)
+- uid: HacknetSharp.Server.Service.GetStartupMemory*
+  name: GetStartupMemory
+  href: api/HacknetSharp.Server.Service.html#HacknetSharp_Server_Service_GetStartupMemory_
+  commentId: Overload:HacknetSharp.Server.Service.GetStartupMemory
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Service.GetStartupMemory
+  nameWithType: Service.GetStartupMemory
 - uid: HacknetSharp.Server.Service.OnShutdown(HacknetSharp.Server.ServiceContext)
   name: OnShutdown(ServiceContext)
   href: api/HacknetSharp.Server.Service.html#HacknetSharp_Server_Service_OnShutdown_HacknetSharp_Server_ServiceContext_
@@ -6661,6 +6739,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServiceInfoAttribute.ServiceInfoAttribute
   nameWithType: ServiceInfoAttribute.ServiceInfoAttribute
+- uid: HacknetSharp.Server.ServiceInfoAttribute.Memory
+  name: Memory
+  href: api/HacknetSharp.Server.ServiceInfoAttribute.html#HacknetSharp_Server_ServiceInfoAttribute_Memory
+  commentId: P:HacknetSharp.Server.ServiceInfoAttribute.Memory
+  fullName: HacknetSharp.Server.ServiceInfoAttribute.Memory
+  nameWithType: ServiceInfoAttribute.Memory
+- uid: HacknetSharp.Server.ServiceInfoAttribute.Memory*
+  name: Memory
+  href: api/HacknetSharp.Server.ServiceInfoAttribute.html#HacknetSharp_Server_ServiceInfoAttribute_Memory_
+  commentId: Overload:HacknetSharp.Server.ServiceInfoAttribute.Memory
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ServiceInfoAttribute.Memory
+  nameWithType: ServiceInfoAttribute.Memory
 - uid: HacknetSharp.Server.ServiceInfoAttribute.Name
   name: Name
   href: api/HacknetSharp.Server.ServiceInfoAttribute.html#HacknetSharp_Server_ServiceInfoAttribute_Name

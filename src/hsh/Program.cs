@@ -9,6 +9,7 @@ using CommandLine;
 using HacknetSharp;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
+using Microsoft.Extensions.Logging;
 
 namespace hsh
 {
@@ -29,13 +30,22 @@ namespace hsh
                 SetName = "register")]
             public bool Register { get; set; }
 
+            [Option('v', "verbose", HelpText = "Enable verbose logging.")]
+            public bool Verbose { get; set; }
+
             [Value(0, MetaName = "conString", HelpText = "Connection string (user@server[:port])", Required = true)]
             public string ConString { get; set; } = null!;
         }
 
         private static async Task<int> Run(Options options)
         {
-            var connection = GetConnection(options.ConString, options.Register, out (int, string)? failReason);
+            var config = new AlertLogger.Config(new[]
+            {
+                LogLevel.Critical, LogLevel.Debug, LogLevel.Error, LogLevel.Information, LogLevel.Trace,
+                LogLevel.Warning
+            });
+            ILogger? logger = options.Verbose ? new AlertLogger(config) : null;
+            var connection = GetConnection(options.ConString, options.Register, logger, out (int, string)? failReason);
             if (connection != null)
                 return options.ForgeToken ? await ForgeToken(connection).Caf() : await ExecuteClient(connection).Caf();
 
@@ -82,6 +92,22 @@ namespace hsh
             }
         }
 
+        private static void PrintAlert(string kind, string header, string body)
+        {
+            List<string> lines = new(body.Split('\n'));
+            lines.Insert(0, $"{kind} : {header.ToUpperInvariant()} ");
+            int longest = Math.Min(lines.Select(l => l.Length).Max(), Math.Max(10, Console.BufferWidth - 6));
+            lines[0] = lines[0] + new string('-', longest - lines[0].Length);
+            var sb = new StringBuilder();
+            for (int i = 0; i < lines.Count; i++)
+                sb.AppendLine(i == 0
+                    ? string.Format(CultureInfo.InvariantCulture,
+                        $"»» {{0,{-longest}}} ««", lines[i])
+                    : lines[i]);
+            sb.Append("»» ").Append('-', longest).AppendLine(" ««");
+            Console.Write(sb.ToString());
+        }
+
         private static async Task<int> ExecuteClient(Client connection)
         {
             connection.OnReceivedEvent += e =>
@@ -97,17 +123,8 @@ namespace hsh
                             AlertEvent.Kind.AdminMessage => "ADMIN MESSAGE",
                             _ => "UNKNOWN ALERT TYPE"
                         };
-                        List<string> lines = new(alert.Body.Split('\n'));
-                        lines.Insert(0, $"{alertKind} : {alert.Header.ToUpperInvariant()} ");
-                        int longest = lines.Select(l => l.Length).Max();
-                        lines[0] = lines[0] + new string('-', longest - lines[0].Length);
-                        var sb = new StringBuilder();
-                        for (int i = 0; i < lines.Count; i++)
-                            sb.AppendLine(
-                                string.Format(CultureInfo.InvariantCulture,
-                                    i == 0 ? $"»» {{0,{-longest}}} ««" : $"»  {{0,{-longest}}}  «", lines[i]));
-                        sb.Append("»» ").Append('-', longest).AppendLine(" ««");
-                        Console.Write(sb.ToString());
+
+                        PrintAlert(alertKind, alert.Header, alert.Body);
                         break;
                     case ShellPromptEvent shellPrompt:
                         Console.Write($"{Util.UintToAddress(shellPrompt.Address)}:{shellPrompt.WorkingDirectory}> ");
@@ -199,7 +216,7 @@ namespace hsh
             return (userInfoEvent, 0);
         }
 
-        private static Client? GetConnection(string conString, bool askRegistrationToken,
+        private static Client? GetConnection(string conString, bool askRegistrationToken, ILogger? logger,
             out (int, string)? failReason)
         {
             failReason = null;
@@ -221,7 +238,39 @@ namespace hsh
             else
                 registrationToken = null;
 
-            return pass != null ? new Client(server!, port, user!, pass, registrationToken) : null;
+            return pass != null ? new Client(server!, port, user!, pass, registrationToken, logger) : null;
+        }
+
+        private class AlertLogger : ILogger
+        {
+            public class Config
+            {
+                public HashSet<LogLevel> EnabledLevels { get; set; }
+
+                public Config(IEnumerable<LogLevel> enabledLevels)
+                {
+                    EnabledLevels = new HashSet<LogLevel>(enabledLevels);
+                }
+            }
+
+
+            private readonly Config _config;
+
+            public AlertLogger(Config config)
+            {
+                _config = config;
+            }
+
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+                Func<TState, Exception, string> formatter)
+            {
+                if (!IsEnabled(logLevel)) return;
+                PrintAlert(logLevel.ToString(), $"[{eventId.Id,2}: {logLevel,-12}]", formatter(state, exception));
+            }
+
+            public bool IsEnabled(LogLevel logLevel) => _config.EnabledLevels.Contains(logLevel);
+
+            public IDisposable BeginScope<TState>(TState state) => default!;
         }
     }
 }

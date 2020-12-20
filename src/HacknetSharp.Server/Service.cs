@@ -8,6 +8,13 @@ namespace HacknetSharp.Server
     public abstract class Service : Executable
     {
         /// <summary>
+        /// Checks memory that will be used if this context executes.
+        /// </summary>
+        /// <param name="context">Service context to operate with.</param>
+        /// <returns>Memory to be initially allocated by program.</returns>
+        public virtual long GetStartupMemory(ServiceContext context) => 0;
+
+        /// <summary>
         /// Runs this executable with the given context.
         /// </summary>
         /// <param name="context">Context to use with this execution.</param>
@@ -19,6 +26,6 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="context">Service context to operate with.</param>
         /// <returns>False if service refuses to shutdown.</returns>
-        public abstract bool OnShutdown(ServiceContext context);
+        public virtual bool OnShutdown(ServiceContext context) => true;
     }
 }

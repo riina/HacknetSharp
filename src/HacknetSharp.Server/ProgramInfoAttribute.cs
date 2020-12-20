@@ -19,6 +19,11 @@ namespace HacknetSharp.Server
         public string Name { get; set; }
 
         /// <summary>
+        /// Default memory used at process start.
+        /// </summary>
+        public long Memory { get; set; }
+
+        /// <summary>
         /// Program description.
         /// </summary>
         public string Description { get; set; }
@@ -48,8 +53,7 @@ namespace HacknetSharp.Server
         /// <param name="usage">Program usage format text.</param>
         /// <param name="intrinsic">If true, intrinsic command available on all systems.</param>
         public ProgramInfoAttribute(string progCode, string name, string description, string longDescription,
-            string usage,
-            bool intrinsic)
+            string usage, bool intrinsic)
         {
             ProgCode = progCode;
             Name = name;

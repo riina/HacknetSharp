@@ -19,6 +19,11 @@ namespace HacknetSharp.Server
         public string Name { get; set; }
 
         /// <summary>
+        /// Default memory used at process start.
+        /// </summary>
+        public long Memory { get; set; }
+
+        /// <summary>
         /// Provides information about a service.
         /// </summary>
         /// <param name="progCode">Service code.</param>

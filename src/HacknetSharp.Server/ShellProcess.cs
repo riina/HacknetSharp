@@ -143,7 +143,7 @@ namespace HacknetSharp.Server
             Completed = completionKind;
             if (completionKind != CompletionKind.Normal)
             {
-                ProgramContext.User.WriteEventSafe(Program.Output("[Shell terminated]"));
+                ProgramContext.User.WriteEventSafe(Program.Output("[Shell terminated]\n"));
                 ProgramContext.User.FlushSafeAsync();
             }
 

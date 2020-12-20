@@ -37,7 +37,7 @@ namespace hss
         public World DefaultWorld { get; }
         public Dictionary<string, (Program, ProgramInfoAttribute)> Programs { get; }
         public Dictionary<string, (Program, ProgramInfoAttribute)> IntrinsicPrograms { get; }
-        public Dictionary<string, Service> Services { get; }
+        public Dictionary<string, (Service, ServiceInfoAttribute)> Services { get; }
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
         public Spawn Spawn { get; }
@@ -71,7 +71,7 @@ namespace hss
             _serviceTypes.UnionWith(config.Services);
             Programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
             IntrinsicPrograms = new Dictionary<string, (Program, ProgramInfoAttribute)>();
-            Services = new Dictionary<string, Service>();
+            Services = new Dictionary<string, (Service, ServiceInfoAttribute)>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
@@ -141,7 +141,7 @@ namespace hss
                     var service = Activator.CreateInstance(type) as Service ??
                                   throw new ApplicationException(
                                       $"{type.FullName} supplied as service but could not be casted to {nameof(Service)}");
-                    Services.Add(info.ProgCode, service);
+                    Services.Add(info.ProgCode, (service, info));
                 }
             }
             catch

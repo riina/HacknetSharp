@@ -278,6 +278,12 @@ namespace HacknetSharp.Server.Models
             (uint?)Enumerable.Range(1, int.MaxValue).FirstOrDefault(v => Processes.Keys.All(k => k != v));
 
         /// <summary>
+        /// Gets currently used memory.
+        /// </summary>
+        /// <returns>Used memory.</returns>
+        public long GetUsedMemory() => Processes.Select(p => p.Value.Context.Memory).Sum();
+
+        /// <summary>
         /// Get currently used disk space of system.
         /// </summary>
         /// <returns>Used disk space.</returns>

@@ -107,7 +107,12 @@ namespace hss
                 var chain = context.Person.ShellChain;
                 int shellIdx = chain.IndexOf(shProc);
                 if (shellIdx != -1)
-                    chain.RemoveRange(shellIdx, chain.Count - shellIdx);
+                {
+                    int endIdx = chain.Count;
+                    for (int i = endIdx - 1; i > shellIdx; i--)
+                        CompleteRecurse(chain[i], completionKind);
+                    chain.RemoveAt(shellIdx);
+                }
             }
 
             if (!process.Complete(completionKind)) return false;
@@ -135,20 +140,7 @@ namespace hss
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel,
                     ServerUtil.SplitCommandLine(line));
-            uint? pid = systemModel.GetAvailablePid();
-            if (pid == null) return null;
-            programContext.Pid = pid.Value;
-            var process = new ShellProcess(programContext);
-            programContext.Shell = process;
-            systemModel.Processes.Add(pid.Value, process);
-            var chain = personModel.ShellChain;
-            string src = chain.Count != 0 ? Util.UintToAddress(chain[^1].ProgramContext.System.Address) : "<external>";
-            double time = Time;
-            string logBody = $"User={loginModel.User}\nOrigin={src}\nTime={time}\n";
-            chain.Add(process);
-            _shellProcesses.Add(process);
-            Executable.TryWriteLog(Spawn, time, systemModel, loginModel, ServerConstants.LogKind_Login, logBody, out _);
-            return process;
+            return StartShell(programContext, Server.IntrinsicPrograms["shell"].Item1);
         }
 
         public ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel,
@@ -160,21 +152,16 @@ namespace hss
             var shell = personModel.ShellChain[^1];
             string[] argv = ServerUtil.SplitCommandLine(line);
 
-            uint? pid;
-            if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0]) ||
-                !(pid = systemModel.GetAvailablePid()).HasValue) return null;
+            if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0])) return null;
 
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
             programContext.ParentPid = shell.ProgramContext.Pid;
-            programContext.Pid = pid.Value;
+            programContext.Shell = shell;
+            programContext.System = systemModel;
 
-            if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
-            {
-                var proc = new ProgramProcess(programContext, intrinsicRes.Item1);
-                _processes.Add(proc);
-                return proc;
-            }
+            if (TryGetIntrinsicProgramWithHargs(programContext.Argv[0], out var intrinsicRes))
+                return StartProgram(programContext, intrinsicRes.Item1);
 
             string exe = $"/bin/{programContext.Argv[0]}";
             systemModel.TryGetFile(exe, loginModel, out var result, out var closestStr, out var fse,
@@ -196,12 +183,8 @@ namespace hss
                 out var res))
                 return null;
 
-            {
-                programContext.HArgv = res.Item3;
-                var proc = new ProgramProcess(programContext, res.Item1);
-                _processes.Add(proc);
-                return proc;
-            }
+            programContext.HArgv = res.Item3;
+            return StartProgram(programContext, res.Item1);
         }
 
         public ServiceProcess? StartService(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
@@ -218,14 +201,70 @@ namespace hss
             string exe = $"/bin/{serviceContext.Argv[0]}";
             if (!systemModel.TryGetFile(exe, loginModel, out _, out _, out var fse, caseInsensitive: true))
                 return null;
-            if (fse.Kind != FileModel.FileKind.ProgFile || !Server.Services.TryGetValue(
+            if (fse.Kind != FileModel.FileKind.ProgFile || !TryGetServiceWithHargs(
                 systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
                 out var res))
                 return null;
 
-            var proc = new ServiceProcess(serviceContext, res);
-            _processes.Add(proc);
-            return proc;
+            serviceContext.HArgv = res.Item3;
+            return StartService(serviceContext, res.Item1);
+        }
+
+        private ShellProcess? StartShell(ProgramContext context, Program program)
+        {
+            var system = context.System;
+            var person = context.Person;
+            var login = context.Login;
+            if (program.GetStartupMemory(context) + context.System.GetUsedMemory() > context.System.SystemMemory)
+                return null;
+            uint? pid = system.GetAvailablePid();
+            if (pid == null) return null;
+            context.Pid = pid.Value;
+
+            var process = new ShellProcess(context);
+            context.Shell = process;
+            system.Processes.Add(pid.Value, process);
+            _shellProcesses.Add(process);
+
+            var chain = person.ShellChain;
+            string src = chain.Count != 0 ? Util.UintToAddress(chain[^1].ProgramContext.System.Address) : "<external>";
+            double time = Time;
+            string logBody = $"User={login.User}\nOrigin={src}\nTime={time}\n";
+            chain.Add(process);
+            Executable.TryWriteLog(Spawn, time, system, login, ServerConstants.LogKind_Login, logBody, out _);
+            return process;
+        }
+
+        private ProgramProcess? StartProgram(ProgramContext context, Program program)
+        {
+            if (program.GetStartupMemory(context) + context.System.GetUsedMemory() > context.System.SystemMemory)
+                return null;
+            var system = context.System;
+            uint? pid = system.GetAvailablePid();
+            if (pid == null) return null;
+            context.Pid = pid.Value;
+
+            var process = new ProgramProcess(context, program);
+            system.Processes.Add(pid.Value, process);
+            _processes.Add(process);
+
+            return process;
+        }
+
+        private ServiceProcess? StartService(ServiceContext context, Service service)
+        {
+            if (service.GetStartupMemory(context) + context.System.GetUsedMemory() > context.System.SystemMemory)
+                return null;
+            var system = context.System;
+            uint? pid = system.GetAvailablePid();
+            if (pid == null) return null;
+            context.Pid = pid.Value;
+
+            var process = new ServiceProcess(context, service);
+            system.Processes.Add(pid.Value, process);
+            _processes.Add(process);
+
+            return process;
         }
 
         public ProgramInfoAttribute? GetProgramInfo(string? argv)
@@ -271,19 +310,18 @@ namespace hss
             };
 
             programContext.Shell = shell;
-            uint? pid;
-            if (programContext.Argv.Length > 0 && !string.IsNullOrWhiteSpace(programContext.Argv[0]) &&
-                (pid = systemModel.GetAvailablePid()).HasValue)
+            if (programContext.Argv.Length > 0 && !string.IsNullOrWhiteSpace(programContext.Argv[0]))
             {
                 programContext.System = systemModel;
                 programContext.Login = shell.ProgramContext.Login;
                 programContext.ParentPid = shell.ProgramContext.Pid;
-                programContext.Pid = pid.Value;
-                if (Server.IntrinsicPrograms.TryGetValue(programContext.Argv[0], out var intrinsicRes))
+                if (TryGetIntrinsicProgramWithHargs(programContext.Argv[0], out var intrinsicRes))
                 {
-                    var process = new ProgramProcess(programContext, intrinsicRes.Item1);
-                    _processes.Add(process);
-                    systemModel.Processes.Add(pid.Value, process);
+                    programContext.HArgv = intrinsicRes.Item3;
+                    bool success = StartProgram(programContext, intrinsicRes.Item1) != null;
+                    if (!success)
+                        programContext.User.WriteEventSafe(
+                            Program.Output("Process creation failed: out of memory\n"));
                     return;
                 }
 
@@ -299,9 +337,10 @@ namespace hss
                                 out var res))
                         {
                             programContext.HArgv = res.Item3;
-                            var process = new ProgramProcess(programContext, res.Item1);
-                            _processes.Add(process);
-                            systemModel.Processes.Add(pid.Value, process);
+                            bool success = StartProgram(programContext, res.Item1) != null;
+                            if (!success)
+                                programContext.User.WriteEventSafe(
+                                    Program.Output("Process creation failed: out of memory\n"));
                             return;
                         }
 
@@ -309,21 +348,16 @@ namespace hss
                         break;
                     case ReadAccessResult.NotReadable:
                         if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
-                            programContext.User.WriteEventSafe(new OutputEvent
-                            {
-                                Text = $"{closestStr}: permission denied\n"
-                            });
+                            programContext.User.WriteEventSafe(
+                                Program.Output($"{closestStr}: permission denied\n"));
                         break;
                     case ReadAccessResult.NoExist:
                         if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
                             if (closestStr == "/bin")
-                                programContext.User.WriteEventSafe(
-                                    new OutputEvent {Text = $"{closestStr}: not found\n"});
+                                programContext.User.WriteEventSafe(Program.Output($"{closestStr}: not found\n"));
                             else
-                                programContext.User.WriteEventSafe(new OutputEvent
-                                {
-                                    Text = $"{programContext.Argv[0]}: command not found\n"
-                                });
+                                programContext.User.WriteEventSafe(
+                                    Program.Output($"{programContext.Argv[0]}: command not found\n"));
                         break;
                 }
             }
@@ -336,6 +370,21 @@ namespace hss
             }
         }
 
+        private bool TryGetIntrinsicProgramWithHargs(string command,
+            out (Program, ProgramInfoAttribute, string[]) result)
+        {
+            string[] line = ServerUtil.SplitCommandLine(command);
+            if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
+            {
+                result = default;
+                return false;
+            }
+
+            bool success = Server.IntrinsicPrograms.TryGetValue(line[0], out var res);
+            result = (res.Item1, res.Item2, line);
+            return success;
+        }
+
         private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute, string[]) result)
         {
             string[] line = ServerUtil.SplitCommandLine(command);
@@ -346,6 +395,20 @@ namespace hss
             }
 
             bool success = Server.Programs.TryGetValue(line[0], out var res);
+            result = (res.Item1, res.Item2, line);
+            return success;
+        }
+
+        private bool TryGetServiceWithHargs(string command, out (Service, ServiceInfoAttribute, string[]) result)
+        {
+            string[] line = ServerUtil.SplitCommandLine(command);
+            if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
+            {
+                result = default;
+                return false;
+            }
+
+            bool success = Server.Services.TryGetValue(line[0], out var res);
             result = (res.Item1, res.Item2, line);
             return success;
         }

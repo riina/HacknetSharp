@@ -211,10 +211,110 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Program_GetStartupMemory_HacknetSharp_Server_ProgramContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Program.GetStartupMemory(HacknetSharp.Server.ProgramContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L18">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Program_GetStartupMemory_" data-uid="HacknetSharp.Server.Program.GetStartupMemory*"></a>
+  <h4 id="HacknetSharp_Server_Program_GetStartupMemory_HacknetSharp_Server_ProgramContext_" data-uid="HacknetSharp.Server.Program.GetStartupMemory(HacknetSharp.Server.ProgramContext)">GetStartupMemory(ProgramContext)</h4>
+  <div class="markdown level1 summary"><p>Checks memory that will be used if this context executes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual long GetStartupMemory(ProgramContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.ProgramContext.html">ProgramContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Program context to operate with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>Memory to be initially allocated by program.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Program_OnShutdown_HacknetSharp_Server_ProgramContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Program.OnShutdown(HacknetSharp.Server.ProgramContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L32">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Program_OnShutdown_" data-uid="HacknetSharp.Server.Program.OnShutdown*"></a>
+  <h4 id="HacknetSharp_Server_Program_OnShutdown_HacknetSharp_Server_ProgramContext_" data-uid="HacknetSharp.Server.Program.OnShutdown(HacknetSharp.Server.ProgramContext)">OnShutdown(ProgramContext)</h4>
+  <div class="markdown level1 summary"><p>Tells program on given context to stop execution.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnShutdown(ProgramContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.ProgramContext.html">ProgramContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Program context to operate with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>False if service refuses to shutdown.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Program_Output_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Program.Output(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L27">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L41">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Program_Output_" data-uid="HacknetSharp.Server.Program.Output*"></a>
   <h4 id="HacknetSharp_Server_Program_Output_System_String_" data-uid="HacknetSharp.Server.Program.Output(System.String)">Output(String)</h4>
@@ -264,7 +364,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Program_Run_HacknetSharp_Server_ProgramContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Program.Run(HacknetSharp.Server.ProgramContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L18">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L25">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Program_Run_" data-uid="HacknetSharp.Server.Program.Run*"></a>
   <h4 id="HacknetSharp_Server_Program_Run_HacknetSharp_Server_ProgramContext_" data-uid="HacknetSharp.Server.Program.Run(HacknetSharp.Server.ProgramContext)">Run(ProgramContext)</h4>
@@ -314,7 +414,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Program_SignalUnbindProcess_HacknetSharp_Server_ProgramContext_HacknetSharp_Server_Process_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Program.SignalUnbindProcess(HacknetSharp.Server.ProgramContext%2CHacknetSharp.Server.Process)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L62">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L76">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Program_SignalUnbindProcess_" data-uid="HacknetSharp.Server.Program.SignalUnbindProcess*"></a>
   <h4 id="HacknetSharp_Server_Program_SignalUnbindProcess_HacknetSharp_Server_ProgramContext_HacknetSharp_Server_Process_" data-uid="HacknetSharp.Server.Program.SignalUnbindProcess(HacknetSharp.Server.ProgramContext,HacknetSharp.Server.Process)">SignalUnbindProcess(ProgramContext, Process)</h4>
@@ -354,7 +454,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Program_TryGetVariable_HacknetSharp_Server_ProgramContext_System_Nullable_System_String__System_String_System_Nullable_System_String___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Program.TryGetVariable(HacknetSharp.Server.ProgramContext%2CSystem.Nullable%7BSystem.String%7D%2CSystem.String%2CSystem.Nullable%7BSystem.String%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L38">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Program.cs/#L52">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Program_TryGetVariable_" data-uid="HacknetSharp.Server.Program.TryGetVariable*"></a>
   <h4 id="HacknetSharp_Server_Program_TryGetVariable_HacknetSharp_Server_ProgramContext_System_Nullable_System_String__System_String_System_Nullable_System_String___" data-uid="HacknetSharp.Server.Program.TryGetVariable(HacknetSharp.Server.ProgramContext,System.Nullable{System.String},System.String,System.Nullable{System.String}@)">TryGetVariable(ProgramContext, Nullable&lt;String&gt;, String, out Nullable&lt;String&gt;)</h4>
