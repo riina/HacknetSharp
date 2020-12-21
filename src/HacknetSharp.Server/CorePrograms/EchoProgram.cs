@@ -8,7 +8,7 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:echo", "echo", "write arguments",
         "write specified arguments separated by\nsingle spaces followed by newline",
-        "[arguments]", false)]
+        "[arguments]", true)]
     public class EchoProgram : Program
     {
         /// <inheritdoc />

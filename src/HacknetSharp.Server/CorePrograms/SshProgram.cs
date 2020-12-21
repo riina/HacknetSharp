@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:ssh", "ssh", "connect to remote machine",
         "opens an authenticated connection to a\nremote machine and opens a shell",
-        "username@server", false)]
+        "username@server", true)]
     public class SshProgram : Program
     {
         /// <inheritdoc />

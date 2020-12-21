@@ -6,7 +6,7 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:kill", "kill", "terminate a process",
         "sends a termination signal to a process",
-        "<pid>...", false)]
+        "<pid>...", true)]
     public class KillProgram : Program
     {
         /// <inheritdoc />

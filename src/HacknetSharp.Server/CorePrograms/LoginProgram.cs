@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,8 +14,8 @@ namespace HacknetSharp.Server.CorePrograms
         "(or $PASS or prompted password)\n\n" +
         "-s [name@server]: save password for specified target (or\n" +
         "$NAME/$TARGET) from $PASS or prompted password\n\n" +
-        "-l [name@server]: list passwords for specified target (or\n" +
-        "$NAME/$TARGET)\n\n" +
+        "-l [server]: list passwords for specified target (or\n" +
+        "$TARGET)\n\n" +
         "-d [name@server]: delete password for specified target (or\n" +
         "$NAME/$TARGET)",
         "[-sdl] [name@host]", false)]
@@ -31,8 +30,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var (flags, _, pargs) =
-                ServerUtil.IsolateFlags(new ArraySegment<string>(context.Argv, 1, context.Argv.Length - 1));
+            var (flags, _, pargs) = IsolateArgvFlags(context.Argv);
             if (!ServerUtil.TryParseConString(pargs.Count == 0 ? null : pargs[0], 22, out string? name,
                 out string? host, out _, out string? error,
                 context.Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : AutoLoginName,
@@ -67,7 +65,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 if (name == AutoLoginName)
                 {
-                    user.WriteEventSafe(Output("login: Login name not specified\n"));
+                    user.WriteEventSafe(Output("Login name not specified\n"));
                     user.FlushSafeAsync();
                     yield break;
                 }
@@ -104,7 +102,9 @@ namespace HacknetSharp.Server.CorePrograms
                             sb.Append($"{entry.Name}: {entry.Pass}\n");
                     }
 
-                    user.WriteEventSafe(Output($"{sb}\n"));
+                    if (sb.Length == 0) sb.Append('\n');
+
+                    user.WriteEventSafe(Output(sb.ToString()));
                     user.FlushSafeAsync();
                 }
                 catch (IOException e)
@@ -117,7 +117,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 user.WriteEventSafe(
                     Output($"Are you sure you want to delete logins for {Util.UintToAddress(hostUint)}?\n"));
-                var confirm = Confirm(user, true);
+                var confirm = Confirm(user, false);
                 yield return confirm;
                 if (!confirm.Confirmed) yield break;
 

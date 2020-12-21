@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HacknetSharp.Events.Server;
@@ -10,7 +9,7 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:ps", "ps", "process status",
         "display active processes on this machine",
-        "[-e]", false)]
+        "[-e]", true)]
     public class PsProgram : Program
     {
         /// <inheritdoc />
@@ -20,8 +19,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            var (flags, _, _) =
-                ServerUtil.IsolateFlags(new ArraySegment<string>(context.Argv, 1, context.Argv.Length - 1));
+            var (flags, _, _) = IsolateArgvFlags(context.Argv);
             bool all = flags.Contains("e");
             LoginModel? login = context.Login.Admin ? null : context.Login;
 

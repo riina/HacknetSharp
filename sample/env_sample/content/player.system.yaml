@@ -20,9 +20,6 @@ Filesystem:
   - prog:/bin/cat core:cat
   - prog:/bin/cd core:cd
   - prog:/bin/ls core:ls
-  - prog:/bin/echo core:echo
-  - prog:/bin/ssh core:ssh
-  - prog:/bin/ps core:ps
   - prog:/bin/scan core:scan
   - prog:/bin/map core:map
   - prog:/bin/cp core:cp
@@ -30,7 +27,6 @@ Filesystem:
   - prog:/bin/rm core:rm
   - prog:/bin/mkdir core:mkdir
   - prog:/bin/probe core:probe
-  - prog:/bin/kill core:kill
   - prog:/bin/scp core:scp
   - prog:/bin/edit core:edit
   - prog:/bin/porthack core:porthack

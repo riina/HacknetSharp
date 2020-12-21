@@ -421,20 +421,20 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Isolate flags from argument list.
         /// </summary>
-        /// <param name="argv">Argument lines to sort.</param>
+        /// <param name="arguments">Argument lines to sort.</param>
         /// <param name="optKeys">Option keys.</param>
         /// <returns>Flags, options, and arguments.</returns>
         public static (HashSet<string> flags, Dictionary<string, string> opts, List<string> args) IsolateFlags(
-            IReadOnlyList<string> argv, IReadOnlySet<string>? optKeys = null)
+            IReadOnlyList<string> arguments, IReadOnlySet<string>? optKeys = null)
         {
             optKeys ??= ImmutableHashSet<string>.Empty;
             HashSet<string> flags = new();
             Dictionary<string, string> opts = new();
             List<string> args = new();
             bool argTime = false;
-            for (int i = 0; i < argv.Count; i++)
+            for (int i = 0; i < arguments.Count; i++)
             {
-                string? str = argv[i];
+                string? str = arguments[i];
                 if (argTime)
                 {
                     flags.Add(str);
@@ -458,7 +458,7 @@ namespace HacknetSharp.Server
                     string id = str[2..];
                     if (optKeys.Contains(id))
                     {
-                        if (TryGetArg(argv, i, out string? res))
+                        if (TryGetArg(arguments, i, out string? res))
                             opts[id] = res;
                         i++;
                     }
@@ -470,7 +470,7 @@ namespace HacknetSharp.Server
                     string firstId = str[1].ToString();
                     if (str.Length == 2 && optKeys.Contains(firstId))
                     {
-                        if (TryGetArg(argv, i, out string? res))
+                        if (TryGetArg(arguments, i, out string? res))
                             opts[firstId] = res;
                         i++;
                     }

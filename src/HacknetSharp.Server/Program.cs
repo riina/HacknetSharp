@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -139,5 +140,15 @@ namespace HacknetSharp.Server
         }
 
         #endregion
+
+        /// <summary>
+        /// Isolate flags from argv.
+        /// </summary>
+        /// <param name="argv">Argv to sort.</param>
+        /// <param name="optKeys">Option keys.</param>
+        /// <returns>Flags, options, and arguments.</returns>
+        public static (HashSet<string> flags, Dictionary<string, string> opts, List<string> args) IsolateArgvFlags(
+            string[] argv, IReadOnlySet<string>? optKeys = null) =>
+            ServerUtil.IsolateFlags(new ArraySegment<string>(argv, 1, argv.Length - 1), optKeys);
     }
 }

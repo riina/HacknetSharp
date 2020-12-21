@@ -638,6 +638,7 @@ namespace HacknetSharp.Server
         /// <param name="isCascade">If true, does not directly delete from database.</param>
         public void RemoveSystem(SystemModel system, bool isCascade = false)
         {
+            system.Owner.Systems.Remove(system);
             Database.DeleteBulk(system.KnownSystems);
             Database.DeleteBulk(system.KnowingSystems);
             system.KnownSystems.Clear();
@@ -647,13 +648,40 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
+        /// Removes a login from the world.
+        /// </summary>
+        /// <param name="login">Model to remove.</param>
+        /// <param name="isCascade">If true, does not directly delete from database.</param>
+        /// <exception cref="InvalidOperationException">Thrown if removal would empty system of logins or if trying to remove owner login.</exception>
+        public void RemoveLogin(LoginModel login, bool isCascade = false)
+        {
+            var system = login.System;
+            var owner = system.Owner.Key;
+            if (login.Person == owner) throw new InvalidOperationException("Cannot remove owner login");
+            var logins = system.Logins;
+            var defaultLogin = logins.FirstOrDefault(l => l.Person == owner) ?? logins.FirstOrDefault(l => l != login);
+            if (defaultLogin == null)
+                throw new InvalidOperationException("Cannot remove login if it would empty the system's logins");
+            foreach (var file in system.Files)
+                if (file.Owner == login)
+                {
+                    file.Owner = defaultLogin;
+                    Database.Update(file);
+                }
+
+            if (isCascade) return;
+            Database.Delete(login);
+        }
+
+        /// <summary>
         /// Removes a person from the world.
         /// </summary>
         /// <param name="person">Model to remove.</param>
         /// <param name="isCascade">If true, does not directly delete from database.</param>
         public void RemovePerson(PersonModel person, bool isCascade = false)
         {
-            foreach (var system in person.Systems)
+            var systems = person.Systems.ToList();
+            foreach (var system in systems)
                 RemoveSystem(system, true);
             if (isCascade) return;
             Database.Delete(person);
