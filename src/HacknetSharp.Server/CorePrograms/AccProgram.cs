@@ -13,6 +13,7 @@ namespace HacknetSharp.Server.CorePrograms
         "list: list all accounts\n\n" +
         "delete <account>: [ADMIN ONLY] delete an account",
         "[-adl] [args]", true)]
+    public class AccProgram : Program
     {
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
