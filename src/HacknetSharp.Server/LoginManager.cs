@@ -107,7 +107,7 @@ namespace HacknetSharp.Server
         private static string WriteContent(Dictionary<string, Login> logins)
         {
             return new StringBuilder()
-                .AppendJoin('\n', logins.Values.Select(l => $"{l.Name}: {l.Pass}")).ToString();
+                .AppendJoin('\n', logins.Values.Select(l => $"{l.Name}:{l.Pass}")).ToString();
         }
 
         private static string GetLoginFile(LoginModel login, uint address) =>

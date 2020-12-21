@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace HacknetSharp.Server.CorePrograms
@@ -132,37 +133,42 @@ namespace HacknetSharp.Server.CorePrograms
             }
             else
             {
-                if (name == AutoLoginName)
+                string? password = null;
+                try
                 {
-                    user.WriteEventSafe(Output("login: Login name not specified\n"));
+                    if (name == AutoLoginName)
+                    {
+                        var logins = LoginManager.GetLogins(login, hostUint);
+                        if (logins.Count == 0)
+                        {
+                            user.WriteEventSafe(Output($"No known logins for {Util.UintToAddress(hostUint)}\n"));
+                            user.FlushSafeAsync();
+                            yield break;
+                        }
+
+                        var id = logins.Values.First();
+                        name = id.Name;
+                        password = id.Pass;
+                    }
+                    else if (LoginManager.GetLogins(login, hostUint).TryGetValue(name, out var storedLogin))
+                        password = storedLogin.Pass;
+                    else if (context.Shell.TryGetVariable("PASS", out string? shellPass))
+                        password = shellPass;
+                }
+                catch (IOException e)
+                {
+                    user.WriteEventSafe(Output($"{e.Message}\n"));
                     user.FlushSafeAsync();
                     yield break;
                 }
 
-                string? password = null;
-                if (context.Shell.TryGetVariable("PASS", out string? shellPass))
-                    password = shellPass;
-                else
+                // Fallback to asking for password
+                if (password == null)
                 {
-                    try
-                    {
-                        if (LoginManager.GetLogins(login, hostUint).TryGetValue(name, out var storedLogin))
-                            password = storedLogin.Pass;
-                    }
-                    catch (IOException e)
-                    {
-                        user.WriteEventSafe(Output($"{e.Message}\n"));
-                        user.FlushSafeAsync();
-                        yield break;
-                    }
-
-                    if (password == null)
-                    {
-                        user.WriteEventSafe(Output("Password:"));
-                        var input = Input(user, true);
-                        yield return input;
-                        password = input.Input!.Input;
-                    }
+                    user.WriteEventSafe(Output("Password:"));
+                    var input = Input(user, true);
+                    yield return input;
+                    password = input.Input!.Input;
                 }
 
                 Connect(context, hostUint, name, password);
