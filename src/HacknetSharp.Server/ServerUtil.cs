@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -183,7 +184,8 @@ namespace HacknetSharp.Server
         /// <param name="impliedUser">User to use in absence of user in connection string.</param>
         /// <param name="impliedHost">Host to use in absence of host in connection string.</param>
         /// <returns>True if successfully parsed.</returns>
-        public static bool TryParseConString(string conString, ushort defaultPort, [NotNullWhen(true)] out string? user,
+        public static bool TryParseConString(string? conString, ushort defaultPort,
+            [NotNullWhen(true)] out string? user,
             [NotNullWhen(true)] out string? host, out ushort port, [NotNullWhen(false)] out string? error,
             string? impliedUser = null, string? impliedHost = null) =>
             Util.TryParseConString(conString, defaultPort, out user!, out host!, out port, out error!, impliedUser,
@@ -420,27 +422,31 @@ namespace HacknetSharp.Server
         /// Isolate flags from argument list.
         /// </summary>
         /// <param name="argv">Argument lines to sort.</param>
-        /// <returns>Options and arguments.</returns>
-        public static (HashSet<string> opts, List<string> args) IsolateFlags(IReadOnlyList<string> argv)
+        /// <param name="optKeys">Option keys.</param>
+        /// <returns>Flags, options, and arguments.</returns>
+        public static (HashSet<string> flags, Dictionary<string, string> opts, List<string> args) IsolateFlags(
+            IReadOnlyList<string> argv, IReadOnlySet<string>? optKeys = null)
         {
-            HashSet<string> opts = new();
+            optKeys ??= ImmutableHashSet<string>.Empty;
+            HashSet<string> flags = new();
+            Dictionary<string, string> opts = new();
             List<string> args = new();
             bool argTime = false;
-            foreach (var str in argv)
+            for (int i = 0; i < argv.Count; i++)
             {
+                string? str = argv[i];
                 if (argTime)
                 {
-                    opts.Add(str);
+                    flags.Add(str);
                     continue;
                 }
 
-                if (str.Length == 0 || str[0] != '-')
+                if (str.Length < 2 || str[0] != '-')
                 {
                     args.Add(str);
                     continue;
                 }
 
-                if (str.Length < 2) continue;
                 if (str[1] == '-')
                 {
                     if (str.Length == 2)
@@ -449,13 +455,43 @@ namespace HacknetSharp.Server
                         continue;
                     }
 
-                    opts.Add(str[2..]);
+                    string id = str[2..];
+                    if (optKeys.Contains(id))
+                    {
+                        if (TryGetArg(argv, i, out string? res))
+                            opts[id] = res;
+                        i++;
+                    }
+                    else
+                        flags.Add(id);
                 }
                 else
-                    opts.UnionWith(str.Skip(2).Select(c => c.ToString()));
+                {
+                    string firstId = str[1].ToString();
+                    if (str.Length == 2 && optKeys.Contains(firstId))
+                    {
+                        if (TryGetArg(argv, i, out string? res))
+                            opts[firstId] = res;
+                        i++;
+                    }
+                    else
+                        flags.UnionWith(str.Skip(1).Select(c => c.ToString()));
+                }
             }
 
-            return (opts, args);
+            return (flags, opts, args);
+        }
+
+        private static bool TryGetArg(IReadOnlyList<string> list, int i, [NotNullWhen(true)] out string? arg)
+        {
+            if (i + 1 < list.Count)
+            {
+                arg = list[i + 1];
+                return true;
+            }
+
+            arg = null;
+            return false;
         }
 
         /// <summary>
@@ -510,7 +546,7 @@ namespace HacknetSharp.Server
             if (state != State.Void)
                 entryCount++;
 
-            var res = new string[entryCount];
+            string[] res = new string[entryCount];
             var sb = new StringBuilder();
             state = State.Void;
             entryCount = 0;

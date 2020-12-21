@@ -390,7 +390,7 @@ namespace HacknetSharp
         /// <summary>
         /// Answers perceived as an affirmative statement for <see cref="Confirm"/>.
         /// </summary>
-        public static readonly IReadOnlyCollection<string> _yes = new HashSet<string>(new[]
+        public static readonly IReadOnlyCollection<string> YesAnswers = new HashSet<string>(new[]
         {
             "yes", "y", "sure", "absolutely", "sin duda", "do it", "yes please", "yes, please", "bingo", "come on",
             "such"
@@ -400,11 +400,11 @@ namespace HacknetSharp
         /// Asks for confirmation on an action and validates response.
         /// </summary>
         /// <param name="mes">Prompt to print.</param>
-        /// <returns>True if user input was contained in <see cref="_yes"/>.</returns>
+        /// <returns>True if user input was contained in <see cref="YesAnswers"/>.</returns>
         public static bool Confirm(string mes)
         {
             Console.WriteLine(mes);
-            return _yes.Contains((Console.ReadLine() ?? "").ToLowerInvariant());
+            return YesAnswers.Contains((Console.ReadLine() ?? "").ToLowerInvariant());
         }
 
         private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
@@ -422,13 +422,32 @@ namespace HacknetSharp
         /// <param name="impliedUser">User to use in absence of user in connection string.</param>
         /// <param name="impliedHost">Host to use in absence of host in connection string.</param>
         /// <returns>True if successfully parsed.</returns>
-        public static bool TryParseConString(string conString, ushort defaultPort, out string? user, out string? host,
+        public static bool TryParseConString(string? conString, ushort defaultPort, out string? user, out string? host,
             out ushort port, out string? error, string? impliedUser = null, string? impliedHost = null)
         {
             user = null;
             host = null;
             port = defaultPort;
             error = null;
+            if (conString == null)
+            {
+                if (impliedUser == null)
+                {
+                    error = "Missing username";
+                    return false;
+                }
+
+                if (impliedHost == null)
+                {
+                    error = "Missing hostname";
+                    return false;
+                }
+
+                user = impliedUser;
+                host = impliedHost;
+                return true;
+            }
+
             var conStringMatch = _conStringRegex.Match(conString);
             if (!conStringMatch.Success)
             {

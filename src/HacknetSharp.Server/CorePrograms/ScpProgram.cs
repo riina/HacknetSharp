@@ -56,7 +56,6 @@ namespace HacknetSharp.Server.CorePrograms
             else
             {
                 user.WriteEventSafe(Output("Password:"));
-                user.FlushSafeAsync();
                 var input = Input(user, true);
                 yield return input;
                 password = input.Input!.Input;

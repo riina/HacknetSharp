@@ -19,7 +19,7 @@ Most significant programs are implemented:
   - Ports (`<one-size-fits-all core:hack>`)
   - Firewall (analyze/solve)
   - General (probe/porthack)
-* Utility (echo/help)
+* Utility (echo/help/login)
 
 There are still some features missing, listed on the
 [MVP project board](https://github.com/The-Council-of-Wills/HacknetSharp/projects/1).

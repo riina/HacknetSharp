@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Server;
 
@@ -32,6 +33,47 @@ namespace HacknetSharp.Server
         public virtual bool OnShutdown(ProgramContext context) => true;
 
         #region Utility methods
+
+        /// <summary>
+        /// Attempt to connect to target system with credentials.
+        /// </summary>
+        /// <param name="context">Program context.</param>
+        /// <param name="address">Target system.</param>
+        /// <param name="username">Target username.</param>
+        /// <param name="password">Target password.</param>
+        /// <returns>True on successful connection.</returns>
+        public static bool Connect(ProgramContext context, uint address, string username, string password)
+        {
+            var user = context.User;
+            user.WriteEventSafe(Output("Connecting...\n"));
+            if (!context.World.TryGetSystem(address, out var system))
+            {
+                user.WriteEventSafe(Output("No route to host\n"));
+                user.FlushSafeAsync();
+                return false;
+            }
+
+            var login = system.Logins.FirstOrDefault(l => l.User == username);
+            if (login == null || !ServerUtil.ValidatePassword(password, login.Hash, login.Salt))
+            {
+                user.WriteEventSafe(Output("Invalid credentials\n"));
+                user.FlushSafeAsync();
+                return false;
+            }
+
+            context.World.StartShell(user, context.Person, system, login, ServerConstants.ShellName);
+            if (context.System.KnownSystems.All(p => p.To != system))
+                context.World.Spawn.Connection(context.System, system, false);
+            if (system.ConnectCommandLine != null)
+            {
+                string[] chainLine = ServerUtil.SplitCommandLine(system.ConnectCommandLine);
+                if (chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
+                    context.ChainLine = chainLine;
+            }
+
+            user.FlushSafeAsync();
+            return true;
+        }
 
         /// <summary>
         /// Creates an <see cref="OutputEvent"/> with the specified message.

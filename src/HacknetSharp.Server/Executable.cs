@@ -217,7 +217,7 @@ namespace HacknetSharp.Server
         public static ConditionYieldToken Condition(Func<bool> condition) => new(condition);
 
         /// <summary>
-        /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+        /// Sends an input request and creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
         /// </summary>
         /// <param name="context">Context to check for messages in.</param>
         /// <param name="hidden">Use hidden input (passwords).</param>
@@ -228,6 +228,23 @@ namespace HacknetSharp.Server
             context.WriteEventSafe(new InputRequestEvent {Operation = opGuid, Hidden = hidden});
             context.FlushSafeAsync();
             return new InputYieldToken(context, opGuid);
+        }
+
+        /// <summary>
+        /// Sends an input request and creates a yield token with the specified context and operation.Once a message with the right operation ID is received, execution is resumed.
+        /// </summary>
+        /// <param name="context">Context to check for messages in.</param>
+        /// <param name="hidden">Use hidden input (passwords).</param>
+        /// <param name="confirmSet">Confirmation set.</param>
+        /// <returns>Yield token.</returns>
+        public static ConfirmYieldToken Confirm(IPersonContext context, bool hidden,
+            IReadOnlyCollection<string>? confirmSet = null)
+        {
+            var opGuid = Guid.NewGuid();
+            context.WriteEventSafe(new InputRequestEvent {Operation = opGuid, Hidden = hidden});
+            context.FlushSafeAsync();
+            confirmSet ??= Util.YesAnswers;
+            return new ConfirmYieldToken(context, opGuid, confirmSet);
         }
 
         /// <summary>
@@ -458,6 +475,44 @@ namespace HacknetSharp.Server
                 if (!Context.Responses.TryRemove(Operation, out var response)) return false;
                 Input = response as InputResponseEvent ?? new InputResponseEvent {Operation = Operation, Input = ""};
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Represents a confirmation-dependent yield token.
+        /// </summary>
+        public class ConfirmYieldToken : InputYieldToken
+        {
+            /// <summary>
+            /// Set of confirmation keys.
+            /// </summary>
+            public IReadOnlyCollection<string> ConfirmSet { get; }
+
+            /// <summary>
+            /// If true, user confirmed action.
+            /// </summary>
+            public bool Confirmed { get; set; }
+
+            /// <summary>
+            /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+            /// </summary>
+            /// <param name="context">Context to check for messages in.</param>
+            /// <param name="operation">Operation ID to check for.</param>
+            /// <param name="confirmSet">Set of confirmation keys.</param>
+            /// <returns>Yield token.</returns>
+            public ConfirmYieldToken(IPersonContext context, Guid operation, IReadOnlyCollection<string> confirmSet) :
+                base(context, operation)
+            {
+                ConfirmSet = confirmSet;
+            }
+
+            /// <inheritdoc />
+            public override bool Yield(IWorld world)
+            {
+                if (Input != null) return true;
+                bool res = base.Yield(world);
+                if (res) Confirmed = ConfirmSet.Contains(Input!.Input, StringComparer.InvariantCultureIgnoreCase);
+                return res;
             }
         }
 

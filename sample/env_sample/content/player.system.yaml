@@ -38,4 +38,5 @@ Filesystem:
   - prog:/bin/ftpftw core:hack ftp 7.0
   - prog:/bin/solve core:solve
   - prog:/bin/analyze core:analyze
+  - prog:/bin/login core:login
   - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

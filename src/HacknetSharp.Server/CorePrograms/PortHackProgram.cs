@@ -6,7 +6,8 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:porthack", "PortHack", "bruteforce login",
         "Obtains an administrator login on\nthe target system\n\n" +
-        "target system can be assumed from environment\nvariable \"TARGET\"",
+        "target system can be assumed from environment\nvariable \"TARGET\".\n" +
+        "This program sets TARGET, NAME, and PASS\nenvironment variables.",
         "[target]", false)]
     public class PortHackProgram : Program
     {
@@ -61,8 +62,9 @@ namespace HacknetSharp.Server.CorePrograms
 
             string un = ServerUtil.GenerateUser();
             string pw = ServerUtil.GeneratePassword();
-            var pwHashSalt = ServerUtil.HashPassword(pw);
-            context.World.Spawn.Login(system, un, pwHashSalt.hash, pwHashSalt.salt, true);
+            var (hash, salt) = ServerUtil.HashPassword(pw);
+            context.World.Spawn.Login(system, un, hash, salt, true);
+            shell.SetVariable("TARGET", addr);
             shell.SetVariable("NAME", un);
             shell.SetVariable("PASS", pw);
             user.WriteEventSafe(Output($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n"));

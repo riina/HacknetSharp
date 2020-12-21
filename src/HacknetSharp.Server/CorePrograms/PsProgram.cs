@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HacknetSharp.Events.Server;
@@ -19,20 +20,9 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var user = context.User;
             if (!user.Connected) yield break;
-            string[] argv = context.Argv;
-            bool all = false;
-            foreach (var arg in argv)
-            {
-                if (arg.StartsWith('-'))
-                    foreach (char c in arg[1..])
-                        switch (char.ToLowerInvariant(c))
-                        {
-                            case 'e':
-                                all = true;
-                                break;
-                        }
-            }
-
+            var (flags, _, _) =
+                ServerUtil.IsolateFlags(new ArraySegment<string>(context.Argv, 1, context.Argv.Length - 1));
+            bool all = flags.Contains("e");
             LoginModel? login = context.Login.Admin ? null : context.Login;
 
             user.WriteEventSafe(new OutputEvent
