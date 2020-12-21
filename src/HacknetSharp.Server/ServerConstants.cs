@@ -11,9 +11,9 @@ namespace HacknetSharp.Server
         public const string ExtensionsFolder = "extensions";
 
         /// <summary>
-        /// Name of command shell. A reference to WILL (Will SHell).
+        /// Name of command shell intrinsic.
         /// </summary>
-        public const string ShellName = "wsh";
+        public const string ShellName = "shell";
 
         /// <summary>
         /// Maximum file length.

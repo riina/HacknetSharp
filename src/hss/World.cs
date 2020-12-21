@@ -82,8 +82,11 @@ namespace hss
                         fail = fail || operation.Context.System.BootTime > Model.Now;
                         fail = fail || !Model.Systems.Contains(operation.Context.System);
                         fail = fail || !operation.Context.System.Logins.Contains(operation.Context.Login);
-                        fail = fail || operation.Context is ProgramContext pc2 &&
-                            !operation.Context.Person.ShellChain.Contains(pc2.Shell);
+                        fail = fail ||
+                               (operation is not ShellProcess ||
+                                operation is ShellProcess {RemoteParent: null}) &&
+                               operation.Context is ProgramContext pc2 &&
+                               !operation.Context.Person.ShellChain.Contains(pc2.Shell);
                         if (fail)
                         {
                             try
@@ -134,7 +137,8 @@ namespace hss
         {
             if (process.Completed != null) return true;
             var context = process.Context;
-            var processes = context.System.Processes;
+            var system = context.System;
+            var processes = system.Processes;
             uint pid = context.Pid;
             processes.Remove(pid);
             if (process is ShellProcess shProc)
@@ -145,8 +149,17 @@ namespace hss
                 {
                     int endIdx = chain.Count;
                     for (int i = endIdx - 1; i > shellIdx; i--)
-                        CompleteRecurse(chain[i], completionKind);
+                        if (!CompleteRecurse(chain[i], completionKind))
+                            return false;
                     chain.RemoveAt(shellIdx);
+                }
+
+                // If this is a remote shell and it's being terminated, go back to host shell to terminate proxy
+                if (shProc.RemoteParent != null &&
+                    shProc.RemoteParent.Remotes.TryGetValue(system.Address, out var remote))
+                {
+                    CompleteRecurse(remote, Process.CompletionKind.KillRemote);
+                    shProc.RemoteParent.Remotes.Remove(system.Address);
                 }
             }
 
@@ -169,83 +182,102 @@ namespace hss
             return true;
         }
 
-        public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel, SystemModel systemModel,
-            LoginModel loginModel, string line)
+        public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel,
+            LoginModel loginModel, string line, bool attach)
         {
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel,
                     ServerUtil.SplitCommandLine(line));
-            return StartShell(programContext, Server.IntrinsicPrograms[ServerConstants.ShellName].Item1);
+            return StartShell(programContext, Server.IntrinsicPrograms[ServerConstants.ShellName].Item1, attach);
         }
 
-        public ProgramProcess? StartProgram(IPersonContext personContext, PersonModel personModel,
-            SystemModel systemModel, LoginModel loginModel, string line)
+        public ProgramProcess? StartProgram(ShellProcess shell, string line, Program? program = null)
         {
-            if (personModel.ShellChain.Count == 0)
-                return null;
-
-            var shell = personModel.ShellChain[^1];
             string[] argv = ServerUtil.SplitCommandLine(line);
-
-            if (argv.Length == 0 || !string.IsNullOrWhiteSpace(argv[0])) return null;
+            if (argv.Length == 0 || string.IsNullOrWhiteSpace(argv[0])) return null;
+            var shellContext = shell.ProgramContext;
+            var user = shellContext.User;
+            var system = shellContext.System;
 
             var programContext =
-                ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
+                ServerUtil.InitProgramContext(this, Guid.Empty, shellContext.User, shellContext.Person,
+                    shellContext.Login, argv);
             programContext.ParentPid = shell.ProgramContext.Pid;
             programContext.Shell = shell;
-            programContext.System = systemModel;
-
-            if (TryGetIntrinsicProgramWithHargs(programContext.Argv[0], out var intrinsicRes))
-                return StartProgram(programContext, intrinsicRes.Item1);
-
-            string exe = $"/bin/{programContext.Argv[0]}";
-            systemModel.TryGetFile(exe, loginModel, out var result, out var closestStr, out var fse,
-                caseInsensitive: true);
-            switch (result)
+            if (program != null)
             {
-                case ReadAccessResult.NotReadable:
-                    personContext.WriteEventSafe(Program.Output($"{closestStr}: Permission denied\n"));
-                    personContext.FlushSafeAsync();
-                    return null;
-                case ReadAccessResult.NoExist:
-                    personContext.WriteEventSafe(Program.Output($"{closestStr}: No such file or directory\n"));
-                    personContext.FlushSafeAsync();
-                    return null;
+                programContext.HArgv = new[] {argv[0]};
+                return StartProgram(programContext, program);
             }
 
-            if (fse == null || fse.Kind != FileModel.FileKind.ProgFile || !TryGetProgramWithHargs(
-                systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                out var res))
-                return null;
+            if (TryGetIntrinsicProgramWithHargs(programContext.Argv[0], out var intrinsicRes))
+            {
+                programContext.HArgv = intrinsicRes.Item3;
+                return StartProgram(programContext, intrinsicRes.Item1);
+            }
 
-            programContext.HArgv = res.Item3;
-            return StartProgram(programContext, res.Item1);
+            string exe = $"/bin/{programContext.Argv[0]}";
+            system.TryGetFile(exe, shellContext.Login, out var result, out var closestStr, out var fse,
+                caseInsensitive: true);
+            if (program == null)
+                switch (result)
+                {
+                    case ReadAccessResult.NotReadable:
+                        user.WriteEventSafe(Program.Output($"{closestStr}: Permission denied\n"));
+                        user.FlushSafeAsync();
+                        return null;
+                    case ReadAccessResult.NoExist:
+                        user.WriteEventSafe(Program.Output($"{closestStr}: No such file or directory\n"));
+                        user.FlushSafeAsync();
+                        return null;
+                }
+
+            if (fse != null && fse.Kind == FileModel.FileKind.ProgFile && TryGetProgramWithHargs(
+                system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                out var res))
+            {
+                programContext.HArgv = res.Item3;
+                return StartProgram(programContext, res.Item1);
+            }
+
+            return null;
         }
 
-        public ServiceProcess? StartService(PersonModel personModel, SystemModel systemModel, LoginModel loginModel,
-            string line)
+        public ServiceProcess? StartService(PersonModel personModel, LoginModel loginModel, string line,
+            Service? service = null)
         {
+            // TODO re-evaluate if person is really necessary for svc (strip from base class?)
+            string[] argv = ServerUtil.SplitCommandLine(line);
+            if (argv.Length == 0 || string.IsNullOrWhiteSpace(argv[0])) return null;
+            var system = loginModel.System;
             var serviceContext = new ServiceContext
             {
                 World = this,
-                Argv = ServerUtil.SplitCommandLine(line),
-                System = systemModel,
+                Argv = argv,
+                System = system,
                 Person = personModel,
                 Login = loginModel
             };
-            string exe = $"/bin/{serviceContext.Argv[0]}";
-            if (!systemModel.TryGetFile(exe, loginModel, out _, out _, out var fse, caseInsensitive: true))
-                return null;
-            if (fse.Kind != FileModel.FileKind.ProgFile || !TryGetServiceWithHargs(
-                systemModel.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                out var res))
-                return null;
+            if (service != null)
+            {
+                serviceContext.HArgv = new[] {argv[0]};
+                return StartService(serviceContext, service);
+            }
 
-            serviceContext.HArgv = res.Item3;
-            return StartService(serviceContext, res.Item1);
+            string exe = $"/bin/{serviceContext.Argv[0]}";
+            if (system.TryGetFile(exe, loginModel, out _, out _, out var fse, caseInsensitive: true) &&
+                fse.Kind == FileModel.FileKind.ProgFile && TryGetServiceWithHargs(
+                    system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                    out var res))
+            {
+                serviceContext.HArgv = res.Item3;
+                return StartService(serviceContext, res.Item1);
+            }
+
+            return null;
         }
 
-        private ShellProcess? StartShell(ProgramContext context, Program program)
+        private ShellProcess? StartShell(ProgramContext context, Program program, bool attach)
         {
             var system = context.System;
             var person = context.Person;
@@ -265,7 +297,7 @@ namespace hss
             string src = chain.Count != 0 ? Util.UintToAddress(chain[^1].ProgramContext.System.Address) : "<external>";
             double time = Time;
             string logBody = $"User={login.User}\nOrigin={src}\nTime={time}\n";
-            chain.Add(process);
+            if (attach) chain.Add(process);
             Executable.TryWriteLog(Spawn, time, system, login, ServerConstants.LogKind_Login, logBody, out _);
             return process;
         }

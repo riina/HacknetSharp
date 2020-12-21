@@ -11,6 +11,11 @@
         public ProcessContext Context { get; }
 
         /// <summary>
+        /// Source executable for this process.
+        /// </summary>
+        public Executable? Executable { get; }
+
+        /// <summary>
         /// Method in which this process was completed if not null.
         /// </summary>
         public CompletionKind? Completed { get; set; }
@@ -19,9 +24,11 @@
         /// Creates a new instance of <see cref="Process"/>.
         /// </summary>
         /// <param name="context">Process context information.</param>
-        protected Process(ProcessContext context)
+        /// <param name="executable">Source executable.</param>
+        protected Process(ProcessContext context, Executable? executable)
         {
             Context = context;
+            Executable = executable;
         }
 
         /// <summary>

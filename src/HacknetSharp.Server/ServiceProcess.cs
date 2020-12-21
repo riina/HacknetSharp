@@ -19,7 +19,7 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="context">Service context.</param>
         /// <param name="service">Service this process will use.</param>
-        public ServiceProcess(ServiceContext context, Service service) : base(context)
+        public ServiceProcess(ServiceContext context, Service service) : base(context, service)
         {
             _context = context;
             _enumerator = service.Run(context);

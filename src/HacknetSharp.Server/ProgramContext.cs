@@ -43,6 +43,11 @@ namespace HacknetSharp.Server
         public string[]? ChainLine { get; set; }
 
         /// <summary>
+        /// Remote shell this process is connected to.
+        /// </summary>
+        public ShellProcess? Remote { get; set; }
+
+        /// <summary>
         /// Command invocation mode.
         /// </summary>
         public enum InvocationType

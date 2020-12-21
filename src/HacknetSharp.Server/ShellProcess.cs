@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.CorePrograms;
 using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
@@ -48,6 +49,16 @@ namespace HacknetSharp.Server
         /// </summary>
         public Dictionary<uint, (string solution, int iterations, bool solved)> FirewallStates { get; set; } = new();
 
+        /// <summary>
+        /// Processes with remote shells by system address.
+        /// </summary>
+        public Dictionary<uint, ProgramProcess> Remotes { get; set; } = new();
+
+        /// <summary>
+        /// Shell for which this shell is a remote.
+        /// </summary>
+        public ShellProcess? RemoteParent { get; set; }
+
         private bool _cleaned;
 
         /*public IEnumerable<string> AllVariables
@@ -66,7 +77,7 @@ namespace HacknetSharp.Server
         /// Creates a new instance of <see cref="ShellProcess"/>.
         /// </summary>
         /// <param name="context">Program context.</param>
-        public ShellProcess(ProgramContext context) : base(context)
+        public ShellProcess(ProgramContext context) : base(context, null)
         {
             ProgramContext = context;
             _builtinVariables = new Dictionary<string, Func<string>>

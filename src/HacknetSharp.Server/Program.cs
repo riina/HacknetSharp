@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.CorePrograms;
 
 namespace HacknetSharp.Server
 {
@@ -62,7 +63,7 @@ namespace HacknetSharp.Server
                 return false;
             }
 
-            context.World.StartShell(user, context.Person, system, login, ServerConstants.ShellName);
+            context.World.StartShell(user, context.Person, login, ServerConstants.ShellName, true);
             if (context.System.KnownSystems.All(p => p.To != system))
                 context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
@@ -121,7 +122,7 @@ namespace HacknetSharp.Server
             try
             {
                 // just ignore shells
-                if (process is ShellProcess) return;
+                if (process is ShellProcess || process?.Executable is ShellProxyProgram) return;
                 if (programContext.ChainLine != null &&
                     (process?.Completed ?? Process.CompletionKind.Normal) == Process.CompletionKind.Normal)
                     return;

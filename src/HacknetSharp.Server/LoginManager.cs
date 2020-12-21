@@ -111,7 +111,7 @@ namespace HacknetSharp.Server
         }
 
         private static string GetLoginFile(LoginModel login, uint address) =>
-            $"/login{login.User}/{Util.UintToAddress(address)}.login";
+            $"/login/{login.User}/{Util.UintToAddress(address)}.login";
 
         /// <summary>
         /// Represents a login.
