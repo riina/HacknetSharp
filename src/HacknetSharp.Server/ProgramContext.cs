@@ -1,4 +1,5 @@
 ﻿using System;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
@@ -7,6 +8,11 @@ namespace HacknetSharp.Server
     /// </summary>
     public class ProgramContext : ProcessContext
     {
+        /// <summary>
+        /// Person for the process.
+        /// </summary>
+        public PersonModel Person { get; set; } = null!;
+
         /// <summary>
         /// User/NPC context for the process.
         /// </summary>

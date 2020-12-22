@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp.Events.Server;
+using HacknetSharp.Server.CoreServices;
 using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
@@ -112,6 +113,21 @@ namespace HacknetSharp.Server
         /// Processes with remote shells by system address.
         /// </summary>
         public Dictionary<uint, ProgramProcess> Remotes { get; set; } = new();
+
+        /// <summary>
+        /// Active chat service for this shell.
+        /// </summary>
+        public ChatService? Chat { get; set; }
+
+        /// <summary>
+        /// Active chat room for this shell.
+        /// </summary>
+        public string? ChatRoom { get; set; }
+
+        /// <summary>
+        /// Active chat name for this shell.
+        /// </summary>
+        public string? ChatName { get; set; }
 
         /// <summary>
         /// Shell for which this shell is a remote.

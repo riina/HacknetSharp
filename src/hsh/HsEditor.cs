@@ -9,7 +9,7 @@ namespace hsh
 {
     public static class HsEditor
     {
-        private static readonly char _blankChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\0' : ' ';
+        public static readonly char BlankChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\0' : ' ';
 
         public readonly struct EditorResult
         {
@@ -186,7 +186,7 @@ namespace hsh
         private static void PrintStatusBar(string bar, bool commandEntry)
         {
             Console.SetCursorPosition(0, Console.WindowHeight - 1);
-            Console.Write(new string(_blankChar, Console.BufferWidth - 1));
+            Console.Write(new string(BlankChar, Console.BufferWidth - 1));
             Console.SetCursorPosition(0, Console.WindowHeight - 1);
             Console.Write(commandEntry ? $"> {bar}" : bar);
         }
@@ -589,7 +589,7 @@ namespace hsh
                 var lines = _lines;
                 _lines = new List<string>();
                 _subLineInfos.Clear();
-                _clear = new string(_blankChar, Console.BufferWidth);
+                _clear = new string(BlankChar, Console.BufferWidth);
                 return AddLines(lines, 0);
             }
 

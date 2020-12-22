@@ -82,41 +82,42 @@ namespace HacknetSharp.Server
         /// <param name="personContext">User context.</param>
         /// <param name="personModel">Person.</param>
         /// <param name="loginModel">Login.</param>
-        /// <param name="line">Command line.</param>
+        /// <param name="argv">Command line.</param>
         /// <param name="attach">If true, automatically attach to shell chain.</param>
         /// <returns>Started shell or null on failure conditions.</returns>
         /// <remarks>
         /// Process creation can fail if there are no remaining PIDs.
         /// </remarks>
         ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel, LoginModel loginModel,
-            string line, bool attach);
+            string[] argv, bool attach);
 
         /// <summary>
         /// Attempts to start a program.
         /// </summary>
         /// <param name="shell">Shell.</param>
-        /// <param name="line">Command line.</param>
+        /// <param name="argv">Command line.</param>
+        /// <param name="hargv">Hidden arguments.</param>
         /// <param name="program">Existing program to execute directly.</param>
         /// <returns>Started program or null on failure conditions.</returns>
         /// <remarks>
         /// Process creation can fail for several reasons, including if there are no remaining PIDs
         /// or the executable doesn't exist, or if there isn't an active shell.
         /// </remarks>
-        ProgramProcess? StartProgram(ShellProcess shell, string line, Program? program = null);
+        ProgramProcess? StartProgram(ShellProcess shell, string[] argv, string[]? hargv = null, Program? program = null);
 
         /// <summary>
         /// Attempts to start a service.
         /// </summary>
-        /// <param name="personModel">Person.</param>
         /// <param name="loginModel">Login.</param>
-        /// <param name="line">Command line.</param>
+        /// <param name="argv">Command line.</param>
+        /// <param name="hargv">Hidden arguments.</param>
         /// <param name="service">Existing service to execute directly.</param>
         /// <returns>Started program or null on failure conditions.</returns>
         /// <remarks>
         /// Process creation can fail for a several reasons, including if there are no remaining PIDs
         /// or the executable doesn't exist.
         /// </remarks>
-        ServiceProcess? StartService(PersonModel personModel, LoginModel loginModel, string line,
+        ServiceProcess? StartService(LoginModel loginModel, string[] argv, string[]? hargv = null,
             Service? service = null);
 
         /// <summary>

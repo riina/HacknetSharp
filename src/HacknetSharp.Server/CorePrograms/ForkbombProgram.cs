@@ -12,7 +12,7 @@ namespace HacknetSharp.Server.CorePrograms
         public override IEnumerator<YieldToken?> Run()
         {
             Write(Output("«««« RUNNING FORKBOMB »»»»\n"));
-            SignalUnbindProcess(null);
+            SignalUnbindProcess();
             int warningGate = 0;
             while (true)
             {

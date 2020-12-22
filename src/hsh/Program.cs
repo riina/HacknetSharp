@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
@@ -36,18 +37,18 @@ namespace hsh
 
         private static async Task<int> Run(Options options)
         {
-            ILogger? logger;
+            AlertLogger.Config config;
             if (options.Verbose)
             {
-                var config = new AlertLogger.Config(LogLevel.Critical, LogLevel.Debug, LogLevel.Error,
+                config = new AlertLogger.Config(LogLevel.Critical, LogLevel.Debug, LogLevel.Error,
                     LogLevel.Information, LogLevel.Trace, LogLevel.Warning);
-                logger = new AlertLogger(config);
             }
             else
             {
-                logger = null;
+                config = new AlertLogger.Config(LogLevel.Critical, LogLevel.Error);
             }
 
+            ILogger logger = new AlertLogger(config);
             var connection = GetConnection(options.ConString, options.Register, logger, out (int, string)? failReason);
             if (connection != null)
                 return options.ForgeToken ? await ForgeToken(connection).Caf() : await ExecuteClient(connection).Caf();
@@ -116,6 +117,7 @@ namespace hsh
                         break;
                     case ShellPromptEvent shellPrompt:
                         Console.Write($"{Util.UintToAddress(shellPrompt.Address)}:{shellPrompt.WorkingDirectory}> ");
+                        LockIO.ForceRewrite();
                         break;
                     case OutputEvent output:
                         Console.Write(output.Text);
@@ -163,11 +165,13 @@ namespace hsh
                 connection.DiscardEvents();
                 if (endEvt == null) break;
                 operation = Guid.NewGuid();
+                string? line = LockIO.GetLine();
+                if (line == null) break;
                 connection.WriteEvent(new CommandEvent
                 {
                     Operation = operation,
                     ConWidth = Console.WindowWidth,
-                    Text = Console.ReadLine() ?? throw new ApplicationException()
+                    Text = line
                 });
 
                 await connection.FlushAsync().Caf();
@@ -175,6 +179,70 @@ namespace hsh
 
             await connection.DisposeAsync();
             return 0;
+        }
+
+        public static class LockIO
+        {
+            private static readonly StringBuilder _sb = new StringBuilder();
+            private static readonly AutoResetEvent _are = new AutoResetEvent(true);
+
+            public static void ForceRewrite()
+            {
+                Console.Write(_sb.ToString());
+            }
+
+            public static string? GetLine()
+            {
+                _are.WaitOne();
+                bool prev = Console.TreatControlCAsInput;
+                Console.TreatControlCAsInput = true;
+                try
+                {
+                    while (true)
+                    {
+                        var key = Console.ReadKey(true);
+                        if (key.Key == ConsoleKey.Enter) break;
+                        if (key.Key == ConsoleKey.C &&
+                            (key.Modifiers & ConsoleModifiers.Control) == ConsoleModifiers.Control)
+                            return null;
+
+                        if (key.Key == ConsoleKey.Backspace)
+                        {
+                            if (_sb.Length != 0)
+                            {
+                                _sb.Remove(_sb.Length - 1, 1);
+                                (int, int) target;
+                                if (Console.CursorLeft == 0)
+                                {
+                                    target = (Console.BufferWidth - 1,Console.CursorTop-1);
+                                }
+                                else
+                                    target = (Console.CursorLeft-1, Console.CursorTop);
+                                Console.SetCursorPosition(target.Item1, target.Item2);
+                                Console.Write(HsEditor.BlankChar);
+                                Console.SetCursorPosition(target.Item1, target.Item2);
+                            }
+                            continue;
+                        }
+
+                        if (key.KeyChar != '\0')
+                        {
+                            Console.Write(key.KeyChar);
+                            _sb.Append(key.KeyChar);
+                        }
+                    }
+
+                    Console.WriteLine();
+                    string res = _sb.ToString();
+                    _sb.Clear();
+                    return res;
+                }
+                finally
+                {
+                    Console.TreatControlCAsInput = prev;
+                    _are.Set();
+                }
+            }
         }
 
         private static async Task<(UserInfoEvent?, int)> Connect(Client connection)

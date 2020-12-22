@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -17,13 +16,12 @@ namespace HacknetSharp.Server.CorePrograms
             int idx = chain.IndexOf(Shell);
             var hostShell = idx < 1 ? Shell : chain[idx - 1]; // Use parent shell or self
             if (hostShell.Remotes.ContainsKey(System.Address)) yield break; // Don't start duplicate shells
-            var shell = World.StartShell(User, Person, Login,
-                new StringBuilder().AppendJoin(' ', Argv.Skip(1).Prepend(ServerConstants.ShellName))
-                    .ToString(), false);
+            var shell = World.StartShell(User, Person, Login, Argv.Skip(1).Prepend(ServerConstants.ShellName).ToArray(),
+                false);
             if (shell != null)
             {
                 var proxy = World.StartProgram(hostShell,
-                    $"{ServerConstants.ShellName} {Util.UintToAddress(System.Address)}",
+                    new[] {ServerConstants.ShellName, Util.UintToAddress(System.Address)}, null,
                     ShellProxyProgram.Singleton);
                 if (proxy != null)
                 {

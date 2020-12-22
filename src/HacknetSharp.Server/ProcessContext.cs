@@ -33,11 +33,6 @@ namespace HacknetSharp.Server
         public SystemModel System { get; set; } = null!;
 
         /// <summary>
-        /// Person for the process.
-        /// </summary>
-        public PersonModel Person { get; set; } = null!;
-
-        /// <summary>
         /// Login for the process.
         /// </summary>
         public LoginModel Login { get; set; } = null!;

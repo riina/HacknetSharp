@@ -51,11 +51,6 @@ namespace HacknetSharp.Server
         public SystemModel System => ProcessContext.System;
 
         /// <summary>
-        /// Person for the process.
-        /// </summary>
-        public PersonModel Person => ProcessContext.Person;
-
-        /// <summary>
         /// Login for the process.
         /// </summary>
         public LoginModel Login => ProcessContext.Login;

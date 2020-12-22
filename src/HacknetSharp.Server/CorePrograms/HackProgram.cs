@@ -61,7 +61,7 @@ namespace HacknetSharp.Server.CorePrograms
 
 
             Write(Output($"«««« RUNNING {Argv[0]} »»»»\n"));
-            SignalUnbindProcess(null);
+            SignalUnbindProcess();
 
             yield return Delay(hackTime);
 

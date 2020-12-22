@@ -128,7 +128,54 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// System event delegate, used for trap signals etc.
         /// </summary>
-        public Action<object>? Pulse { get; set; } = null!;
+        public Action<object>? Pulse { get; set; }
+
+        /// <summary>
+        /// Public services.
+        /// </summary>
+        private Dictionary<Type, Service> PublicServices { get; set; } = new();
+
+        /// <summary>
+        /// Attempts to get public service.
+        /// </summary>
+        /// <param name="service">Service retrieved.</param>
+        /// <typeparam name="TService">Service type.</typeparam>
+        /// <returns>True if service was retrieved.</returns>
+        public bool TryGetService<TService>([NotNullWhen(true)] out TService? service) where TService : Service
+        {
+            if (!PublicServices.TryGetValue(typeof(TService), out var svc) || svc is not TService ts)
+            {
+                service = null;
+                return false;
+            }
+
+            service = ts;
+            return true;
+        }
+
+        /// <summary>
+        /// Registers a service, failing if one already exists.
+        /// </summary>
+        /// <param name="service">Service to register.</param>
+        /// <typeparam name="TService">Service type.</typeparam>
+        /// <returns>False if service of same type is already running.</returns>
+        public bool TryAddService<TService>(TService service) where TService : Service
+        {
+            if (PublicServices.ContainsKey(typeof(TService))) return false;
+            PublicServices[typeof(TService)] = service;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a specified service if it is registered.
+        /// </summary>
+        /// <param name="service">Service to deregister.</param>
+        /// <typeparam name="TService">Service type.</typeparam>
+        public void RemoveService<TService>(TService service) where TService : Service
+        {
+            if (PublicServices.TryGetValue(typeof(TService), out var svc) && svc == service)
+                PublicServices.Remove(typeof(TService));
+        }
 
         /// <summary>
         /// Represents a trap signal sent to <see cref="SystemModel.Pulse"/>.
@@ -138,7 +185,7 @@ namespace HacknetSharp.Server.Models
             /// <summary>
             /// Singleton object for this type.
             /// </summary>
-            public static readonly TrapSignal Singleton = new TrapSignal();
+            public static readonly TrapSignal Singleton = new();
         }
 
 
@@ -154,6 +201,7 @@ namespace HacknetSharp.Server.Models
                 x.HasMany(y => y.Vulnerabilities).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(y => y.Processes);
                 x.Ignore(y => y.Pulse);
+                x.Ignore(y => y.PublicServices);
             });
 #pragma warning restore 1591
         /// <summary>
@@ -187,6 +235,7 @@ namespace HacknetSharp.Server.Models
         public bool TryGetFile(string path, LoginModel login, out ReadAccessResult result, out string closest,
             [NotNullWhen(true)] out FileModel? readable, bool caseInsensitive = false, bool? hidden = false)
         {
+            path = Executable.GetNormalized(path);
             closest = GetClosestWithReadableParent(path, login, out readable, caseInsensitive, hidden);
             var comparison = caseInsensitive
                 ? StringComparison.InvariantCultureIgnoreCase

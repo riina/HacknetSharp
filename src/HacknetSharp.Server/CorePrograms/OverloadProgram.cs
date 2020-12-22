@@ -46,7 +46,7 @@ namespace HacknetSharp.Server.CorePrograms
                 var shellSystem = proc.ProgramContext.System;
                 _signalWaiter = new SignalWaiter(system);
                 Write(Output("«««« OVERLOADING PROXY »»»»\n"));
-                SignalUnbindProcess(null);
+                SignalUnbindProcess();
                 bool first = true;
                 int warningGate = 0;
                 while (crackState.ProxyClocks < system.ProxyClocks)

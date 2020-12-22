@@ -59,12 +59,10 @@ namespace HacknetSharp.Server
             _cleaned = true;
             Completed = completionKind;
 
-            if (ProgramContext.IsAi) return true;
-
             if (!ProgramContext.User.Connected) return true;
 
             if (ProgramContext.Type == ProgramContext.InvocationType.StartUp) ProgramContext.Person.StartedUp = true;
-            if (completionKind != CompletionKind.Normal)
+            if (completionKind != CompletionKind.Normal && !ProgramContext.IsAi)
             {
                 ProgramContext.User.WriteEventSafe(
                     Program.Output($"[Process {ProgramContext.Pid} {ProgramContext.Argv[0]} terminated]\n"));
@@ -81,7 +79,7 @@ namespace HacknetSharp.Server
                 return true;
             }
 
-            _program.SignalUnbindProcess(this);
+            Program.SignalUnbindProcess(ProgramContext, this);
             return true;
         }
     }

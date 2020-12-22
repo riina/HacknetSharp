@@ -39,4 +39,7 @@ Filesystem:
   - prog:/bin/overload core:overload
   - prog:/bin/trap core:trap
   - prog:/bin/forkbomb core:forkbomb
+  - prog:/bin/chatd core:chatd
+  - prog:/bin/chat core:chat
+  - prog:/bin/c core:c
   - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

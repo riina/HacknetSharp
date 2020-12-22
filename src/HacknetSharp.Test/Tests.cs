@@ -147,7 +147,7 @@ namespace HacknetSharp.Test
             ws.CopyFile(bin1!, sys, li, "/etc/bin");
             Assert.AreEqual(Basic(sys),
                 Basic(new[] {"/bin", "/bin/porthack", "/etc", "/etc/bin", "/etc/bin/porthack"}));
-            ws.RemoveFile(bin1, li);
+            ws.RemoveFile(bin1!, li);
             Assert.AreEqual(Basic(sys), Basic(new[] {"/etc", "/etc/bin", "/etc/bin/porthack"}));
         }
 

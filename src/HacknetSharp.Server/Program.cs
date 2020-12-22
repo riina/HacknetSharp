@@ -20,6 +20,11 @@ namespace HacknetSharp.Server
         public ProgramContext Context { get; set; } = null!;
 
         /// <summary>
+        /// Person for the process.
+        /// </summary>
+        public PersonModel Person => Context.Person;
+
+        /// <summary>
         /// User/NPC context for the process.
         /// </summary>
         public IPersonContext User => Context.User;
@@ -151,7 +156,7 @@ namespace HacknetSharp.Server
                 return false;
             }
 
-            context.World.StartShell(user, context.Person, login, ServerConstants.ShellName, true);
+            context.World.StartShell(user, context.Person, login, new[]{ServerConstants.ShellName}, true);
             if (context.System.KnownSystems.All(p => p.To != system))
                 context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
@@ -223,13 +228,12 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
-        /// Sends a <see cref="OperationCompleteEvent"/> to the client to allow command entry.
+        /// Sends an <see cref="OperationCompleteEvent"/> to the client to allow command entry.
         /// </summary>
-        /// <param name="process">Associated process (used to check <see cref="Process.Completed"/>).</param>
-        public void SignalUnbindProcess(Process? process) => SignalUnbindProcess(Context, process);
+        public void SignalUnbindProcess() => SignalUnbindProcess(Context, null);
 
         /// <summary>
-        /// Sends a <see cref="OperationCompleteEvent"/> to the client to allow command entry.
+        /// Sends an <see cref="OperationCompleteEvent"/> to the client to allow command entry.
         /// </summary>
         /// <param name="programContext">Context to use.</param>
         /// <param name="process">Associated process (used to check <see cref="Process.Completed"/>).</param>

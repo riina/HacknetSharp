@@ -19,11 +19,6 @@ namespace HacknetSharp.Server
         public string Name { get; set; }
 
         /// <summary>
-        /// Default memory used at process start.
-        /// </summary>
-        public long Memory { get; set; }
-
-        /// <summary>
         /// Program description.
         /// </summary>
         public string Description { get; set; }

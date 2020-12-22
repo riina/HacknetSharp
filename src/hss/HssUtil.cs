@@ -35,11 +35,6 @@ namespace hss
             (StoreName.Root, StoreLocation.CurrentUser), (StoreName.My, StoreLocation.CurrentUser)
         };
 
-
-        internal static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
-        internal static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
-
-
         public static void LoadTemplates(TemplateGroup templates, ServerSettings settings, string dir)
         {
             LoadTemplates(templates, Path.Combine(dir, HssConstants.ContentFolder));
@@ -97,6 +92,6 @@ namespace hss
 
         public static (string, T) ReadFromFile<T>(string file) => (
             Path.GetFileNameWithoutExtension(file).ToLowerInvariant(),
-            YamlDeserializer.Deserialize<T>(File.ReadAllText(file)));
+            ServerUtil.YamlDeserializer.Deserialize<T>(File.ReadAllText(file)));
     }
 }

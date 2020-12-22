@@ -50,7 +50,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             Write(Output("«««« RUNNING PORTHACK »»»»\n"));
-            SignalUnbindProcess(null);
+            SignalUnbindProcess();
 
             yield return Delay(6.0f);
 
