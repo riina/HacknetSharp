@@ -12,63 +12,51 @@ namespace HacknetSharp.Server.CorePrograms
     public class PortHackProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            string[] argv = context.Argv;
-            var shell = context.Shell;
-
-            if (!TryGetVariable(context, argv.Length != 1 ? argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "TARGET", out string? addr))
             {
-                user.WriteEventSafe(Output("No address provided\n"));
-                user.FlushSafeAsync();
+                Write(Output("No address provided\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetSystem(context.World.Model, addr, out var system, out string? systemConnectError))
+            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
             {
-                user.WriteEventSafe(Output($"{systemConnectError}\n"));
-                user.FlushSafeAsync();
+                Write(Output($"{systemConnectError}\n")).Flush();
                 yield break;
             }
 
             if (system.FirewallIterations > 0 &&
-                (!shell.FirewallStates.TryGetValue(system.Address, out var firewallState) ||
+                (!Shell.FirewallStates.TryGetValue(system.Address, out var firewallState) ||
                  !firewallState.solved))
             {
-                user.WriteEventSafe(Output(
-                    "Failed: Firewall active.\n"));
-                user.FlushSafeAsync();
+                Write(Output("Failed: Firewall active.\n")).Flush();
                 yield break;
             }
 
-            shell.OpenVulnerabilities.TryGetValue(system.Address, out var openVulns);
+            Shell.OpenVulnerabilities.TryGetValue(system.Address, out var openVulns);
             int sum = openVulns?.Aggregate(0, (c, v) => c + v.Exploits) ?? 0;
             if (sum < system.RequiredExploits)
             {
-                user.WriteEventSafe(Output(
-                    $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n"));
-                user.FlushSafeAsync();
+                Write(Output(
+                        $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n"))
+                    .Flush();
                 yield break;
             }
 
-            user.WriteEventSafe(Output("«««« RUNNING PORTHACK »»»»\n"));
-            SignalUnbindProcess(context, null);
+            Write(Output("«««« RUNNING PORTHACK »»»»\n"));
+            SignalUnbindProcess(null);
 
             yield return Delay(6.0f);
 
             string un = ServerUtil.GenerateUser();
             string pw = ServerUtil.GeneratePassword();
             var (hash, salt) = ServerUtil.HashPassword(pw);
-            context.World.Spawn.Login(system, un, hash, salt, true);
-            shell.SetVariable("TARGET", addr);
-            shell.SetVariable("NAME", un);
-            shell.SetVariable("PASS", pw);
-            user.WriteEventSafe(Output($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n"));
-            user.FlushSafeAsync();
+            World.Spawn.Login(system, un, hash, salt, true);
+            Shell.SetVariable("TARGET", addr);
+            Shell.SetVariable("NAME", un);
+            Shell.SetVariable("PASS", pw);
+            Write(Output($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n")).Flush();
         }
     }
 }

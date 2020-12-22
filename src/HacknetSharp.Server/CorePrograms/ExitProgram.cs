@@ -9,13 +9,10 @@ namespace HacknetSharp.Server.CorePrograms
     public class ExitProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            context.World.CompleteRecurse(context.Shell, Process.CompletionKind.Normal);
+            World.CompleteRecurse(Shell, Process.CompletionKind.Normal);
+            yield break;
         }
     }
 }

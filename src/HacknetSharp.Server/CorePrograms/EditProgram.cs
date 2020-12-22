@@ -11,52 +11,45 @@ namespace HacknetSharp.Server.CorePrograms
     public class EditProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            var system = context.System;
-            string[] argv = context.Argv;
-            if (argv.Length != 2)
+            if (Argv.Length != 2)
             {
-                user.WriteEventSafe(Output("1 operand is required by this command\n"));
-                user.FlushSafeAsync();
+                Write(Output("1 operand is required by this command\n")).Flush();
                 yield break;
             }
 
-            foreach (var file in argv.Skip(1))
+            foreach (var file in Argv.Skip(1))
             {
-                string path = GetNormalized(Combine(context.Shell.WorkingDirectory, file));
+                string path = GetNormalized(Combine(Shell.WorkingDirectory, file));
                 if (path == "/")
                 {
-                    user.WriteEventSafe(Output($"{path}: Is a directory\n"));
+                    Write(Output($"{path}: Is a directory\n"));
                     continue;
                 }
 
-                if (system.TryGetFile(path, context.Login, out var result, out var closestStr, out var closest))
+                if (System.TryGetFile(path, Login, out var result, out var closestStr, out var closest))
                     switch (closest.Kind)
                     {
                         case FileModel.FileKind.TextFile:
-                            bool editable = closest.CanWrite(context.Login);
-                            var edit = Edit(user, !editable, closest.Content ?? "");
+                            bool editable = closest.CanWrite(Context.Login);
+                            var edit = Edit(User, !editable, closest.Content ?? "");
                             yield return edit;
                             if (editable)
                             {
                                 closest.Content = edit.Edit!.Content;
-                                context.World.Database.Update(closest);
+                                World.Database.Update(closest);
                             }
 
                             break;
                         case FileModel.FileKind.FileFile:
-                            user.WriteEventSafe(Output($"cat: {path}: Is a binary file\n"));
+                            Write(Output($"cat: {path}: Is a binary file\n"));
                             break;
                         case FileModel.FileKind.ProgFile:
-                            user.WriteEventSafe(Output($"cat: {path}: Is a binary file\n"));
+                            Write(Output($"cat: {path}: Is a binary file\n"));
                             break;
                         case FileModel.FileKind.Folder:
-                            user.WriteEventSafe(Output($"cat: {path}: Is a directory\n"));
+                            Write(Output($"cat: {path}: Is a directory\n"));
                             break;
                     }
                 else
@@ -65,38 +58,34 @@ namespace HacknetSharp.Server.CorePrograms
                         case ReadAccessResult.Readable:
                             break;
                         case ReadAccessResult.NotReadable:
-                            user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
-                            user.FlushSafeAsync();
+                            Write(Output($"{closestStr}: Permission denied\n")).Flush();
                             yield break;
                         case ReadAccessResult.NoExist:
                             var (directory, name) = GetDirectoryAndName(path);
-                            if (!system.TryGetFile(directory, context.Login, out var result2,
+                            if (!System.TryGetFile(directory, Login, out var result2,
                                 out string closest2Str, out var closest2))
                             {
                                 switch (result2)
                                 {
                                     case ReadAccessResult.NotReadable:
-                                        user.WriteEventSafe(Output($"{closest2Str}: Permission denied\n"));
-                                        user.FlushSafeAsync();
+                                        Write(Output($"{closest2Str}: Permission denied\n")).Flush();
                                         break;
                                     case ReadAccessResult.NoExist:
-                                        user.WriteEventSafe(Output($"{directory}: No such file or directory\n"));
-                                        user.FlushSafeAsync();
+                                        Write(Output($"{directory}: No such file or directory\n")).Flush();
                                         break;
                                 }
 
                                 yield break;
                             }
-                            else if (!closest2.CanWrite(context.Login))
+                            else if (!closest2.CanWrite(Login))
                             {
-                                user.WriteEventSafe(Output($"{path}: Permission denied\n"));
-                                user.FlushSafeAsync();
+                                Write(Output($"{path}: Permission denied\n")).Flush();
                                 yield break;
                             }
 
-                            closest = context.World.Spawn.TextFile(context.System, context.Login, name, directory, "");
-                            bool editable = closest.CanWrite(context.Login);
-                            var edit = Edit(user, !editable, closest.Content ?? "");
+                            closest = World.Spawn.TextFile(System, Login, name, directory, "");
+                            bool editable = closest.CanWrite(Login);
+                            var edit = Edit(!editable, closest.Content ?? "");
                             yield return edit;
                             var edited = edit.Edit!;
                             if (editable && edited.Write)
@@ -104,14 +93,14 @@ namespace HacknetSharp.Server.CorePrograms
                                 closest.Content = edit.Edit!.Content;
                                 if (closest.Content.Length > ServerConstants.MaxFileLength)
                                     closest.Content = closest.Content[..ServerConstants.MaxFileLength];
-                                context.World.Database.Update(closest);
+                                World.Database.Update(closest);
                             }
 
                             yield break;
                     }
             }
 
-            user.FlushSafeAsync();
+            Flush();
         }
     }
 }

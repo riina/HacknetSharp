@@ -1,19 +1,19 @@
 ﻿namespace HacknetSharp.Server
 {
     /// <summary>
-    /// Represents a running process on a system/
+    /// Represents a running process on a system
     /// </summary>
     public abstract class Process
     {
         /// <summary>
         /// Context for the process.
         /// </summary>
-        public ProcessContext Context { get; }
+        public ProcessContext ProcessContext { get; }
 
         /// <summary>
         /// Source executable for this process.
         /// </summary>
-        public Executable? Executable { get; }
+        public Executable Executable { get; }
 
         /// <summary>
         /// Method in which this process was completed if not null.
@@ -23,12 +23,18 @@
         /// <summary>
         /// Creates a new instance of <see cref="Process"/>.
         /// </summary>
-        /// <param name="context">Process context information.</param>
         /// <param name="executable">Source executable.</param>
-        protected Process(ProcessContext context, Executable? executable)
+        protected Process(Executable executable)
         {
-            Context = context;
+            ProcessContext = executable.ProcessContext!;
             Executable = executable;
+        }
+
+        internal Process(ProcessContext processContext)
+        {
+            // Only for shells, which don't update
+            ProcessContext = processContext;
+            Executable = null!;
         }
 
         /// <summary>

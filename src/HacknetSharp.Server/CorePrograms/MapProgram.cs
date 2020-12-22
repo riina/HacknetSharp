@@ -12,29 +12,23 @@ namespace HacknetSharp.Server.CorePrograms
     public class MapProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            if (!context.Login.Admin)
+            if (!Login.Admin)
             {
-                user.WriteEventSafe(Output("Permission denied."));
-                user.FlushSafeAsync();
+                Write(Output("Permission denied.")).Flush();
                 yield break;
             }
 
-            string[] argv = context.Argv;
             IEnumerable<SystemModel> systems;
-            if (argv.Length != 1)
+            if (Argv.Length != 1)
             {
-                var filter = PathFilter.GenerateFilter(argv.Skip(1));
-                systems = context.System.KnownSystems.Select(s => s.To)
+                var filter = PathFilter.GenerateFilter(Argv.Skip(1));
+                systems = System.KnownSystems.Select(s => s.To)
                     .Where(s => filter.Test(Util.UintToAddress(s.Address)) || filter.Test(s.Name));
             }
             else
-                systems = context.System.KnownSystems.Select(s => s.To);
+                systems = System.KnownSystems.Select(s => s.To);
 
             var sb = new StringBuilder();
             foreach (var s in systems)
@@ -45,8 +39,7 @@ namespace HacknetSharp.Server.CorePrograms
                     .Append('\n');
             }
 
-            user.WriteEventSafe(Output(sb.ToString()));
-            user.FlushSafeAsync();
+            Write(Output(sb.ToString())).Flush();
         }
     }
 }

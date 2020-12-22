@@ -57,9 +57,9 @@ namespace hss
             tmpSystems.Clear();
             foreach (var process in processes)
             {
-                var system = process.Context.System;
+                var system = process.ProcessContext.System;
                 if (!tmpSystems.Add(system) || system.GetUsedMemory() <= system.SystemMemory) continue;
-                tmpProcesses.UnionWith(system.Processes.Values.Where(p => p.Context.ParentPid == 0));
+                tmpProcesses.UnionWith(system.Processes.Values.Where(p => p.ProcessContext.ParentPid == 0));
                 foreach (var p in tmpProcesses)
                     CompleteRecurse(p, Process.CompletionKind.KillRemote);
                 tmpProcesses.Clear();
@@ -78,15 +78,15 @@ namespace hss
                 {
                     if (!operation.Completed.HasValue)
                     {
-                        bool fail = operation.Context is ProgramContext pc0 && !pc0.User.Connected;
-                        fail = fail || operation.Context.System.BootTime > Model.Now;
-                        fail = fail || !Model.Systems.Contains(operation.Context.System);
-                        fail = fail || !operation.Context.System.Logins.Contains(operation.Context.Login);
+                        bool fail = operation.ProcessContext is ProgramContext pc0 && !pc0.User.Connected;
+                        fail = fail || operation.ProcessContext.System.BootTime > Model.Now;
+                        fail = fail || !Model.Systems.Contains(operation.ProcessContext.System);
+                        fail = fail || !operation.ProcessContext.System.Logins.Contains(operation.ProcessContext.Login);
                         fail = fail ||
                                (operation is not ShellProcess ||
                                 operation is ShellProcess {RemoteParent: null}) &&
-                               operation.Context is ProgramContext pc2 &&
-                               !operation.Context.Person.ShellChain.Contains(pc2.Shell);
+                               operation.ProcessContext is ProgramContext pc2 &&
+                               !operation.ProcessContext.Person.ShellChain.Contains(pc2.Shell);
                         if (fail)
                         {
                             try
@@ -136,7 +136,7 @@ namespace hss
         public bool CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
             if (process.Completed != null) return true;
-            var context = process.Context;
+            var context = process.ProcessContext;
             var system = context.System;
             var processes = system.Processes;
             uint pid = context.Pid;
@@ -176,7 +176,7 @@ namespace hss
                 }
             }
 
-            var toKill = processes.Values.Where(p => p.Context.ParentPid == pid).ToList();
+            var toKill = processes.Values.Where(p => p.ProcessContext.ParentPid == pid).ToList();
             foreach (var p in toKill)
                 CompleteRecurse(p, completionKind);
             return true;
@@ -188,7 +188,7 @@ namespace hss
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel,
                     ServerUtil.SplitCommandLine(line));
-            return StartShell(programContext, Server.IntrinsicPrograms[ServerConstants.ShellName].Item1, attach);
+            return StartShell(programContext, Server.IntrinsicPrograms[ServerConstants.ShellName].Item1(), attach);
         }
 
         public ProgramProcess? StartProgram(ShellProcess shell, string line, Program? program = null)
@@ -282,7 +282,9 @@ namespace hss
             var system = context.System;
             var person = context.Person;
             var login = context.Login;
-            if (program.GetStartupMemory(context) + context.System.GetUsedMemory() > context.System.SystemMemory)
+            program.ProcessContext = context;
+            program.Context = context;
+            if (program.GetStartupMemory() + context.System.GetUsedMemory() > context.System.SystemMemory)
                 return null;
             uint? pid = system.GetAvailablePid();
             if (pid == null) return null;
@@ -304,14 +306,16 @@ namespace hss
 
         private ProgramProcess? StartProgram(ProgramContext context, Program program)
         {
-            if (program.GetStartupMemory(context) + context.System.GetUsedMemory() > context.System.SystemMemory)
+            program.ProcessContext = context;
+            program.Context = context;
+            if (program.GetStartupMemory() + context.System.GetUsedMemory() > context.System.SystemMemory)
                 return null;
             var system = context.System;
             uint? pid = system.GetAvailablePid();
             if (pid == null) return null;
             context.Pid = pid.Value;
 
-            var process = new ProgramProcess(context, program);
+            var process = new ProgramProcess(program);
             system.Processes.Add(pid.Value, process);
             _processes.Add(process);
 
@@ -320,14 +324,16 @@ namespace hss
 
         private ServiceProcess? StartService(ServiceContext context, Service service)
         {
-            if (service.GetStartupMemory(context) + context.System.GetUsedMemory() > context.System.SystemMemory)
+            service.ProcessContext = context;
+            service.Context = context;
+            if (service.GetStartupMemory() + context.System.GetUsedMemory() > context.System.SystemMemory)
                 return null;
             var system = context.System;
             uint? pid = system.GetAvailablePid();
             if (pid == null) return null;
             context.Pid = pid.Value;
 
-            var process = new ServiceProcess(context, service);
+            var process = new ServiceProcess(service);
             system.Processes.Add(pid.Value, process);
             _processes.Add(process);
 
@@ -346,7 +352,7 @@ namespace hss
             return null;
         }
 
-        public IEnumerable<(Program, ProgramInfoAttribute)> IntrinsicPrograms => Server.IntrinsicPrograms.Values;
+        public IEnumerable<(Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms => Server.IntrinsicPrograms.Values;
 
         public void ExecuteCommand(ProgramContext programContext)
         {
@@ -363,7 +369,7 @@ namespace hss
             }
 
             var shell = personModel.ShellChain[^1];
-            var systemModel = shell.Context.System;
+            var systemModel = shell.ProcessContext.System;
 
             programContext.Argv = programContext.Type switch
             {
@@ -386,9 +392,16 @@ namespace hss
                 {
                     programContext.HArgv = intrinsicRes.Item3;
                     bool success = StartProgram(programContext, intrinsicRes.Item1) != null;
-                    if (!success)
+                    if (!success && !programContext.IsAi)
+                    {
                         programContext.User.WriteEventSafe(
                             Program.Output("Process creation failed: out of memory\n"));
+                        programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(programContext.Shell));
+                        programContext.User.WriteEventSafe(
+                            new OperationCompleteEvent {Operation = programContext.OperationId});
+                        programContext.User.FlushSafeAsync();
+                    }
+
                     return;
                 }
 
@@ -405,9 +418,16 @@ namespace hss
                         {
                             programContext.HArgv = res.Item3;
                             bool success = StartProgram(programContext, res.Item1) != null;
-                            if (!success)
+                            if (!success && !programContext.IsAi)
+                            {
                                 programContext.User.WriteEventSafe(
                                     Program.Output("Process creation failed: out of memory\n"));
+                                programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(programContext.Shell));
+                                programContext.User.WriteEventSafe(
+                                    new OperationCompleteEvent {Operation = programContext.OperationId});
+                                programContext.User.FlushSafeAsync();
+                            }
+
                             return;
                         }
 
@@ -420,11 +440,9 @@ namespace hss
                         break;
                     case ReadAccessResult.NoExist:
                         if (programContext.Type == ProgramContext.InvocationType.Standard && !programContext.IsAi)
-                            if (closestStr == "/bin")
-                                programContext.User.WriteEventSafe(Program.Output($"{closestStr}: not found\n"));
-                            else
-                                programContext.User.WriteEventSafe(
-                                    Program.Output($"{programContext.Argv[0]}: command not found\n"));
+                            programContext.User.WriteEventSafe(closestStr == "/bin"
+                                ? Program.Output($"{exe}: not found\n")
+                                : Program.Output($"{programContext.Argv[0]}: command not found\n"));
                         break;
                 }
             }
@@ -448,7 +466,7 @@ namespace hss
             }
 
             bool success = Server.IntrinsicPrograms.TryGetValue(line[0], out var res);
-            result = (res.Item1, res.Item2, line);
+            result = success ? (res.Item1(), res.Item2, line) : default;
             return success;
         }
 
@@ -462,7 +480,7 @@ namespace hss
             }
 
             bool success = Server.Programs.TryGetValue(line[0], out var res);
-            result = (res.Item1, res.Item2, line);
+            result = success ? (res.Item1(), res.Item2, line) : default;
             return success;
         }
 
@@ -476,7 +494,7 @@ namespace hss
             }
 
             bool success = Server.Services.TryGetValue(line[0], out var res);
-            result = (res.Item1, res.Item2, line);
+            result = success ? (res.Item1(), res.Item2, line) : default;
             return success;
         }
     }

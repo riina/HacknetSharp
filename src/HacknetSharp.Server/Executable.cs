@@ -15,6 +15,29 @@ namespace HacknetSharp.Server
     /// </summary>
     public abstract partial class Executable
     {
+        /// <summary>
+        /// Process context.
+        /// </summary>
+        public ProcessContext ProcessContext { get; set; } = null!;
+
+        /// <summary>
+        /// Checks memory that will be used if this context executes.
+        /// </summary>
+        /// <returns>Memory to be initially allocated by program.</returns>
+        public virtual long GetStartupMemory() => 0;
+
+        /// <summary>
+        /// Runs this executable with the given context.
+        /// </summary>
+        /// <returns>Enumerator that divides execution steps.</returns>
+        public abstract IEnumerator<YieldToken?> Run();
+
+        /// <summary>
+        /// Tells service on given context to stop execution.
+        /// </summary>
+        /// <returns>False if service refuses to shutdown.</returns>
+        public virtual bool OnShutdown() => true;
+
         #region Utility methods
 
         /// <summary>

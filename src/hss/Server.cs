@@ -35,9 +35,9 @@ namespace hss
         internal AccessController AccessController { get; }
         public Dictionary<Guid, World> Worlds { get; }
         public World DefaultWorld { get; }
-        public Dictionary<string, (Program, ProgramInfoAttribute)> Programs { get; }
-        public Dictionary<string, (Program, ProgramInfoAttribute)> IntrinsicPrograms { get; }
-        public Dictionary<string, (Service, ServiceInfoAttribute)> Services { get; }
+        public Dictionary<string, (Func<Program>, ProgramInfoAttribute)> Programs { get; }
+        public Dictionary<string, (Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms { get; }
+        public Dictionary<string, (Func<Service>, ServiceInfoAttribute)> Services { get; }
         public TemplateGroup Templates { get; }
         public ServerDatabase Database { get; }
         public Spawn Spawn { get; }
@@ -69,9 +69,9 @@ namespace hss
             _programTypes.UnionWith(config.Programs);
             _serviceTypes = new HashSet<Type>(ServerUtil.DefaultServices);
             _serviceTypes.UnionWith(config.Services);
-            Programs = new Dictionary<string, (Program, ProgramInfoAttribute)>();
-            IntrinsicPrograms = new Dictionary<string, (Program, ProgramInfoAttribute)>();
-            Services = new Dictionary<string, (Service, ServiceInfoAttribute)>();
+            Programs = new Dictionary<string, (Func<Program>, ProgramInfoAttribute)>();
+            IntrinsicPrograms = new Dictionary<string, (Func<Program>, ProgramInfoAttribute)>();
+            Services = new Dictionary<string, (Func<Service>, ServiceInfoAttribute)>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _connectListener = new TcpListener(IPAddress.Any, config.Port);
@@ -114,6 +114,10 @@ namespace hss
             }
         }
 
+        private static readonly MethodInfo _getConstructorDelegate =
+            typeof(Server).GetMethod(nameof(GetConstructorDelegate),
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)!;
+
         public Task Start()
         {
             Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
@@ -125,12 +129,14 @@ namespace hss
                     var info = type.GetCustomAttribute(typeof(ProgramInfoAttribute)) as ProgramInfoAttribute ??
                                throw new ApplicationException(
                                    $"{type.FullName} supplied as program but did not have {nameof(ProgramInfoAttribute)}");
-                    var program = Activator.CreateInstance(type) as Program ??
-                                  throw new ApplicationException(
-                                      $"{type.FullName} supplied as program but could not be casted to {nameof(Program)}");
-                    Programs.Add(info.ProgCode, (program, info));
+
+                    var func = (Func<Program>)(_getConstructorDelegate.MakeGenericMethod(type, typeof(Program))
+                                                   .Invoke(null, Array.Empty<object>()) ??
+                                               throw new ApplicationException(
+                                                   $"{type.FullName} supplied as program but failed to get delegate"));
+                    Programs.Add(info.ProgCode, (func, info));
                     if (info.Intrinsic)
-                        IntrinsicPrograms.Add(info.Name, (program, info));
+                        IntrinsicPrograms.Add(info.Name, (func, info));
                 }
 
                 foreach (var type in _serviceTypes)
@@ -138,10 +144,11 @@ namespace hss
                     var info = type.GetCustomAttribute(typeof(ServiceInfoAttribute)) as ServiceInfoAttribute ??
                                throw new ApplicationException(
                                    $"{type.FullName} supplied as service but did not have {nameof(ServiceInfoAttribute)}");
-                    var service = Activator.CreateInstance(type) as Service ??
-                                  throw new ApplicationException(
-                                      $"{type.FullName} supplied as service but could not be casted to {nameof(Service)}");
-                    Services.Add(info.ProgCode, (service, info));
+                    var func = (Func<Service>)(_getConstructorDelegate.MakeGenericMethod(type, typeof(Service))
+                                                   .Invoke(null, Array.Empty<object>()) ??
+                                               throw new ApplicationException(
+                                                   $"{type.FullName} supplied as service but failed to get delegate"));
+                    Services.Add(info.ProgCode, (func, info));
                 }
             }
             catch
@@ -157,6 +164,8 @@ namespace hss
             _connectTask = RunConnectListener();
             return UpdateAsync();
         }
+
+        private static Func<TBase> GetConstructorDelegate<T, TBase>() where T : TBase, new() => () => new T();
 
         private async Task UpdateAsync()
         {

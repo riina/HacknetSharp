@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
@@ -8,24 +8,57 @@ namespace HacknetSharp.Server
     public abstract class Service : Executable
     {
         /// <summary>
-        /// Checks memory that will be used if this context executes.
+        /// Execution context.
         /// </summary>
-        /// <param name="context">Service context to operate with.</param>
-        /// <returns>Memory to be initially allocated by program.</returns>
-        public virtual long GetStartupMemory(ServiceContext context) => 0;
+        public ServiceContext Context { get; set; } = null!;
 
         /// <summary>
-        /// Runs this executable with the given context.
+        /// Parent process ID.
         /// </summary>
-        /// <param name="context">Context to use with this execution.</param>
-        /// <returns>Enumerator that divides execution steps.</returns>
-        public abstract IEnumerator<YieldToken?> Run(ServiceContext context);
+        public uint ParentPid => Context.ParentPid;
 
         /// <summary>
-        /// Tells service on given context to stop execution.
+        /// Process ID.
         /// </summary>
-        /// <param name="context">Service context to operate with.</param>
-        /// <returns>False if service refuses to shutdown.</returns>
-        public virtual bool OnShutdown(ServiceContext context) => true;
+        public uint Pid => Context.Pid;
+
+        /// <summary>
+        /// Memory used by this process.
+        /// </summary>
+        public long Memory
+        {
+            get => Context.Memory;
+            set => Context.Memory = value;
+        }
+
+        /// <summary>
+        /// World for the process.
+        /// </summary>
+        public IWorld World => Context.World;
+
+        /// <summary>
+        /// System for the process.
+        /// </summary>
+        public SystemModel System => Context.System;
+
+        /// <summary>
+        /// Person for the process.
+        /// </summary>
+        public PersonModel Person => Context.Person;
+
+        /// <summary>
+        /// Login for the process.
+        /// </summary>
+        public LoginModel Login => Context.Login;
+
+        /// <summary>
+        /// Arguments passed to the process.
+        /// </summary>
+        public string[] Argv => Context.Argv;
+
+        /// <summary>
+        /// Hidden arguments for this process.
+        /// </summary>
+        public string[] HArgv => Context.HArgv;
     }
 }

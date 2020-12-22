@@ -11,52 +11,41 @@ namespace HacknetSharp.Server.CorePrograms
     public class MkdirProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            var system = context.System;
-            string[] argv = context.Argv;
-            if (argv.Length < 2)
+            if (Argv.Length < 2)
             {
-                user.WriteEventSafe(Output("At least 1 operand is required by this command:\n\t<dir>...\n"));
-                user.FlushSafeAsync();
+                Write(Output("At least 1 operand is required by this command:\n\t<dir>...\n")).Flush();
                 yield break;
             }
 
             try
             {
-                var spawn = context.World.Spawn;
-                var login = context.Login;
-                string workDir = context.Shell.WorkingDirectory;
-                foreach (var input in argv[1..])
+                var spawn = World.Spawn;
+                string workDir = Shell.WorkingDirectory;
+                foreach (var input in Argv[1..])
                 {
                     string inputFmt = GetNormalized(Combine(workDir, input));
                     if (inputFmt == "/") continue;
-                    system.TryGetFile(inputFmt, login, out var result, out var closestStr, out _);
+                    System.TryGetFile(inputFmt, Login, out var result, out var closestStr, out _);
                     {
                         switch (result)
                         {
                             case ReadAccessResult.Readable:
-                                user.WriteEventSafe(Output($"{inputFmt}: Path exists\n"));
-                                user.FlushSafeAsync();
+                                Write(Output($"{inputFmt}: Path exists\n")).Flush();
                                 yield break;
                             case ReadAccessResult.NotReadable:
-                                user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
-                                user.FlushSafeAsync();
+                                Write(Output($"{closestStr}: Permission denied\n")).Flush();
                                 yield break;
                             case ReadAccessResult.NoExist:
                                 try
                                 {
                                     var (path, name) = GetDirectoryAndName(inputFmt);
-                                    spawn.Folder(system, login, name, path);
+                                    spawn.Folder(System, Login, name, path);
                                 }
                                 catch (IOException e)
                                 {
-                                    user.WriteEventSafe(Output($"{e.Message}\n"));
-                                    user.FlushSafeAsync();
+                                    Write(Output($"{e.Message}\n")).Flush();
                                     yield break;
                                 }
 
@@ -67,8 +56,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
             catch (Exception e)
             {
-                user.WriteEventSafe(Output($"{e.Message}\n"));
-                user.FlushSafeAsync();
+                Write(Output($"{e.Message}\n")).Flush();
             }
         }
     }

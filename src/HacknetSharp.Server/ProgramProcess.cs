@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HacknetSharp.Server
 {
@@ -9,35 +8,34 @@ namespace HacknetSharp.Server
     public class ProgramProcess : Process
     {
         /// <summary>
-        /// Program context associated with this process.
+        /// Context associated with this process.
         /// </summary>
-        public ProgramContext ProgramContext { get; set; }
+        public ProgramContext ProgramContext { get; }
 
-        private readonly IEnumerator<YieldToken?> _enumerator;
-        private readonly Func<ProgramContext, bool> _shutdownCallback;
+        private readonly Program _program;
+        private IEnumerator<YieldToken?>? _enumerator;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
         /// <summary>
         /// Creates a new instance of <see cref="ProgramProcess"/>.
         /// </summary>
-        /// <param name="context">Program context.</param>
         /// <param name="program">Program this process will use.</param>
-        public ProgramProcess(ProgramContext context, Program program) : base(context, program)
+        public ProgramProcess(Program program) : base(program)
         {
-            ProgramContext = context;
-            string[] argv = context.Argv;
-            var env = new Dictionary<string, string>(context.Shell.GetVariables());
+            _program = program;
+            ProgramContext = program.Context;
+            string[] argv = ProgramContext.Argv;
+            var env = new Dictionary<string, string>(ProgramContext.Shell.GetVariables());
             int count = argv.Length;
             for (int i = 0; i < count; i++)
                 argv[i] = argv[i].ApplyShellReplacements(env);
-            _enumerator = program.Run(context);
-            _shutdownCallback = program.OnShutdown;
         }
 
         /// <inheritdoc />
         public override bool Update(IWorld world)
         {
+            _enumerator ??= Executable.Run();
             if (!ProgramContext.User.Connected) return true;
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
@@ -57,7 +55,7 @@ namespace HacknetSharp.Server
         public override bool Complete(CompletionKind completionKind)
         {
             if (_cleaned) return true;
-            if (!_shutdownCallback(ProgramContext)) return false;
+            if (!Executable.OnShutdown()) return false;
             _cleaned = true;
             Completed = completionKind;
 
@@ -83,7 +81,7 @@ namespace HacknetSharp.Server
                 return true;
             }
 
-            Program.SignalUnbindProcess(ProgramContext, this);
+            _program.SignalUnbindProcess(this);
             return true;
         }
     }

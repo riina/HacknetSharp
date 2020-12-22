@@ -156,10 +156,10 @@ namespace HacknetSharp.Server.Models
         public IEnumerable<Process> Ps(LoginModel? loginModel, uint? pid, uint? parentPid)
         {
             var src = loginModel != null
-                ? Processes.Values.Where(p => p.Context is ProgramContext pc && pc.Login == loginModel)
+                ? Processes.Values.Where(p => p.ProcessContext is ProgramContext pc && pc.Login == loginModel)
                 : Processes.Values;
-            src = pid.HasValue ? src.Where(p => p.Context.Pid == pid.Value) : src;
-            src = parentPid.HasValue ? src.Where(p => p.Context.ParentPid == parentPid.Value) : src;
+            src = pid.HasValue ? src.Where(p => p.ProcessContext.Pid == pid.Value) : src;
+            src = parentPid.HasValue ? src.Where(p => p.ProcessContext.ParentPid == parentPid.Value) : src;
             return src;
         }
 
@@ -281,7 +281,7 @@ namespace HacknetSharp.Server.Models
         /// Gets currently used memory.
         /// </summary>
         /// <returns>Used memory.</returns>
-        public long GetUsedMemory() => Processes.Select(p => p.Value.Context.Memory).Sum();
+        public long GetUsedMemory() => Processes.Select(p => p.Value.ProcessContext.Memory).Sum();
 
         /// <summary>
         /// Get currently used disk space of system.

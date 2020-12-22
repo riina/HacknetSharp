@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp.Events.Server;
-using HacknetSharp.Server.CorePrograms;
 using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
@@ -77,12 +76,12 @@ namespace HacknetSharp.Server
         /// Creates a new instance of <see cref="ShellProcess"/>.
         /// </summary>
         /// <param name="context">Program context.</param>
-        public ShellProcess(ProgramContext context) : base(context, null)
+        public ShellProcess(ProgramContext context) : base(context)
         {
             ProgramContext = context;
             _builtinVariables = new Dictionary<string, Func<string>>
             {
-                ["PWD"] = () => WorkingDirectory, ["USER"] = () => Context.Login.User
+                ["PWD"] = () => WorkingDirectory, ["USER"] = () => ProcessContext.Login.User
             };
         }
 
@@ -137,6 +136,12 @@ namespace HacknetSharp.Server
         /// <returns>True if variable was retrieved.</returns>
         public bool TryGetVariable(string key, [NotNullWhen(true)] out string? value)
         {
+            if (_builtinVariables.TryGetValue(key, out var tmp))
+            {
+                value = tmp();
+                return true;
+            }
+
             if (_variables.TryGetValue(key, out value))
                 return true;
             /*int shIdx = ProgramContext.Person.ShellChain.IndexOf(ProgramContext.Shell);

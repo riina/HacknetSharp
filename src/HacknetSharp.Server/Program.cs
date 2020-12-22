@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.CorePrograms;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server
 {
@@ -14,27 +15,163 @@ namespace HacknetSharp.Server
     public abstract class Program : Executable
     {
         /// <summary>
-        /// Checks memory that will be used if this context executes.
+        /// Execution context.
         /// </summary>
-        /// <param name="context">Program context to operate with.</param>
-        /// <returns>Memory to be initially allocated by program.</returns>
-        public virtual long GetStartupMemory(ProgramContext context) => 0;
+        public ProgramContext Context { get; set; } = null!;
 
         /// <summary>
-        /// Run this executable with the given context.
+        /// Parent process ID.
         /// </summary>
-        /// <param name="context">Context to use with this execution.</param>
-        /// <returns>Enumerator that divides execution steps.</returns>
-        public abstract IEnumerator<YieldToken?> Run(ProgramContext context);
+        public uint ParentPid => Context.ParentPid;
 
         /// <summary>
-        /// Tells program on given context to stop execution.
+        /// Process ID.
         /// </summary>
-        /// <param name="context">Program context to operate with.</param>
-        /// <returns>False if service refuses to shutdown.</returns>
-        public virtual bool OnShutdown(ProgramContext context) => true;
+        public uint Pid => Context.Pid;
+
+        /// <summary>
+        /// Memory used by this process.
+        /// </summary>
+        public long Memory
+        {
+            get => Context.Memory;
+            set => Context.Memory = value;
+        }
+
+        /// <summary>
+        /// World for the process.
+        /// </summary>
+        public IWorld World => Context.World;
+
+        /// <summary>
+        /// System for the process.
+        /// </summary>
+        public SystemModel System => Context.System;
+
+        /// <summary>
+        /// Person for the process.
+        /// </summary>
+        public PersonModel Person => Context.Person;
+
+        /// <summary>
+        /// Login for the process.
+        /// </summary>
+        public LoginModel Login => Context.Login;
+
+        /// <summary>
+        /// Arguments passed to the process.
+        /// </summary>
+        public string[] Argv => Context.Argv;
+
+        /// <summary>
+        /// Hidden arguments for this process.
+        /// </summary>
+        public string[] HArgv => Context.HArgv;
+
+        /// <summary>
+        /// User/NPC context for the process.
+        /// </summary>
+        public IPersonContext User => Context.User;
+
+        /// <summary>
+        /// Shell for the process.
+        /// </summary>
+        public ShellProcess Shell => Context.Shell;
+
+        /// <summary>
+        /// Operation ID for the process.
+        /// </summary>
+        public Guid OperationId => Context.OperationId;
+
+        /// <summary>
+        /// Invocation type for the process.
+        /// </summary>
+        public ProgramContext.InvocationType Type => Context.Type;
+
+        /// <summary>
+        /// Console width the process was called with.
+        /// </summary>
+        public int ConWidth => Context.ConWidth;
+
+        /// <summary>
+        /// True if the context is for an AI character.
+        /// </summary>
+        public bool IsAi => Context.IsAi;
+
+        /// <summary>
+        /// Optional post-execution command to execute.
+        /// </summary>
+        public string[]? ChainLine
+        {
+            get => Context.ChainLine;
+            set => Context.ChainLine = value;
+        }
+
+        /// <summary>
+        /// Remote shell this process is connected to.
+        /// </summary>
+        public ShellProcess? Remote
+        {
+            get => Context.Remote;
+            set => Context.Remote = value;
+        }
 
         #region Utility methods
+
+        /// <summary>
+        /// Write content to pseudo-terminal output.
+        /// </summary>
+        /// <param name="evt">Event to write.</param>
+        /// <returns>This object (for chaining).</returns>
+        public Program Write(ServerEvent evt)
+        {
+            User.WriteEventSafe(evt);
+            return this;
+        }
+
+        /// <summary>
+        /// Flush output buffer to user's stream.
+        /// </summary>
+        /// <returns>This object (for chaining).</returns>
+        public Program Flush()
+        {
+            User.FlushSafeAsync();
+            return this;
+        }
+
+        /// <summary>
+        /// Sends an input request and creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+        /// </summary>
+        /// <param name="hidden">Use hidden input (passwords).</param>
+        /// <returns>Yield token.</returns>
+        public InputYieldToken Input(bool hidden) => Input(User, hidden);
+
+        /// <summary>
+        /// Sends an input request and creates a yield token with the specified context and operation.Once a message with the right operation ID is received, execution is resumed.
+        /// </summary>
+        /// <param name="hidden">Use hidden input (passwords).</param>
+        /// <param name="confirmSet">Confirmation set.</param>
+        /// <returns>Yield token.</returns>
+        public ConfirmYieldToken Confirm(bool hidden,
+            IReadOnlyCollection<string>? confirmSet = null) => Confirm(User, hidden, confirmSet);
+
+        /// <summary>
+        /// Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
+        /// </summary>
+        /// <param name="readOnly">True if only read access is allowed.</param>
+        /// <param name="content">Content to edit.</param>
+        /// <returns>Yield token.</returns>
+        public EditYieldToken Edit(bool readOnly, string content) => Edit(User, readOnly, content);
+
+        /// <summary>
+        /// Attempt to connect to target system with credentials.
+        /// </summary>
+        /// <param name="address">Target system.</param>
+        /// <param name="username">Target username.</param>
+        /// <param name="password">Target password.</param>
+        /// <returns>True on successful connection.</returns>
+        public bool Connect(uint address, string username, string password) =>
+            Connect(Context, address, username, password);
 
         /// <summary>
         /// Attempt to connect to target system with credentials.
@@ -86,6 +223,28 @@ namespace HacknetSharp.Server
         public static OutputEvent Output(string message) => new() {Text = message};
 
         /// <summary>
+        /// Tries to find a system on the network with the specified address.
+        /// </summary>
+        /// <param name="addr">Target address.</param>
+        /// <param name="system">Found system.</param>
+        /// <param name="errorMessage">Error message if failed.</param>
+        /// <returns>True if matching system was found.</returns>
+        public bool TryGetSystem(string addr,
+            [NotNullWhen(true)] out SystemModel? system,
+            [NotNullWhen(false)] out string? errorMessage) =>
+            TryGetSystem(World.Model, addr, out system, out errorMessage);
+
+        /// <summary>
+        /// Try to obtain a value with a shell variable as backup.
+        /// </summary>
+        /// <param name="value">Known value (passed through if not null).</param>
+        /// <param name="shellVariable">Shell variable to check.</param>
+        /// <param name="result">Known value from passed or shell variables.</param>
+        /// <returns>True if value is known.</returns>
+        public bool TryGetVariable(string? value, string shellVariable,
+            [NotNullWhen(true)] out string? result) => TryGetVariable(Context, value, shellVariable, out result);
+
+        /// <summary>
         /// Try to obtain a value with a shell variable as backup.
         /// </summary>
         /// <param name="context">Program context.</param>
@@ -111,6 +270,12 @@ namespace HacknetSharp.Server
             result = null;
             return false;
         }
+
+        /// <summary>
+        /// Sends a <see cref="OperationCompleteEvent"/> to the client to allow command entry.
+        /// </summary>
+        /// <param name="process">Associated process (used to check <see cref="Process.Completed"/>).</param>
+        public void SignalUnbindProcess(Process? process) => SignalUnbindProcess(Context, process);
 
         /// <summary>
         /// Sends a <see cref="OperationCompleteEvent"/> to the client to allow command entry.

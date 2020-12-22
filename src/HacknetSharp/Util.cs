@@ -451,41 +451,54 @@ namespace HacknetSharp
             var conStringMatch = _conStringRegex.Match(conString);
             if (!conStringMatch.Success)
             {
-                if (impliedUser == null)
+                if (impliedHost == null)
                 {
                     error = "Invalid conString, must be user@host[:port]";
                     return false;
                 }
 
-                user = impliedUser;
-                host = conString;
+                user = null;
+                host = impliedHost;
             }
             else
             {
                 user = conStringMatch.Groups[1].Value;
                 host = conStringMatch.Groups[2].Value;
+                conString = host;
             }
 
-            if (!host.Contains(":"))
+            if (!conString.Contains(":"))
             {
-                if (ushort.TryParse(host, out ushort soloHost))
+                if (!conStringMatch.Success)
                 {
-                    port = soloHost;
-                    if (impliedHost != null) host = impliedHost;
-                }
-                else if (string.IsNullOrWhiteSpace(host) && impliedHost != null) host = impliedHost;
+                    if (!string.IsNullOrWhiteSpace(conString)) user = conString;
+                    else if (impliedUser != null)
+                        user = impliedUser;
+                    else
+                    {
+                        error = "Invalid conString, must be user@host[:port]";
+                        return false;
+                    }
 
+                    return true;
+                }
+
+                if (ushort.TryParse(conString, out ushort tmp))
+                    port = tmp;
                 return true;
             }
 
-            var serverPortMatch = _serverPortRegex.Match(host);
+            var serverPortMatch = _serverPortRegex.Match(conString);
             if (!serverPortMatch.Success || !ushort.TryParse(serverPortMatch.Groups[2].Value, out port))
             {
                 error = "Invalid host/port, must be user@host[:port]";
                 return false;
             }
 
-            host = serverPortMatch.Groups[1].Value;
+            if (!conStringMatch.Success)
+                user = serverPortMatch.Groups[1].Value;
+            else
+                host = serverPortMatch.Groups[1].Value;
 
             return true;
         }
@@ -511,42 +524,50 @@ namespace HacknetSharp
             var conStringMatch = _conStringRegex.Match(conString);
             if (!conStringMatch.Success)
             {
-                if (impliedUser == null)
+                if (impliedHost == null)
                 {
                     error = "Invalid conString, must be user@host:path";
                     return false;
                 }
 
-                user = impliedUser;
-                host = conString;
+                user = null;
+                host = impliedHost;
             }
             else
             {
                 user = conStringMatch.Groups[1].Value;
                 host = conStringMatch.Groups[2].Value;
+                conString = host;
             }
 
-            if (!host.Contains(":"))
+            if (!conString.Contains(":"))
             {
-                if (!string.IsNullOrWhiteSpace(host) && impliedHost != null)
+                if (!conStringMatch.Success)
                 {
-                    path = host;
-                    host = impliedHost;
-                    return true;
+                    if (impliedUser == null)
+                    {
+                        error = "Invalid conString, must be user@host:path";
+                        return false;
+                    }
+
+                    user = impliedUser;
                 }
 
-                error = "Invalid conString, must be user@server:path";
-                return false;
+                path = conString;
+                return true;
             }
 
-            var serverPortMatch = _serverPortRegex.Match(host);
+            var serverPortMatch = _serverPortRegex.Match(conString);
             if (!serverPortMatch.Success)
             {
-                error = "Invalid host/port, must be user@server:path";
+                error = "Invalid host/path, must be user@server:path";
                 return false;
             }
 
-            host = serverPortMatch.Groups[1].Value;
+            if (!conStringMatch.Success)
+                user = serverPortMatch.Groups[1].Value;
+            else
+                host = serverPortMatch.Groups[1].Value;
             path = serverPortMatch.Groups[2].Value;
 
             return true;

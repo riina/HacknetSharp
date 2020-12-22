@@ -85,6 +85,18 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_ProcessContext">Executable.ProcessContext</a>
+    </div>
+    <div>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_GetStartupMemory">Executable.GetStartupMemory()</a>
+    </div>
+    <div>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Run">Executable.Run()</a>
+    </div>
+    <div>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_OnShutdown">Executable.OnShutdown()</a>
+    </div>
+    <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_GetNormalized_System_String_">Executable.GetNormalized(String)</a>
     </div>
     <div>
@@ -122,6 +134,9 @@
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Input_HacknetSharp_Server_IPersonContext_System_Boolean_">Executable.Input(IPersonContext, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Confirm_HacknetSharp_Server_IPersonContext_System_Boolean_System_Nullable_IReadOnlyCollection_System_String___">Executable.Confirm(IPersonContext, Boolean, Nullable&lt;IReadOnlyCollection&lt;String&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Edit_HacknetSharp_Server_IPersonContext_System_Boolean_System_String_">Executable.Edit(IPersonContext, Boolean, String)</a>
@@ -184,43 +199,149 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class Service : Executable</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_GetStartupMemory_HacknetSharp_Server_ServiceContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.GetStartupMemory(HacknetSharp.Server.ServiceContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Argv.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Argv%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L15">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L57">View Source</a>
   </span>
-  <a id="HacknetSharp_Server_Service_GetStartupMemory_" data-uid="HacknetSharp.Server.Service.GetStartupMemory*"></a>
-  <h4 id="HacknetSharp_Server_Service_GetStartupMemory_HacknetSharp_Server_ServiceContext_" data-uid="HacknetSharp.Server.Service.GetStartupMemory(HacknetSharp.Server.ServiceContext)">GetStartupMemory(ServiceContext)</h4>
-  <div class="markdown level1 summary"><p>Checks memory that will be used if this context executes.</p>
+  <a id="HacknetSharp_Server_Service_Argv_" data-uid="HacknetSharp.Server.Service.Argv*"></a>
+  <h4 id="HacknetSharp_Server_Service_Argv" data-uid="HacknetSharp.Server.Service.Argv">Argv</h4>
+  <div class="markdown level1 summary"><p>Arguments passed to the process.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual long GetStartupMemory(ServiceContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public string[] Argv { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Context.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L13">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_Context_" data-uid="HacknetSharp.Server.Service.Context*"></a>
+  <h4 id="HacknetSharp_Server_Service_Context" data-uid="HacknetSharp.Server.Service.Context">Context</h4>
+  <div class="markdown level1 summary"><p>Execution context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceContext Context { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.ServiceContext.html">ServiceContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Service context to operate with.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="returns">Returns</h5>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_HArgv.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.HArgv%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L62">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_HArgv_" data-uid="HacknetSharp.Server.Service.HArgv*"></a>
+  <h4 id="HacknetSharp_Server_Service_HArgv" data-uid="HacknetSharp.Server.Service.HArgv">HArgv</h4>
+  <div class="markdown level1 summary"><p>Hidden arguments for this process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] HArgv { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Login.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Login%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L52">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_Login_" data-uid="HacknetSharp.Server.Service.Login*"></a>
+  <h4 id="HacknetSharp_Server_Service_Login" data-uid="HacknetSharp.Server.Service.Login">Login</h4>
+  <div class="markdown level1 summary"><p>Login for the process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LoginModel Login { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.LoginModel.html">LoginModel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Memory.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Memory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L28">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_Memory_" data-uid="HacknetSharp.Server.Service.Memory*"></a>
+  <h4 id="HacknetSharp_Server_Service_Memory" data-uid="HacknetSharp.Server.Service.Memory">Memory</h4>
+  <div class="markdown level1 summary"><p>Memory used by this process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Memory { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -231,46 +352,27 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Int64</span></td>
-        <td><p>Memory to be initially allocated by program.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_OnShutdown_HacknetSharp_Server_ServiceContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.OnShutdown(HacknetSharp.Server.ServiceContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_ParentPid.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.ParentPid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L29">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L18">View Source</a>
   </span>
-  <a id="HacknetSharp_Server_Service_OnShutdown_" data-uid="HacknetSharp.Server.Service.OnShutdown*"></a>
-  <h4 id="HacknetSharp_Server_Service_OnShutdown_HacknetSharp_Server_ServiceContext_" data-uid="HacknetSharp.Server.Service.OnShutdown(HacknetSharp.Server.ServiceContext)">OnShutdown(ServiceContext)</h4>
-  <div class="markdown level1 summary"><p>Tells service on given context to stop execution.</p>
+  <a id="HacknetSharp_Server_Service_ParentPid_" data-uid="HacknetSharp.Server.Service.ParentPid*"></a>
+  <h4 id="HacknetSharp_Server_Service_ParentPid" data-uid="HacknetSharp.Server.Service.ParentPid">ParentPid</h4>
+  <div class="markdown level1 summary"><p>Parent process ID.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool OnShutdown(ServiceContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public uint ParentPid { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="HacknetSharp.Server.ServiceContext.html">ServiceContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Service context to operate with.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -280,47 +382,59 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>False if service refuses to shutdown.</p>
-</td>
+        <td><span class="xref">System.UInt32</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Run_HacknetSharp_Server_ServiceContext_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Run(HacknetSharp.Server.ServiceContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Person.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Person%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L22">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L47">View Source</a>
   </span>
-  <a id="HacknetSharp_Server_Service_Run_" data-uid="HacknetSharp.Server.Service.Run*"></a>
-  <h4 id="HacknetSharp_Server_Service_Run_HacknetSharp_Server_ServiceContext_" data-uid="HacknetSharp.Server.Service.Run(HacknetSharp.Server.ServiceContext)">Run(ServiceContext)</h4>
-  <div class="markdown level1 summary"><p>Runs this executable with the given context.</p>
+  <a id="HacknetSharp_Server_Service_Person_" data-uid="HacknetSharp.Server.Service.Person*"></a>
+  <h4 id="HacknetSharp_Server_Service_Person" data-uid="HacknetSharp.Server.Service.Person">Person</h4>
+  <div class="markdown level1 summary"><p>Person for the process.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerator&lt;YieldToken&gt; Run(ServiceContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public PersonModel Person { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="HacknetSharp.Server.ServiceContext.html">ServiceContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Context to use with this execution.</p>
-</td>
+        <td><a class="xref" href="HacknetSharp.Server.Models.PersonModel.html">PersonModel</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="returns">Returns</h5>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_Pid.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.Pid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L23">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_Pid_" data-uid="HacknetSharp.Server.Service.Pid*"></a>
+  <h4 id="HacknetSharp_Server_Service_Pid" data-uid="HacknetSharp.Server.Service.Pid">Pid</h4>
+  <div class="markdown level1 summary"><p>Process ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint Pid { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -330,9 +444,70 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerator</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
-        <td><p>Enumerator that divides execution steps.</p>
-</td>
+        <td><span class="xref">System.UInt32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_System.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.System%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L42">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_System_" data-uid="HacknetSharp.Server.Service.System*"></a>
+  <h4 id="HacknetSharp_Server_Service_System" data-uid="HacknetSharp.Server.Service.System">System</h4>
+  <div class="markdown level1 summary"><p>System for the process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SystemModel System { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.Models.SystemModel.html">SystemModel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/main/apiSpec/new?filename=HacknetSharp_Server_Service_World.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Service.World%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/src/HacknetSharp.Server/Service.cs/#L37">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Service_World_" data-uid="HacknetSharp.Server.Service.World*"></a>
+  <h4 id="HacknetSharp_Server_Service_World" data-uid="HacknetSharp.Server.Service.World">World</h4>
+  <div class="markdown level1 summary"><p>World for the process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWorld World { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="HacknetSharp.Server.IWorld.html">IWorld</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

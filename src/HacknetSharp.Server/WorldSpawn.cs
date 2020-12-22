@@ -501,14 +501,17 @@ namespace HacknetSharp.Server
             // Prevent moving common root to subdirectory
             if (system == file.System && Executable.GetPathInCommon(source, target) == source)
                 throw new IOException($"{source}: Cannot copy to {target}\n");
-            if (!system.TryGetFile(source, login, out var result, out _, out _, hidden: hidden) ||
-                !file.CanWrite(login))
-                throw new IOException("Permission denied");
-            if (system.TryGetFile(target, login, out result, out _, out _, hidden: hidden))
-                throw new IOException(
-                    $"The specified path already exists: {target}");
-            if (result == ReadAccessResult.NotReadable)
-                throw new IOException("Permission denied");
+            if (system == file.System)
+            {
+                if (!system.TryGetFile(source, login, out var result, out _, out _, hidden: hidden) ||
+                    !file.CanWrite(login))
+                    throw new IOException("Permission denied");
+                if (system.TryGetFile(target, login, out result, out _, out _, hidden: hidden))
+                    throw new IOException(
+                        $"The specified path already exists: {target}");
+                if (result == ReadAccessResult.NotReadable)
+                    throw new IOException("Permission denied");
+            }
 
             var toCopy = new List<FileModel>();
             Queue<FileModel> queue = new();

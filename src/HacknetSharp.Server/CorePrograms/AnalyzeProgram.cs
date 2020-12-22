@@ -11,37 +11,27 @@ namespace HacknetSharp.Server.CorePrograms
     public class AnalyzeProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            string[] argv = context.Argv;
-            var shell = context.Shell;
-
-            if (!TryGetVariable(context, argv.Length != 1 ? argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "TARGET", out string? addr))
             {
-                user.WriteEventSafe(Output("No address provided\n"));
-                user.FlushSafeAsync();
+                Write(Output("No address provided\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetSystem(context.World.Model, addr, out var system, out string? systemConnectError))
+            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
             {
-                user.WriteEventSafe(Output($"{systemConnectError}\n"));
-                user.FlushSafeAsync();
+                Write(Output($"{systemConnectError}\n")).Flush();
                 yield break;
             }
 
             if (system.FirewallIterations <= 0)
             {
-                user.WriteEventSafe(Output("Firewall not active.\n"));
-                user.FlushSafeAsync();
+                Write(Output("Firewall not active.\n")).Flush();
                 yield break;
             }
 
-            if (!shell.FirewallStates.TryGetValue(system.Address, out var firewallState))
+            if (!Shell.FirewallStates.TryGetValue(system.Address, out var firewallState))
             {
                 firewallState.solution = system.FixedFirewall ?? ServerUtil.GeneratePassword(system.FirewallIterations);
                 firewallState.iterations = 0;
@@ -53,16 +43,15 @@ namespace HacknetSharp.Server.CorePrograms
             string[] analysisLines = ServerUtil.GenerateFirewallAnalysis(firewallState.solution,
                 firewallState.iterations, system.FirewallLength);
 
-            user.WriteEventSafe(Output($"Pass {firewallState.iterations}...\n"));
+            Write(Output($"Pass {firewallState.iterations}...\n")).Flush();
             double delay = system.FirewallDelay * firewallState.iterations;
             foreach (var analysisLine in analysisLines)
             {
                 yield return Delay(delay);
-                user.WriteEventSafe(Output($"{analysisLine}\n"));
-                user.FlushSafeAsync();
+                Write(Output($"{analysisLine}\n")).Flush();
             }
 
-            shell.FirewallStates[system.Address] = firewallState;
+            Shell.FirewallStates[system.Address] = firewallState;
         }
     }
 }

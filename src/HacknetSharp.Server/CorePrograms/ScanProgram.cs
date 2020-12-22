@@ -12,21 +12,16 @@ namespace HacknetSharp.Server.CorePrograms
     public class ScanProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            if (!context.Login.Admin)
+            if (!Login.Admin)
             {
-                user.WriteEventSafe(Output("Permission denied.\n"));
-                user.FlushSafeAsync();
+                Write(Output("Permission denied.\n")).Flush();
                 yield break;
             }
 
-            string[] argv = context.Argv;
-            double curTime = context.World.Time;
+            string[] argv = Argv;
+            double curTime = World.Time;
             var sb = new StringBuilder();
             if (argv.Length != 1)
             {
@@ -35,15 +30,13 @@ namespace HacknetSharp.Server.CorePrograms
                     if (!IPAddressRange.TryParse(arg, false, out var addr) ||
                         !addr.TryGetIPv4HostAndSubnetMask(out uint host, out _))
                     {
-                        user.WriteEventSafe(Output("Invalid address format.\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Invalid address format.\n")).Flush();
                     }
                     else
                     {
-                        if (!context.World.TryGetSystem(host, out var remote))
+                        if (!World.TryGetSystem(host, out var remote))
                         {
-                            user.WriteEventSafe(Output($"Invalid host {addr}\n"));
-                            user.FlushSafeAsync();
+                            Write(Output($"Invalid host {addr}\n")).Flush();
                         }
                         else
                             PrintForSystem(remote, sb, curTime);
@@ -52,13 +45,11 @@ namespace HacknetSharp.Server.CorePrograms
             }
             else
             {
-                var system = context.System;
-                foreach (var s in system.KnownSystems.Where(s => s.Local))
+                foreach (var s in System.KnownSystems.Where(s => s.Local))
                     PrintForSystem(s.To, sb, curTime);
             }
 
-            user.WriteEventSafe(Output(sb.ToString()));
-            user.FlushSafeAsync();
+            Write(Output(sb.ToString())).Flush();
         }
 
         private static void PrintForSystem(SystemModel system, StringBuilder sb, double curTime)

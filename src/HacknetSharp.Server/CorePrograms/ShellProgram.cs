@@ -11,41 +11,37 @@ namespace HacknetSharp.Server.CorePrograms
     public class ShellProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            var chain = context.Person.ShellChain;
-            int idx = chain.IndexOf(context.Shell);
+            var chain = Person.ShellChain;
+            int idx = chain.IndexOf(Shell);
             if (idx < 1) yield break; // Shell requires a host shell
             var hostShell = chain[idx - 1];
-            if (hostShell.Remotes.ContainsKey(context.System.Address)) yield break; // Don't start duplicate shells
-            var shell = context.World.StartShell(user, context.Person, context.Login,
-                new StringBuilder().AppendJoin(' ', context.Argv.Skip(1).Prepend(ServerConstants.ShellName))
+            if (hostShell.Remotes.ContainsKey(System.Address)) yield break; // Don't start duplicate shells
+            var shell = World.StartShell(User, Person, Login,
+                new StringBuilder().AppendJoin(' ', Argv.Skip(1).Prepend(ServerConstants.ShellName))
                     .ToString(), false);
             if (shell != null)
             {
-                var proxy = context.World.StartProgram(hostShell,
-                    $"{ServerConstants.ShellName} {Util.UintToAddress(context.System.Address)}",
+                var proxy = World.StartProgram(hostShell,
+                    $"{ServerConstants.ShellName} {Util.UintToAddress(System.Address)}",
                     ShellProxyProgram.Singleton);
                 if (proxy != null)
                 {
-                    hostShell.Remotes[context.System.Address] = proxy;
+                    hostShell.Remotes[System.Address] = proxy;
                     proxy.ProgramContext.Remote = shell;
                     shell.RemoteParent = hostShell;
                     yield break;
                 }
 
-                user.WriteEventSafe(Output("Host process creation failed: out of memory on host\n"));
-                hostShell.Remotes.Remove(context.System.Address);
-                context.World.CompleteRecurse(shell, Process.CompletionKind.KillRemote);
+                hostShell.Remotes.Remove(System.Address);
+                Write(Output("Host process creation failed: out of memory on host\n")).Flush();
+                World.CompleteRecurse(shell, Process.CompletionKind.KillRemote);
             }
             else
-                user.WriteEventSafe(Output("Process creation failed: out of memory\n"));
+                Write(Output("Process creation failed: out of memory\n"));
 
-            user.FlushSafeAsync();
+            Flush();
         }
     }
 
@@ -61,22 +57,19 @@ namespace HacknetSharp.Server.CorePrograms
     {
         public static readonly ShellProxyProgram Singleton = new();
 
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            while (context.Remote != null) yield return null;
+            while (Remote != null) yield return null;
         }
 
-        public override bool OnShutdown(ProgramContext context)
+        public override bool OnShutdown()
         {
-            var remote = context.Remote;
             // If this is a context controlling a remote shell, remove locally then terminate the remote
-            if (remote != null)
+            if (Remote != null)
             {
                 // Remove ensures CompleteRecurse won't try to cancel this process again
-                context.Shell.Remotes.Remove(remote.Context.System.Address);
-                context.World.CompleteRecurse(remote, Process.CompletionKind.KillRemote);
+                Shell.Remotes.Remove(Remote.ProcessContext.System.Address);
+                World.CompleteRecurse(Remote, Process.CompletionKind.KillRemote);
             }
 
             return true;

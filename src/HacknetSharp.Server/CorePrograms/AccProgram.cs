@@ -16,21 +16,14 @@ namespace HacknetSharp.Server.CorePrograms
     public class AccProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            var system = context.System;
-            var logins = system.Logins;
-            var login = context.Login;
-            var spawn = context.World.Spawn;
-            var (flags, _, args) = IsolateArgvFlags(context.Argv);
+            var logins = System.Logins;
+            var spawn = World.Spawn;
+            var (flags, _, args) = IsolateArgvFlags(Argv);
             if (args.Count == 0)
             {
-                user.WriteEventSafe(Output("Verb not specified, must be add, list, or delete\n"));
-                user.FlushSafeAsync();
+                Write(Output("Verb not specified, must be add, list, or delete\n")).Flush();
                 yield break;
             }
 
@@ -38,56 +31,50 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 case "add":
                 {
-                    if (!login.Admin)
+                    if (!Login.Admin)
                     {
-                        user.WriteEventSafe(Output("Permission denied\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Permission denied\n")).Flush();
                         break;
                     }
 
                     if (args.Count != 2)
                     {
-                        user.WriteEventSafe(Output("Invalid number of arguments, must be <account>\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Invalid number of arguments, must be <account>\n")).Flush();
                         break;
                     }
 
                     string name = args[1];
                     if (logins.Any(l => l.User == name))
                     {
-                        user.WriteEventSafe(Output("An account with the specified name already exists\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("An account with the specified name already exists\n")).Flush();
                         break;
                     }
 
                     bool admin = flags.Contains("a");
-                    if (admin && login.Person != system.Owner.Key)
+                    if (admin && Login.Person != System.Owner.Key)
                     {
-                        user.WriteEventSafe(Output("Only the system owner may create admin accounts\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Only the system owner may create admin accounts\n")).Flush();
                         break;
                     }
 
-                    user.WriteEventSafe(Output("Password:"));
-                    var input = Input(user, true);
+                    Write(Output("Password:"));
+                    var input = Input(User, true);
                     yield return input;
                     var (hash, salt) = ServerUtil.HashPassword(input.Input!.Input);
-                    spawn.Login(context.System, name, hash, salt, admin);
+                    spawn.Login(System, name, hash, salt, admin);
                     break;
                 }
                 case "delete":
                 {
-                    if (!context.Login.Admin)
+                    if (!Login.Admin)
                     {
-                        user.WriteEventSafe(Output("Permission denied\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Permission denied\n")).Flush();
                         break;
                     }
 
                     if (args.Count != 2)
                     {
-                        user.WriteEventSafe(Output("Invalid number of arguments, must be <account>\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Invalid number of arguments, must be <account>\n")).Flush();
                         break;
                     }
 
@@ -95,20 +82,18 @@ namespace HacknetSharp.Server.CorePrograms
                     var toDelete = logins.FirstOrDefault(l => l.User == name);
                     if (toDelete == null)
                     {
-                        user.WriteEventSafe(Output("The specified account does not exist\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("The specified account does not exist\n")).Flush();
                         break;
                     }
 
-                    if (toDelete.Admin && login.Person != system.Owner.Key)
+                    if (toDelete.Admin && Login.Person != System.Owner.Key)
                     {
-                        user.WriteEventSafe(Output("Only the system owner may delete admin accounts\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Only the system owner may delete admin accounts\n")).Flush();
                         break;
                     }
 
-                    user.WriteEventSafe(Output($"Are you sure you want to delete account {toDelete.User}?\n"));
-                    var confirm = Confirm(user, false);
+                    Write(Output($"Are you sure you want to delete account {toDelete.User}?\n"));
+                    var confirm = Confirm(false);
                     yield return confirm;
                     if (!confirm.Confirmed) yield break;
 
@@ -120,14 +105,12 @@ namespace HacknetSharp.Server.CorePrograms
                     var sb = new StringBuilder();
                     foreach (var l in logins) sb.Append($"{l.User} ({(l.Admin ? "admin" : "standard")})\n");
                     if (sb.Length == 0) sb.Append('\n');
-                    user.WriteEventSafe(Output(sb.ToString()));
-                    user.FlushSafeAsync();
+                    Write(Output(sb.ToString())).Flush();
                     break;
                 }
                 default:
                 {
-                    user.WriteEventSafe(Output("Invalid verb, must be add, list, or delete\n"));
-                    user.FlushSafeAsync();
+                    Write(Output("Invalid verb, must be add, list, or delete\n")).Flush();
                     break;
                 }
             }

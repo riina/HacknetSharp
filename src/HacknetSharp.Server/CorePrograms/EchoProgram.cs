@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HacknetSharp.Events.Server;
 
 namespace HacknetSharp.Server.CorePrograms
 {
@@ -12,17 +11,10 @@ namespace HacknetSharp.Server.CorePrograms
     public class EchoProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            user.WriteEventSafe(new OutputEvent
-            {
-                Text = new StringBuilder().AppendJoin(' ', context.Argv.Skip(1)).Append('\n').ToString()
-            });
-            user.FlushSafeAsync();
+            Write(Output(new StringBuilder().AppendJoin(' ', Argv.Skip(1)).Append('\n').ToString())).Flush();
+            yield break;
         }
     }
 }

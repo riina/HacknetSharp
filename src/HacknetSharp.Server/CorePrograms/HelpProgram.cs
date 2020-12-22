@@ -11,31 +11,23 @@ namespace HacknetSharp.Server.CorePrograms
     public class HelpProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            var system = context.System;
-            string[] argv = context.Argv;
-            var login = context.Login;
-            var world = context.World;
             var replacements = new Dictionary<string, string>();
 
-            if (system.TryGetFile("/bin", login, out var result, out var closestStr, out _))
+            if (System.TryGetFile("/bin", Login, out var result, out var closestStr, out _))
             {
                 var sb = new StringBuilder();
-                if (argv.Length == 1)
+                if (Argv.Length == 1)
                 {
                     sb.Append("\n««  Intrinsic commands  »»\n\n");
-                    foreach (var intrinsic in world.IntrinsicPrograms)
+                    foreach (var intrinsic in World.IntrinsicPrograms)
                         sb.Append($"{intrinsic.Item2.Name,-12} {intrinsic.Item2.Description}\n");
                     sb.Append("\n««  Programs  »»\n\n");
-                    foreach (var program in system.Files.Where(f => f.Path == "/bin" && !f.Hidden && f.CanRead(login))
+                    foreach (var program in System.Files.Where(f => f.Path == "/bin" && !f.Hidden && f.CanRead(Login))
                         .OrderBy(f => f.Name))
                     {
-                        var info = world.GetProgramInfo(program.Content);
+                        var info = World.GetProgramInfo(program.Content);
                         GenReplacements(replacements, program.Content!);
                         if (info == null) continue;
                         sb.Append($"{program.Name,-12} {info.Description.ApplyReplacements(replacements)}\n");
@@ -43,24 +35,23 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 else
                 {
-                    string name = argv[1];
+                    string name = Argv[1];
                     ProgramInfoAttribute? info;
-                    if (system.TryGetFile($"/bin/{name}", login, out _, out _, out var program, true))
+                    if (System.TryGetFile($"/bin/{name}", Login, out _, out _, out var program, true))
                     {
-                        info = world.GetProgramInfo(program.Content);
+                        info = World.GetProgramInfo(program.Content);
                         GenReplacements(replacements, program.Content ?? name);
                     }
                     else
                     {
-                        info = world.IntrinsicPrograms.Select(p => p.Item2).FirstOrDefault(p => p.Name == name);
+                        info = World.IntrinsicPrograms.Select(p => p.Item2).FirstOrDefault(p => p.Name == name);
                         if (info != null)
                             name = info.Name;
                     }
 
                     if (info == null)
                     {
-                        user.WriteEventSafe(Output("Unknown program\n"));
-                        user.FlushSafeAsync();
+                        Write(Output("Unknown program\n")).Flush();
                         yield break;
                     }
 
@@ -72,20 +63,17 @@ namespace HacknetSharp.Server.CorePrograms
                     sb.Append("\n\n");
                 }
 
-                user.WriteEventSafe(Output(sb.ToString()));
-                user.FlushSafeAsync();
+                Write(Output(sb.ToString())).Flush();
                 yield break;
             }
 
             switch (result)
             {
                 case ReadAccessResult.NotReadable:
-                    user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
-                    user.FlushSafeAsync();
+                    Write(Output($"{closestStr}: Permission denied\n")).Flush();
                     yield break;
                 case ReadAccessResult.NoExist:
-                    user.WriteEventSafe(Output("/bin: No such file or directory\n"));
-                    user.FlushSafeAsync();
+                    Write(Output("/bin: No such file or directory\n")).Flush();
                     yield break;
             }
         }

@@ -10,34 +10,27 @@ namespace HacknetSharp.Server.CorePrograms
     public class KillProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            string[] argv = context.Argv;
-            var login = context.Login;
-            var system = context.System;
-            var world = context.World;
-            foreach (var p in argv.Skip(1))
+            foreach (var p in Argv.Skip(1))
             {
                 if (!ushort.TryParse(p, out ushort pid))
                 {
-                    user.WriteEventSafe(Output($"kill: {p}: arguments must be process ids"));
-                    user.FlushSafeAsync();
+                    Write(Output($"kill: {p}: arguments must be process ids")).Flush();
                 }
 
-                if (system.Processes.TryGetValue(pid, out var proc) && login.Admin && proc.Context.Login == login)
+                if (System.Processes.TryGetValue(pid, out var proc) && Login.Admin &&
+                    proc.ProcessContext.Login == Login)
                 {
-                    world.CompleteRecurse(proc, Process.CompletionKind.KillLocal);
+                    World.CompleteRecurse(proc, Process.CompletionKind.KillLocal);
                 }
                 else
                 {
-                    user.WriteEventSafe(Output($"kill: ({pid}) - No such process"));
-                    user.FlushSafeAsync();
+                    Write(Output($"kill: ({pid}) - No such process")).Flush();
                 }
             }
+
+            yield break;
         }
     }
 }

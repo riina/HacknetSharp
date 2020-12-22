@@ -12,30 +12,21 @@ namespace HacknetSharp.Server.CorePrograms
     public class ProbeProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            string[] argv = context.Argv;
-
-            if (!TryGetVariable(context, argv.Length != 1 ? argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "TARGET", out string? addr))
             {
-                user.WriteEventSafe(Output("No address provided\n"));
-                user.FlushSafeAsync();
+                Write(Output("No address provided\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetSystem(context.World.Model, addr, out var system, out string? systemConnectError))
+            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
             {
-                user.WriteEventSafe(Output($"{systemConnectError}\n"));
-                user.FlushSafeAsync();
+                Write(Output($"{systemConnectError}\n")).Flush();
                 yield break;
             }
 
-            user.WriteEventSafe(Output($"Probing {Util.UintToAddress(system.Address)}...\n"));
-            user.FlushSafeAsync();
+            Write(Output($"Probing {Util.UintToAddress(system.Address)}...\n")).Flush();
 
             yield return Delay(1.0f);
 
@@ -43,7 +34,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (system.FirewallIterations > 0)
             {
-                if (context.Shell.FirewallStates.TryGetValue(system.Address, out var firewallState) &&
+                if (Shell.FirewallStates.TryGetValue(system.Address, out var firewallState) &&
                     firewallState.solved)
                     sb.Append("\nFirewall: BYPASSED\n");
                 else
@@ -51,7 +42,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             sb.Append("\nVulnerabilities:\n");
-            context.Shell.OpenVulnerabilities.TryGetValue(system.Address, out var vulns);
+            Shell.OpenVulnerabilities.TryGetValue(system.Address, out var vulns);
             foreach (var vuln in system.Vulnerabilities)
             {
                 string openStr = vulns?.Contains(vuln) ?? false ? "OPEN" : "CLOSED";
@@ -61,8 +52,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             sb.Append($"\nRequired exploits: {system.RequiredExploits}\n");
             sb.Append($"Current exploits: {vulns?.Aggregate(0, (n, v) => n + v.Exploits) ?? 0}\n");
-            user.WriteEventSafe(Output(sb.ToString()));
-            user.FlushSafeAsync();
+            Write(Output(sb.ToString())).Flush();
         }
     }
 }

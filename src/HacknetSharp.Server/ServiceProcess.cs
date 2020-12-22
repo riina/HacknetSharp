@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HacknetSharp.Server
 {
@@ -8,27 +7,28 @@ namespace HacknetSharp.Server
     /// </summary>
     public class ServiceProcess : Process
     {
-        private readonly ServiceContext _context;
-        private readonly IEnumerator<YieldToken?> _enumerator;
-        private readonly Func<ServiceContext, bool> _shutdownCallback;
+        /// <summary>
+        /// Context associated with this process.
+        /// </summary>
+        public ServiceContext ServiceContext { get; }
+
+        private IEnumerator<YieldToken?>? _enumerator;
         private YieldToken? _currentToken;
         private bool _cleaned;
 
         /// <summary>
         /// Creates a new instance of <see cref="ServiceProcess"/>.
         /// </summary>
-        /// <param name="context">Service context.</param>
         /// <param name="service">Service this process will use.</param>
-        public ServiceProcess(ServiceContext context, Service service) : base(context, service)
+        public ServiceProcess(Service service) : base(service)
         {
-            _context = context;
-            _enumerator = service.Run(context);
-            _shutdownCallback = service.OnShutdown;
+            ServiceContext = service.Context;
         }
 
         /// <inheritdoc />
         public override bool Update(IWorld world)
         {
+            _enumerator ??= Executable.Run();
             if (_currentToken != null)
                 if (!_currentToken.Yield(world)) return false;
                 else _currentToken = null;
@@ -47,14 +47,10 @@ namespace HacknetSharp.Server
         public override bool Complete(CompletionKind completionKind)
         {
             if (_cleaned) return true;
+            if (!Executable.OnShutdown()) return false;
             _cleaned = true;
-            if (_shutdownCallback(_context))
-            {
-                Completed = completionKind;
-                return true;
-            }
-
-            return false;
+            Completed = completionKind;
+            return true;
         }
     }
 }

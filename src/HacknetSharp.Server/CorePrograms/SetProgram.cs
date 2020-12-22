@@ -10,10 +10,38 @@ namespace HacknetSharp.Server.CorePrograms
         "[<name>[=[<value>]]]", true)]
     public class SetProgram : Program
     {
-        /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
         private static readonly Regex _exportRegex = new(@"([A-Za-z0-9]+)=([\S\s]*)");
+
+        /// <inheritdoc />
+        public override IEnumerator<YieldToken?> Run()
+        {
+            var sb = new StringBuilder();
+            if (Argv.Length == 1)
+            {
+                foreach (var kvp in Shell.GetVariables()) sb.Append(kvp.Key).Append('=').Append(kvp.Value).Append('\n');
+
+                Write(Output(sb.ToString())).Flush();
+            }
+            else
+            {
+                var match = _exportRegex.Match(Argv[1]);
+                if (match.Success)
+                {
+                    string key = match.Groups[1].Value;
+                    string value = match.Groups[2].Value;
+                    if (value.Length == 0)
+                        Shell.RemoveVariable(key);
+                    else
+                        Shell.SetVariable(key, SanitizeBody(value));
+                }
+                else
+                {
+                    Write(Output("Invalid format, need [<name>[=[<value>]]]\n")).Flush();
+                }
+            }
+
+            yield break;
+        }
 
         private static string SanitizeBody(string str)
         {
@@ -21,40 +49,6 @@ namespace HacknetSharp.Server.CorePrograms
             if (str.Length > 1 && str.StartsWith('"') && str.EndsWith('"') && str[^2] != '\\')
                 str = str[1..^1].Replace("\\\"", "\"");
             return str;
-        }
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
-        {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            string[] argv = context.Argv;
-            var shell = context.Shell;
-            var sb = new StringBuilder();
-            if (argv.Length == 1)
-            {
-                foreach (var kvp in shell.GetVariables()) sb.Append(kvp.Key).Append('=').Append(kvp.Value).Append('\n');
-
-                user.WriteEventSafe(Output(sb.ToString()));
-                user.FlushSafeAsync();
-            }
-            else
-            {
-                var match = _exportRegex.Match(argv[1]);
-                if (match.Success)
-                {
-                    string key = match.Groups[1].Value;
-                    string value = match.Groups[2].Value;
-                    if (value.Length == 0)
-                        shell.RemoveVariable(key);
-                    else
-                        shell.SetVariable(key, SanitizeBody(value));
-                }
-                else
-                {
-                    user.WriteEventSafe(Output("Invalid format, need [<name>[=[<value>]]]\n"));
-                    user.FlushSafeAsync();
-                }
-            }
         }
     }
 }

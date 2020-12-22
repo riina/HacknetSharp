@@ -34,7 +34,7 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Intrinsic programs in this world.
         /// </summary>
-        IEnumerable<(Program, ProgramInfoAttribute)> IntrinsicPrograms { get; }
+        IEnumerable<(Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms { get; }
 
         /// <summary>
         /// Current world time.

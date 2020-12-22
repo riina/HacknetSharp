@@ -13,57 +13,47 @@ namespace HacknetSharp.Server.CorePrograms
     public class CpProgram : Program
     {
         /// <inheritdoc />
-        public override IEnumerator<YieldToken?> Run(ProgramContext context) => InvokeStatic(context);
-
-        private static IEnumerator<YieldToken?> InvokeStatic(ProgramContext context)
+        public override IEnumerator<YieldToken?> Run()
         {
-            var user = context.User;
-            if (!user.Connected) yield break;
-            var system = context.System;
-            string[] argv = context.Argv;
-            if (argv.Length < 3)
+            if (Argv.Length < 3)
             {
-                user.WriteEventSafe(
-                    Output("At least 2 operands are required by this command:\n\t<source>... <dest>\n"));
-                user.FlushSafeAsync();
+                Write(Output("At least 2 operands are required by this command:\n\t<source>... <dest>\n")).Flush();
                 yield break;
             }
 
             try
             {
                 string target;
-                string workDir = context.Shell.WorkingDirectory;
+                string workDir = Shell.WorkingDirectory;
                 try
                 {
-                    target = GetNormalized(Combine(workDir, argv[^1]));
+                    target = GetNormalized(Combine(workDir, Argv[^1]));
                 }
                 catch
                 {
                     yield break;
                 }
 
-                var spawn = context.World.Spawn;
-                var login = context.Login;
-                foreach (var input in argv[1..^1])
+                var spawn = World.Spawn;
+                foreach (var input in Argv[1..^1])
                 {
                     string inputFmt = GetNormalized(Combine(workDir, input));
-                    if (system.TryGetFile(inputFmt, login, out var result, out var closestStr, out var closest))
+                    if (System.TryGetFile(inputFmt, Login, out var result, out var closestStr, out var closest))
                     {
                         // Prevent copying common root to subdirectory
                         if (GetPathInCommon(inputFmt, target) == inputFmt)
                         {
-                            user.WriteEventSafe(Output($"{inputFmt}: Cannot copy to {target}\n"));
-                            user.FlushSafeAsync();
+                            Write(Output($"{inputFmt}: Cannot copy to {target}\n")).Flush();
                             yield break;
                         }
 
                         try
                         {
                             var targetExisting =
-                                system.Files.FirstOrDefault(f => f.Hidden == false && f.FullPath == target);
+                                System.Files.FirstOrDefault(f => f.Hidden == false && f.FullPath == target);
                             string lclTarget;
                             string lclName;
-                            if (target == "/" || argv.Length != 3 || targetExisting != null
+                            if (target == "/" || Argv.Length != 3 || targetExisting != null
                                 && targetExisting.Kind == FileModel.FileKind.Folder)
                             {
                                 lclTarget = target;
@@ -75,12 +65,11 @@ namespace HacknetSharp.Server.CorePrograms
                                 lclName = GetFileName(target);
                             }
 
-                            spawn.CopyFile(closest, system, login, lclName, lclTarget);
+                            spawn.CopyFile(closest, System, Login, lclName, lclTarget);
                         }
                         catch (IOException e)
                         {
-                            user.WriteEventSafe(Output($"{e.Message}\n"));
-                            user.FlushSafeAsync();
+                            Write(Output($"{e.Message}\n")).Flush();
                             yield break;
                         }
                     }
@@ -88,20 +77,17 @@ namespace HacknetSharp.Server.CorePrograms
                         switch (result)
                         {
                             case ReadAccessResult.NotReadable:
-                                user.WriteEventSafe(Output($"{closestStr}: Permission denied\n"));
-                                user.FlushSafeAsync();
+                                Write(Output($"{closestStr}: Permission denied\n")).Flush();
                                 yield break;
                             case ReadAccessResult.NoExist:
-                                user.WriteEventSafe(Output($"{inputFmt}: No such file or directory\n"));
-                                user.FlushSafeAsync();
+                                Write(Output($"{inputFmt}: No such file or directory\n")).Flush();
                                 yield break;
                         }
                 }
             }
             catch (Exception e)
             {
-                user.WriteEventSafe(Output($"{e.Message}\n"));
-                user.FlushSafeAsync();
+                Write(Output($"{e.Message}\n")).Flush();
             }
         }
     }
