@@ -30,8 +30,7 @@ namespace hss
             if (kind == null && serverYaml?.Database != null &&
                 serverYaml.Database.TryGetValue("Kind", out var databaseKind))
                 kind = databaseKind;
-            if (kind == null)
-                throw new ApplicationException($"ENV {EnvStorageKind} not set");
+            kind ??= "sqlite";
             return await new Executor(kind.ToLowerInvariant() switch
             {
                 "postgres" => PostgresContextFactory.CreateFactory(args, serverYaml),
