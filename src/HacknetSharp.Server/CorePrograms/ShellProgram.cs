@@ -15,8 +15,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var chain = Person.ShellChain;
             int idx = chain.IndexOf(Shell);
-            if (idx < 1) yield break; // Shell requires a host shell
-            var hostShell = chain[idx - 1];
+            var hostShell = idx < 1 ? Shell : chain[idx - 1]; // Use parent shell or self
             if (hostShell.Remotes.ContainsKey(System.Address)) yield break; // Don't start duplicate shells
             var shell = World.StartShell(User, Person, Login,
                 new StringBuilder().AppendJoin(' ', Argv.Skip(1).Prepend(ServerConstants.ShellName))

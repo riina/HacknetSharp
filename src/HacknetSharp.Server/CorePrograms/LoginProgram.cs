@@ -9,15 +9,15 @@ namespace HacknetSharp.Server.CorePrograms
     [ProgramInfo("core:login", "login", "login / manage logins",
         "login to system using credentials or\nmanage logins.\n\n" +
         "[name@server]: login to specified target (or\n" +
-        "$NAME/$TARGET or first stored login for $TARGET)\n" +
+        "$NAME/$HOST or first stored login for $HOST)\n" +
         "using stored credentials\n" +
         "(or $PASS or prompted password)\n\n" +
         "-s [name@server]: save password for specified target (or\n" +
-        "$NAME/$TARGET) from $PASS or prompted password\n\n" +
+        "$NAME/$HOST) from $PASS or prompted password\n\n" +
         "-l [server]: list passwords for specified target (or\n" +
-        "$TARGET)\n\n" +
+        "$HOST)\n\n" +
         "-d [name@server]: delete password for specified target (or\n" +
-        "$NAME/$TARGET)",
+        "$NAME/$HOST)",
         "[-sdl] [name@host]", false)]
     public class LoginProgram : Program
     {
@@ -30,7 +30,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (!ServerUtil.TryParseConString(pargs.Count == 0 ? null : pargs[0], 22, out string? name,
                 out string? host, out _, out string? error,
                 Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : AutoLoginName,
-                Shell.TryGetVariable("TARGET", out string? shellTarget) ? shellTarget : null))
+                Shell.TryGetVariable("HOST", out string? shellTarget) ? shellTarget : null))
             {
                 if (pargs.Count == 1)
                     Write(Output("Needs connection target\n")).Flush();

@@ -82,6 +82,16 @@ namespace HacknetSharp.Server.Templates
         public int DiskCapacity { get; set; }
 
         /// <summary>
+        /// CPU cycles required to crack proxy.
+        /// </summary>
+        public double ProxyClocks { get; set; }
+
+        /// <summary>
+        /// Proxy cracking speed.
+        /// </summary>
+        public double ClockSpeed { get; set; }
+
+        /// <summary>
         /// System memory (bytes).
         /// </summary>
         public long SystemMemory { get; set; }
@@ -191,6 +201,10 @@ namespace HacknetSharp.Server.Templates
             model.DiskCapacity = DiskCapacity > 0 ? DiskCapacity :
                 owner.DiskCapacity > 0 ? owner.DiskCapacity :
                 model.World.DiskCapacity > 0 ? model.World.DiskCapacity : ServerConstants.DefaultDiskCapacity;
+            model.ProxyClocks = ProxyClocks > 0 ? ProxyClocks :
+                owner.ProxyClocks > 0 ? owner.ProxyClocks : 0;
+            model.ClockSpeed = ClockSpeed > 0 ? ClockSpeed :
+                owner.ClockSpeed > 0 ? owner.ClockSpeed : ServerConstants.DefaultClockSpeed;
             model.SystemMemory = SystemMemory > 0 ? SystemMemory :
                 owner.SystemMemory > 0 ? owner.SystemMemory :
                 model.World.SystemMemory > 0 ? model.World.SystemMemory : ServerConstants.DefaultSystemMemory;

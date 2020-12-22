@@ -2,6 +2,7 @@ Label: Liyue kinda sux
 PlayerSystemTemplate: player.system.yaml
 StartupCommandLine: echo "Registering with system..."
 PlayerAddressRange: 66.34.0.0/16
+RebootDuration: 30.0
 People:
 - Template: generic.person.yaml
   Count: 3

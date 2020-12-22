@@ -8,7 +8,7 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:hack", "{HARG:1}", "{HARG:1} exploit",
         "Attempts to execute {HARG:1} exploit\non specified port or entrypoint\non target system\n\n" +
-        "target system can be assumed from environment\nvariable \"TARGET\"",
+        "target system can be assumed from environment\nvariable \"HOST\"",
         "[target] <port/entrypoint>", false)]
     public class HackProgram : Program
     {
@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!TryGetVariable(Argv.Length == 3 ? Argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length == 3 ? Argv[1] : null, "HOST", out string? addr))
             {
                 Write(Output("No address provided\n")).Flush();
                 yield break;
@@ -65,10 +65,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             yield return Delay(hackTime);
 
-            if (!Shell.OpenVulnerabilities.TryGetValue(system.Address, out var openVulns))
-                openVulns = Shell.OpenVulnerabilities[system.Address] = new HashSet<VulnerabilityModel>();
-
-            openVulns.Add(vuln);
+            Shell.GetCrackState(system).OpenVulnerabilities.Add(vuln);
 
             Write(Output($"\n«««« {Argv[0]} COMPLETE »»»»\n")).Flush();
         }

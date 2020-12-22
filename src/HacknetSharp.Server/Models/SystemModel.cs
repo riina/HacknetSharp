@@ -91,6 +91,16 @@ namespace HacknetSharp.Server.Models
         public virtual long SystemMemory { get; set; }
 
         /// <summary>
+        /// CPU cycles required to crack proxy.
+        /// </summary>
+        public virtual double ProxyClocks { get; set; }
+
+        /// <summary>
+        /// Proxy cracking speed.
+        /// </summary>
+        public virtual double ClockSpeed { get; set; }
+
+        /// <summary>
         /// Number of firewall iterations required for full decode.
         /// </summary>
         public virtual int FirewallIterations { get; set; }
@@ -118,7 +128,7 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// System event delegate, used for trap signals etc.
         /// </summary>
-        public Action<object> Pulse { get; set; } = null!;
+        public Action<object>? Pulse { get; set; } = null!;
 
         /// <summary>
         /// Represents a trap signal sent to <see cref="SystemModel.Pulse"/>.

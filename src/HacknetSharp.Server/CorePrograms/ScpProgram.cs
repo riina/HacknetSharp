@@ -18,7 +18,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (!ServerUtil.TryParseScpConString(Argv.Length < 2 ? "" : Argv[1], out string? name, out string? host,
                 out string? path, out string? error,
                 Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
-                Shell.TryGetVariable("TARGET", out string? shellTarget) ? shellTarget : null))
+                Shell.TryGetVariable("HOST", out string? shellTarget) ? shellTarget : null))
             {
                 if (Argv.Length < 3)
                 {

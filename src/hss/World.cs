@@ -62,11 +62,12 @@ namespace hss
             {
                 var system = process.ProcessContext.System;
                 if (!tmpSystems.Add(system) || system.GetUsedMemory() <= system.SystemMemory) continue;
+                Logger.LogInformation("Memory overflowed for system {System}, rebooting.", system.Address);
                 tmpProcesses.UnionWith(system.Processes.Values.Where(p => p.ProcessContext.ParentPid == 0));
                 foreach (var p in tmpProcesses)
                     CompleteRecurse(p, Process.CompletionKind.KillRemote);
                 tmpProcesses.Clear();
-                system.BootTime = Time + Model.RebootDuration;
+                system.BootTime = Time + system.RebootDuration;
             }
         }
 

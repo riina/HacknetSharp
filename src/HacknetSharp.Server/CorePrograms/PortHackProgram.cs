@@ -6,15 +6,15 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:porthack", "PortHack", "bruteforce login",
         "Obtains an administrator login on\nthe target system\n\n" +
-        "target system can be assumed from environment\nvariable \"TARGET\".\n" +
-        "This program sets TARGET, NAME, and PASS\nenvironment variables.",
+        "target system can be assumed from environment\nvariable \"HOST\".\n" +
+        "This program sets HOST, NAME, and PASS\nenvironment variables.",
         "[target]", false)]
     public class PortHackProgram : Program
     {
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "HOST", out string? addr))
             {
                 Write(Output("No address provided\n")).Flush();
                 yield break;
@@ -26,16 +26,21 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (system.FirewallIterations > 0 &&
-                (!Shell.FirewallStates.TryGetValue(system.Address, out var firewallState) ||
-                 !firewallState.solved))
+            var crackState = Shell.GetCrackState(system);
+
+            if (system.FirewallIterations > 0 && !crackState.FirewallSolved)
             {
                 Write(Output("Failed: Firewall active.\n")).Flush();
                 yield break;
             }
 
-            Shell.OpenVulnerabilities.TryGetValue(system.Address, out var openVulns);
-            int sum = openVulns?.Aggregate(0, (c, v) => c + v.Exploits) ?? 0;
+            if (crackState.ProxyClocks < system.ProxyClocks)
+            {
+                Write(Output("Failed: Proxy active.\n")).Flush();
+                yield break;
+            }
+
+            int sum = crackState.OpenVulnerabilities.Aggregate(0, (c, v) => c + v.Exploits);
             if (sum < system.RequiredExploits)
             {
                 Write(Output(
@@ -53,7 +58,7 @@ namespace HacknetSharp.Server.CorePrograms
             string pw = ServerUtil.GeneratePassword();
             var (hash, salt) = ServerUtil.HashPassword(pw);
             World.Spawn.Login(system, un, hash, salt, true);
-            Shell.SetVariable("TARGET", addr);
+            Shell.SetVariable("HOST", addr);
             Shell.SetVariable("NAME", un);
             Shell.SetVariable("PASS", pw);
             Write(Output($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n")).Flush();

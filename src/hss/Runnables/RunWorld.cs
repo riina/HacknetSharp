@@ -55,8 +55,12 @@ namespace hss.Runnables
                 }
 
                 var db = new ServerDatabase(ctx);
+                Console.Write("Spawning world... ");
                 new Spawn(db).World(Name, templates, template);
+                Console.WriteLine("Done.");
+                Console.Write("Committing database... ");
                 await db.SyncAsync().Caf();
+                Console.WriteLine("Done.");
                 return 0;
             }
         }
@@ -87,8 +91,12 @@ namespace hss.Runnables
 
                 var db = new ServerDatabase(ctx);
                 var spawn = new Spawn(db);
+                Console.Write("Removing worlds... ");
                 foreach (var world in worlds) spawn.RemoveWorld(world);
+                Console.WriteLine("Done.");
+                Console.Write("Committing database... ");
                 await db.SyncAsync().Caf();
+                Console.WriteLine("Done.");
                 return 0;
             }
         }
@@ -108,9 +116,11 @@ namespace hss.Runnables
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
 
+                Console.Write("Retrieving from database... ");
                 var worlds = await (All
                     ? ctx.Set<WorldModel>()
                     : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
+                Console.WriteLine("Done.");
 
                 foreach (var world in worlds)
                     Console.WriteLine($"{world.Name}:{world.Key} ({world.Label})");

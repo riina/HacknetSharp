@@ -42,7 +42,9 @@ namespace hss.Runnables
                 var (hash, salt) = ServerUtil.HashPassword(pass);
                 var db = new ServerDatabase(ctx);
                 new Spawn(db).User(Name, hash, salt, Admin);
+                Console.Write("Committing database... ");
                 await db.SyncAsync().Caf();
+                Console.WriteLine("Done.");
                 return 0;
             }
         }
@@ -74,7 +76,9 @@ namespace hss.Runnables
                 var db = new ServerDatabase(ctx);
                 var spawn = new Spawn(db);
                 foreach (var user in users) spawn.RemoveUser(user);
+                Console.Write("Committing database... ");
                 await db.SyncAsync().Caf();
+                Console.WriteLine("Done.");
                 return 0;
             }
         }
@@ -94,9 +98,11 @@ namespace hss.Runnables
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
 
+                Console.Write("Retrieving from database... ");
                 var users = await (All
                     ? ctx.Set<UserModel>()
                     : ctx.Set<UserModel>().Where(u => names.Contains(u.Key))).ToListAsync().Caf();
+                Console.WriteLine("Done.");
 
                 foreach (var user in users)
                     Console.WriteLine($"{user.Key}:{(user.Admin ? "admin" : "regular")}");

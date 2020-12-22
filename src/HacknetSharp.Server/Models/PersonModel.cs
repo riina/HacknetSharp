@@ -57,6 +57,16 @@ namespace HacknetSharp.Server.Models
         public virtual int DiskCapacity { get; set; }
 
         /// <summary>
+        /// CPU cycles required to crack proxy.
+        /// </summary>
+        public virtual double ProxyClocks { get; set; }
+
+        /// <summary>
+        /// Proxy cracking speed.
+        /// </summary>
+        public virtual double ClockSpeed { get; set; }
+
+        /// <summary>
         /// System memory (bytes).
         /// </summary>
         public virtual long SystemMemory { get; set; }

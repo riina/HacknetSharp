@@ -41,7 +41,9 @@ namespace hss.Runnables
                 if (!Util.Confirm("Are you sure you want to proceed with deletion?")) return 0;
 
                 ctx.RemoveRange(tokens);
+                Console.Write("Committing database... ");
                 await ctx.SaveChangesAsync().Caf();
+                Console.WriteLine("Done.");
                 return 0;
             }
         }
@@ -56,9 +58,12 @@ namespace hss.Runnables
                 var factory = executor.ServerDatabaseContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 var names = new HashSet<string>(Names);
+
+                Console.Write("Retrieving from database... ");
                 var tokens = await (All
                     ? ctx.Set<RegistrationToken>()
                     : ctx.Set<RegistrationToken>().Where(u => names.Contains(u.Forger.Key))).ToListAsync().Caf();
+                Console.WriteLine("Done.");
 
                 foreach (var token in tokens)
                     Console.WriteLine($"{token.Forger.Key}");

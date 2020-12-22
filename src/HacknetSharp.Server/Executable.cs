@@ -22,6 +22,55 @@ namespace HacknetSharp.Server
         public ProcessContext ProcessContext { get; set; } = null!;
 
         /// <summary>
+        /// Parent process ID.
+        /// </summary>
+        public uint ParentPid => ProcessContext.ParentPid;
+
+        /// <summary>
+        /// Process ID.
+        /// </summary>
+        public uint Pid => ProcessContext.Pid;
+
+        /// <summary>
+        /// Memory used by this process.
+        /// </summary>
+        public long Memory
+        {
+            get => ProcessContext.Memory;
+            set => ProcessContext.Memory = value;
+        }
+
+        /// <summary>
+        /// World for the process.
+        /// </summary>
+        public IWorld World => ProcessContext.World;
+
+        /// <summary>
+        /// System for the process.
+        /// </summary>
+        public SystemModel System => ProcessContext.System;
+
+        /// <summary>
+        /// Person for the process.
+        /// </summary>
+        public PersonModel Person => ProcessContext.Person;
+
+        /// <summary>
+        /// Login for the process.
+        /// </summary>
+        public LoginModel Login => ProcessContext.Login;
+
+        /// <summary>
+        /// Arguments passed to the process.
+        /// </summary>
+        public string[] Argv => ProcessContext.Argv;
+
+        /// <summary>
+        /// Hidden arguments for this process.
+        /// </summary>
+        public string[] HArgv => ProcessContext.HArgv;
+
+        /// <summary>
         /// Checks memory that will be used if this context executes.
         /// </summary>
         /// <returns>Memory to be initially allocated by program.</returns>

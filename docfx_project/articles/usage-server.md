@@ -94,6 +94,8 @@ See the samples folder for template examples.
 * RequiredExploits(`int`): # required exploits for system access.
 * RebootDuration(`double`): System reboot duration in seconds.
 * DiskCapacity(`int`): System disk capacity.
+* ProxyClocks(`double`): CPU cycles required to crack proxy.
+* ClockSpeed(`double`): Proxy cracking speed.
 * FirewallIterations(`int`): Number of firewall iterations required
   for full decode.
 * FirewallLength(`int`): Length of firewall analysis string.
@@ -133,6 +135,9 @@ selected (weighted)
   - Links(`List<string>?`): Links (uni-directional) to create to
     other systems
 * RebootDuration(`double`): System reboot duration in seconds.
+* DiskCapacity(`int`): System disk capacity.
+* ProxyClocks(`double`): CPU cycles required to crack proxy.
+* ClockSpeed(`double`): Proxy cracking speed.
 
 ### World templates
 
@@ -149,6 +154,7 @@ selected (weighted)
   (default 1).
   - AddressRange(`string?`): CIDR range string for address pool
 * RebootDuration(`double`): System reboot duration in seconds.
+* DiskCapacity(`int`): System disk capacity.
 
 ### Server configuration
 

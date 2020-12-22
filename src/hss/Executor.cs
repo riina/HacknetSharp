@@ -63,7 +63,7 @@ namespace hss
         public HashSet<Type> CustomPrograms { get; set; }
 
         public async Task<int> Execute(string[] args) => await Parser.Default
-            .ParseArguments<RunCert, RunUser, RunWorld, RunToken, RunNew, RunServe>(args.Take(1))
+            .ParseArguments<RunCert, RunDatabase, RunUser, RunWorld, RunToken, RunNew, RunServe>(args.Take(1))
             .MapResult<IRunnable, Task<int>>(x => x.Run(this, args.Skip(1)), x => Task.FromResult(1)).Caf();
     }
 }

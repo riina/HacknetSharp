@@ -6,14 +6,14 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:analyze", "analyze", "analyze firewall",
         "Analyzes firewall to progressively get solution\n\n" +
-        "target system can be assumed from environment\nvariable \"TARGET\"",
+        "target system can be assumed from environment\nvariable \"HOST\"",
         "[target]", false)]
     public class AnalyzeProgram : Program
     {
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "HOST", out string? addr))
             {
                 Write(Output("No address provided\n")).Flush();
                 yield break;
@@ -31,27 +31,21 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!Shell.FirewallStates.TryGetValue(system.Address, out var firewallState))
-            {
-                firewallState.solution = system.FixedFirewall ?? ServerUtil.GeneratePassword(system.FirewallIterations);
-                firewallState.iterations = 0;
-                firewallState.solved = false;
-            }
+            var crackState = Shell.GetCrackState(system);
 
-            firewallState.iterations = Math.Min(firewallState.solution.Length, firewallState.iterations + 1);
+            crackState.FirewallIterations =
+                Math.Min(crackState.FirewallSolution.Length, crackState.FirewallIterations + 1);
 
-            string[] analysisLines = ServerUtil.GenerateFirewallAnalysis(firewallState.solution,
-                firewallState.iterations, system.FirewallLength);
+            string[] analysisLines = ServerUtil.GenerateFirewallAnalysis(crackState.FirewallSolution,
+                crackState.FirewallIterations, system.FirewallLength);
 
-            Write(Output($"Pass {firewallState.iterations}...\n")).Flush();
-            double delay = system.FirewallDelay * firewallState.iterations;
+            Write(Output($"Pass {crackState.FirewallIterations}...\n")).Flush();
+            double delay = system.FirewallDelay * crackState.FirewallIterations;
             foreach (var analysisLine in analysisLines)
             {
                 yield return Delay(delay);
                 Write(Output($"{analysisLine}\n")).Flush();
             }
-
-            Shell.FirewallStates[system.Address] = firewallState;
         }
     }
 }

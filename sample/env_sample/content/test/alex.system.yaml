@@ -12,6 +12,7 @@ Vulnerabilities:
   Exploits: 1
   Cve: CVE-2020-3200
 #FirewallIterations: 9
+ProxyClocks: 24.0
 FirewallLength: 14
 FirewallDelay: 0.05
 FixedFirewall: pleasure

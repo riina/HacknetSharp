@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
-    [Migration("20201219053204_Initial")]
+    [Migration("20201222055907_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,6 +141,9 @@ namespace hss.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("ClockSpeed")
+                        .HasColumnType("REAL");
+
                     b.Property<Guid>("DefaultSystem")
                         .HasColumnType("TEXT");
 
@@ -150,6 +153,9 @@ namespace hss.Sqlite.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("ProxyClocks")
+                        .HasColumnType("REAL");
 
                     b.Property<double>("RebootDuration")
                         .HasColumnType("REAL");
@@ -206,6 +212,9 @@ namespace hss.Sqlite.Migrations
                     b.Property<double>("BootTime")
                         .HasColumnType("REAL");
 
+                    b.Property<double>("ClockSpeed")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("ConnectCommandLine")
                         .HasColumnType("TEXT");
 
@@ -234,6 +243,9 @@ namespace hss.Sqlite.Migrations
 
                     b.Property<Guid>("OwnerKey")
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("ProxyClocks")
+                        .HasColumnType("REAL");
 
                     b.Property<double>("RebootDuration")
                         .HasColumnType("REAL");

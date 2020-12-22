@@ -38,15 +38,75 @@ namespace HacknetSharp.Server
         private readonly Dictionary<string, Func<string>> _builtinVariables;
 
         /// <summary>
-        /// Open vulnerabilities by system address.
+        /// Crack states by system address.
         /// </summary>
-        public Dictionary<uint, HashSet<VulnerabilityModel>> OpenVulnerabilities { get; set; } =
-            new();
+        public Dictionary<uint, CrackState> CrackStates { get; set; } = new();
 
         /// <summary>
-        /// Firewall iterations by system address.
+        /// Gets crack state ror target system.
         /// </summary>
-        public Dictionary<uint, (string solution, int iterations, bool solved)> FirewallStates { get; set; } = new();
+        /// <param name="target">Target system.</param>
+        /// <returns></returns>
+        public CrackState GetCrackState(SystemModel target)
+        {
+            if (!CrackStates.TryGetValue(target.Address, out var res))
+                CrackStates[target.Address] = res = new CrackState(ProcessContext.System, target);
+            return res;
+        }
+
+        /// <summary>
+        /// Contains information on crack state for a specified target.
+        /// </summary>
+        public class CrackState
+        {
+            /// <summary>
+            /// Source system.
+            /// </summary>
+            public SystemModel Source { get; }
+
+            /// <summary>
+            /// Target system.
+            /// </summary>
+            public SystemModel Target { get; }
+
+            /// <summary>
+            /// Open vulnerabilities on target.
+            /// </summary>
+            public HashSet<VulnerabilityModel> OpenVulnerabilities { get; }
+
+            /// <summary>
+            /// Firewall solution.
+            /// </summary>
+            public string FirewallSolution { get; set; }
+
+            /// <summary>
+            /// Firewall iterations.
+            /// </summary>
+            public int FirewallIterations { get; set; }
+
+            /// <summary>
+            /// Firewall solve state.
+            /// </summary>
+            public bool FirewallSolved { get; set; }
+
+            /// <summary>
+            /// CPU cycles spent cracking proxy.
+            /// </summary>
+            public double ProxyClocks { get; set; }
+
+            /// <summary>
+            /// Creates a new instance of <see cref="CrackState"/>.
+            /// </summary>
+            /// <param name="source">Source system.</param>
+            /// <param name="target">Target system.</param>
+            public CrackState(SystemModel source, SystemModel target)
+            {
+                Source = source;
+                Target = target;
+                OpenVulnerabilities = new HashSet<VulnerabilityModel>();
+                FirewallSolution = Target.FixedFirewall ?? ServerUtil.GeneratePassword(Target.FirewallIterations);
+            }
+        }
 
         /// <summary>
         /// Processes with remote shells by system address.

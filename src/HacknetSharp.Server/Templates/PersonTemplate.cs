@@ -93,6 +93,16 @@ namespace HacknetSharp.Server.Templates
         public int DiskCapacity { get; set; }
 
         /// <summary>
+        /// CPU cycles required to crack proxy.
+        /// </summary>
+        public double ProxyClocks { get; set; }
+
+        /// <summary>
+        /// Proxy cracking speed.
+        /// </summary>
+        public double ClockSpeed { get; set; }
+
+        /// <summary>
         /// System memory (bytes).
         /// </summary>
         public long SystemMemory { get; set; }
@@ -164,7 +174,8 @@ namespace HacknetSharp.Server.Templates
             var person = spawn.Person(username, username);
             person.RebootDuration = RebootDuration;
             person.DiskCapacity = DiskCapacity;
-            person.DiskCapacity = DiskCapacity;
+            person.ProxyClocks = ProxyClocks;
+            person.ClockSpeed = ClockSpeed;
             var (hash, salt) = ServerUtil.HashPassword(password);
 
             if (Network != null)

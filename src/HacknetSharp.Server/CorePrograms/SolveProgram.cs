@@ -5,7 +5,7 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:solve", "solve", "solve firewall challenge",
         "attempt to bypass firewall with specified solution\n\n" +
-        "target system can be assumed from environment\nvariable \"TARGET\"",
+        "target system can be assumed from environment\nvariable \"HOST\"",
         "[target] <solution>", false)]
     public class SolveProgram : Program
     {
@@ -18,7 +18,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!TryGetVariable(Argv.Length == 3 ? Argv[1] : null, "TARGET", out string? addr))
+            if (!TryGetVariable(Argv.Length == 3 ? Argv[1] : null, "HOST", out string? addr))
             {
                 Write(Output("No address provided\n")).Flush();
                 yield break;
@@ -42,23 +42,13 @@ namespace HacknetSharp.Server.CorePrograms
 
             // TODO timed programs should maintain handle to remote system in case of reported shutdown...
 
-            bool fail;
             string solution = Argv.Length == 3 ? Argv[2] : Argv[1];
-            if (system.FixedFirewall != null)
-                fail = system.FixedFirewall != solution;
-            else
-                fail = !Shell.FirewallStates.TryGetValue(system.Address, out var state) || state.solution != solution;
-
-            if (fail)
-            {
+            var crackState = Shell.GetCrackState(system);
+            if (crackState.FirewallSolution != solution)
                 Write(Output("Incorrect solution. Bypass failed.\n")).Flush();
-            }
             else
             {
-                if (Shell.FirewallStates.TryGetValue(system.Address, out var state))
-                    Shell.FirewallStates[system.Address] = (state.solution, state.iterations, true);
-                else
-                    Shell.FirewallStates[system.Address] = (solution, 0, true);
+                crackState.FirewallSolved = true;
                 Write(Output("Firewall bypassed.\n")).Flush();
             }
         }
