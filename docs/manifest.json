@@ -5,6 +5,30 @@
   "files": [
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.AlertLogger.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.AlertLogger.Config.html",
+          "hash": "p2RgNW4z5mWa3I2EKDd1Qg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HacknetSharp.AlertLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HacknetSharp.AlertLogger.html",
+          "hash": "AuTDOdy2WWjAF5PHjer5vA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/HacknetSharp.Client.LoginException.yml",
       "output": {
         ".html": {
@@ -453,7 +477,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.AccProgram.html",
-          "hash": "NDEiWbA3eBmQZ7kq5+s/Hw=="
+          "hash": "mdV2Zf3tuEn3UEe4olShPg=="
         }
       },
       "is_incremental": false,
@@ -465,7 +489,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.AnalyzeProgram.html",
-          "hash": "32LahZkgqsRqmLNGkpigTg=="
+          "hash": "5HyDcXNCcCg+jjV4Cf4lbw=="
         }
       },
       "is_incremental": false,
@@ -477,7 +501,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.CatProgram.html",
-          "hash": "1Gmt8FO8MxmN42FtuvTcSg=="
+          "hash": "nfsp3W2Fey+x0raHMTWpiw=="
         }
       },
       "is_incremental": false,
@@ -489,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.CdProgram.html",
-          "hash": "/PpHGPDopYKXD0BfCgEYSw=="
+          "hash": "uTSYkGZNT11ctVgaj/+wkQ=="
         }
       },
       "is_incremental": false,
@@ -501,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.CpProgram.html",
-          "hash": "5G9OnzEXLr4nBOOCpswPPA=="
+          "hash": "vtHfJH6G0rnRnfyVFkVArA=="
         }
       },
       "is_incremental": false,
@@ -513,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.EchoProgram.html",
-          "hash": "mOGjqYrxCTn7N/ppHvGLuw=="
+          "hash": "D19J/RWJ5oYEUpyiEAuVPQ=="
         }
       },
       "is_incremental": false,
@@ -525,7 +549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.EditProgram.html",
-          "hash": "ilvx2/TWetJA+ECkCsCFZg=="
+          "hash": "prG7qDJ/Svh5rXOTz6vIAw=="
         }
       },
       "is_incremental": false,
@@ -537,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.ExitProgram.html",
-          "hash": "i+MAxXHx8ubY1FthsFAo+Q=="
+          "hash": "viAturdQ6pdBQGJPCwc7ZA=="
         }
       },
       "is_incremental": false,
@@ -549,7 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.HackProgram.html",
-          "hash": "jl/Zx6wL0bE1PlzerE92+w=="
+          "hash": "mx6eri+geNJ9DaXRm06Qsw=="
         }
       },
       "is_incremental": false,
@@ -561,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.HelpProgram.html",
-          "hash": "EfskH6lC3lglE6ZiOZH2WQ=="
+          "hash": "p19v7y0VCgr/BKRiHs+wJg=="
         }
       },
       "is_incremental": false,
@@ -573,7 +597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.KillProgram.html",
-          "hash": "FQ+w8NfU7AUEvR3tua6oqg=="
+          "hash": "nkUMuCS0a73TVJzkrB2WyA=="
         }
       },
       "is_incremental": false,
@@ -585,7 +609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.LoginProgram.html",
-          "hash": "By4v7mpj1dKCyll6NU9GVA=="
+          "hash": "QLbap12suxbxgvWIdngokQ=="
         }
       },
       "is_incremental": false,
@@ -597,7 +621,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.LsProgram.html",
-          "hash": "t4i4ZGHg3DaQXrH4SKfiQg=="
+          "hash": "PY8L5KUyhwxnzDTctWgG7Q=="
         }
       },
       "is_incremental": false,
@@ -609,7 +633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.MapProgram.html",
-          "hash": "vPbKk4szBF2mmF3RibLBng=="
+          "hash": "HRXOa+J+JNMCwdiaLOcUZw=="
         }
       },
       "is_incremental": false,
@@ -621,7 +645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.MkdirProgram.html",
-          "hash": "8cuqZ0R4MqoryRyknEU7ag=="
+          "hash": "7Bhlinkn0SNxNrRwdesMjA=="
         }
       },
       "is_incremental": false,
@@ -633,7 +657,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.MvProgram.html",
-          "hash": "IwGYfv2nFlZ4emYMJFEB3Q=="
+          "hash": "i+ifu/iMvXw3L55H9ls2OA=="
         }
       },
       "is_incremental": false,
@@ -645,7 +669,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.PortHackProgram.html",
-          "hash": "XGC8FJSxOMqhYyJCcTN6ug=="
+          "hash": "QiqWGVQVQSqmnl97zUeizw=="
         }
       },
       "is_incremental": false,
@@ -657,7 +681,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.ProbeProgram.html",
-          "hash": "IJNISOPYMaScUiUWyD8b7A=="
+          "hash": "tXXmRXbT1Wbun1Emv5RcSA=="
         }
       },
       "is_incremental": false,
@@ -669,7 +693,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.PsProgram.html",
-          "hash": "leQolo5Z33x1Oymm9nEXdA=="
+          "hash": "cQuuMVURzDEwz5os8d7C3w=="
         }
       },
       "is_incremental": false,
@@ -681,7 +705,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.RmProgram.html",
-          "hash": "QcyEtCOE6al7TiJkfmC6ew=="
+          "hash": "m8AQFCeDTlr0HMf5DtTGJg=="
         }
       },
       "is_incremental": false,
@@ -693,7 +717,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.ScanProgram.html",
-          "hash": "E6opqzclFCLr02czatH6jw=="
+          "hash": "pyCaNHeXDiRNK1PGRxWLTQ=="
         }
       },
       "is_incremental": false,
@@ -705,7 +729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.ScpProgram.html",
-          "hash": "xTH9FjOX3X8lPi4FD2WvxQ=="
+          "hash": "yUVQ62vx3TXgy+jP/eMjAg=="
         }
       },
       "is_incremental": false,
@@ -717,7 +741,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.SetProgram.html",
-          "hash": "Gob+3qPOD1RYIYzD214dPQ=="
+          "hash": "W+4w+yLFqWUGhbf1uJ4wVg=="
         }
       },
       "is_incremental": false,
@@ -729,7 +753,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.ShellProgram.html",
-          "hash": "GyDC9rx9YBzTkONA80+mnA=="
+          "hash": "UMoHeRPr1xd8AgKOVwVaPw=="
         }
       },
       "is_incremental": false,
@@ -741,7 +765,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.SolveProgram.html",
-          "hash": "gj2EyV6dk6NHa/z5IBucqw=="
+          "hash": "Mb0Pg1Ly/71VJN7eXC08cQ=="
         }
       },
       "is_incremental": false,
@@ -753,7 +777,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.CorePrograms.SshProgram.html",
-          "hash": "hL62hU8khcLpviBiKpSizg=="
+          "hash": "pQRpM4Z8izF5lQVwXPChOA=="
         }
       },
       "is_incremental": false,
@@ -777,7 +801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.ActWaitYieldToken.html",
-          "hash": "jvELHeba9bQSvVhnLMqYVQ=="
+          "hash": "wNlUwVm6swSp4m+RNtG9lw=="
         }
       },
       "is_incremental": false,
@@ -789,7 +813,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.AggregateYieldToken.html",
-          "hash": "Ir/9LgBRSuNrSatxDIOnTg=="
+          "hash": "HvEMpjnFqbWfvaht12ZB4w=="
         }
       },
       "is_incremental": false,
@@ -801,7 +825,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.AnyYieldToken.html",
-          "hash": "vvAr9JbAC2rZMkilqWUl6A=="
+          "hash": "xC7Uw1W6sbQjQVzfyy+7QQ=="
         }
       },
       "is_incremental": false,
@@ -813,7 +837,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.ConditionYieldToken.html",
-          "hash": "u5g7qeynUmiCHHhG+pSMKQ=="
+          "hash": "x2QEN0cJaQLtBY69NnFGaw=="
         }
       },
       "is_incremental": false,
@@ -825,7 +849,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.ConfirmYieldToken.html",
-          "hash": "Miu7uBdJA2mgcKgfLsAtbg=="
+          "hash": "QlzJcxmzc39LzOxBs1tvuA=="
         }
       },
       "is_incremental": false,
@@ -837,7 +861,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.DelayYieldToken.html",
-          "hash": "I6BTSjmf3qX/jeqOK6+Udw=="
+          "hash": "f+LxiMBDJP9YMeafTcilPA=="
         }
       },
       "is_incremental": false,
@@ -849,7 +873,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.EditYieldToken.html",
-          "hash": "bC0GXVbknD8D/9R6muqJJQ=="
+          "hash": "5pDE89pDMksfyUhzJNP5CA=="
         }
       },
       "is_incremental": false,
@@ -861,7 +885,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.InputYieldToken.html",
-          "hash": "Vp8VBg71U/d+0tvOUhjZrw=="
+          "hash": "jYQ/mvMTd+PP//l7cXVHeg=="
         }
       },
       "is_incremental": false,
@@ -873,7 +897,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.SequenceYieldToken.html",
-          "hash": "QDPR7LiG/uhUjuoAeSImww=="
+          "hash": "nxkDexIW4bq4ZBewHmua9Q=="
         }
       },
       "is_incremental": false,
@@ -885,7 +909,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Executable.html",
-          "hash": "iA7RNctsnSBDT/HUQu5eyg=="
+          "hash": "4UoWvP+iGxZIMjzvFz1nGA=="
         }
       },
       "is_incremental": false,
@@ -933,7 +957,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.IWorld.html",
-          "hash": "0rMulcJ4zBUIGAUPwdzkCg=="
+          "hash": "gndKvqQWoBCh6gEmeak+IA=="
         }
       },
       "is_incremental": false,
@@ -1221,7 +1245,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Program.html",
-          "hash": "d2SZCTlbrSE2IN/Bz87EgA=="
+          "hash": "9CrsCmwaHIU18YbupAY0Yw=="
         }
       },
       "is_incremental": false,
@@ -1377,7 +1401,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Server.Service.html",
-          "hash": "FcydiRFji9tES/oFxoqyLA=="
+          "hash": "n58p6L9C49h6OsKzD/zRCA=="
         }
       },
       "is_incremental": false,
@@ -1605,7 +1629,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.Util.html",
-          "hash": "ufSzuMCMsf5fmexRGbzqjA=="
+          "hash": "RX6LnQw8vxUkNN7F+FkV+w=="
         }
       },
       "is_incremental": false,
@@ -1617,7 +1641,7 @@
       "output": {
         ".html": {
           "relative_path": "api/HacknetSharp.html",
-          "hash": "DOLzedeR0iBWEVjFG9q3GQ=="
+          "hash": "raSRLkoAIRKWHgrBV9uZEg=="
         }
       },
       "is_incremental": false,
@@ -1641,7 +1665,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "AQ+8wJ61uApOGPHGVswV6w=="
+          "hash": "O23215S+hp6gDZpOiAnZUg=="
         }
       },
       "is_incremental": false,
@@ -1771,8 +1795,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 135,
-          "skipped_file_count": 52
+          "total_file_count": 137,
+          "skipped_file_count": 94
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

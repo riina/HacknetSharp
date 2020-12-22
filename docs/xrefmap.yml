@@ -7,6 +7,114 @@ references:
   commentId: N:HacknetSharp
   fullName: HacknetSharp
   nameWithType: HacknetSharp
+- uid: HacknetSharp.AlertLogger
+  name: AlertLogger
+  href: api/HacknetSharp.AlertLogger.html
+  commentId: T:HacknetSharp.AlertLogger
+  fullName: HacknetSharp.AlertLogger
+  nameWithType: AlertLogger
+- uid: HacknetSharp.AlertLogger.#ctor(HacknetSharp.AlertLogger.Config)
+  name: AlertLogger(AlertLogger.Config)
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger__ctor_HacknetSharp_AlertLogger_Config_
+  commentId: M:HacknetSharp.AlertLogger.#ctor(HacknetSharp.AlertLogger.Config)
+  fullName: HacknetSharp.AlertLogger.AlertLogger(HacknetSharp.AlertLogger.Config)
+  nameWithType: AlertLogger.AlertLogger(AlertLogger.Config)
+- uid: HacknetSharp.AlertLogger.#ctor*
+  name: AlertLogger
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger__ctor_
+  commentId: Overload:HacknetSharp.AlertLogger.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.AlertLogger.AlertLogger
+  nameWithType: AlertLogger.AlertLogger
+- uid: HacknetSharp.AlertLogger.BeginScope*
+  name: BeginScope
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger_BeginScope_
+  commentId: Overload:HacknetSharp.AlertLogger.BeginScope
+  isSpec: "True"
+  fullName: HacknetSharp.AlertLogger.BeginScope
+  nameWithType: AlertLogger.BeginScope
+- uid: HacknetSharp.AlertLogger.BeginScope``1(``0)
+  name: BeginScope<TState>(TState)
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger_BeginScope__1___0_
+  commentId: M:HacknetSharp.AlertLogger.BeginScope``1(``0)
+  name.vb: BeginScope(Of TState)(TState)
+  fullName: HacknetSharp.AlertLogger.BeginScope<TState>(TState)
+  fullName.vb: HacknetSharp.AlertLogger.BeginScope(Of TState)(TState)
+  nameWithType: AlertLogger.BeginScope<TState>(TState)
+  nameWithType.vb: AlertLogger.BeginScope(Of TState)(TState)
+- uid: HacknetSharp.AlertLogger.Config
+  name: AlertLogger.Config
+  href: api/HacknetSharp.AlertLogger.Config.html
+  commentId: T:HacknetSharp.AlertLogger.Config
+  fullName: HacknetSharp.AlertLogger.Config
+  nameWithType: AlertLogger.Config
+- uid: HacknetSharp.AlertLogger.Config.#ctor(LogLevel[])
+  name: Config(LogLevel[])
+  href: api/HacknetSharp.AlertLogger.Config.html#HacknetSharp_AlertLogger_Config__ctor_LogLevel___
+  commentId: M:HacknetSharp.AlertLogger.Config.#ctor(LogLevel[])
+  name.vb: Config(LogLevel())
+  fullName: HacknetSharp.AlertLogger.Config.Config(LogLevel[])
+  fullName.vb: HacknetSharp.AlertLogger.Config.Config(LogLevel())
+  nameWithType: AlertLogger.Config.Config(LogLevel[])
+  nameWithType.vb: AlertLogger.Config.Config(LogLevel())
+- uid: HacknetSharp.AlertLogger.Config.#ctor(System.Collections.Generic.IEnumerable{LogLevel})
+  name: Config(IEnumerable<LogLevel>)
+  href: api/HacknetSharp.AlertLogger.Config.html#HacknetSharp_AlertLogger_Config__ctor_System_Collections_Generic_IEnumerable_LogLevel__
+  commentId: M:HacknetSharp.AlertLogger.Config.#ctor(System.Collections.Generic.IEnumerable{LogLevel})
+  name.vb: Config(IEnumerable(Of LogLevel))
+  fullName: HacknetSharp.AlertLogger.Config.Config(System.Collections.Generic.IEnumerable<LogLevel>)
+  fullName.vb: HacknetSharp.AlertLogger.Config.Config(System.Collections.Generic.IEnumerable(Of LogLevel))
+  nameWithType: AlertLogger.Config.Config(IEnumerable<LogLevel>)
+  nameWithType.vb: AlertLogger.Config.Config(IEnumerable(Of LogLevel))
+- uid: HacknetSharp.AlertLogger.Config.#ctor*
+  name: Config
+  href: api/HacknetSharp.AlertLogger.Config.html#HacknetSharp_AlertLogger_Config__ctor_
+  commentId: Overload:HacknetSharp.AlertLogger.Config.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.AlertLogger.Config.Config
+  nameWithType: AlertLogger.Config.Config
+- uid: HacknetSharp.AlertLogger.Config.EnabledLevels
+  name: EnabledLevels
+  href: api/HacknetSharp.AlertLogger.Config.html#HacknetSharp_AlertLogger_Config_EnabledLevels
+  commentId: P:HacknetSharp.AlertLogger.Config.EnabledLevels
+  fullName: HacknetSharp.AlertLogger.Config.EnabledLevels
+  nameWithType: AlertLogger.Config.EnabledLevels
+- uid: HacknetSharp.AlertLogger.Config.EnabledLevels*
+  name: EnabledLevels
+  href: api/HacknetSharp.AlertLogger.Config.html#HacknetSharp_AlertLogger_Config_EnabledLevels_
+  commentId: Overload:HacknetSharp.AlertLogger.Config.EnabledLevels
+  isSpec: "True"
+  fullName: HacknetSharp.AlertLogger.Config.EnabledLevels
+  nameWithType: AlertLogger.Config.EnabledLevels
+- uid: HacknetSharp.AlertLogger.IsEnabled(LogLevel)
+  name: IsEnabled(LogLevel)
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger_IsEnabled_LogLevel_
+  commentId: M:HacknetSharp.AlertLogger.IsEnabled(LogLevel)
+  fullName: HacknetSharp.AlertLogger.IsEnabled(LogLevel)
+  nameWithType: AlertLogger.IsEnabled(LogLevel)
+- uid: HacknetSharp.AlertLogger.IsEnabled*
+  name: IsEnabled
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger_IsEnabled_
+  commentId: Overload:HacknetSharp.AlertLogger.IsEnabled
+  isSpec: "True"
+  fullName: HacknetSharp.AlertLogger.IsEnabled
+  nameWithType: AlertLogger.IsEnabled
+- uid: HacknetSharp.AlertLogger.Log*
+  name: Log
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger_Log_
+  commentId: Overload:HacknetSharp.AlertLogger.Log
+  isSpec: "True"
+  fullName: HacknetSharp.AlertLogger.Log
+  nameWithType: AlertLogger.Log
+- uid: HacknetSharp.AlertLogger.Log``1(LogLevel,EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})
+  name: Log<TState>(LogLevel, EventId, TState, Exception, Func<TState, Exception, String>)
+  href: api/HacknetSharp.AlertLogger.html#HacknetSharp_AlertLogger_Log__1_LogLevel_EventId___0_System_Exception_System_Func___0_System_Exception_System_String__
+  commentId: M:HacknetSharp.AlertLogger.Log``1(LogLevel,EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})
+  name.vb: Log(Of TState)(LogLevel, EventId, TState, Exception, Func(Of TState, Exception, String))
+  fullName: HacknetSharp.AlertLogger.Log<TState>(LogLevel, EventId, TState, System.Exception, System.Func<TState, System.Exception, System.String>)
+  fullName.vb: HacknetSharp.AlertLogger.Log(Of TState)(LogLevel, EventId, TState, System.Exception, System.Func(Of TState, System.Exception, System.String))
+  nameWithType: AlertLogger.Log<TState>(LogLevel, EventId, TState, Exception, Func<TState, Exception, String>)
+  nameWithType.vb: AlertLogger.Log(Of TState)(LogLevel, EventId, TState, Exception, Func(Of TState, Exception, String))
 - uid: HacknetSharp.Client
   name: Client
   href: api/HacknetSharp.Client.html
@@ -3428,15 +3536,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Executable.TryGetSystem
   nameWithType: Executable.TryGetSystem
-- uid: HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.WorldSpawn,System.Double,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel@)
-  name: TryWriteLog(WorldSpawn, Double, SystemModel, LoginModel, String, String, out FileModel)
-  href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryWriteLog_HacknetSharp_Server_WorldSpawn_System_Double_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel__
-  commentId: M:HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.WorldSpawn,System.Double,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel@)
-  name.vb: TryWriteLog(WorldSpawn, Double, SystemModel, LoginModel, String, String, ByRef FileModel)
-  fullName: HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.WorldSpawn, System.Double, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, out HacknetSharp.Server.Models.FileModel)
-  fullName.vb: HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.WorldSpawn, System.Double, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, ByRef HacknetSharp.Server.Models.FileModel)
-  nameWithType: Executable.TryWriteLog(WorldSpawn, Double, SystemModel, LoginModel, String, String, out FileModel)
-  nameWithType.vb: Executable.TryWriteLog(WorldSpawn, Double, SystemModel, LoginModel, String, String, ByRef FileModel)
+- uid: HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.IWorld,System.Double,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel@)
+  name: TryWriteLog(IWorld, Double, SystemModel, LoginModel, String, String, out FileModel)
+  href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryWriteLog_HacknetSharp_Server_IWorld_System_Double_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel__
+  commentId: M:HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.IWorld,System.Double,HacknetSharp.Server.Models.SystemModel,HacknetSharp.Server.Models.LoginModel,System.String,System.String,HacknetSharp.Server.Models.FileModel@)
+  name.vb: TryWriteLog(IWorld, Double, SystemModel, LoginModel, String, String, ByRef FileModel)
+  fullName: HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.IWorld, System.Double, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, out HacknetSharp.Server.Models.FileModel)
+  fullName.vb: HacknetSharp.Server.Executable.TryWriteLog(HacknetSharp.Server.IWorld, System.Double, HacknetSharp.Server.Models.SystemModel, HacknetSharp.Server.Models.LoginModel, System.String, System.String, ByRef HacknetSharp.Server.Models.FileModel)
+  nameWithType: Executable.TryWriteLog(IWorld, Double, SystemModel, LoginModel, String, String, out FileModel)
+  nameWithType.vb: Executable.TryWriteLog(IWorld, Double, SystemModel, LoginModel, String, String, ByRef FileModel)
 - uid: HacknetSharp.Server.Executable.TryWriteLog*
   name: TryWriteLog
   href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryWriteLog_
@@ -3882,6 +3990,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IWorld.IntrinsicPrograms
   nameWithType: IWorld.IntrinsicPrograms
+- uid: HacknetSharp.Server.IWorld.Logger
+  name: Logger
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_Logger
+  commentId: P:HacknetSharp.Server.IWorld.Logger
+  fullName: HacknetSharp.Server.IWorld.Logger
+  nameWithType: IWorld.Logger
+- uid: HacknetSharp.Server.IWorld.Logger*
+  name: Logger
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_Logger_
+  commentId: Overload:HacknetSharp.Server.IWorld.Logger
+  isSpec: "True"
+  fullName: HacknetSharp.Server.IWorld.Logger
+  nameWithType: IWorld.Logger
 - uid: HacknetSharp.Server.IWorld.Model
   name: Model
   href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_Model
@@ -9224,6 +9345,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Util.DecrementCountdown
   nameWithType: Util.DecrementCountdown
+- uid: HacknetSharp.Util.FormatAlert(System.String,System.String,System.String)
+  name: FormatAlert(String, String, String)
+  href: api/HacknetSharp.Util.html#HacknetSharp_Util_FormatAlert_System_String_System_String_System_String_
+  commentId: M:HacknetSharp.Util.FormatAlert(System.String,System.String,System.String)
+  fullName: HacknetSharp.Util.FormatAlert(System.String, System.String, System.String)
+  nameWithType: Util.FormatAlert(String, String, String)
+- uid: HacknetSharp.Util.FormatAlert*
+  name: FormatAlert
+  href: api/HacknetSharp.Util.html#HacknetSharp_Util_FormatAlert_
+  commentId: Overload:HacknetSharp.Util.FormatAlert
+  isSpec: "True"
+  fullName: HacknetSharp.Util.FormatAlert
+  nameWithType: Util.FormatAlert
 - uid: HacknetSharp.Util.ReadCommand(System.IO.Stream)
   name: ReadCommand(Stream)
   href: api/HacknetSharp.Util.html#HacknetSharp_Util_ReadCommand_System_IO_Stream_

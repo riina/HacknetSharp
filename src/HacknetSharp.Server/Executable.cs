@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Models;
+using Microsoft.Extensions.Logging;
 
 namespace HacknetSharp.Server
 {
@@ -115,7 +116,7 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Attempt to write log to /log directory.
         /// </summary>
-        /// <param name="spawn">Active spawn manager.</param>
+        /// <param name="world">Active world.</param>
         /// <param name="time">Log timestamp.</param>
         /// <param name="system">Active system.</param>
         /// <param name="login">Active login.</param>
@@ -123,13 +124,13 @@ namespace HacknetSharp.Server
         /// <param name="logBody">Log body.</param>
         /// <param name="log">Generated log.</param>
         /// <returns>True if successful.</returns>
-        public static bool TryWriteLog(WorldSpawn spawn, double time, SystemModel system, LoginModel login,
+        public static bool TryWriteLog(IWorld world, double time, SystemModel system, LoginModel login,
             string logKind, string logBody, [NotNullWhen(true)] out FileModel? log)
         {
             if (system.GetFileSystemEntry("/log") == null)
             {
                 // /log does not exist, make it
-                var logDir = spawn.Folder(system, login, "log", "/");
+                var logDir = world.Spawn.Folder(system, login, "log", "/");
                 logDir.Read = FileModel.AccessLevel.Everyone;
                 logDir.Write = FileModel.AccessLevel.Everyone;
                 logDir.Execute = FileModel.AccessLevel.Everyone;
@@ -146,7 +147,7 @@ namespace HacknetSharp.Server
 
             try
             {
-                log = spawn.TextFile(system, login, fn, "/log", logBody);
+                log = world.Spawn.TextFile(system, login, fn, "/log", logBody);
                 log.Read = FileModel.AccessLevel.Everyone;
                 log.Write = FileModel.AccessLevel.Owner;
                 log.Execute = FileModel.AccessLevel.Everyone;
@@ -154,7 +155,8 @@ namespace HacknetSharp.Server
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Unexpected failure in {nameof(Executable)}{nameof(TryWriteLog)}:\n{e}");
+                world.Logger.LogWarning(
+                    $"Unexpected failure in {nameof(Executable)}.{nameof(TryWriteLog)}:\n{{Exception}}", e);
                 log = null;
                 return false;
             }

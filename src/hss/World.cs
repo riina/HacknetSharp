@@ -7,12 +7,14 @@ using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
+using Microsoft.Extensions.Logging;
 
 namespace hss
 {
     public class World : IWorld
     {
         public Server Server { get; }
+        public ILogger Logger { get; }
         public WorldModel Model { get; }
         public WorldSpawn Spawn { get; }
         public IServerDatabase Database { get; }
@@ -36,6 +38,7 @@ namespace hss
             Spawn = new WorldSpawn(database, Model);
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
+            Logger = server.Logger;
             _processes = new HashSet<Process>();
             _tmpProcesses = new HashSet<Process>();
             _shellProcesses = new HashSet<ShellProcess>();
@@ -105,15 +108,19 @@ namespace hss
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Server.Logger.LogWarning(
+                        "Unhandled exception occurred during a process update, killing process.\nException:\n{Exception}",
+                        e);
                     processes.Remove(operation);
                     try
                     {
                         CompleteRecurse(operation, Process.CompletionKind.KillRemote);
                     }
-                    catch
+                    catch (Exception e2)
                     {
-                        // ignored
+                        Server.Logger.LogWarning(
+                            "Unhandled exception occurred while killing process.\nException:\n{Exception}",
+                            e2);
                     }
                 }
             }
@@ -300,7 +307,7 @@ namespace hss
             double time = Time;
             string logBody = $"User={login.User}\nOrigin={src}\nTime={time}\n";
             if (attach) chain.Add(process);
-            Executable.TryWriteLog(Spawn, time, system, login, ServerConstants.LogKind_Login, logBody, out _);
+            Executable.TryWriteLog(this, time, system, login, ServerConstants.LogKind_Login, logBody, out _);
             return process;
         }
 
@@ -361,8 +368,6 @@ namespace hss
             var personModelKey = personModel.Key;
             if (personModel.ShellChain.Count == 0)
             {
-                Console.WriteLine(
-                    $"Command tried to execute without an active shell for person {personModelKey} - ignoring request");
                 programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
                 programContext.User.FlushSafeAsync();
                 return;

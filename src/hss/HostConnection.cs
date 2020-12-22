@@ -13,6 +13,7 @@ using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
+using Microsoft.Extensions.Logging;
 
 namespace hss
 {
@@ -250,7 +251,7 @@ namespace hss
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _server.Logger.LogWarning("Host connection {Id} caused unhandled exception:\n{Exception}", Id, e);
             }
             finally
             {
@@ -282,18 +283,18 @@ namespace hss
             {
                 _sslStream?.Close();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
+                // ignored
             }
 
             try
             {
                 _client.Dispose();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
+                // ignored
             }
         }
 

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HacknetSharp;
@@ -14,6 +15,8 @@ using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace hss
 {
@@ -42,6 +45,7 @@ namespace hss
         public ServerDatabase Database { get; }
         public Spawn Spawn { get; }
         public string? Motd { get; }
+        public ILogger Logger { get; }
 
         protected internal Server(ServerConfig config)
         {
@@ -55,6 +59,7 @@ namespace hss
             Worlds = new Dictionary<Guid, World>();
             Templates = config.Templates;
             Spawn = new Spawn(Database);
+            Logger = config.Logger ?? NullLogger.Instance;
             World? defaultWorld = null;
             foreach (var w in context.Set<WorldModel>())
             {
@@ -94,13 +99,17 @@ namespace hss
                         var connection = new HostConnection(this, await _connectListener.AcceptTcpClientAsync().Caf());
                         _connections.TryAdd(connection.Id, connection);
                     }
-                    catch (IOException)
+                    catch (IOException ioe)
                     {
+                        Logger.LogWarning("Connection listener threw an IO exception:\n{Exception}", ioe);
                         return;
                     }
-                    catch (SocketException)
+                    catch (SocketException se)
                     {
-                        return;
+                        if (se.SocketErrorCode == SocketError.OperationAborted)
+                            return;
+                        else
+                            Logger.LogWarning("Connection listener threw a socket exception:\n{Exception} {se}", se);
                     }
                     finally
                     {
@@ -110,7 +119,10 @@ namespace hss
             }
             finally
             {
-                Console.WriteLine("[[Connection listener is offline.]]");
+                if (_state >= LifecycleState.Dispose)
+                    Logger.LogInformation("Connection listener is offline");
+                else
+                    Logger.LogWarning("Connection listener has closed sooner than expected");
             }
         }
 
@@ -197,7 +209,7 @@ namespace hss
                     long ms3;
                     if (lastSave + saveDelayMs < ms2)
                     {
-                        Console.WriteLine($"[Database saving {DateTime.Now}]");
+                        Logger.LogInformation("Database saving {Time}", DateTime.Now);
                         lastSave = ms2;
                         await Database.SyncAsync().Caf();
                         ms3 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -211,26 +223,28 @@ namespace hss
                 }
                 catch (DbUpdateConcurrencyException e)
                 {
-                    Console.WriteLine(e);
+                    var sb = new StringBuilder();
                     foreach (var x in e.Entries)
                     {
-                        Console.WriteLine($"{x.Entity}");
+                        sb.AppendLine($"{x.Entity}");
                         switch (x.Entity)
                         {
                             case FileModel y:
-                                Console.WriteLine($"[{y.Path}] [{y.Name}]");
-                                Console.WriteLine("Current:");
+                                sb.AppendLine($"[{y.Path}] [{y.Name}]");
+                                sb.AppendLine("Current:");
                                 foreach (var z in x.CurrentValues.Properties)
-                                {
-                                    Console.WriteLine(
+                                    sb.AppendLine(
                                         $"{z.Name} // {z} // [{x.CurrentValues[z]}] vs [{x.OriginalValues[z]}]");
-                                }
 
                                 break;
                         }
                     }
 
-                    throw;
+                    Logger.LogError(
+                        $"{nameof(DbUpdateConcurrencyException)} thrown in server loop:\n{{Exception}}\nDetails:\n{{Information}}",
+                        e, sb.ToString());
+
+                    return;
                 }
                 finally
                 {
@@ -315,7 +329,7 @@ namespace hss
             _connectListener.Stop();
             foreach (var id in connectionIds)
             {
-                Console.WriteLine($"Disconnecting {id}");
+                Logger.LogInformation("Disconnecting connection {Id} for server dispose", id);
                 await DisconnectConnectionAsync(id);
             }
 
@@ -327,10 +341,14 @@ namespace hss
                 _countdown.Wait();
             }).Caf();
             await _connectTask!;
-            Console.WriteLine("Committing database...");
+            Logger.LogInformation("Committing database on close");
             try
             {
                 await Database.SyncAsync();
+            }
+            catch (Exception e)
+            {
+                Logger.LogWarning("Database commit failed with an exception:\n{Exception}", e);
             }
             finally
             {

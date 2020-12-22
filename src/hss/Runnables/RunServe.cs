@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
 using HacknetSharp.Server;
+using Microsoft.Extensions.Logging;
 
 namespace hss.Runnables
 {
@@ -16,6 +17,8 @@ namespace hss.Runnables
     {
         private class Options
         {
+            [Option('v', "verbose", HelpText = "Enable verbose logging.")]
+            public bool Verbose { get; set; }
         }
 
         private static async Task<int> Start(Executor executor, Options options)
@@ -53,6 +56,17 @@ namespace hss.Runnables
             var templates = new TemplateGroup();
             HssUtil.LoadTemplates(templates, servConf, ".");
 
+            ILogger? logger;
+            if (options.Verbose)
+            {
+                var config = new AlertLogger.Config(LogLevel.Critical, LogLevel.Debug, LogLevel.Error, LogLevel.Information, LogLevel.Trace, LogLevel.Warning);
+                logger = new AlertLogger(config);
+            }
+            else
+            {
+                logger = null;
+            }
+
             var conf = new ServerConfig()
                 .WithPrograms(executor.ServerDatabaseContextFactory.Programs.Concat(executor.CustomPrograms))
                 .WithServices(executor.ServerDatabaseContextFactory.Services.Concat(executor.CustomServices))
@@ -61,7 +75,8 @@ namespace hss.Runnables
                 .WithPort(servConf.Port)
                 .WithTemplates(templates)
                 .WithCertificate(cert.Value.Item2)
-                .WithMotd(servConf.Motd);
+                .WithMotd(servConf.Motd)
+                .WithLogger(logger);
             var instance = conf.CreateInstance();
             _ = instance.Start();
 

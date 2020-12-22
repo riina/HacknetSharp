@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -629,5 +630,29 @@ namespace HacknetSharp
         /// <returns>IPv4 address (a.b.c.d).</returns>
         public static string UintToAddress(uint value) =>
             $"{(byte)(value >> 24)}.{(byte)(value >> 16)}.{(byte)(value >> 8)}.{(byte)value}";
+
+
+
+        /// <summary>
+        /// Formats an alert box.
+        /// </summary>
+        /// <param name="kind">Alert kind.</param>
+        /// <param name="header">Alert header.</param>
+        /// <param name="body">Alert body.</param>
+        public static StringBuilder FormatAlert(string kind, string header, string body)
+        {
+            List<string> lines = new(body.Split('\n'));
+            lines.Insert(0, $"{kind} : {header.ToUpperInvariant()} ");
+            int longest = Math.Min(lines.Select(l => l.Length).Max(), Math.Max(10, Console.BufferWidth - 6));
+            lines[0] = lines[0] + new string('-', Math.Max(longest - lines[0].Length, 0));
+            var sb = new StringBuilder();
+            for (int i = 0; i < lines.Count; i++)
+                sb.AppendLine(i == 0
+                    ? string.Format(CultureInfo.InvariantCulture,
+                        $"»» {{0,{-longest}}} ««", lines[i])
+                    : lines[i]);
+            sb.Append("»» ").Append('-', longest).AppendLine(" ««");
+            return sb;
+        }
     }
 }

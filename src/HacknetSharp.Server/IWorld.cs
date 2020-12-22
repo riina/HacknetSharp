@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
+using Microsoft.Extensions.Logging;
 
 namespace HacknetSharp.Server
 {
@@ -11,6 +12,11 @@ namespace HacknetSharp.Server
     /// </summary>
     public interface IWorld
     {
+        /// <summary>
+        /// Log receiver.
+        /// </summary>
+        ILogger Logger { get; }
+
         /// <summary>
         /// Database model for the world.
         /// </summary>
