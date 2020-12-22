@@ -36,7 +36,8 @@ namespace HacknetSharp.Server.CorePrograms
             var crackState = Shell.GetCrackState(system);
 
             if (system.ProxyClocks > 0)
-                sb.Append($"Proxy: {Math.Clamp(100.0 * crackState.ProxyClocks / system.ProxyClocks, 0, 100):F1}% bypassed\n");
+                sb.Append(
+                    $"Proxy: {Math.Clamp(100.0 * crackState.ProxyClocks / system.ProxyClocks, 0, 100):F1}% bypassed\n");
 
             if (system.FirewallIterations > 0)
                 sb.Append(crackState.FirewallSolved ? "\nFirewall: BYPASSED\n" : "\nFirewall: ACTIVE\n");

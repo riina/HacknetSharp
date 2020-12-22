@@ -19,7 +19,9 @@ Most significant programs are implemented:
   - Ports (`<one-size-fits-all core:hack>`)
   - Firewall (analyze/solve)
   - General (probe/porthack)
+  - Proxy (shell/overload/trap)
 * Utility (echo/help/login/acc)
+* Chatting (chatd/chat/c)
 
 There are still some features missing, listed on the
 [MVP project board](https://github.com/The-Council-of-Wills/HacknetSharp/projects/1).

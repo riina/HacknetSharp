@@ -3,6 +3,10 @@
 HacknetSharp is an attempt at implementing a single-server
 Hacknet-like multiplayer hacking game.
 
+The majority of Hacknet concepts at least loosely apply,
+but the focus was making things at least sort of make sense
+in the real world.
+
 ## Client
 [Usage](usage-client.md)
 

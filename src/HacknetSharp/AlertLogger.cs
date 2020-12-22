@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
-namespace HacknetSharp {
+namespace HacknetSharp
+{
     /// <summary>
     /// Provides basic formatted logging to console output.
     /// </summary>
@@ -54,7 +55,8 @@ namespace HacknetSharp {
             Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel)) return;
-            var alertFmt = Util.FormatAlert(logLevel.ToString(), $"[{eventId.Id,2}: {logLevel,-12}]", formatter(state, exception));
+            var alertFmt = Util.FormatAlert(logLevel.ToString(), $"[{eventId.Id,2}: {logLevel,-12}]",
+                formatter(state, exception));
             Console.Write(alertFmt.Insert(0, '\n').ToString());
         }
 

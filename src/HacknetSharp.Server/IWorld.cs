@@ -103,7 +103,8 @@ namespace HacknetSharp.Server
         /// Process creation can fail for several reasons, including if there are no remaining PIDs
         /// or the executable doesn't exist, or if there isn't an active shell.
         /// </remarks>
-        ProgramProcess? StartProgram(ShellProcess shell, string[] argv, string[]? hargv = null, Program? program = null);
+        ProgramProcess? StartProgram(ShellProcess shell, string[] argv, string[]? hargv = null,
+            Program? program = null);
 
         /// <summary>
         /// Attempts to start a service.

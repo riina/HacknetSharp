@@ -632,7 +632,6 @@ namespace HacknetSharp
             $"{(byte)(value >> 24)}.{(byte)(value >> 16)}.{(byte)(value >> 8)}.{(byte)value}";
 
 
-
         /// <summary>
         /// Formats an alert box.
         /// </summary>

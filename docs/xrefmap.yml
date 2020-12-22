@@ -2185,6 +2185,38 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.CorePrograms.CdProgram.Run
   nameWithType: CdProgram.Run
+- uid: HacknetSharp.Server.CorePrograms.ChatProgram
+  name: ChatProgram
+  href: api/HacknetSharp.Server.CorePrograms.ChatProgram.html
+  commentId: T:HacknetSharp.Server.CorePrograms.ChatProgram
+  fullName: HacknetSharp.Server.CorePrograms.ChatProgram
+  nameWithType: ChatProgram
+- uid: HacknetSharp.Server.CorePrograms.ChatProgram.OnShutdown
+  name: OnShutdown()
+  href: api/HacknetSharp.Server.CorePrograms.ChatProgram.html#HacknetSharp_Server_CorePrograms_ChatProgram_OnShutdown
+  commentId: M:HacknetSharp.Server.CorePrograms.ChatProgram.OnShutdown
+  fullName: HacknetSharp.Server.CorePrograms.ChatProgram.OnShutdown()
+  nameWithType: ChatProgram.OnShutdown()
+- uid: HacknetSharp.Server.CorePrograms.ChatProgram.OnShutdown*
+  name: OnShutdown
+  href: api/HacknetSharp.Server.CorePrograms.ChatProgram.html#HacknetSharp_Server_CorePrograms_ChatProgram_OnShutdown_
+  commentId: Overload:HacknetSharp.Server.CorePrograms.ChatProgram.OnShutdown
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CorePrograms.ChatProgram.OnShutdown
+  nameWithType: ChatProgram.OnShutdown
+- uid: HacknetSharp.Server.CorePrograms.ChatProgram.Run
+  name: Run()
+  href: api/HacknetSharp.Server.CorePrograms.ChatProgram.html#HacknetSharp_Server_CorePrograms_ChatProgram_Run
+  commentId: M:HacknetSharp.Server.CorePrograms.ChatProgram.Run
+  fullName: HacknetSharp.Server.CorePrograms.ChatProgram.Run()
+  nameWithType: ChatProgram.Run()
+- uid: HacknetSharp.Server.CorePrograms.ChatProgram.Run*
+  name: Run
+  href: api/HacknetSharp.Server.CorePrograms.ChatProgram.html#HacknetSharp_Server_CorePrograms_ChatProgram_Run_
+  commentId: Overload:HacknetSharp.Server.CorePrograms.ChatProgram.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CorePrograms.ChatProgram.Run
+  nameWithType: ChatProgram.Run
 - uid: HacknetSharp.Server.CorePrograms.CpProgram
   name: CpProgram
   href: api/HacknetSharp.Server.CorePrograms.CpProgram.html
@@ -2204,6 +2236,25 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.CorePrograms.CpProgram.Run
   nameWithType: CpProgram.Run
+- uid: HacknetSharp.Server.CorePrograms.CProgram
+  name: CProgram
+  href: api/HacknetSharp.Server.CorePrograms.CProgram.html
+  commentId: T:HacknetSharp.Server.CorePrograms.CProgram
+  fullName: HacknetSharp.Server.CorePrograms.CProgram
+  nameWithType: CProgram
+- uid: HacknetSharp.Server.CorePrograms.CProgram.Run
+  name: Run()
+  href: api/HacknetSharp.Server.CorePrograms.CProgram.html#HacknetSharp_Server_CorePrograms_CProgram_Run
+  commentId: M:HacknetSharp.Server.CorePrograms.CProgram.Run
+  fullName: HacknetSharp.Server.CorePrograms.CProgram.Run()
+  nameWithType: CProgram.Run()
+- uid: HacknetSharp.Server.CorePrograms.CProgram.Run*
+  name: Run
+  href: api/HacknetSharp.Server.CorePrograms.CProgram.html#HacknetSharp_Server_CorePrograms_CProgram_Run_
+  commentId: Overload:HacknetSharp.Server.CorePrograms.CProgram.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CorePrograms.CProgram.Run
+  nameWithType: CProgram.Run
 - uid: HacknetSharp.Server.CorePrograms.EchoProgram
   name: EchoProgram
   href: api/HacknetSharp.Server.CorePrograms.EchoProgram.html
@@ -2673,6 +2724,140 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.CorePrograms.TrapProgram.Run
   nameWithType: TrapProgram.Run
+- uid: HacknetSharp.Server.CoreServices
+  name: HacknetSharp.Server.CoreServices
+  href: api/HacknetSharp.Server.CoreServices.html
+  commentId: N:HacknetSharp.Server.CoreServices
+  fullName: HacknetSharp.Server.CoreServices
+  nameWithType: HacknetSharp.Server.CoreServices
+- uid: HacknetSharp.Server.CoreServices.ChatService
+  name: ChatService
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html
+  commentId: T:HacknetSharp.Server.CoreServices.ChatService
+  fullName: HacknetSharp.Server.CoreServices.ChatService
+  nameWithType: ChatService
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo
+  name: ChatService.ChatInfo
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html
+  commentId: T:HacknetSharp.Server.CoreServices.ChatService.ChatInfo
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo
+  nameWithType: ChatService.ChatInfo
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Banned
+  name: Banned
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html#HacknetSharp_Server_CoreServices_ChatService_ChatInfo_Banned
+  commentId: P:HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Banned
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Banned
+  nameWithType: ChatService.ChatInfo.Banned
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Banned*
+  name: Banned
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html#HacknetSharp_Server_CoreServices_ChatService_ChatInfo_Banned_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Banned
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Banned
+  nameWithType: ChatService.ChatInfo.Banned
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.BannedRanges
+  name: BannedRanges
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html#HacknetSharp_Server_CoreServices_ChatService_ChatInfo_BannedRanges
+  commentId: P:HacknetSharp.Server.CoreServices.ChatService.ChatInfo.BannedRanges
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.BannedRanges
+  nameWithType: ChatService.ChatInfo.BannedRanges
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.BannedRanges*
+  name: BannedRanges
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html#HacknetSharp_Server_CoreServices_ChatService_ChatInfo_BannedRanges_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.ChatInfo.BannedRanges
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.BannedRanges
+  nameWithType: ChatService.ChatInfo.BannedRanges
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Rooms
+  name: Rooms
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html#HacknetSharp_Server_CoreServices_ChatService_ChatInfo_Rooms
+  commentId: P:HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Rooms
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Rooms
+  nameWithType: ChatService.ChatInfo.Rooms
+- uid: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Rooms*
+  name: Rooms
+  href: api/HacknetSharp.Server.CoreServices.ChatService.ChatInfo.html#HacknetSharp_Server_CoreServices_ChatService_ChatInfo_Rooms_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Rooms
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ChatInfo.Rooms
+  nameWithType: ChatService.ChatInfo.Rooms
+- uid: HacknetSharp.Server.CoreServices.ChatService.ConfigFile
+  name: ConfigFile
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_ConfigFile
+  commentId: F:HacknetSharp.Server.CoreServices.ChatService.ConfigFile
+  fullName: HacknetSharp.Server.CoreServices.ChatService.ConfigFile
+  nameWithType: ChatService.ConfigFile
+- uid: HacknetSharp.Server.CoreServices.ChatService.Info
+  name: Info
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_Info
+  commentId: P:HacknetSharp.Server.CoreServices.ChatService.Info
+  fullName: HacknetSharp.Server.CoreServices.ChatService.Info
+  nameWithType: ChatService.Info
+- uid: HacknetSharp.Server.CoreServices.ChatService.Info*
+  name: Info
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_Info_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.Info
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.Info
+  nameWithType: ChatService.Info
+- uid: HacknetSharp.Server.CoreServices.ChatService.MessageHandlerDelegate
+  name: ChatService.MessageHandlerDelegate
+  href: api/HacknetSharp.Server.CoreServices.ChatService.MessageHandlerDelegate.html
+  commentId: T:HacknetSharp.Server.CoreServices.ChatService.MessageHandlerDelegate
+  fullName: HacknetSharp.Server.CoreServices.ChatService.MessageHandlerDelegate
+  nameWithType: ChatService.MessageHandlerDelegate
+- uid: HacknetSharp.Server.CoreServices.ChatService.MessageReceivers
+  name: MessageReceivers
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_MessageReceivers
+  commentId: P:HacknetSharp.Server.CoreServices.ChatService.MessageReceivers
+  fullName: HacknetSharp.Server.CoreServices.ChatService.MessageReceivers
+  nameWithType: ChatService.MessageReceivers
+- uid: HacknetSharp.Server.CoreServices.ChatService.MessageReceivers*
+  name: MessageReceivers
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_MessageReceivers_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.MessageReceivers
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.MessageReceivers
+  nameWithType: ChatService.MessageReceivers
+- uid: HacknetSharp.Server.CoreServices.ChatService.OnShutdown
+  name: OnShutdown()
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_OnShutdown
+  commentId: M:HacknetSharp.Server.CoreServices.ChatService.OnShutdown
+  fullName: HacknetSharp.Server.CoreServices.ChatService.OnShutdown()
+  nameWithType: ChatService.OnShutdown()
+- uid: HacknetSharp.Server.CoreServices.ChatService.OnShutdown*
+  name: OnShutdown
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_OnShutdown_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.OnShutdown
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.OnShutdown
+  nameWithType: ChatService.OnShutdown
+- uid: HacknetSharp.Server.CoreServices.ChatService.Run
+  name: Run()
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_Run
+  commentId: M:HacknetSharp.Server.CoreServices.ChatService.Run
+  fullName: HacknetSharp.Server.CoreServices.ChatService.Run()
+  nameWithType: ChatService.Run()
+- uid: HacknetSharp.Server.CoreServices.ChatService.Run*
+  name: Run
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_Run_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.Run
+  nameWithType: ChatService.Run
+- uid: HacknetSharp.Server.CoreServices.ChatService.SendMessage(System.String,Guid,System.String,System.String)
+  name: SendMessage(String, Guid, String, String)
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_SendMessage_System_String_Guid_System_String_System_String_
+  commentId: M:HacknetSharp.Server.CoreServices.ChatService.SendMessage(System.String,Guid,System.String,System.String)
+  fullName: HacknetSharp.Server.CoreServices.ChatService.SendMessage(System.String, Guid, System.String, System.String)
+  nameWithType: ChatService.SendMessage(String, Guid, String, String)
+- uid: HacknetSharp.Server.CoreServices.ChatService.SendMessage*
+  name: SendMessage
+  href: api/HacknetSharp.Server.CoreServices.ChatService.html#HacknetSharp_Server_CoreServices_ChatService_SendMessage_
+  commentId: Overload:HacknetSharp.Server.CoreServices.ChatService.SendMessage
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CoreServices.ChatService.SendMessage
+  nameWithType: ChatService.SendMessage
 - uid: HacknetSharp.Server.Executable
   name: Executable
   href: api/HacknetSharp.Server.Executable.html
@@ -3565,19 +3750,6 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Executable.ParentPid
   nameWithType: Executable.ParentPid
-- uid: HacknetSharp.Server.Executable.Person
-  name: Person
-  href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Person
-  commentId: P:HacknetSharp.Server.Executable.Person
-  fullName: HacknetSharp.Server.Executable.Person
-  nameWithType: Executable.Person
-- uid: HacknetSharp.Server.Executable.Person*
-  name: Person
-  href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Person_
-  commentId: Overload:HacknetSharp.Server.Executable.Person
-  isSpec: "True"
-  fullName: HacknetSharp.Server.Executable.Person
-  nameWithType: Executable.Person
 - uid: HacknetSharp.Server.Executable.Pid
   name: Pid
   href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Pid
@@ -4242,12 +4414,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IWorld.Spawn
   nameWithType: IWorld.Spawn
-- uid: HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess,System.String,HacknetSharp.Server.Program)
-  name: StartProgram(ShellProcess, String, Program)
-  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartProgram_HacknetSharp_Server_ShellProcess_System_String_HacknetSharp_Server_Program_
-  commentId: M:HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess,System.String,HacknetSharp.Server.Program)
-  fullName: HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess, System.String, HacknetSharp.Server.Program)
-  nameWithType: IWorld.StartProgram(ShellProcess, String, Program)
+- uid: HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess,System.String[],System.String[],HacknetSharp.Server.Program)
+  name: StartProgram(ShellProcess, String[], String[], Program)
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartProgram_HacknetSharp_Server_ShellProcess_System_String___System_String___HacknetSharp_Server_Program_
+  commentId: M:HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess,System.String[],System.String[],HacknetSharp.Server.Program)
+  name.vb: StartProgram(ShellProcess, String(), String(), Program)
+  fullName: HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess, System.String[], System.String[], HacknetSharp.Server.Program)
+  fullName.vb: HacknetSharp.Server.IWorld.StartProgram(HacknetSharp.Server.ShellProcess, System.String(), System.String(), HacknetSharp.Server.Program)
+  nameWithType: IWorld.StartProgram(ShellProcess, String[], String[], Program)
+  nameWithType.vb: IWorld.StartProgram(ShellProcess, String(), String(), Program)
 - uid: HacknetSharp.Server.IWorld.StartProgram*
   name: StartProgram
   href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartProgram_
@@ -4255,12 +4430,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IWorld.StartProgram
   nameWithType: IWorld.StartProgram
-- uid: HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String,HacknetSharp.Server.Service)
-  name: StartService(PersonModel, LoginModel, String, Service)
-  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartService_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_LoginModel_System_String_HacknetSharp_Server_Service_
-  commentId: M:HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String,HacknetSharp.Server.Service)
-  fullName: HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String, HacknetSharp.Server.Service)
-  nameWithType: IWorld.StartService(PersonModel, LoginModel, String, Service)
+- uid: HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.LoginModel,System.String[],System.String[],HacknetSharp.Server.Service)
+  name: StartService(LoginModel, String[], String[], Service)
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartService_HacknetSharp_Server_Models_LoginModel_System_String___System_String___HacknetSharp_Server_Service_
+  commentId: M:HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.LoginModel,System.String[],System.String[],HacknetSharp.Server.Service)
+  name.vb: StartService(LoginModel, String(), String(), Service)
+  fullName: HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.LoginModel, System.String[], System.String[], HacknetSharp.Server.Service)
+  fullName.vb: HacknetSharp.Server.IWorld.StartService(HacknetSharp.Server.Models.LoginModel, System.String(), System.String(), HacknetSharp.Server.Service)
+  nameWithType: IWorld.StartService(LoginModel, String[], String[], Service)
+  nameWithType.vb: IWorld.StartService(LoginModel, String(), String(), Service)
 - uid: HacknetSharp.Server.IWorld.StartService*
   name: StartService
   href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartService_
@@ -4268,12 +4446,15 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.IWorld.StartService
   nameWithType: IWorld.StartService
-- uid: HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
-  name: StartShell(IPersonContext, PersonModel, LoginModel, String, Boolean)
-  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartShell_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_LoginModel_System_String_System_Boolean_
-  commentId: M:HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String,System.Boolean)
-  fullName: HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String, System.Boolean)
-  nameWithType: IWorld.StartShell(IPersonContext, PersonModel, LoginModel, String, Boolean)
+- uid: HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String[],System.Boolean)
+  name: StartShell(IPersonContext, PersonModel, LoginModel, String[], Boolean)
+  href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartShell_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_HacknetSharp_Server_Models_LoginModel_System_String___System_Boolean_
+  commentId: M:HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext,HacknetSharp.Server.Models.PersonModel,HacknetSharp.Server.Models.LoginModel,System.String[],System.Boolean)
+  name.vb: StartShell(IPersonContext, PersonModel, LoginModel, String(), Boolean)
+  fullName: HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String[], System.Boolean)
+  fullName.vb: HacknetSharp.Server.IWorld.StartShell(HacknetSharp.Server.IPersonContext, HacknetSharp.Server.Models.PersonModel, HacknetSharp.Server.Models.LoginModel, System.String(), System.Boolean)
+  nameWithType: IWorld.StartShell(IPersonContext, PersonModel, LoginModel, String[], Boolean)
+  nameWithType.vb: IWorld.StartShell(IPersonContext, PersonModel, LoginModel, String(), Boolean)
 - uid: HacknetSharp.Server.IWorld.StartShell*
   name: StartShell
   href: api/HacknetSharp.Server.IWorld.html#HacknetSharp_Server_IWorld_StartShell_
@@ -5461,6 +5642,22 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.RebootDuration
   nameWithType: SystemModel.RebootDuration
+- uid: HacknetSharp.Server.Models.SystemModel.RemoveService*
+  name: RemoveService
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_RemoveService_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.RemoveService
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.RemoveService
+  nameWithType: SystemModel.RemoveService
+- uid: HacknetSharp.Server.Models.SystemModel.RemoveService``1(``0)
+  name: RemoveService<TService>(TService)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_RemoveService__1___0_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.RemoveService``1(``0)
+  name.vb: RemoveService(Of TService)(TService)
+  fullName: HacknetSharp.Server.Models.SystemModel.RemoveService<TService>(TService)
+  fullName.vb: HacknetSharp.Server.Models.SystemModel.RemoveService(Of TService)(TService)
+  nameWithType: SystemModel.RemoveService<TService>(TService)
+  nameWithType.vb: SystemModel.RemoveService(Of TService)(TService)
 - uid: HacknetSharp.Server.Models.SystemModel.RequiredExploits
   name: RequiredExploits
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_RequiredExploits
@@ -5499,6 +5696,22 @@ references:
   commentId: F:HacknetSharp.Server.Models.SystemModel.TrapSignal.Singleton
   fullName: HacknetSharp.Server.Models.SystemModel.TrapSignal.Singleton
   nameWithType: SystemModel.TrapSignal.Singleton
+- uid: HacknetSharp.Server.Models.SystemModel.TryAddService*
+  name: TryAddService
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryAddService_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.TryAddService
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.TryAddService
+  nameWithType: SystemModel.TryAddService
+- uid: HacknetSharp.Server.Models.SystemModel.TryAddService``1(``0)
+  name: TryAddService<TService>(TService)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryAddService__1___0_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.TryAddService``1(``0)
+  name.vb: TryAddService(Of TService)(TService)
+  fullName: HacknetSharp.Server.Models.SystemModel.TryAddService<TService>(TService)
+  fullName.vb: HacknetSharp.Server.Models.SystemModel.TryAddService(Of TService)(TService)
+  nameWithType: SystemModel.TryAddService<TService>(TService)
+  nameWithType.vb: SystemModel.TryAddService(Of TService)(TService)
 - uid: HacknetSharp.Server.Models.SystemModel.TryGetFile(System.String,HacknetSharp.Server.Models.LoginModel,HacknetSharp.Server.ReadAccessResult@,System.String@,HacknetSharp.Server.Models.FileModel@,System.Boolean,System.Nullable{System.Boolean})
   name: TryGetFile(String, LoginModel, out ReadAccessResult, out String, out FileModel, Boolean, Nullable<Boolean>)
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetFile_System_String_HacknetSharp_Server_Models_LoginModel_HacknetSharp_Server_ReadAccessResult__System_String__HacknetSharp_Server_Models_FileModel__System_Boolean_System_Nullable_System_Boolean__
@@ -5515,6 +5728,22 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.TryGetFile
   nameWithType: SystemModel.TryGetFile
+- uid: HacknetSharp.Server.Models.SystemModel.TryGetService*
+  name: TryGetService
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetService_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.TryGetService
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.TryGetService
+  nameWithType: SystemModel.TryGetService
+- uid: HacknetSharp.Server.Models.SystemModel.TryGetService``1(``0@)
+  name: TryGetService<TService>(out TService)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TryGetService__1___0__
+  commentId: M:HacknetSharp.Server.Models.SystemModel.TryGetService``1(``0@)
+  name.vb: TryGetService(Of TService)(ByRef TService)
+  fullName: HacknetSharp.Server.Models.SystemModel.TryGetService<TService>(out TService)
+  fullName.vb: HacknetSharp.Server.Models.SystemModel.TryGetService(Of TService)(ByRef TService)
+  nameWithType: SystemModel.TryGetService<TService>(out TService)
+  nameWithType.vb: SystemModel.TryGetService(Of TService)(ByRef TService)
 - uid: HacknetSharp.Server.Models.SystemModel.Vulnerabilities
   name: Vulnerabilities
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_Vulnerabilities
@@ -6130,19 +6359,6 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ProcessContext.ParentPid
   nameWithType: ProcessContext.ParentPid
-- uid: HacknetSharp.Server.ProcessContext.Person
-  name: Person
-  href: api/HacknetSharp.Server.ProcessContext.html#HacknetSharp_Server_ProcessContext_Person
-  commentId: P:HacknetSharp.Server.ProcessContext.Person
-  fullName: HacknetSharp.Server.ProcessContext.Person
-  nameWithType: ProcessContext.Person
-- uid: HacknetSharp.Server.ProcessContext.Person*
-  name: Person
-  href: api/HacknetSharp.Server.ProcessContext.html#HacknetSharp_Server_ProcessContext_Person_
-  commentId: Overload:HacknetSharp.Server.ProcessContext.Person
-  isSpec: "True"
-  fullName: HacknetSharp.Server.ProcessContext.Person
-  nameWithType: ProcessContext.Person
 - uid: HacknetSharp.Server.ProcessContext.Pid
   name: Pid
   href: api/HacknetSharp.Server.ProcessContext.html#HacknetSharp_Server_ProcessContext_Pid
@@ -6356,6 +6572,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Program.Output
   nameWithType: Program.Output
+- uid: HacknetSharp.Server.Program.Person
+  name: Person
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Person
+  commentId: P:HacknetSharp.Server.Program.Person
+  fullName: HacknetSharp.Server.Program.Person
+  nameWithType: Program.Person
+- uid: HacknetSharp.Server.Program.Person*
+  name: Person
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Person_
+  commentId: Overload:HacknetSharp.Server.Program.Person
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Program.Person
+  nameWithType: Program.Person
 - uid: HacknetSharp.Server.Program.Remote
   name: Remote
   href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Remote
@@ -6382,12 +6611,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Program.Shell
   nameWithType: Program.Shell
-- uid: HacknetSharp.Server.Program.SignalUnbindProcess(HacknetSharp.Server.Process)
-  name: SignalUnbindProcess(Process)
-  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_SignalUnbindProcess_HacknetSharp_Server_Process_
-  commentId: M:HacknetSharp.Server.Program.SignalUnbindProcess(HacknetSharp.Server.Process)
-  fullName: HacknetSharp.Server.Program.SignalUnbindProcess(HacknetSharp.Server.Process)
-  nameWithType: Program.SignalUnbindProcess(Process)
+- uid: HacknetSharp.Server.Program.SignalUnbindProcess
+  name: SignalUnbindProcess()
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_SignalUnbindProcess
+  commentId: M:HacknetSharp.Server.Program.SignalUnbindProcess
+  fullName: HacknetSharp.Server.Program.SignalUnbindProcess()
+  nameWithType: Program.SignalUnbindProcess()
 - uid: HacknetSharp.Server.Program.SignalUnbindProcess(HacknetSharp.Server.ProgramContext,HacknetSharp.Server.Process)
   name: SignalUnbindProcess(ProgramContext, Process)
   href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_SignalUnbindProcess_HacknetSharp_Server_ProgramContext_HacknetSharp_Server_Process_
@@ -6563,6 +6792,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ProgramContext.OperationId
   nameWithType: ProgramContext.OperationId
+- uid: HacknetSharp.Server.ProgramContext.Person
+  name: Person
+  href: api/HacknetSharp.Server.ProgramContext.html#HacknetSharp_Server_ProgramContext_Person
+  commentId: P:HacknetSharp.Server.ProgramContext.Person
+  fullName: HacknetSharp.Server.ProgramContext.Person
+  nameWithType: ProgramContext.Person
+- uid: HacknetSharp.Server.ProgramContext.Person*
+  name: Person
+  href: api/HacknetSharp.Server.ProgramContext.html#HacknetSharp_Server_ProgramContext_Person_
+  commentId: Overload:HacknetSharp.Server.ProgramContext.Person
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ProgramContext.Person
+  nameWithType: ProgramContext.Person
 - uid: HacknetSharp.Server.ProgramContext.Remote
   name: Remote
   href: api/HacknetSharp.Server.ProgramContext.html#HacknetSharp_Server_ProgramContext_Remote
@@ -6673,19 +6915,6 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ProgramInfoAttribute.LongDescription
   nameWithType: ProgramInfoAttribute.LongDescription
-- uid: HacknetSharp.Server.ProgramInfoAttribute.Memory
-  name: Memory
-  href: api/HacknetSharp.Server.ProgramInfoAttribute.html#HacknetSharp_Server_ProgramInfoAttribute_Memory
-  commentId: P:HacknetSharp.Server.ProgramInfoAttribute.Memory
-  fullName: HacknetSharp.Server.ProgramInfoAttribute.Memory
-  nameWithType: ProgramInfoAttribute.Memory
-- uid: HacknetSharp.Server.ProgramInfoAttribute.Memory*
-  name: Memory
-  href: api/HacknetSharp.Server.ProgramInfoAttribute.html#HacknetSharp_Server_ProgramInfoAttribute_Memory_
-  commentId: Overload:HacknetSharp.Server.ProgramInfoAttribute.Memory
-  isSpec: "True"
-  fullName: HacknetSharp.Server.ProgramInfoAttribute.Memory
-  nameWithType: ProgramInfoAttribute.Memory
 - uid: HacknetSharp.Server.ProgramInfoAttribute.Name
   name: Name
   href: api/HacknetSharp.Server.ProgramInfoAttribute.html#HacknetSharp_Server_ProgramInfoAttribute_Name
@@ -7636,6 +7865,18 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServerUtil.ValidatePassword
   nameWithType: ServerUtil.ValidatePassword
+- uid: HacknetSharp.Server.ServerUtil.YamlDeserializer
+  name: YamlDeserializer
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_YamlDeserializer
+  commentId: F:HacknetSharp.Server.ServerUtil.YamlDeserializer
+  fullName: HacknetSharp.Server.ServerUtil.YamlDeserializer
+  nameWithType: ServerUtil.YamlDeserializer
+- uid: HacknetSharp.Server.ServerUtil.YamlSerializer
+  name: YamlSerializer
+  href: api/HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_YamlSerializer
+  commentId: F:HacknetSharp.Server.ServerUtil.YamlSerializer
+  fullName: HacknetSharp.Server.ServerUtil.YamlSerializer
+  nameWithType: ServerUtil.YamlSerializer
 - uid: HacknetSharp.Server.Service
   name: Service
   href: api/HacknetSharp.Server.Service.html
@@ -7680,19 +7921,6 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ServiceInfoAttribute.ServiceInfoAttribute
   nameWithType: ServiceInfoAttribute.ServiceInfoAttribute
-- uid: HacknetSharp.Server.ServiceInfoAttribute.Memory
-  name: Memory
-  href: api/HacknetSharp.Server.ServiceInfoAttribute.html#HacknetSharp_Server_ServiceInfoAttribute_Memory
-  commentId: P:HacknetSharp.Server.ServiceInfoAttribute.Memory
-  fullName: HacknetSharp.Server.ServiceInfoAttribute.Memory
-  nameWithType: ServiceInfoAttribute.Memory
-- uid: HacknetSharp.Server.ServiceInfoAttribute.Memory*
-  name: Memory
-  href: api/HacknetSharp.Server.ServiceInfoAttribute.html#HacknetSharp_Server_ServiceInfoAttribute_Memory_
-  commentId: Overload:HacknetSharp.Server.ServiceInfoAttribute.Memory
-  isSpec: "True"
-  fullName: HacknetSharp.Server.ServiceInfoAttribute.Memory
-  nameWithType: ServiceInfoAttribute.Memory
 - uid: HacknetSharp.Server.ServiceInfoAttribute.Name
   name: Name
   href: api/HacknetSharp.Server.ServiceInfoAttribute.html#HacknetSharp_Server_ServiceInfoAttribute_Name
@@ -7796,6 +8024,45 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ShellProcess.ShellProcess
   nameWithType: ShellProcess.ShellProcess
+- uid: HacknetSharp.Server.ShellProcess.Chat
+  name: Chat
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_Chat
+  commentId: P:HacknetSharp.Server.ShellProcess.Chat
+  fullName: HacknetSharp.Server.ShellProcess.Chat
+  nameWithType: ShellProcess.Chat
+- uid: HacknetSharp.Server.ShellProcess.Chat*
+  name: Chat
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_Chat_
+  commentId: Overload:HacknetSharp.Server.ShellProcess.Chat
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ShellProcess.Chat
+  nameWithType: ShellProcess.Chat
+- uid: HacknetSharp.Server.ShellProcess.ChatName
+  name: ChatName
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_ChatName
+  commentId: P:HacknetSharp.Server.ShellProcess.ChatName
+  fullName: HacknetSharp.Server.ShellProcess.ChatName
+  nameWithType: ShellProcess.ChatName
+- uid: HacknetSharp.Server.ShellProcess.ChatName*
+  name: ChatName
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_ChatName_
+  commentId: Overload:HacknetSharp.Server.ShellProcess.ChatName
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ShellProcess.ChatName
+  nameWithType: ShellProcess.ChatName
+- uid: HacknetSharp.Server.ShellProcess.ChatRoom
+  name: ChatRoom
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_ChatRoom
+  commentId: P:HacknetSharp.Server.ShellProcess.ChatRoom
+  fullName: HacknetSharp.Server.ShellProcess.ChatRoom
+  nameWithType: ShellProcess.ChatRoom
+- uid: HacknetSharp.Server.ShellProcess.ChatRoom*
+  name: ChatRoom
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_ChatRoom_
+  commentId: Overload:HacknetSharp.Server.ShellProcess.ChatRoom
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ShellProcess.ChatRoom
+  nameWithType: ShellProcess.ChatRoom
 - uid: HacknetSharp.Server.ShellProcess.Close
   name: Close
   href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_Close

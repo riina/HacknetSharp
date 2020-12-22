@@ -59,7 +59,8 @@ namespace hss.Runnables
             ILogger? logger;
             if (options.Verbose)
             {
-                var config = new AlertLogger.Config(LogLevel.Critical, LogLevel.Debug, LogLevel.Error, LogLevel.Information, LogLevel.Trace, LogLevel.Warning);
+                var config = new AlertLogger.Config(LogLevel.Critical, LogLevel.Debug, LogLevel.Error,
+                    LogLevel.Information, LogLevel.Trace, LogLevel.Warning);
                 logger = new AlertLogger(config);
             }
             else

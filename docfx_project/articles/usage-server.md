@@ -1,9 +1,10 @@
 # Server Usage (hss)
 
-All operations should be done inside the directory you intend to
-serve content from.
+Note: All operations should be done inside the directory you intend to
+serve content from. The folder should contain a `content` folder
+and a `server.yaml` configuration file (detailed below).
 
-## Obtaining SSL certificate
+## 1. SSL certificate
 
 The server program requires a valid SSL certificate in order for clients to validate the server.
 
@@ -30,7 +31,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out serv
 openssl pkcs12 -export -out cert.pfx -inkey server.key -in server.crt
 ```
 
-## Installing SSL certificate
+Now the certificate needs to be installed.
 
 * Windows
   - Go to `Manage User Certificates` in Control Panel.
@@ -53,16 +54,94 @@ you intend to connect to.
 
 `hss cert search <addrOrDomain>`
 
-## Generating templates / server configuration
+## 2. Generating templates / server configuration
 
 Templates drive the main content. Use `hss new` to create
 templates (`-e` to get an example instead of a bare file, `-n <name>`
-to specify the filename).
+to specify the filename). Templates go in folders under the server
+directory's `content/` folder.
 
-Templates go in folders under the server directory's `content/`
-folder.
+At a bare minimum, a properly written `server.yaml` server
+configuration file, a `<?>.world.yaml` world template, and a
+`<?>.system.yaml` system template for players are required.
 
-See the samples folder for template examples.
+[Template reference is below.](#template-reference)
+
+See the samples/env_sample folder for template examples.
+
+## 3. Creating initial database / migrating
+
+The program / EF Core migrations work with a database, and require a
+few environment variables or server.yaml properties to be configured.
+(`hndb_*` are the environment variables, `Kind`/`Sqlite*`/`Postgres*`
+are server.yaml properties under a `Database` root property)
+
+* PostgreSQL
+  - hndb_kind/Kind: must be set to "postgres"
+  - hndb_host/PostgresHost: hostname for PostgreSQL server.
+  - hndb_name/PostgresDatabase: name of PostgreSQL database to use.
+  - hndb_user/PostgresUser: username for PostgreSQL server.
+  - hndb_pass: password for PostgreSQL server.
+* SQLite
+  - hndb_kind/Kind: must be set to "sqlite"
+  - hndb_file/SqliteFile: Path to SQL file to use.
+
+### DB update option 1. EF Core tooling
+
+[Relevant Microsoft documentation](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying)
+
+You can use EF Core's command-line tooling to apply migrations.
+Making a SQL script instead of letting `hss` apply migrations by
+itself is safer.
+
+You need a copy of this repository at the point at which the project
+was created.
+
+Use the dotnet-ef tool (`dotnet tool update -g dotnet-ef`) to generate
+an SQL script that will migrate your database to the appropriate
+version.
+
+`dotnet ef database update -p <folder/containing/hss.Sqlite_or_hss.Postgres_csproj> [[fromMigrationName] <toMigrationName>]`
+
+### DB update option 2. hss database update
+
+If you're working with Sqlite, you can backup the existing file if
+applicable and just use `hss database update` to create / update the
+database.
+
+This works with Postgres, but you can't really rollback if
+something goes wrong.
+
+## 4. Setting users / content up
+
+Set up an admin user or two with `hss user create -a <username>`
+
+Set up a world (and remember to add it to your config as the default
+world) with `hss world create <name> <templateName>`
+
+## 5. Run server
+
+`hss serve`
+
+## Command help
+
+Just use `--help` on the program or its verbs / subverbs, they should
+make sense based on their description.
+
+(This is absolutely not laziness.)
+
+## Extending functionality
+
+If for whatever reason you wanted to create additional programs,
+reference the `HacknetSharp.Server` project and write your
+programs like the `HacknetSharp.Server.CorePrograms` programs.
+
+Your assembly (plus any dependencies not included with
+`HacknetSharp.Server`) should be placed under
+`extensions/assemblyName/` in your content folder. They should be
+picked up by reflection during bootstrap.
+
+## Template reference
 
 ### System templates
 
@@ -168,66 +247,3 @@ selected (weighted)
 * Motd(`string?`): Message of the day, sent to all clients during
   initial command.
 * ContentFolders(`List<string>?`): Additional content directories to search.
-
-## Database operations
-
-The program / EF Core migrations work with a database, and require a
-few environment variables or server.yaml properties to be configured.
-
-* PostgreSQL
-  - hndb_kind/Kind: must be set to "postgres"
-  - hndb_host/PostgresHost: hostname for PostgreSQL server.
-  - hndb_name/PostgresDatabase: name of PostgreSQL database to use.
-  - hndb_user/PostgresUser: username for PostgreSQL server.
-  - hndb_pass: password for PostgreSQL server.
-* SQLite
-  - hndb_kind/Kind: must be set to "sqlite"
-  - hndb_file/SqliteFile: Path to SQL file to use.
-
-## Creating initial database / migrating
-
-[Relevant Microsoft documentation](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying)
-
-You need a copy of this repository at the point at which the project
-was created. [TODO verb to check latest migration OR generate 
-idempotent scriptwith build]
-
-Use the dotnet-ef tool
-(`dotnet tool update -g dotnet-ef`) to generate an SQL script that
-will migrate your database to the appropriate version.
-
-`dotnet ef database update -p <folder/containing/hss.Sqlite_or_hss.Postgres_csproj> [[fromMigrationName] <toMigrationName>]`
-
-### Setting users / content up
-
-Set up an admin user or two. This creates an admin user (with
-password prompt):
-
-`hss user create -a <username>`
-
-Set up a world (and remember to add it to your config as the default
-world).
-
-`hss world create <name> <templateName>`
-
-## Running server
-
-`hss serve`
-
-## Command help
-
-Just use `--help` on the program or its verbs / subverbs, they should
-make sense based on their description.
-
-(This is absolutely not laziness.)
-
-## Extending functionality
-
-If for whatever reason you wanted to create additional programs,
-reference the `HacknetSharp.Server` project and write your
-programs like the `HacknetSharp.Server.CorePrograms` programs.
-
-Your assembly (plus any dependencies not included with
-`HacknetSharp.Server`) should be placed under
-`extensions/assemblyName/` in your content folder. They should be
-picked up by reflection during bootstrap.

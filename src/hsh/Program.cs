@@ -169,9 +169,7 @@ namespace hsh
                 if (line == null) break;
                 connection.WriteEvent(new CommandEvent
                 {
-                    Operation = operation,
-                    ConWidth = Console.WindowWidth,
-                    Text = line
+                    Operation = operation, ConWidth = Console.WindowWidth, Text = line
                 });
 
                 await connection.FlushAsync().Caf();
@@ -214,14 +212,16 @@ namespace hsh
                                 (int, int) target;
                                 if (Console.CursorLeft == 0)
                                 {
-                                    target = (Console.BufferWidth - 1,Console.CursorTop-1);
+                                    target = (Console.BufferWidth - 1, Console.CursorTop - 1);
                                 }
                                 else
-                                    target = (Console.CursorLeft-1, Console.CursorTop);
+                                    target = (Console.CursorLeft - 1, Console.CursorTop);
+
                                 Console.SetCursorPosition(target.Item1, target.Item2);
                                 Console.Write(HsEditor.BlankChar);
                                 Console.SetCursorPosition(target.Item1, target.Item2);
                             }
+
                             continue;
                         }
 

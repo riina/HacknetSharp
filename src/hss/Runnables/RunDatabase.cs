@@ -17,7 +17,6 @@ namespace hss.Runnables
         [Verb("update", HelpText = "Update database.")]
         private class Update : Executor.ISelfRunnable
         {
-
             [Option('y', HelpText = "Bypass warning.")]
             public bool Yes { get; set; }
 
@@ -26,9 +25,9 @@ namespace hss.Runnables
                 var factory = executor.ServerDatabaseContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());
                 if (!Yes && !Util.Confirm("This operation is a blackbox and may cause data loss.\n" +
-                                  "Manual migrations are recommended, see the below link for details:\n" +
-                                  "https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying\n" +
-                                  "Are you sure you want to apply applicable database migrations?")) return 0;
+                                          "Manual migrations are recommended, see the below link for details:\n" +
+                                          "https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying\n" +
+                                          "Are you sure you want to apply applicable database migrations?")) return 0;
                 Console.Write("Applying migrations... ");
                 await ctx.Database.MigrateAsync();
                 Console.WriteLine("Done.");
@@ -36,7 +35,9 @@ namespace hss.Runnables
             }
         }
 
-        private class Dummy{}
+        private class Dummy
+        {
+        }
 
         public async Task<int> Run(Executor executor, IEnumerable<string> args) =>
             await Parser.Default.ParseArguments<Update, Dummy>(args)
