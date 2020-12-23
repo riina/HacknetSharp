@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Template reference </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Template reference ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="template-reference">Template reference</h1>
+
+<h2 id="system-templates">System templates</h2>
+<p><code>hss new system -n &lt;templateName&gt;</code></p>
+<ul>
+<li>Name(<code>string</code>): defines system name with replacements, e.g.
+&quot;{Owner.UserName} Home Server&quot; for a person with the username
+&quot;alec&quot; would produce &quot;alec Home Server&quot;</li>
+<li>OsName(<code>string</code>): OS name</li>
+<li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
+<li>ConnectCommandLine(<code>string?</code>): Default command to execute on shell connect</li>
+<li>Users(<code>List&lt;string&gt;?</code>): List of normal users in addition to the system's owner, formatted as &quot;user:pass&quot;</li>
+<li>Filesystem(<code>Dictionary&lt;string, List&lt;string&gt;&gt;?</code>): List of filesystem entries
+per user (can use replacement {Owner.UserName} for primary user), formatted as
+&quot;<code>&lt;type&gt;[permissions]:&lt;path&gt; &lt;args&gt;</code>&quot;. Permissions are just 3 */^/+ for
+RWE, *:everyone/^:owner/+:admin can perform that operation.
+<ul>
+<li>fold: Folder.</li>
+<li>prog: Program, arg[0] is the progCode of the program to execute.</li>
+<li>text: Text content, arg[0] is the text to include. Unfortunately
+it needs to be wrapped in quotes.</li>
+<li>file: Content file, arg[0] determines file path. Not yet
+implemented.</li>
+<li>blob: Blob file, arg[0] determines file path. Not yet implemented.</li>
+</ul>
+</li>
+<li>Vulnerabilities(<code>List&lt;Vulnerability&gt;?</code>): Base vulnerabilities.
+<ul>
+<li>EntryPoint(<code>string</code>): Entry point for vulnerability (port).</li>
+<li>Protocol(<code>string</code>): Protocol (e.g. ssh, ftp).</li>
+<li>Exploits(<code>int</code>): # exploits this vulnerability grants.</li>
+<li>Cve(<code>string?</code>): Real-world CVE for fun.</li>
+</ul>
+</li>
+<li>RequiredExploits(<code>int</code>): # required exploits for system access.</li>
+<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
+<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
+<li>ProxyClocks(<code>double</code>): CPU cycles required to crack proxy.</li>
+<li>ClockSpeed(<code>double</code>): Proxy cracking speed.</li>
+<li>FirewallIterations(<code>int</code>): Number of firewall iterations required
+for full decode.</li>
+<li>FirewallLength(<code>int</code>): Length of firewall analysis string.</li>
+<li>FirewallDelay(<code>double</code>): Additional delay per firewall step.</li>
+<li>FixedFirewall(<code>string?</code>): Fixed firewall string.</li>
+<li>Tag(<code>string?</code>): Unique tag for lookup.</li>
+</ul>
+<p>Default replacements:</p>
+<ul>
+<li><code>Owner.UserName</code> - system owner's username</li>
+<li><code>Owner.Name</code> - system owner's personal name</li>
+<li><code>Name</code> / <code>UserName</code> - current filesystem section's owner name</li>
+</ul>
+<h2 id="person-templates">Person templates</h2>
+<p><code>hss new person -n &lt;templateName&gt;</code></p>
+<ul>
+<li>Username(<code>string?</code>): fixed username to use</li>
+<li>Password(<code>string?</code>): fixed password to use</li>
+<li>EmailProvider(<code>string?</code>): fixed email provider to use</li>
+<li>PrimaryTemplate(<code>string?</code>): fixed primary system template to use</li>
+<li>PrimaryAddress(<code>string?</code>): fixed primary address to use</li>
+<li>Usernames(<code>Dictionary&lt;string,float&gt;?</code>): possible usernames to be selected (weighted)</li>
+<li>Passwords(<code>Dictionary&lt;string,float&gt;?</code>): possible passwords to be selected (weighted)</li>
+<li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
+<li>EmailProviders(<code>Dictionary&lt;string,float&gt;?</code>): possible email providers to be
+selected (weighted)</li>
+<li>PrimaryTemplates(<code>Dictionary&lt;string,float&gt;?</code>): possible primary
+system templates to be selected (weighted)</li>
+<li>FleetMin(<code>int?</code>): Minimum number of additional systems</li>
+<li>FleetMax(<code>int?</code>): Maximum number of additional systems</li>
+<li>FleetTemplates(<code>Dictionary&lt;string,float&gt;?</code>): possible fleet system
+templates to be selected (weighted)</li>
+<li>Network(<code>List&lt;NetworkEntry&gt;?</code>): Fixed-system network to generate
+<ul>
+<li>Template(<code>string</code>): System template</li>
+<li>Address(<code>string</code>): Address (combined with host network using
+subnet mask)</li>
+<li>Configuration(<code>Dictionary&lt;string, string&gt;?</code>): Additional
+replacements to pass to system template</li>
+<li>Links(<code>List&lt;string&gt;?</code>): Links (uni-directional) to create to
+other systems</li>
+</ul>
+</li>
+<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
+<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
+<li>ProxyClocks(<code>double</code>): CPU cycles required to crack proxy.</li>
+<li>ClockSpeed(<code>double</code>): Proxy cracking speed.</li>
+<li>Tag(<code>string?</code>): Unique tag for lookup.</li>
+</ul>
+<h2 id="world-templates">World templates</h2>
+<p><code>hss new world -n &lt;templateName&gt;</code></p>
+<ul>
+<li>PlayerSystemTemplate(<code>string</code>): template to use for players.</li>
+<li>PlayerAddressRange(<code>string?</code>): CIDR range string for address pool</li>
+<li>StartupCommandLine(<code>string?</code>): Initial command for clients to execute.</li>
+<li>Label(<code>string?</code>): label to use on world (just name it your template's
+name, this is only for listing the worlds with <code>hss world list</code>).</li>
+<li>People(<code>List&lt;PersonGroup&gt;?</code>): Person generators to populate world.
+<ul>
+<li>PersonTemplate(<code>string</code>): Person template to generate with.</li>
+<li>Count(<code>int?</code>): Number of persons to generate with this template
+(default 1).</li>
+<li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
+</ul>
+</li>
+<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
+<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
+</ul>
+<h2 id="mission-templates">Mission templates</h2>
+<p><code>hss new mission [-n &lt;templateName&gt;]</code></p>
+<ul>
+<li>Start(<code>string?</code>): Lua code to execute when mission starts.</li>
+<li>Goals(<code>List&lt;string&gt;?</code>): Mission goals as lua expressions that evaluate to a boolean.</li>
+<li>Outcomes(<code>List&lt;Outcome&gt;?</code>): Objective outcomes.
+<ul>
+<li>Goals(<code>List&lt;int&gt;?</code>): Indices of required goals (if null/empty, all goals are
+considered).</li>
+<li>Next(<code>string?</code>): Output of mission as lua code.</li>
+</ul>
+</li>
+</ul>
+<p><a href="mission-api-reference.html">Mission API reference</a></p>
+<h2 id="server-configuration">Server configuration</h2>
+<p><code>hss new server [-n &lt;configName&gt;]</code></p>
+<ul>
+<li>Host(<code>string</code>): external hostname to bind to.</li>
+<li>Port(<code>ushort</code>): external port to bind to.</li>
+<li>Database(<code>Dictionary&lt;string, string&gt;</code>): database properties.</li>
+<li>DefaultWorld(<code>string</code>): default world for new players to join.</li>
+<li>EnableLogging(<code>bool</code>): if true, enable logging.</li>
+<li>Motd(<code>string?</code>): Message of the day, sent to all clients during
+initial command.</li>
+<li>ContentFolders(<code>List&lt;string&gt;?</code>): Additional content directories to search.</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/docfx_project/articles/template-reference.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

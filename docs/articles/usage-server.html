@@ -72,6 +72,8 @@
 <p>Note: All operations should be done inside the directory you intend to
 serve content from. The folder should contain a <code>content</code> folder
 and a <code>server.yaml</code> configuration file (detailed below).</p>
+<p><a href="template-reference.html">Template reference</a></p>
+<p><a href="mission-api-reference.html">Mission API reference</a></p>
 <h2 id="1-ssl-certificate">1. SSL certificate</h2>
 <p>The server program requires a valid SSL certificate in order for clients to validate the server.</p>
 <ul>
@@ -139,8 +141,8 @@ directory's <code>content/</code> folder.</p>
 <p>At a bare minimum, a properly written <code>server.yaml</code> server
 configuration file, a <code>&lt;?&gt;.world.yaml</code> world template, and a
 <code>&lt;?&gt;.system.yaml</code> system template for players are required.</p>
-<p><a href="#template-reference">Template reference is below.</a></p>
-<p>See the samples/env_sample folder for template examples.</p>
+<p><a href="template-reference.html">Template reference</a></p>
+<p>See the <code>samples/env_sample</code> folder for template examples.</p>
 <h2 id="3-creating-initial-database--migrating">3. Creating initial database / migrating</h2>
 <p>The program / EF Core migrations work with a database, and require a
 few environment variables or server.yaml properties to be configured.
@@ -198,122 +200,6 @@ programs like the <code>HacknetSharp.Server.CorePrograms</code> programs.</p>
 <code>HacknetSharp.Server</code>) should be placed under
 <code>extensions/assemblyName/</code> in your content folder. They should be
 picked up by reflection during bootstrap.</p>
-<h2 id="template-reference">Template reference</h2>
-<h3 id="system-templates">System templates</h3>
-<p><code>hss new system -n &lt;templateName&gt;</code></p>
-<ul>
-<li>Name(<code>string</code>): defines system name with replacements, e.g.
-&quot;{Owner.UserName} Home Server&quot; for a person with the username
-&quot;alec&quot; would produce &quot;alec Home Server&quot;</li>
-<li>OsName(<code>string</code>): OS name</li>
-<li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
-<li>ConnectCommandLine(<code>string?</code>): Default command to execute on shell connect</li>
-<li>Users(<code>List&lt;string&gt;?</code>): List of normal users in addition to the system's owner, formatted as &quot;user:pass&quot;</li>
-<li>Filesystem(<code>Dictionary&lt;string, List&lt;string&gt;&gt;?</code>): List of filesystem entries
-per user (can use replacement {Owner.UserName} for primary user), formatted as
-&quot;<code>&lt;type&gt;[permissions]:&lt;path&gt; &lt;args&gt;</code>&quot;. Permissions are just 3 */^/+ for
-RWE, *:everyone/^:owner/+:admin can perform that operation.
-<ul>
-<li>fold: Folder.</li>
-<li>prog: Program, arg[0] is the progCode of the program to execute.</li>
-<li>text: Text content, arg[0] is the text to include. Unfortunately
-it needs to be wrapped in quotes.</li>
-<li>file: Content file, arg[0] determines file path. Not yet
-implemented.</li>
-<li>blob: Blob file, arg[0] determines file path. Not yet implemented.</li>
-</ul>
-</li>
-<li>Vulnerabilities(<code>List&lt;Vulnerability&gt;?</code>): Base vulnerabilities.
-<ul>
-<li>EntryPoint(<code>string</code>): Entry point for vulnerability (port).</li>
-<li>Protocol(<code>string</code>): Protocol (e.g. ssh, ftp).</li>
-<li>Exploits(<code>int</code>): # exploits this vulnerability grants.</li>
-<li>Cve(<code>string?</code>): Real-world CVE for fun.</li>
-</ul>
-</li>
-<li>RequiredExploits(<code>int</code>): # required exploits for system access.</li>
-<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
-<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
-<li>ProxyClocks(<code>double</code>): CPU cycles required to crack proxy.</li>
-<li>ClockSpeed(<code>double</code>): Proxy cracking speed.</li>
-<li>FirewallIterations(<code>int</code>): Number of firewall iterations required
-for full decode.</li>
-<li>FirewallLength(<code>int</code>): Length of firewall analysis string.</li>
-<li>FirewallDelay(<code>double</code>): Additional delay per firewall step.</li>
-<li>FixedFirewall(<code>string?</code>): Fixed firewall string.</li>
-</ul>
-<p>Default replacements:</p>
-<ul>
-<li><code>Owner.UserName</code> - system owner's username</li>
-<li><code>Owner.Name</code> - system owner's personal name</li>
-<li><code>Name</code> / <code>UserName</code> - current filesystem section's owner name</li>
-</ul>
-<h3 id="person-templates">Person templates</h3>
-<p><code>hss new person -n &lt;templateName&gt;</code></p>
-<ul>
-<li>Username(<code>string?</code>): fixed username to use</li>
-<li>Password(<code>string?</code>): fixed password to use</li>
-<li>EmailProvider(<code>string?</code>): fixed email provider to use</li>
-<li>PrimaryTemplate(<code>string?</code>): fixed primary system template to use</li>
-<li>PrimaryAddress(<code>string?</code>): fixed primary address to use</li>
-<li>Usernames(<code>Dictionary&lt;string,float&gt;?</code>): possible usernames to be selected (weighted)</li>
-<li>Passwords(<code>Dictionary&lt;string,float&gt;?</code>): possible passwords to be selected (weighted)</li>
-<li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
-<li>EmailProviders(<code>Dictionary&lt;string,float&gt;?</code>): possible email providers to be
-selected (weighted)</li>
-<li>PrimaryTemplates(<code>Dictionary&lt;string,float&gt;?</code>): possible primary
-system templates to be selected (weighted)</li>
-<li>FleetMin(<code>int?</code>): Minimum number of additional systems</li>
-<li>FleetMax(<code>int?</code>): Maximum number of additional systems</li>
-<li>FleetTemplates(<code>Dictionary&lt;string,float&gt;?</code>): possible fleet system
-templates to be selected (weighted)</li>
-<li>Network(<code>List&lt;NetworkEntry&gt;?</code>): Fixed-system network to generate
-<ul>
-<li>Template(<code>string</code>): System template</li>
-<li>Address(<code>string</code>): Address (combined with host network using
-subnet mask)</li>
-<li>Configuration(<code>Dictionary&lt;string, string&gt;?</code>): Additional
-replacements to pass to system template</li>
-<li>Links(<code>List&lt;string&gt;?</code>): Links (uni-directional) to create to
-other systems</li>
-</ul>
-</li>
-<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
-<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
-<li>ProxyClocks(<code>double</code>): CPU cycles required to crack proxy.</li>
-<li>ClockSpeed(<code>double</code>): Proxy cracking speed.</li>
-</ul>
-<h3 id="world-templates">World templates</h3>
-<p><code>hss new world -n &lt;templateName&gt;</code></p>
-<ul>
-<li>PlayerSystemTemplate(<code>string</code>): template to use for players.</li>
-<li>PlayerAddressRange(<code>string?</code>): CIDR range string for address pool</li>
-<li>StartupCommandLine(<code>string?</code>): Initial command for clients to execute.</li>
-<li>Label(<code>string?</code>): label to use on world (just name it your template's
-name, this is only for listing the worlds with <code>hss world list</code>).</li>
-<li>People(<code>List&lt;PersonGroup&gt;?</code>): Person generators to populate world.
-<ul>
-<li>PersonTemplate(<code>string</code>): Person template to generate with.</li>
-<li>Count(<code>int?</code>): Number of persons to generate with this template
-(default 1).</li>
-<li>AddressRange(<code>string?</code>): CIDR range string for address pool</li>
-</ul>
-</li>
-<li>RebootDuration(<code>double</code>): System reboot duration in seconds.</li>
-<li>DiskCapacity(<code>int</code>): System disk capacity.</li>
-</ul>
-<h3 id="server-configuration">Server configuration</h3>
-<p><code>hss new server [-n &lt;configName&gt;]</code></p>
-<ul>
-<li>Host(<code>string</code>): external hostname to bind to.</li>
-<li>Port(<code>ushort</code>): external port to bind to.</li>
-<li>Database(<code>Dictionary&lt;string, string&gt;</code>): database properties.</li>
-<li>DefaultWorld(<code>string</code>): default world for new players to join.</li>
-<li>EnableLoggin(<code>bool</code>): if true, enable logging.</li>
-<li>Motd(<code>string?</code>): Message of the day, sent to all clients during
-initial command.</li>
-<li>ContentFolders(<code>List&lt;string&gt;?</code>): Additional content directories to search.</li>
-</ul>
 </article>
           </div>
           
@@ -322,7 +208,7 @@ initial command.</li>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/main/docfx_project/articles/usage-server.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/docfx_project/articles/usage-server.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
