@@ -2,9 +2,9 @@ name: .NET Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ waifu ]
   pull_request:
-    branches: [ main ]
+    branches: [ waifu ]
 
 defaults:
   run:
