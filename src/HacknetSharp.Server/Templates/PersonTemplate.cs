@@ -107,6 +107,11 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         public long SystemMemory { get; set; }
 
+        /// <summary>
+        /// Unique tag for lookup.
+        /// </summary>
+        public string? Tag { get; set; }
+
         [ThreadStatic] private static Random? _random;
 
         private static Random Random => _random ??= new Random();
@@ -138,7 +143,7 @@ namespace HacknetSharp.Server.Templates
         }
 
         /// <summary>
-        /// efault constructor for deserialization only.
+        /// Default constructor for deserialization only.
         /// </summary>
         public PersonTemplate()
         {
@@ -176,6 +181,7 @@ namespace HacknetSharp.Server.Templates
             person.DiskCapacity = DiskCapacity;
             person.ProxyClocks = ProxyClocks;
             person.ClockSpeed = ClockSpeed;
+            person.Tag = Tag;
             var (hash, salt) = ServerUtil.HashPassword(password);
 
             if (Network != null)

@@ -77,6 +77,7 @@ namespace HacknetSharp.Server
             foreach (var person in user.Identities)
             {
                 var worldSpawn = new WorldSpawn(Database, person.World);
+                foreach (var mission in person.Missions) worldSpawn.RemoveMission(mission);
                 foreach (var system in person.Systems) worldSpawn.RemoveSystem(system);
             }
 

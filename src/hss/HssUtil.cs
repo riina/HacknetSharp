@@ -59,6 +59,10 @@ namespace hss
                     ".system.yaml",
                     (file, path) => templates.SystemTemplates.Add(file, ReadFromFile<SystemTemplate>(path).Item2)
                 },
+                {
+                    ".mission.yaml",
+                    (file, path) => templates.MissionTemplates.Add(file, ReadFromFile<MissionTemplate>(path).Item2)
+                }
             };
             LoadTree(dir, templateLoadDict);
         }

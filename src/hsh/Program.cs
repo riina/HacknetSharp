@@ -137,7 +137,8 @@ namespace hsh
                             Operation = editRequest.Operation,
                             Content = result.Write
                                 ? new StringBuilder().AppendJoin('\n', result.Lines).ToString()
-                                : editRequest.Content
+                                : editRequest.Content,
+                            Write = result.Write
                         });
                         connection.FlushAsync();
                         break;

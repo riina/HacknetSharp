@@ -1,0 +1,878 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using HacknetSharp.Server.Models;
+using Microsoft.Extensions.Logging;
+using MoonSharp.Interpreter;
+
+namespace HacknetSharp.Server.Lua
+{
+    /// <summary>
+    /// Script context manager.
+    /// </summary>
+    /// <remarks>
+    /// Based on<br/>
+    /// https://github.com/teamRokuro/NetBattle/blob/e273fa58117bcdb6383255ecdebd4a95f1c46d93/NetBattle/Field/FieldManager.cs
+    /// </remarks>
+    public class ScriptManager
+    {
+        static ScriptManager() => ScriptUtil.Init();
+
+        private readonly IWorld _world;
+        private readonly Script _script;
+        private readonly HashSet<string> _scripts;
+
+        /// <summary>
+        /// Creates a new instance of <see cref="ScriptManager"/>.
+        /// </summary>
+        /// <param name="world">World context.</param>
+        public ScriptManager(IWorld world)
+        {
+            _world = world;
+            _script = new Script(CoreModules.Preset_HardSandbox);
+            _script.Globals["mg"] = this;
+            _script.Globals["world"] = _world;
+            _scripts = new HashSet<string>();
+
+            #region Function registration
+
+            // Manager
+            RegisterFunction("mg", Mg);
+            RegisterFunction("world", World);
+
+            // Misc convenience
+            RegisterFunction<string, PersonModel?>("person_t", PersonT);
+            RegisterFunction<string, SystemModel?>("system_t", SystemT);
+            RegisterFunction<string, SystemModel?>("system_a", SystemA);
+            RegisterFunction<PersonModel?, SystemModel?>("home", Home);
+            RegisterFunction<PersonModel?, string, MissionModel?>("start_mission", StartMission);
+            RegisterFunction<PersonModel?, string, bool>("remove_mission", RemoveMission);
+            RegisterFunction<SystemModel?, bool>("system_up", SystemUp);
+            RegisterFunction<SystemModel?, string, bool>("file_exists", FileExists);
+            RegisterFunction<SystemModel?, string, string, bool, bool>("file_contains", FileContains);
+            RegisterAction<string>("log", Log);
+            RegisterAction<string, int>("log_ex", LogEx);
+            RegisterFunction<string, string, PersonModel>("spawn_person", SpawnPerson);
+            RegisterFunction<string, string, string, PersonModel>("spawn_person_tagged", SpawnPersonTagged);
+            RegisterFunction<PersonModel?, string, string, string, SystemModel?>("spawn_system", SpawnSystem);
+            RegisterAction<PersonModel?>("remove_person", RemovePerson);
+            RegisterAction<SystemModel?>("remove_system", RemoveSystem);
+            RegisterFunction<SystemModel?, string, string, FileModel?>("spawn_file", SpawnFile);
+            RegisterAction<FileModel?>("remove_file", RemoveFile);
+
+            #endregion
+        }
+
+        #region ScriptManager proxy functions
+
+        private ScriptManager Mg() => this;
+        private IWorld World() => _world;
+
+        #endregion
+
+        #region Miscellaneous convenience functions
+
+        /*private static Cell2 CvCell2(int x, int y) => new Cell2(x, y);*/
+
+        private PersonModel? PersonT(string tag)
+        {
+            return _world.Model.TaggedPersons.TryGetValue(tag, out var person) ? person : null;
+        }
+
+        private SystemModel? SystemT(string tag)
+        {
+            return _world.Model.TaggedSystems.TryGetValue(tag, out var system) ? system : null;
+        }
+
+        private SystemModel? SystemA(string address)
+        {
+            if (!IPAddressRange.TryParse(address, false, out var addr) ||
+                !addr.TryGetIPv4HostAndSubnetMask(out uint host, out _))
+                return null;
+            return _world.Model.AddressedSystems.TryGetValue(host, out var system) ? system : null;
+        }
+
+        private SystemModel? Home(PersonModel? person)
+        {
+            if (person == null) return null;
+            var key = person.DefaultSystem;
+            return person.Systems.FirstOrDefault(s => s.Key == key);
+        }
+
+        private MissionModel? StartMission(PersonModel? person, string missionPath)
+        {
+            if (person == null) return null;
+            if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return null;
+            return _world.StartMission(person, missionPath);
+        }
+
+        private bool RemoveMission(PersonModel? person, string missionPath)
+        {
+            if (person == null) return false;
+            if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return false;
+            var mission = person.Missions.FirstOrDefault(m => m.Template == missionPath);
+            if (mission == null) return false;
+            _world.Spawn.RemoveMission(mission);
+            return true;
+        }
+
+        private bool SystemUp(SystemModel? system)
+        {
+            if (system == null) return false;
+            return system.BootTime <= _world.Time;
+        }
+
+        private bool FileExists(SystemModel? system, string path)
+        {
+            if (system == null) return false;
+            path = Executable.GetNormalized(path);
+            return system.Files.Any(f => f.FullPath == path);
+        }
+
+        private bool FileContains(SystemModel? system, string path, string substring, bool ignoreCase)
+        {
+            path = Executable.GetNormalized(path);
+            var file = system?.Files.FirstOrDefault(f => f.FullPath == path);
+            return file?.Content != null && file.Content.Contains(substring,
+                ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture);
+        }
+
+        private void Log(string text)
+        {
+            _world.Logger.LogInformation(text);
+        }
+
+        private void LogEx(string text, int level)
+        {
+            var lv = level switch
+            {
+                0 => LogLevel.Information,
+                1 => LogLevel.Warning,
+                2 => LogLevel.Error,
+                _ => LogLevel.Critical
+            };
+            _world.Logger.Log(lv, text);
+        }
+
+        private PersonModel SpawnPerson(string name, string username)
+        {
+            return _world.Spawn.Person(name, username);
+        }
+
+        private PersonModel SpawnPersonTagged(string name, string username, string tag)
+        {
+            return _world.Spawn.Person(name, username, tag);
+        }
+
+        private SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressRange)
+        {
+            if (owner == null) return null;
+            if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
+            if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
+            var (hash, salt) = ServerUtil.HashPassword(password);
+            return _world.Spawn.System(sysTemplate, owner, hash, salt, range);
+        }
+
+        private void RemovePerson(PersonModel? person)
+        {
+            if (person == null) return;
+            _world.Spawn.RemovePerson(person);
+        }
+
+        private void RemoveSystem(SystemModel? system)
+        {
+            if (system == null) return;
+            _world.Spawn.RemoveSystem(system);
+        }
+
+        private FileModel? SpawnFile(SystemModel? system, string path, string content)
+        {
+            if (system == null) return null;
+            var owner = system.Owner.Key;
+            var login = system.Logins.FirstOrDefault(l => l.Person == owner);
+            if (login == null) return null;
+            path = Executable.GetNormalized(path);
+            var existing = system.Files.FirstOrDefault(f => f.FullPath == path);
+            if (existing != null) return existing;
+            return _world.Spawn.TextFile(system, login, path, content);
+        }
+
+        private void RemoveFile(FileModel? file)
+        {
+            if (file == null) return;
+            _world.Spawn.RemoveFile(file);
+        }
+
+        /// <summary>
+        /// Set current person.
+        /// </summary>
+        /// <param name="person">Person.</param>
+        public void SetScriptCurrentPerson(PersonModel person)
+            => _script.Globals["me"] = person;
+
+        /// <summary>
+        /// Clear current person.
+        /// </summary>
+        public void ClearScriptCurrentPerson()
+            => _script.Globals["me"] = DynValue.Nil;
+
+        #endregion
+
+        #region Entity proxy funcitons
+
+        /*public void SetScriptCurrentEntity(Entity entity)
+            => _script.Globals["nt"] = entity;
+
+        public void ClearScriptCurrentEntity()
+            => _script.Globals["nt"] = DynValue.Nil;
+
+        private Entity Nt() {
+            var res = _script.Globals.Get("nt");
+            return Equals(res, DynValue.Nil) ? null : (Entity) res.ToObject();
+        }*/
+
+        #endregion
+
+        #region Script functions
+
+        /// <summary>
+        /// Registers a raw lua script.
+        /// </summary>
+        /// <param name="script">Script raw contents.</param>
+        public void RegisterScript(string script)
+        {
+            if (_scripts.Add(script))
+                _script.DoString(script);
+        }
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        public void RegisterAction(string name, Action action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        public void RegisterAction<T1>(string name, Action<T1> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        public void RegisterAction<T1, T2>(string name, Action<T1, T2> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3>(string name, Action<T1, T2, T3> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4>(string name, Action<T1, T2, T3, T4> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5>(string name, Action<T1, T2, T3, T4, T5> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6>(string name, Action<T1, T2, T3, T4, T5, T6> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="T14">14th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="T14">14th type parameter.</typeparam>
+        /// <typeparam name="T15">15th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="action">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="T14">14th type parameter.</typeparam>
+        /// <typeparam name="T15">15th type parameter.</typeparam>
+        /// <typeparam name="T16">16th type parameter.</typeparam>
+        public void RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(string name,
+            Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> action) =>
+            _script.Globals[name] = action;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<TR>(string name, Func<TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, TR>(string name, Func<T1, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, TR>(string name, Func<T1, T2, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, TR>(string name, Func<T1, T2, T3, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, TR>(string name, Func<T1, T2, T3, T4, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, TR>(string name, Func<T1, T2, T3, T4, T5, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="T14">14th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="T14">14th type parameter.</typeparam>
+        /// <typeparam name="T15">15th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TR>(string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Registers a delegate for use inside the environment.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="function">Function delegate.</param>
+        /// <typeparam name="T1">1st type parameter.</typeparam>
+        /// <typeparam name="T2">2nd type parameter.</typeparam>
+        /// <typeparam name="T3">3rd type parameter.</typeparam>
+        /// <typeparam name="T4">4th type parameter.</typeparam>
+        /// <typeparam name="T5">5th type parameter.</typeparam>
+        /// <typeparam name="T6">6th type parameter.</typeparam>
+        /// <typeparam name="T7">7th type parameter.</typeparam>
+        /// <typeparam name="T8">8th type parameter.</typeparam>
+        /// <typeparam name="T9">9th type parameter.</typeparam>
+        /// <typeparam name="T10">10th type parameter.</typeparam>
+        /// <typeparam name="T11">11th type parameter.</typeparam>
+        /// <typeparam name="T12">12th type parameter.</typeparam>
+        /// <typeparam name="T13">13th type parameter.</typeparam>
+        /// <typeparam name="T14">14th type parameter.</typeparam>
+        /// <typeparam name="T15">15th type parameter.</typeparam>
+        /// <typeparam name="T16">16th type parameter.</typeparam>
+        /// <typeparam name="TR">Return type.</typeparam>
+        public void RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TR>(
+            string name,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TR> function) =>
+            _script.Globals[name] = function;
+
+        /// <summary>
+        /// Runs a named script.
+        /// </summary>
+        /// <param name="script">Script to execute.</param>
+        public void RunVoidScript(string script)
+        {
+            var fn = _script.Globals.Get(script);
+            if (Equals(fn, DynValue.Nil)) return;
+            _script.Call(fn);
+        }
+
+        /// <summary>
+        /// Runs a named script with specified arguments.
+        /// </summary>
+        /// <param name="script">Script to execute.</param>
+        /// <param name="args">Arguments to pass.</param>
+        public void RunVoidScript(string script, params object[] args)
+        {
+            var fn = _script.Globals.Get(script);
+            if (Equals(fn, DynValue.Nil)) return;
+            _script.Call(fn, args);
+        }
+
+        /// <summary>
+        /// Runs a named script with specified arguments and gets the result.
+        /// </summary>
+        /// <param name="script">Script to execute.</param>
+        /// <param name="args">Arguments to pass.</param>
+        /// <typeparam name="TR">Return type.</typeparam>
+        /// <returns>Retrieved object.</returns>
+        public TR? RunScript<TR>(string script, params object[] args)
+        {
+            var fn = _script.Globals.Get(script);
+            if (Equals(fn, DynValue.Nil)) return default;
+            var res = _script.Call(fn, args).ToObject();
+            try
+            {
+                return res is TR || res.GetType().IsValueType ? (TR)res : default;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        #endregion
+    }
+}

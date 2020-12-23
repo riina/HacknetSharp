@@ -47,6 +47,11 @@ namespace HacknetSharp.Server.Models
         public virtual HashSet<SystemModel> Systems { get; set; } = null!;
 
         /// <summary>
+        /// Set of all active missions of this user.
+        /// </summary>
+        public virtual HashSet<MissionModel> Missions { get; set; } = null!;
+
+        /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
         public virtual double RebootDuration { get; set; }
@@ -71,6 +76,11 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public virtual long SystemMemory { get; set; }
 
+        /// <summary>
+        /// Unique tag for lookup.
+        /// </summary>
+        public virtual string? Tag { get; set; }
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
@@ -79,6 +89,7 @@ namespace HacknetSharp.Server.Models
             {
                 x.HasKey(v => v.Key);
                 x.HasMany(y => y.Systems).WithOne(z => z.Owner).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Missions).WithOne(z => z.Person).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(v => v.ShellChain);
             });
 #pragma warning restore 1591

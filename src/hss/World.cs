@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
+using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
@@ -13,6 +15,8 @@ namespace hss
 {
     public class World : IWorld
     {
+        public ScriptManager ScriptManager { get; }
+        public TemplateGroup Templates { get; }
         public Server Server { get; }
         public ILogger Logger { get; }
         public WorldModel Model { get; }
@@ -24,26 +28,71 @@ namespace hss
 
         private readonly HashSet<Process> _processes;
         private readonly HashSet<Process> _tmpProcesses;
-
-
         private readonly HashSet<ShellProcess> _shellProcesses;
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
         private readonly HashSet<SystemModel> _tmpSystems;
+        private readonly HashSet<MissionModel> _tmpMissions;
 
 
         internal World(Server server, WorldModel model, IServerDatabase database)
         {
+            ScriptManager = new ScriptManager(this);
+            Templates = server.Templates;
             Server = server;
             Model = model;
             Spawn = new WorldSpawn(database, Model);
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Logger = server.Logger;
+            foreach (var person in Model.Persons)
+            {
+                Model.ActiveMissions.UnionWith(person.Missions);
+                if (person.Tag != null)
+                    Model.TaggedPersons[person.Tag] = person;
+            }
+
+            foreach (var system in Model.Systems)
+            {
+                Model.AddressedSystems[system.Address] = system;
+                if (system.Tag != null)
+                    Model.TaggedSystems[system.Tag] = system;
+            }
+
+            foreach (var (missionPath, mission) in Templates.MissionTemplates)
+            {
+                if (!string.IsNullOrWhiteSpace(mission.Start))
+                    ScriptManager.RegisterScript(
+                        GetWrappedLua(GetScriptIdStart(missionPath), mission.Start, true));
+                if (mission.Goals != null)
+                    for (int i = 0; i < mission.Goals.Count; i++)
+                    {
+                        string goal = mission.Goals[i];
+                        if (!string.IsNullOrWhiteSpace(goal))
+                            ScriptManager.RegisterScript(
+                                GetWrappedLua(GetScriptIdGoal(missionPath, i), goal, false));
+                    }
+
+                if (mission.Outcomes != null)
+                    for (int i = 0; i < mission.Outcomes.Count; i++)
+                    {
+                        var outcome = mission.Outcomes[i];
+                        if (!string.IsNullOrWhiteSpace(outcome.Next))
+                            ScriptManager.RegisterScript(
+                                GetWrappedLua(GetScriptIdNext(missionPath, i), outcome.Next, true));
+                    }
+            }
+
             _processes = new HashSet<Process>();
             _tmpProcesses = new HashSet<Process>();
             _shellProcesses = new HashSet<ShellProcess>();
             _tmpShellProcesses = new HashSet<ShellProcess>();
             _tmpSystems = new HashSet<SystemModel>();
+            _tmpMissions = new HashSet<MissionModel>();
+        }
+
+        private static string GetWrappedLua(string name, string body, bool isVoid)
+        {
+            return isVoid ? $"function {name}()\n{body}\nend\n" : $"function {name}()\nreturn {body}\nend\n";
         }
 
         public void Tick()
@@ -52,6 +101,104 @@ namespace hss
             TickSet(_shellProcesses, _tmpShellProcesses);
             // Check processes for memory overflow (shells are static and therefore don't matter)
             TickOverflows(_processes, _tmpProcesses, _tmpSystems);
+            TickMissions(_tmpMissions);
+        }
+
+        private void TickMissions(HashSet<MissionModel> tmpMissions)
+        {
+            tmpMissions.Clear();
+            tmpMissions.UnionWith(Model.ActiveMissions);
+            foreach (var mission in tmpMissions)
+            {
+                try
+                {
+                    ScriptManager.SetScriptCurrentPerson(mission.Person);
+                    ProcessMission(mission);
+                }
+                catch (Exception e)
+                {
+                    Logger.LogWarning("Exception thrown while processing mission {Mission}:\n{Exception}",
+                        mission.Template, e);
+                    Spawn.RemoveMission(mission);
+                }
+                finally
+                {
+                    ScriptManager.ClearScriptCurrentPerson();
+                }
+            }
+        }
+
+        private void ProcessMission(MissionModel mission)
+        {
+            Span<byte> flags = stackalloc byte[8];
+            if (!Templates.MissionTemplates.TryGetValue(mission.Template, out var m)) return;
+            if (m.Goals is not { } goals || m.Outcomes is not { } outcomes) return;
+            long original = mission.Flags;
+            BinaryPrimitives.WriteInt64BigEndian(flags, original);
+            for (int i = 0; i < goals.Count; i++)
+            {
+                if (GetFlag(flags, i)) continue;
+                bool? res = ScriptManager.RunScript<bool?>(GetScriptIdGoal(mission.Template, i));
+                if (res != null && res.Value) SetFlag(flags, i, true);
+            }
+
+            bool end = false;
+            for (int i = 0; i < outcomes.Count; i++)
+            {
+                var outcome = outcomes[i];
+                bool fail = false;
+                if (outcome.Goals == null)
+                {
+                    for (int j = 0; j < goals.Count; j++)
+                        if (!GetFlag(flags, j))
+                        {
+                            fail = true;
+                            break;
+                        }
+                }
+                else
+                {
+                    foreach (int j in outcome.Goals)
+                        if (!GetFlag(flags, j))
+                        {
+                            fail = true;
+                            break;
+                        }
+                }
+
+                if (!fail)
+                {
+                    Logger.LogInformation("Gracefully finished mission {Path} for person {Id}", mission.Template,
+                        mission.Person.Key);
+                    ScriptManager.RunVoidScript(GetScriptIdNext(mission.Template, i));
+                    Spawn.RemoveMission(mission);
+                    end = true;
+                    break;
+                }
+            }
+
+            if (!end)
+            {
+                long changed = BinaryPrimitives.ReadInt64BigEndian(flags);
+                if (changed != original)
+                {
+                    mission.Flags = changed;
+                    Database.Update(mission);
+                }
+            }
+        }
+
+        private static bool GetFlag(Span<byte> flags, int i)
+        {
+            return ((flags[i / 8] >> (i % 8)) & 1) != 0;
+        }
+
+        private static void SetFlag(Span<byte> flags, int i, bool value)
+        {
+            if (value)
+                flags[i / 8] |= (byte)(1 << (i % 8));
+            else
+                flags[i / 8] &= (byte)~(1 << (i % 8));
         }
 
         private void TickOverflows<T>(HashSet<T> processes, HashSet<Process> tmpProcesses,
@@ -131,13 +278,6 @@ namespace hss
         {
             //system = Database.GetAsync<Guid, SystemModel>(id).Result;
             system = Model.Systems.FirstOrDefault(f => f.Key == id);
-            return system != null;
-        }
-
-        public bool TryGetSystem(uint address, [NotNullWhen(true)] out SystemModel? system)
-        {
-            //system = Database.WhereAsync<SystemModel>(s => s.Address == address).Result.FirstOrDefault();
-            system = Model.Systems.FirstOrDefault(f => f.Address == address);
             return system != null;
         }
 
@@ -471,6 +611,32 @@ namespace hss
             programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
             programContext.User.FlushSafeAsync();
         }
+
+        public MissionModel? StartMission(PersonModel person, string missionPath)
+        {
+            if (!Templates.MissionTemplates.TryGetValue(missionPath, out var template))
+                return null;
+            var mission = Spawn.Mission(missionPath, person);
+            if (!string.IsNullOrWhiteSpace(template.Start))
+            {
+                ScriptManager.SetScriptCurrentPerson(person);
+                ScriptManager.RunVoidScript(GetScriptIdStart(missionPath));
+                ScriptManager.ClearScriptCurrentPerson();
+            }
+
+            Logger.LogInformation("Successfully started mission {Path} for person {Id}", mission.Template,
+                mission.Person.Key);
+            return mission;
+        }
+
+        private static string GetScriptIdStart(string missionPath) =>
+            $"{missionPath.Replace('/', '_').Replace('.', '_')}_Start";
+
+        private static string GetScriptIdGoal(string missionPath, int index) =>
+            $"{missionPath.Replace('/', '_').Replace('.', '_')}_Goal{index}";
+
+        private static string GetScriptIdNext(string missionPath, int index) =>
+            $"{missionPath.Replace('/', '_').Replace('.', '_')}_Next{index}";
 
         private bool TryGetIntrinsicProgramWithHargs(string command,
             out (Program, ProgramInfoAttribute, string[]) result)

@@ -106,6 +106,14 @@ namespace hss.Runnables
                         )
                     },
                     {
+                        "mission", (true, options => (
+                            Path.Combine(HssConstants.ContentFolder, $"{options.Name}.mission.yaml"),
+                            (object)(options.Example
+                                ? new MissionTemplate {Start = "log(\"this is a test\", 0)"}
+                                : new WorldTemplate()))
+                        )
+                    },
+                    {
                         "server", (false, options => (
                             $"{options.Name ?? "server"}.yaml",
                             (object)(options.Example

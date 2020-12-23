@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,16 @@ namespace HacknetSharp.Server
     /// </summary>
     public interface IWorld
     {
+        /// <summary>
+        /// Script manager for this world.
+        /// </summary>
+        ScriptManager ScriptManager { get; }
+
+        /// <summary>
+        /// Templates available to world.
+        /// </summary>
+        TemplateGroup Templates { get; }
+
         /// <summary>
         /// Log receiver.
         /// </summary>
@@ -59,14 +70,6 @@ namespace HacknetSharp.Server
         /// <param name="system">Retrieved system.</param>
         /// <returns>True if system found.</returns>
         bool TryGetSystem(Guid id, [NotNullWhen(true)] out SystemModel? system);
-
-        /// <summary>
-        /// Attempts to find a system with the specified address.
-        /// </summary>
-        /// <param name="address">System address.</param>
-        /// <param name="system">Retrieved system.</param>
-        /// <returns>True if system found.</returns>
-        bool TryGetSystem(uint address, [NotNullWhen(true)] out SystemModel? system);
 
         /// <summary>
         /// Attempts to complete the specified process recursively with the specified completion kind.
@@ -133,5 +136,13 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="programContext">Program context to execute.</param>
         void ExecuteCommand(ProgramContext programContext);
+
+        /// <summary>
+        /// Starts a mission for the specified person.
+        /// </summary>
+        /// <param name="person">Target person.</param>
+        /// <param name="missionPath">Mission template path.</param>
+        /// <returns>Started mission</returns>
+        MissionModel? StartMission(PersonModel person, string missionPath);
     }
 }

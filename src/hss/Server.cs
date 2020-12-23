@@ -202,7 +202,15 @@ namespace hss
                         world.PreviousTime = world.Model.Now;
                         world.Time = world.PreviousTime + (ms - lastMs) / 1000.0;
                         world.Model.Now = world.Time;
-                        world.Tick();
+                        try
+                        {
+                            world.Tick();
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogWarning("Unhandled thrown while updating world {Id}:\n{Exception}",
+                                world.Model.Key, e);
+                        }
                     }
 
                     long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();

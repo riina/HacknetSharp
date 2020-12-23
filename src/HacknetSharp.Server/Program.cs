@@ -141,7 +141,7 @@ namespace HacknetSharp.Server
         {
             var user = context.User;
             user.WriteEventSafe(Output("Connecting...\n"));
-            if (!context.World.TryGetSystem(address, out var system))
+            if (!context.World.Model.AddressedSystems.TryGetValue(address, out var system))
             {
                 user.WriteEventSafe(Output("No route to host\n"));
                 user.FlushSafeAsync();

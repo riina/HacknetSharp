@@ -121,6 +121,11 @@ namespace HacknetSharp.Server.Models
         public virtual string? FixedFirewall { get; set; }
 
         /// <summary>
+        /// Unique tag for lookup.
+        /// </summary>
+        public virtual string? Tag { get; set; }
+
+        /// <summary>
         /// Processes currently running on this system.
         /// </summary>
         public Dictionary<uint, Process> Processes { get; set; } = new();

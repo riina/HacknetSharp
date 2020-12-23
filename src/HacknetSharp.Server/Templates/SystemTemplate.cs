@@ -117,6 +117,11 @@ namespace HacknetSharp.Server.Templates
         public string? FixedFirewall { get; set; }
 
         /// <summary>
+        /// Unique tag for lookup.
+        /// </summary>
+        public string? Tag { get; set; }
+
+        /// <summary>
         /// Represents a vulnerability on the system.
         /// </summary>
         public class Vulnerability
@@ -193,6 +198,7 @@ namespace HacknetSharp.Server.Templates
             model.FirewallLength = FirewallLength;
             model.FirewallDelay = FirewallDelay;
             model.FixedFirewall = FixedFirewall;
+            model.Tag = Tag;
             if (FixedFirewall != null)
                 model.FirewallIterations = FixedFirewall.Length;
             model.RebootDuration =

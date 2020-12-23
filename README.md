@@ -35,6 +35,10 @@ There are still some features missing, listed on the
 ## Server
 [Usage](docfx_project/articles/usage-server.md)
 
+[Template reference](docfx_project/articles/template-reference.md)
+
+[Mission API reference](docfx_project/articles/mission-api-reference.md)
+
 `hss` is the main server program. It supports .NET 5
 ([install .NET 5 **SDK** here](https://dotnet.microsoft.com/download/dotnet/5.0)).
 

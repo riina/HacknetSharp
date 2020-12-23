@@ -38,9 +38,10 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="name">Proper name.</param>
         /// <param name="userName">Username.</param>
+        /// <param name="tag">Unique tag to apply.</param>
         /// <param name="user">User model if associated with a user.</param>
         /// <returns>Generated model.</returns>
-        public PersonModel Person(string name, string userName, UserModel? user = null)
+        public PersonModel Person(string name, string userName, string? tag = null, UserModel? user = null)
         {
             var person = new PersonModel
             {
@@ -49,15 +50,37 @@ namespace HacknetSharp.Server
                 Name = name,
                 UserName = userName,
                 Systems = new HashSet<SystemModel>(),
+                Missions = new HashSet<MissionModel>(),
+                Tag = tag,
                 User = user
             };
             user?.Identities.Add(person);
             World.Persons.Add(person);
             Database.Add(person);
+            if (person.Tag != null)
+                World.TaggedPersons[person.Tag] = person;
             return person;
         }
 
         private readonly Random _random = new();
+
+        /// <summary>
+        /// Creates a new mission instance.
+        /// </summary>
+        /// <param name="missionPath">Mission template path.</param>
+        /// <param name="person">Mission undertaker.</param>
+        /// <returns>Generated model.</returns>
+        public MissionModel Mission(string missionPath, PersonModel person)
+        {
+            var mission = new MissionModel
+            {
+                Key = Guid.NewGuid(), World = World, Person = person, Template = missionPath
+            };
+            person.Missions.Add(mission);
+            World.ActiveMissions.Add(mission);
+            Database.Add(mission);
+            return mission;
+        }
 
         /// <summary>
         /// Creates a new system.
@@ -130,7 +153,10 @@ namespace HacknetSharp.Server
             template.ApplyTemplate(this, system, owner, hash, salt);
             owner.Systems.Add(system);
             World.Systems.Add(system);
+            World.AddressedSystems[system.Address] = system;
             Database.Add(system);
+            if (system.Tag != null)
+                World.TaggedSystems[system.Tag] = system;
             return system;
         }
 
@@ -635,6 +661,19 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
+        /// Removes a mission from the world.
+        /// </summary>
+        /// <param name="mission">Mission to remove.</param>
+        /// <param name="isCascade">If true, does not directly delete from database.</param>
+        public void RemoveMission(MissionModel mission, bool isCascade = false)
+        {
+            mission.Person.Missions.Remove(mission);
+            World.ActiveMissions.Remove(mission);
+            if (isCascade) return;
+            Database.Delete(mission);
+        }
+
+        /// <summary>
         /// Removes a system from the world.
         /// </summary>
         /// <param name="system">Model to remove.</param>
@@ -646,6 +685,9 @@ namespace HacknetSharp.Server
             Database.DeleteBulk(system.KnowingSystems);
             system.KnownSystems.Clear();
             system.KnowingSystems.Clear();
+            World.AddressedSystems.Remove(system.Address);
+            if (system.Tag != null)
+                World.TaggedSystems.Remove(system.Tag);
             if (isCascade) return;
             Database.Delete(system);
         }
@@ -686,8 +728,33 @@ namespace HacknetSharp.Server
             var systems = person.Systems.ToList();
             foreach (var system in systems)
                 RemoveSystem(system, true);
+            if (person.Tag != null)
+                World.TaggedPersons.Remove(person.Tag);
             if (isCascade) return;
             Database.Delete(person);
+        }
+
+        /// <summary>
+        /// Removes a file from the world, recursively.
+        /// </summary>
+        /// <param name="file">Model to remove.</param>
+        public void RemoveFile(FileModel file)
+        {
+            var system = file.System;
+            var toRemove = new List<FileModel>();
+            Queue<FileModel> queue = new();
+            queue.Enqueue(file);
+            while (queue.TryDequeue(out var f))
+            {
+                string fp = f.FullPath;
+                if (f.Kind == FileModel.FileKind.Folder)
+                    foreach (var fx in system.Files.Where(ft => ft.Path == fp))
+                        queue.Enqueue(fx);
+                toRemove.Add(f);
+            }
+
+            system.Files.ExceptWith(toRemove);
+            Database.DeleteBulk(toRemove);
         }
 
         /// <summary>

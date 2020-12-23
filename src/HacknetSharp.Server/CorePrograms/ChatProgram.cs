@@ -39,7 +39,7 @@ namespace HacknetSharp.Server.CorePrograms
             yield return input;
             string password = input.Input!.Input;
 
-            if (!World.TryGetSystem(hostUint, out var system))
+            if (!World.Model.AddressedSystems.TryGetValue(hostUint, out var system))
             {
                 Write(Output("No route to host\n")).Flush();
                 yield break;

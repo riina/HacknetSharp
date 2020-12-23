@@ -24,6 +24,11 @@ namespace HacknetSharp.Server
         public Dictionary<string, SystemTemplate> SystemTemplates { get; }
 
         /// <summary>
+        /// Mission templates.
+        /// </summary>
+        public Dictionary<string, MissionTemplate> MissionTemplates { get; }
+
+        /// <summary>
         /// Creates an empty instance of <see cref="TemplateGroup"/>.
         /// </summary>
         public TemplateGroup()
@@ -31,6 +36,7 @@ namespace HacknetSharp.Server
             WorldTemplates = new Dictionary<string, WorldTemplate>();
             PersonTemplates = new Dictionary<string, PersonTemplate>();
             SystemTemplates = new Dictionary<string, SystemTemplate>();
+            MissionTemplates = new Dictionary<string, MissionTemplate>();
         }
     }
 }

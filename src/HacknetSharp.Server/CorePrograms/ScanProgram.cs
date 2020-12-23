@@ -34,7 +34,7 @@ namespace HacknetSharp.Server.CorePrograms
                     }
                     else
                     {
-                        if (!World.TryGetSystem(host, out var remote))
+                        if (!World.Model.AddressedSystems.TryGetValue(host, out var remote))
                         {
                             Write(Output($"Invalid host {addr}\n")).Flush();
                         }

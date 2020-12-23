@@ -26,6 +26,11 @@ namespace HacknetSharp.Server.Models
         public virtual string PlayerSystemTemplate { get; set; } = null!;
 
         /// <summary>
+        /// Starting mission for new players.
+        /// </summary>
+        public virtual string? StartingMission { get; set; }
+
+        /// <summary>
         /// Command line for new players.
         /// </summary>
         public virtual string? StartupCommandLine { get; set; } = null!;
@@ -65,6 +70,26 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public virtual double Now { get; set; }
 
+        /// <summary>
+        /// Addressed systems in world.
+        /// </summary>
+        public Dictionary<uint, SystemModel> AddressedSystems { get; set; } = new();
+
+        /// <summary>
+        /// Tagged systems in world.
+        /// </summary>
+        public Dictionary<string, SystemModel> TaggedSystems { get; set; } = new();
+
+        /// <summary>
+        /// Addressed systems in world.
+        /// </summary>
+        public HashSet<MissionModel> ActiveMissions { get; set; } = new();
+
+        /// <summary>
+        /// Tagged systems in world.
+        /// </summary>
+        public Dictionary<string, PersonModel> TaggedPersons { get; set; } = new();
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
@@ -74,6 +99,10 @@ namespace HacknetSharp.Server.Models
                 x.HasKey(v => v.Key);
                 x.HasMany(y => y.Persons).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(y => y.Systems).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
+                x.Ignore(y => y.AddressedSystems);
+                x.Ignore(y => y.TaggedSystems);
+                x.Ignore(y => y.TaggedPersons);
+                x.Ignore(y => y.ActiveMissions);
             });
 #pragma warning restore 1591
     }

@@ -29,6 +29,7 @@ namespace hss.Sqlite.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Label = table.Column<string>(type: "TEXT", nullable: false),
                     PlayerSystemTemplate = table.Column<string>(type: "TEXT", nullable: false),
+                    StartingMission = table.Column<string>(type: "TEXT", nullable: true),
                     StartupCommandLine = table.Column<string>(type: "TEXT", nullable: true),
                     PlayerAddressRange = table.Column<string>(type: "TEXT", nullable: false),
                     RebootDuration = table.Column<double>(type: "REAL", nullable: false),
@@ -71,6 +72,7 @@ namespace hss.Sqlite.Migrations
                     ProxyClocks = table.Column<double>(type: "REAL", nullable: false),
                     ClockSpeed = table.Column<double>(type: "REAL", nullable: false),
                     SystemMemory = table.Column<long>(type: "INTEGER", nullable: false),
+                    Tag = table.Column<string>(type: "TEXT", nullable: true),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -88,6 +90,33 @@ namespace hss.Sqlite.Migrations
                         principalTable: "WorldModel",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MissionModel",
+                columns: table => new
+                {
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Flags = table.Column<long>(type: "INTEGER", nullable: false),
+                    Template = table.Column<string>(type: "TEXT", nullable: false),
+                    PersonKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MissionModel", x => x.Key);
+                    table.ForeignKey(
+                        name: "FK_MissionModel_PersonModel_PersonKey",
+                        column: x => x.PersonKey,
+                        principalTable: "PersonModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MissionModel_WorldModel_WorldKey",
+                        column: x => x.WorldKey,
+                        principalTable: "WorldModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,6 +140,7 @@ namespace hss.Sqlite.Migrations
                     FirewallLength = table.Column<int>(type: "INTEGER", nullable: false),
                     FirewallDelay = table.Column<double>(type: "REAL", nullable: false),
                     FixedFirewall = table.Column<string>(type: "TEXT", nullable: true),
+                    Tag = table.Column<string>(type: "TEXT", nullable: true),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -298,6 +328,16 @@ namespace hss.Sqlite.Migrations
                 column: "WorldKey");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MissionModel_PersonKey",
+                table: "MissionModel",
+                column: "PersonKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MissionModel_WorldKey",
+                table: "MissionModel",
+                column: "WorldKey");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonModel_UserKey",
                 table: "PersonModel",
                 column: "UserKey");
@@ -340,6 +380,9 @@ namespace hss.Sqlite.Migrations
 
             migrationBuilder.DropTable(
                 name: "KnownSystemModel");
+
+            migrationBuilder.DropTable(
+                name: "MissionModel");
 
             migrationBuilder.DropTable(
                 name: "RegistrationToken");

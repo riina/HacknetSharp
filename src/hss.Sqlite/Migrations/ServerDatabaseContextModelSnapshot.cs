@@ -134,6 +134,34 @@ namespace hss.Sqlite.Migrations
                 b.ToTable("LoginModel");
             });
 
+            modelBuilder.Entity("HacknetSharp.Server.Models.MissionModel", b =>
+            {
+                b.Property<Guid>("Key")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT");
+
+                b.Property<long>("Flags")
+                    .HasColumnType("INTEGER");
+
+                b.Property<Guid>("PersonKey")
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Template")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<Guid?>("WorldKey")
+                    .HasColumnType("TEXT");
+
+                b.HasKey("Key");
+
+                b.HasIndex("PersonKey");
+
+                b.HasIndex("WorldKey");
+
+                b.ToTable("MissionModel");
+            });
+
             modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b =>
             {
                 b.Property<Guid>("Key")
@@ -164,6 +192,9 @@ namespace hss.Sqlite.Migrations
 
                 b.Property<long>("SystemMemory")
                     .HasColumnType("INTEGER");
+
+                b.Property<string>("Tag")
+                    .HasColumnType("TEXT");
 
                 b.Property<string>("UserKey")
                     .HasColumnType("TEXT");
@@ -254,6 +285,9 @@ namespace hss.Sqlite.Migrations
 
                 b.Property<long>("SystemMemory")
                     .HasColumnType("INTEGER");
+
+                b.Property<string>("Tag")
+                    .HasColumnType("TEXT");
 
                 b.Property<Guid>("WorldKey")
                     .HasColumnType("TEXT");
@@ -363,6 +397,9 @@ namespace hss.Sqlite.Migrations
                 b.Property<double>("RebootDuration")
                     .HasColumnType("REAL");
 
+                b.Property<string>("StartingMission")
+                    .HasColumnType("TEXT");
+
                 b.Property<string>("StartupCommandLine")
                     .HasColumnType("TEXT");
 
@@ -439,6 +476,23 @@ namespace hss.Sqlite.Migrations
                 b.Navigation("World");
             });
 
+            modelBuilder.Entity("HacknetSharp.Server.Models.MissionModel", b =>
+            {
+                b.HasOne("HacknetSharp.Server.Models.PersonModel", "Person")
+                    .WithMany("Missions")
+                    .HasForeignKey("PersonKey")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("HacknetSharp.Server.Models.WorldModel", "World")
+                    .WithMany()
+                    .HasForeignKey("WorldKey");
+
+                b.Navigation("Person");
+
+                b.Navigation("World");
+            });
+
             modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b =>
             {
                 b.HasOne("HacknetSharp.Server.Models.UserModel", "User")
@@ -502,7 +556,12 @@ namespace hss.Sqlite.Migrations
                 b.Navigation("World");
             });
 
-            modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b => { b.Navigation("Systems"); });
+            modelBuilder.Entity("HacknetSharp.Server.Models.PersonModel", b =>
+            {
+                b.Navigation("Missions");
+
+                b.Navigation("Systems");
+            });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.SystemModel", b =>
             {

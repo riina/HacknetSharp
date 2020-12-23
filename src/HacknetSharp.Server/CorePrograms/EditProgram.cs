@@ -85,17 +85,19 @@ namespace HacknetSharp.Server.CorePrograms
                             }
                         }
 
-                        closest = World.Spawn.TextFile(System, Login, name, directory, "");
-                        bool editable = closest.CanWrite(Login);
-                        var edit = Edit(!editable, closest.Content ?? "");
+                        var edit = Edit(false, "");
                         yield return edit;
                         var edited = edit.Edit!;
-                        if (editable && edited.Write)
+                        if (edited.Write)
                         {
-                            closest.Content = edit.Edit!.Content;
-                            if (closest.Content.Length > ServerConstants.MaxFileLength)
-                                closest.Content = closest.Content[..ServerConstants.MaxFileLength];
-                            World.Database.Update(closest);
+                            // check file again. if it exists, just... fucking drop it for now
+                            if (!System.TryGetFile(path, Login, out var result3, out _, out _) ||
+                                result3 != ReadAccessResult.NotReadable)
+                            {
+                                closest = World.Spawn.TextFile(System, Login, name, directory, edit.Edit!.Content);
+                                if (closest.Content!.Length > ServerConstants.MaxFileLength)
+                                    closest.Content = closest.Content[..ServerConstants.MaxFileLength];
+                            }
                         }
 
                         yield break;

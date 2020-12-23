@@ -1,5 +1,6 @@
 Label: Liyue kinda sux
 PlayerSystemTemplate: player.system.yaml
+StartingMission: test/test.mission.yaml
 StartupCommandLine: echo "Registering with system..."
 PlayerAddressRange: 66.34.0.0/16
 RebootDuration: 30.0

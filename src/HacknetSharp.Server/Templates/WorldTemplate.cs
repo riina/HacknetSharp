@@ -25,6 +25,11 @@ namespace HacknetSharp.Server.Templates
         public string? PlayerAddressRange { get; set; }
 
         /// <summary>
+        /// Starting mission for new players.
+        /// </summary>
+        public string? StartingMission { get; set; }
+
+        /// <summary>
         /// Command line for new players.
         /// </summary>
         public string? StartupCommandLine { get; set; }
@@ -101,6 +106,7 @@ namespace HacknetSharp.Server.Templates
             world.PlayerSystemTemplate = PlayerSystemTemplate ??
                                          throw new InvalidOperationException(
                                              $"{nameof(PlayerSystemTemplate)} is null.");
+            world.StartingMission = StartingMission;
             world.StartupCommandLine = StartupCommandLine;
             world.Label = Label ?? "Unlabeled Template";
             world.PlayerAddressRange = PlayerAddressRange ?? Constants.DefaultAddressRange;

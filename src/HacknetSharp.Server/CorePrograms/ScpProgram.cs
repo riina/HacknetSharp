@@ -67,7 +67,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
             }
 
-            if (!World.TryGetSystem(hostUint, out var rSystem))
+            if (!World.Model.AddressedSystems.TryGetValue(hostUint, out var rSystem))
             {
                 Write(Output("scp: No route to host\n")).Flush();
                 yield break;
