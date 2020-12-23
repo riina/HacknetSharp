@@ -147,7 +147,7 @@ namespace hss
             {
                 var outcome = outcomes[i];
                 bool fail = false;
-                if (outcome.Goals == null)
+                if (outcome.Goals == null || outcome.Goals.Count == 0)
                 {
                     for (int j = 0; j < goals.Count; j++)
                         if (!GetFlag(flags, j))
