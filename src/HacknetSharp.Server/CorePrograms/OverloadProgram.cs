@@ -6,9 +6,8 @@ namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:overload", "overload", "overload proxy",
-        "Attempts to overload target with specified shell process\n\n" +
-        "target system can be assumed from environment\nvariable \"HOST\"",
-        "[target] <shell process>", false)]
+        "Attempts to overload server with specified shell process",
+        "<shell process>", false)]
     public class OverloadProgram : Program
     {
         private SignalWaiter? _signalWaiter;
@@ -16,25 +15,22 @@ namespace HacknetSharp.Server.CorePrograms
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (Argv.Length != 2 && Argv.Length != 3)
+            if (Argv.Length != 2)
             {
-                Write(Output("1 or 2 operands are required by this command\n")).Flush();
+                Write(Output("1 operand is required by this command\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetVariable(Argv.Length == 3 ? Argv[1] : null, "HOST", out string? addr))
+            SystemModel? system;
+            if (Shell.Target != null)
+                system = Shell.Target;
+            else
             {
-                Write(Output("No address provided\n")).Flush();
+                Write(Output("Not currently connected to a server\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
-            {
-                Write(Output($"{systemConnectError}\n")).Flush();
-                yield break;
-            }
-
-            string p = Argv.Length == 2 ? Argv[1] : Argv[2];
+            string p = Argv[1];
             if (!ushort.TryParse(p, out ushort pid))
                 Write(Output($"overload: {p}: arguments must be process ids\n")).Flush();
             else if (!System.Processes.TryGetValue(pid, out var pr) || pr is not ProgramProcess proc ||
@@ -51,6 +47,13 @@ namespace HacknetSharp.Server.CorePrograms
                 int warningGate = 0;
                 while (crackState.ProxyClocks < system.ProxyClocks)
                 {
+                    // If server happened to go down in between, escape.
+                    if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
+                    {
+                        Write(Output("Error: connection to server lost\n"));
+                        yield break;
+                    }
+
                     if (_signalWaiter.Trapped)
                     {
                         if (first)
@@ -79,7 +82,7 @@ namespace HacknetSharp.Server.CorePrograms
                     yield return null;
                 }
 
-                Write(Output("«««« PROXY OVERLOAD COMPLETE »»»»\n")).Flush();
+                Write(Output("\n«««« PROXY OVERLOAD COMPLETE »»»»\n")).Flush();
             }
         }
 

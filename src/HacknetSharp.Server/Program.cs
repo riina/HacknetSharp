@@ -191,6 +191,18 @@ namespace HacknetSharp.Server
             TryGetSystem(World.Model, addr, out system, out errorMessage);
 
         /// <summary>
+        /// Tries to find a system on the network with the specified address.
+        /// </summary>
+        /// <param name="host">Target address.</param>
+        /// <param name="system">Found system.</param>
+        /// <param name="errorMessage">Error message if failed.</param>
+        /// <returns>True if matching system was found.</returns>
+        public bool TryGetSystem(uint host,
+            [NotNullWhen(true)] out SystemModel? system,
+            [NotNullWhen(false)] out string? errorMessage) =>
+            TryGetSystem(World.Model, host, out system, out errorMessage);
+
+        /// <summary>
         /// Try to obtain a value with a shell variable as backup.
         /// </summary>
         /// <param name="value">Known value (passed through if not null).</param>

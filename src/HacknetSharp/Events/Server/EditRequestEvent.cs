@@ -27,7 +27,7 @@ namespace HacknetSharp.Events.Server
         public override void Serialize(Stream stream)
         {
             stream.WriteGuid(Operation);
-            stream.WriteU8((byte)(ReadOnly ? 1 : 0));
+            stream.WriteU8(ReadOnly ? 1 : 0);
             stream.WriteUtf8String(Content);
         }
 

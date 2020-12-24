@@ -1,28 +1,27 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:porthack", "PortHack", "bruteforce login",
         "Obtains an administrator login on\nthe target system\n\n" +
-        "target system can be assumed from environment\nvariable \"HOST\".\n" +
-        "This program sets HOST, NAME, and PASS\nenvironment variables.",
-        "[target]", false)]
+        "This program sets the NAME and PASS environment\n" +
+        "variables and saves the login to your local login store.",
+        "", false)]
     public class PortHackProgram : Program
     {
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "HOST", out string? addr))
+            SystemModel? system;
+            if (Shell.Target != null)
+                system = Shell.Target;
+            else
             {
-                Write(Output("No address provided\n")).Flush();
-                yield break;
-            }
-
-            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
-            {
-                Write(Output($"{systemConnectError}\n")).Flush();
+                Write(Output("Not currently connected to a server\n")).Flush();
                 yield break;
             }
 
@@ -40,7 +39,7 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            int sum = crackState.OpenVulnerabilities.Aggregate(0, (c, v) => c + v.Exploits);
+            int sum = crackState.OpenVulnerabilities.Aggregate(0, (c, v) => c + v.Key.Exploits);
             if (sum < system.RequiredExploits)
             {
                 Write(Output(
@@ -54,14 +53,28 @@ namespace HacknetSharp.Server.CorePrograms
 
             yield return Delay(6.0f);
 
+            // If server happened to go down in between, escape.
+            if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
+            {
+                Write(Output("Error: connection to server lost\n"));
+                yield break;
+            }
+
             string un = ServerUtil.GenerateUser();
             string pw = ServerUtil.GeneratePassword();
             var (hash, salt) = ServerUtil.HashPassword(pw);
             World.Spawn.Login(system, un, hash, salt, true);
-            Shell.SetVariable("HOST", addr);
             Shell.SetVariable("NAME", un);
             Shell.SetVariable("PASS", pw);
             Write(Output($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n")).Flush();
+            try
+            {
+                LoginManager.AddLogin(World, Login, system.Address, un, pw);
+            }
+            catch (IOException e)
+            {
+                Write(Output($"{e.Message}\n")).Flush();
+            }
         }
     }
 }

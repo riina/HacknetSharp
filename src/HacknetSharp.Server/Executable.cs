@@ -226,9 +226,25 @@ namespace HacknetSharp.Server
                 return false;
             }
 
+            return TryGetSystem(worldModel, host, out system, out errorMessage);
+        }
+
+        /// <summary>
+        /// Tries to find a system on the network with the specified address.
+        /// </summary>
+        /// <param name="worldModel">World model to search.</param>
+        /// <param name="host">Target address.</param>
+        /// <param name="system">Found system.</param>
+        /// <param name="errorMessage">Error message if failed.</param>
+        /// <returns>True if matching system was found.</returns>
+        public static bool TryGetSystem(WorldModel worldModel, uint host,
+            [NotNullWhen(true)] out SystemModel? system,
+            [NotNullWhen(false)] out string? errorMessage)
+        {
             system = worldModel.Systems.FirstOrDefault(s => s.Address == host);
-            if (system == null)
+            if (system == null || system.BootTime > system.World.Now)
             {
+                system = null;
                 errorMessage = "No route to host";
                 return false;
             }

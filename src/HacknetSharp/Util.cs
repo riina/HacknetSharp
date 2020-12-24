@@ -505,7 +505,7 @@ namespace HacknetSharp
         }
 
         /// <summary>
-        /// Attempts to parse SCP variant of a connection string (e.g. user@host[:path]).
+        /// Attempts to parse SCP variant of a connection string (e.g. user@host:path).
         /// </summary>
         /// <param name="conString">Connection string to parse.</param>
         /// <param name="user">Parsed user.</param>

@@ -7,9 +7,8 @@ namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:hack", "{HARG:1}", "{HARG:1} exploit",
-        "Attempts to execute {HARG:1} exploit\non specified port or entrypoint\non target system\n\n" +
-        "target system can be assumed from environment\nvariable \"HOST\"",
-        "[target] <port/entrypoint>", false)]
+        "Attempts to execute {HARG:1} exploit\non specified port or entrypoint\non server.",
+        "<port/entrypoint>", false)]
     public class HackProgram : Program
     {
         /// <inheritdoc />
@@ -22,25 +21,22 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (Argv.Length != 2 && Argv.Length != 3)
+            if (Argv.Length != 2)
             {
-                Write(Output("1 or 2 operands are required by this command\n")).Flush();
+                Write(Output("1 operand is required by this command\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetVariable(Argv.Length == 3 ? Argv[1] : null, "HOST", out string? addr))
+            SystemModel? system;
+            if (Shell.Target != null)
+                system = Shell.Target;
+            else
             {
-                Write(Output("No address provided\n")).Flush();
+                Write(Output("Not currently connected to a server\n")).Flush();
                 yield break;
             }
 
-            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
-            {
-                Write(Output($"{systemConnectError}\n")).Flush();
-                yield break;
-            }
-
-            string entryPoint = Argv.Length == 2 ? Argv[1] : Argv[2];
+            string entryPoint = Argv[1];
 
             var vuln = system.Vulnerabilities.FirstOrDefault(v =>
                 string.Equals(v.EntryPoint, entryPoint, StringComparison.InvariantCultureIgnoreCase));
@@ -65,7 +61,14 @@ namespace HacknetSharp.Server.CorePrograms
 
             yield return Delay(hackTime);
 
-            Shell.GetCrackState(system).OpenVulnerabilities.Add(vuln);
+            // If server happened to go down in between, escape.
+            if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
+            {
+                Write(Output("Error: connection to server lost\n"));
+                yield break;
+            }
+
+            Shell.GetCrackState(system).OpenVulnerability(vuln);
 
             Write(Output($"\n«««« {Argv[0]} COMPLETE »»»»\n")).Flush();
         }

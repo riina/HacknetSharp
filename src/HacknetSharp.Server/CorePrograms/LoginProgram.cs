@@ -8,29 +8,26 @@ namespace HacknetSharp.Server.CorePrograms
     /// <inheritdoc />
     [ProgramInfo("core:login", "login", "login / manage logins",
         "login to system using credentials or\nmanage logins.\n\n" +
-        "[name@server]: login to specified target (or\n" +
-        "$NAME/$HOST or first stored login for $HOST)\n" +
-        "using stored credentials\n" +
+        "[name[@server]]: login with name (or $NAME, or\n" +
+        "first stored login for target) using stored credentials\n" +
         "(or $PASS or prompted password)\n\n" +
-        "-s [name@server]: save password for specified target (or\n" +
-        "$NAME/$HOST) from $PASS or prompted password\n\n" +
-        "-l [server]: list passwords for specified target (or\n" +
-        "$HOST)\n\n" +
-        "-d [name@server]: delete password for specified target (or\n" +
-        "$NAME/$HOST)",
-        "[-sdl] [name@host]", false)]
+        "-s [name[@server]]: save password for name (or $NAME)\n" +
+        "from $PASS or prompted password\n\n" +
+        "-l [server]: list passwords for server\n\n" +
+        "-d [name[@server]]: delete password for name\n\n" +
+        "If server isn't specified, connected server is used.",
+        "[-sdl] [name[@server]]", false)]
     public class LoginProgram : Program
     {
         private const string AutoLoginName = "$AUTO_NAME";
+        private const string AutoLoginHost = "$AUTO_HOST";
 
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
             var (flags, _, pargs) = IsolateArgvFlags(Argv);
             if (!ServerUtil.TryParseConString(pargs.Count == 0 ? null : pargs[0], 22, out string? name,
-                out string? host, out _, out string? error,
-                Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : AutoLoginName,
-                Shell.TryGetVariable("HOST", out string? shellTarget) ? shellTarget : null))
+                out string? host, out _, out string? error, AutoLoginName, AutoLoginHost))
             {
                 if (pargs.Count == 1)
                     Write(Output("Needs connection target\n")).Flush();
@@ -40,8 +37,19 @@ namespace HacknetSharp.Server.CorePrograms
                 yield break;
             }
 
-            if (!IPAddressRange.TryParse(host, false, out var range) ||
-                !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
+            uint hostUint;
+            if (host == AutoLoginHost)
+            {
+                if (Shell.Target != null)
+                    hostUint = Shell.Target.Address;
+                else
+                {
+                    Write(Output("No server specified, and not currently connected to a server\n")).Flush();
+                    yield break;
+                }
+            }
+            else if (!IPAddressRange.TryParse(host, false, out var range) ||
+                     !range.TryGetIPv4HostAndSubnetMask(out hostUint, out _))
             {
                 Write(Output($"Invalid host {host}\n")).Flush();
                 yield break;
@@ -49,7 +57,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (flags.Contains("s"))
             {
-                if (name == AutoLoginName)
+                if (name == AutoLoginName && !Shell.TryGetVariable("NAME", out name))
                 {
                     Write(Output("Login name not specified\n")).Flush();
                     yield break;
@@ -97,6 +105,12 @@ namespace HacknetSharp.Server.CorePrograms
             }
             else if (flags.Contains("d"))
             {
+                if (name == AutoLoginName)
+                {
+                    Write(Output("Login name not specified\n")).Flush();
+                    yield break;
+                }
+
                 Write(Output($"Are you sure you want to delete logins for {Util.UintToAddress(hostUint)}?\n"));
                 var confirm = Confirm(false);
                 yield return confirm;
@@ -116,6 +130,8 @@ namespace HacknetSharp.Server.CorePrograms
                 string? password = null;
                 try
                 {
+                    if (name == AutoLoginName && Shell.TryGetVariable("NAME", out string? shellName))
+                        name = shellName;
                     if (name == AutoLoginName)
                     {
                         var logins = LoginManager.GetLogins(Login, hostUint);

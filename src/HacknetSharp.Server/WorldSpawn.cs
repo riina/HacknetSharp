@@ -688,6 +688,9 @@ namespace HacknetSharp.Server
             World.AddressedSystems.Remove(system.Address);
             if (system.Tag != null)
                 World.TaggedSystems.Remove(system.Tag);
+            foreach (var targetingShell in system.TargetingShells)
+                targetingShell.Target = null;
+            system.TargetingShells.Clear();
             if (isCascade) return;
             Database.Delete(system);
         }

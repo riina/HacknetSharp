@@ -44,14 +44,15 @@ namespace HacknetSharp.Server
         public Dictionary<uint, CrackState> CrackStates { get; set; } = new();
 
         /// <summary>
-        /// Gets crack state ror target system.
+        /// Gets crack state for target system.
         /// </summary>
         /// <param name="target">Target system.</param>
-        /// <returns></returns>
+        /// <returns>Crack state.</returns>
         public CrackState GetCrackState(SystemModel target)
         {
             if (!CrackStates.TryGetValue(target.Address, out var res))
                 CrackStates[target.Address] = res = new CrackState(ProcessContext.System, target);
+            target.UpdateCrackState(res);
             return res;
         }
 
@@ -73,7 +74,7 @@ namespace HacknetSharp.Server
             /// <summary>
             /// Open vulnerabilities on target.
             /// </summary>
-            public HashSet<VulnerabilityModel> OpenVulnerabilities { get; }
+            public Dictionary<VulnerabilityModel, int> OpenVulnerabilities { get; }
 
             /// <summary>
             /// Firewall solution.
@@ -95,6 +96,10 @@ namespace HacknetSharp.Server
             /// </summary>
             public double ProxyClocks { get; set; }
 
+            internal int FirewallVersion { get; set; }
+
+            internal int ProxyVersion { get; set; }
+
             /// <summary>
             /// Creates a new instance of <see cref="CrackState"/>.
             /// </summary>
@@ -104,8 +109,19 @@ namespace HacknetSharp.Server
             {
                 Source = source;
                 Target = target;
-                OpenVulnerabilities = new HashSet<VulnerabilityModel>();
-                FirewallSolution = Target.FixedFirewall ?? ServerUtil.GeneratePassword(Target.FirewallIterations);
+                OpenVulnerabilities = new Dictionary<VulnerabilityModel, int>();
+                FirewallSolution = "";
+                FirewallVersion = -1;
+                ProxyVersion = -1;
+            }
+
+            /// <summary>
+            /// Opens the specified vulnerability.
+            /// </summary>
+            /// <param name="vulnerability">Vulnerability to open.</param>
+            public void OpenVulnerability(VulnerabilityModel vulnerability)
+            {
+                Target.OpenVulnerability(this, vulnerability);
             }
         }
 
@@ -113,6 +129,11 @@ namespace HacknetSharp.Server
         /// Processes with remote shells by system address.
         /// </summary>
         public Dictionary<uint, ProgramProcess> Remotes { get; set; } = new();
+
+        /// <summary>
+        /// Target system for login / hacking.
+        /// </summary>
+        public SystemModel? Target { get; set; }
 
         /// <summary>
         /// Active chat service for this shell.

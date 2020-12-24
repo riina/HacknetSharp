@@ -8,37 +8,46 @@ namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:scp", "scp", "copy remote file or directory",
-        "copy source file/directory from remote machine\nto specified destination",
+        "copy source file/directory from remote machine\nto specified destination\n" +
+        "If server isn't specified, connected server is used.",
         "<username>@<server>:<source> <dest>", false)]
     public class ScpProgram : Program
     {
+        private const string AutoLoginHost = "$AUTO_HOST";
+
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (!ServerUtil.TryParseScpConString(Argv.Length < 2 ? "" : Argv[1], out string? name, out string? host,
-                out string? path, out string? error,
-                Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
-                Shell.TryGetVariable("HOST", out string? shellTarget) ? shellTarget : null))
+            if (Argv.Length != 2 && Argv.Length != 3)
             {
-                if (Argv.Length < 3)
-                {
-                    Write(
-                            Output(
-                                "scp: 2 operands are required by this command:\n\t<username>@<server>:<source> <dest>\n"))
-                        .Flush();
-                }
-                else
-                {
-                    Write(Output($"scp: {error}\n")).Flush();
-                }
+                Write(Output(
+                        "scp: 1 or 2 operands are required by this command:\n\t<username>@<server>:<source> [<dest>]\n"))
+                    .Flush();
+            }
 
+            if (!ServerUtil.TryParseScpConString(Argv[1], out string? name, out string? host, out string? path,
+                out string? error, Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
+                AutoLoginHost))
+            {
+                Write(Output($"scp: {error}\n")).Flush();
                 yield break;
             }
 
-            if (!IPAddressRange.TryParse(host, false, out var range) ||
-                !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
+            uint hostUint;
+            if (host == AutoLoginHost)
             {
-                Write(Output($"scp: Invalid host {host}\n")).Flush();
+                if (Shell.Target != null)
+                    hostUint = Shell.Target.Address;
+                else
+                {
+                    Write(Output("No server specified, and not currently connected to a server\n")).Flush();
+                    yield break;
+                }
+            }
+            else if (!IPAddressRange.TryParse(host, false, out var range) ||
+                     !range.TryGetIPv4HostAndSubnetMask(out hostUint, out _))
+            {
+                Write(Output($"Invalid host {host}\n")).Flush();
                 yield break;
             }
 
@@ -82,11 +91,11 @@ namespace HacknetSharp.Server.CorePrograms
 
             try
             {
-                string target;
+                string targetFmt;
                 string workDir = Shell.WorkingDirectory;
                 try
                 {
-                    target = GetNormalized(Combine(workDir, Argv[2]));
+                    targetFmt = GetNormalized(Combine(workDir, Argv.Length == 3 ? Argv[2] : "."));
                 }
                 catch
                 {
@@ -99,28 +108,27 @@ namespace HacknetSharp.Server.CorePrograms
                 if (rSystem.TryGetFile(inputFmt, rLogin, out var result, out var closestStr, out var closest))
                 {
                     // Prevent copying common root to subdirectory
-                    if (System == rSystem && GetPathInCommon(inputFmt, target) == inputFmt)
+                    if (System == rSystem && GetPathInCommon(inputFmt, targetFmt) == inputFmt)
                     {
-                        Write(Output($"{inputFmt}: Cannot copy to {target}\n")).Flush();
+                        Write(Output($"{inputFmt}: Cannot copy to {targetFmt}\n")).Flush();
                         yield break;
                     }
 
                     try
                     {
-                        var targetExisting =
-                            rSystem.Files.FirstOrDefault(f => f.Hidden == false && f.FullPath == target);
                         string lclTarget;
                         string lclName;
-                        if (target == "/" || Argv.Length != 3 || targetExisting != null
+                        if (targetFmt == "/" ||
+                            System.TryGetFile(targetFmt, Login, out _, out _, out var targetExisting)
                             && targetExisting.Kind == FileModel.FileKind.Folder)
                         {
-                            lclTarget = target;
+                            lclTarget = targetFmt;
                             lclName = closest.Name;
                         }
                         else
                         {
-                            lclTarget = GetDirectoryName(target) ?? "/";
-                            lclName = GetFileName(target);
+                            lclTarget = GetDirectoryName(targetFmt) ?? "/";
+                            lclName = GetFileName(targetFmt);
                         }
 
                         spawn.CopyFile(closest, System, Login, lclName, lclTarget);

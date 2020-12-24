@@ -1,27 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:analyze", "analyze", "analyze firewall",
-        "Analyzes firewall to progressively get solution\n\n" +
-        "target system can be assumed from environment\nvariable \"HOST\"",
-        "[target]", false)]
+        "Analyzes firewall to progressively get solution.",
+        "", false)]
     public class AnalyzeProgram : Program
     {
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "HOST", out string? addr))
+            SystemModel? system;
+            if (Shell.Target != null)
+                system = Shell.Target;
+            else
             {
-                Write(Output("No address provided\n")).Flush();
-                yield break;
-            }
-
-            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
-            {
-                Write(Output($"{systemConnectError}\n")).Flush();
+                Write(Output("Not currently connected to a server\n")).Flush();
                 yield break;
             }
 
@@ -44,6 +41,13 @@ namespace HacknetSharp.Server.CorePrograms
             foreach (var analysisLine in analysisLines)
             {
                 yield return Delay(delay);
+                // If server happened to go down in between, escape.
+                if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
+                {
+                    Write(Output("Error: connection to server lost\n"));
+                    yield break;
+                }
+
                 Write(Output($"{analysisLine}\n")).Flush();
             }
         }

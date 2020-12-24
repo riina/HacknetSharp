@@ -2,34 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HacknetSharp.Server.Models;
 
 namespace HacknetSharp.Server.CorePrograms
 {
     /// <inheritdoc />
     [ProgramInfo("core:probe", "probe", "probe remote system",
-        "probe a system's ports to determine\nwhat vulnerabilities exist on the system\n\n" +
-        "target system can be assumed from environment\nvariable \"HOST\"",
-        "[system]", false)]
+        "probe a system's ports to determine\nwhat vulnerabilities exist on the system\n" +
+        "If server isn't specified, connected server is used.",
+        "[server]", false)]
     public class ProbeProgram : Program
     {
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            if (!TryGetVariable(Argv.Length != 1 ? Argv[1] : null, "HOST", out string? addr))
+            SystemModel? system;
+            if (Argv.Length >= 2)
             {
-                Write(Output("No address provided\n")).Flush();
-                yield break;
+                if (!TryGetSystem(Argv[1], out system, out string? systemConnectError))
+                {
+                    Write(Output($"{systemConnectError}\n")).Flush();
+                    yield break;
+                }
             }
-
-            if (!TryGetSystem(addr, out var system, out string? systemConnectError))
+            else
             {
-                Write(Output($"{systemConnectError}\n")).Flush();
-                yield break;
+                if (Shell.Target != null)
+                    system = Shell.Target;
+                else
+                {
+                    Write(Output("No server specified, and not currently connected to a server\n")).Flush();
+                    yield break;
+                }
             }
 
             Write(Output($"Probing {Util.UintToAddress(system.Address)}...\n")).Flush();
 
             yield return Delay(1.0f);
+
+            // If server happened to go down in between, escape.
+            if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
+            {
+                Write(Output("Error: connection to server lost\n"));
+                yield break;
+            }
 
             var sb = new StringBuilder();
 
@@ -42,19 +58,20 @@ namespace HacknetSharp.Server.CorePrograms
             if (system.FirewallIterations > 0)
                 sb.Append(crackState.FirewallSolved ? "\nFirewall: BYPASSED\n" : "\nFirewall: ACTIVE\n");
 
-            if (crackState.OpenVulnerabilities.Count != 0)
+            if (system.Vulnerabilities.Count != 0)
             {
                 sb.Append("\nVulnerabilities:\n");
                 foreach (var vuln in system.Vulnerabilities)
                 {
-                    string openStr = crackState.OpenVulnerabilities.Contains(vuln) ? "OPEN" : "CLOSED";
+                    string openStr = crackState.OpenVulnerabilities.ContainsKey(vuln) ? "OPEN" : "CLOSED";
                     sb.Append(
                         $"{vuln.EntryPoint,-8}: {vuln.Protocol} ({openStr}, {vuln.Exploits} exploit(s), {vuln.Cve ?? "unknown CVEs"})\n");
                 }
             }
 
             sb.Append($"\nRequired exploits: {system.RequiredExploits}\n");
-            sb.Append($"Current exploits: {crackState.OpenVulnerabilities.Aggregate(0, (n, v) => n + v.Exploits)}\n");
+            sb.Append(
+                $"Current exploits: {crackState.OpenVulnerabilities.Aggregate(0, (n, v) => n + v.Key.Exploits)}\n");
             Write(Output(sb.ToString())).Flush();
         }
     }

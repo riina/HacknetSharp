@@ -171,7 +171,13 @@ namespace HacknetSharp.Server
         /// <param name="shell">Shell to use.</param>
         /// <returns>Output event with formatted address and CWD.</returns>
         public static ShellPromptEvent CreatePromptEvent(ShellProcess shell) =>
-            new() {Address = shell.ProgramContext.System.Address, WorkingDirectory = shell.WorkingDirectory};
+            new()
+            {
+                Address = shell.ProgramContext.System.Address,
+                TargetConnected = shell.Target != null,
+                TargetAddress = shell.Target?.Address ?? 0,
+                WorkingDirectory = shell.WorkingDirectory
+            };
 
         /// <summary>
         /// Attempts to parse a connection string (e.g. user@host[:port]).

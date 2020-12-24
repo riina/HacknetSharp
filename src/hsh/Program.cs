@@ -116,7 +116,10 @@ namespace hsh
                         Console.Write(alertFmt.Insert(0, '\n').ToString());
                         break;
                     case ShellPromptEvent shellPrompt:
-                        Console.Write($"{Util.UintToAddress(shellPrompt.Address)}:{shellPrompt.WorkingDirectory}> ");
+                        Console.Write(
+                            shellPrompt.TargetConnected
+                                ? $"{Util.UintToAddress(shellPrompt.Address)}>>{Util.UintToAddress(shellPrompt.TargetAddress)}:{shellPrompt.WorkingDirectory}> "
+                                : $"{Util.UintToAddress(shellPrompt.Address)}:{shellPrompt.WorkingDirectory}> ");
                         LockIO.ForceRewrite();
                         break;
                     case OutputEvent output:

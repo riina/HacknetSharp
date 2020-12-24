@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Templates;
-using YamlDotNet.Serialization;
 
 namespace hss
 {

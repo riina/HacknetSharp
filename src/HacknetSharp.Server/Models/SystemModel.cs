@@ -136,9 +136,36 @@ namespace HacknetSharp.Server.Models
         public Action<object>? Pulse { get; set; }
 
         /// <summary>
+        /// Shells currently targeting this system.
+        /// </summary>
+        public HashSet<ShellProcess> TargetingShells { get; set; } = new();
+
+        /// <summary>
         /// Public services.
         /// </summary>
         private Dictionary<Type, Service> PublicServices { get; set; } = new();
+
+        private Dictionary<VulnerabilityModel, int> VulnerabilityVersions
+        {
+            get
+            {
+                if (_vulnerabilityVersions == null)
+                {
+                    _vulnerabilityVersions = new Dictionary<VulnerabilityModel, int>();
+                    foreach (var k in Vulnerabilities)
+                        _vulnerabilityVersions[k] = 0;
+                }
+
+                return _vulnerabilityVersions;
+            }
+            set => _vulnerabilityVersions = value;
+        }
+
+        private Dictionary<VulnerabilityModel, int>? _vulnerabilityVersions;
+
+        private int FirewallVersion { get; set; }
+
+        private int ProxyVersion { get; set; }
 
         /// <summary>
         /// Attempts to get public service.
@@ -193,7 +220,6 @@ namespace HacknetSharp.Server.Models
             public static readonly TrapSignal Singleton = new();
         }
 
-
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
@@ -207,8 +233,69 @@ namespace HacknetSharp.Server.Models
                 x.Ignore(y => y.Processes);
                 x.Ignore(y => y.Pulse);
                 x.Ignore(y => y.PublicServices);
+                x.Ignore(y => y.TargetingShells);
+                x.Ignore(y => y.VulnerabilityVersions);
+                x.Ignore(y => y.FirewallVersion);
+                x.Ignore(y => y.ProxyVersion);
             });
 #pragma warning restore 1591
+
+        /// <summary>
+        /// Resets a vulnerability.
+        /// </summary>
+        /// <param name="vulnerability">Vulnerability to reset.</param>
+        public void ResetVulnerability(VulnerabilityModel vulnerability)
+        {
+            if (VulnerabilityVersions.TryGetValue(vulnerability, out int version))
+                VulnerabilityVersions[vulnerability] = version + 1;
+        }
+
+        /// <summary>
+        /// Resets firewall.
+        /// </summary>
+        public void ResetFirewall() => FirewallVersion++;
+
+        /// <summary>
+        /// Resets proxy.
+        /// </summary>
+        public void ResetProxy() => ProxyVersion++;
+
+        /// <summary>
+        /// Updates an existing crack state based on local reset versions.
+        /// </summary>
+        /// <param name="crackState">Crack state to update.</param>
+        public void UpdateCrackState(ShellProcess.CrackState crackState)
+        {
+            foreach ((var key, int value) in VulnerabilityVersions)
+                if (crackState.OpenVulnerabilities.TryGetValue(key, out int ver) && ver != value)
+                    crackState.OpenVulnerabilities.Remove(key);
+
+            if (crackState.FirewallVersion != FirewallVersion)
+            {
+                crackState.FirewallSolution = FixedFirewall ?? ServerUtil.GeneratePassword(FirewallIterations);
+                crackState.FirewallIterations = 0;
+                crackState.FirewallSolved = false;
+                crackState.FirewallVersion = FirewallVersion;
+            }
+
+            if (crackState.ProxyVersion != ProxyVersion)
+            {
+                crackState.ProxyClocks = 0;
+                crackState.ProxyVersion = ProxyVersion;
+            }
+        }
+
+        /// <summary>
+        /// Opens the specified vulnerability.
+        /// </summary>
+        /// <param name="crackState">Crack state to update.</param>
+        /// <param name="vulnerability">Vulnerability to open.</param>
+        public void OpenVulnerability(ShellProcess.CrackState crackState, VulnerabilityModel vulnerability)
+        {
+            if (VulnerabilityVersions.TryGetValue(vulnerability, out int ver))
+                crackState.OpenVulnerabilities[vulnerability] = ver;
+        }
+
         /// <summary>
         /// Enumerates processes visible by login or all processes if none is specified.
         /// </summary>
@@ -223,7 +310,7 @@ namespace HacknetSharp.Server.Models
                 : Processes.Values;
             src = pid.HasValue ? src.Where(p => p.ProcessContext.Pid == pid.Value) : src;
             src = parentPid.HasValue ? src.Where(p => p.ProcessContext.ParentPid == parentPid.Value) : src;
-            return src;
+            return src.OrderBy(p=>p.ProcessContext.Pid);
         }
 
         /// <summary>
