@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.CorePrograms
                     case FileModel.FileKind.TextFile:
                     case FileModel.FileKind.FileFile:
                     case FileModel.FileKind.ProgFile:
-                        Write(Output($"cd: {path}: Is a file\n")).Flush();
+                        Write($"cd: {path}: Is a file\n").Flush();
                         yield break;
                     case FileModel.FileKind.Folder:
                         Shell.WorkingDirectory = path;
@@ -41,10 +41,10 @@ namespace HacknetSharp.Server.CorePrograms
                 switch (result)
                 {
                     case ReadAccessResult.NotReadable:
-                        Write(Output($"cd: {closestStr}: Permission denied\n")).Flush();
+                        Write($"cd: {closestStr}: Permission denied\n").Flush();
                         yield break;
                     case ReadAccessResult.NoExist:
-                        Write(Output($"cd: {path}: No such file or directory\n")).Flush();
+                        Write($"cd: {path}: No such file or directory\n").Flush();
                         yield break;
                 }
         }

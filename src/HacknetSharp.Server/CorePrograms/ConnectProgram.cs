@@ -14,21 +14,21 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2)
             {
-                Write(Output("1 operand is required by this command\n")).Flush();
+                Write("1 operand is required by this command\n").Flush();
                 yield break;
             }
 
             SystemModel? system;
             if (!TryGetSystem(Argv[1], out system, out string? systemConnectError))
             {
-                Write(Output($"{systemConnectError}\n")).Flush();
+                Write($"{systemConnectError}\n").Flush();
                 yield break;
             }
 
             Shell.Target = system;
             system.TargetingShells.Add(Shell);
 
-            Write(Output($"Connected to {system.Name}...\n")).Flush();
+            Write($"Connected to {system.Name}...\n").Flush();
         }
     }
 }

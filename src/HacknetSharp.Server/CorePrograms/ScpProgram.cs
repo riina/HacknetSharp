@@ -20,8 +20,8 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2 && Argv.Length != 3)
             {
-                Write(Output(
-                        "scp: 1 or 2 operands are required by this command:\n\t<username>@<server>:<source> [<dest>]\n"))
+                Write(
+                        "scp: 1 or 2 operands are required by this command:\n\t<username>@<server>:<source> [<dest>]\n")
                     .Flush();
             }
 
@@ -29,7 +29,7 @@ namespace HacknetSharp.Server.CorePrograms
                 out string? error, Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
                 AutoLoginHost))
             {
-                Write(Output($"scp: {error}\n")).Flush();
+                Write($"scp: {error}\n").Flush();
                 yield break;
             }
 
@@ -40,14 +40,14 @@ namespace HacknetSharp.Server.CorePrograms
                     hostUint = Shell.Target.Address;
                 else
                 {
-                    Write(Output("No server specified, and not currently connected to a server\n")).Flush();
+                    Write("No server specified, and not currently connected to a server\n").Flush();
                     yield break;
                 }
             }
             else if (!IPAddressRange.TryParse(host, false, out var range) ||
                      !range.TryGetIPv4HostAndSubnetMask(out hostUint, out _))
             {
-                Write(Output($"Invalid host {host}\n")).Flush();
+                Write($"Invalid host {host}\n").Flush();
                 yield break;
             }
 
@@ -63,13 +63,13 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write(Output($"{e.Message}\n")).Flush();
+                    Write($"{e.Message}\n").Flush();
                     yield break;
                 }
 
                 if (password == null)
                 {
-                    Write(Output("Password:"));
+                    Write("Password:");
                     var input = Input(true);
                     yield return input;
                     password = input.Input!.Input;
@@ -78,14 +78,14 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!World.Model.AddressedSystems.TryGetValue(hostUint, out var rSystem))
             {
-                Write(Output("scp: No route to host\n")).Flush();
+                Write("scp: No route to host\n").Flush();
                 yield break;
             }
 
             var rLogin = rSystem.Logins.FirstOrDefault(l => l.User == name);
             if (rLogin == null || !ServerUtil.ValidatePassword(password, rLogin.Hash, rLogin.Salt))
             {
-                Write(Output("scp: Invalid credentials\n")).Flush();
+                Write("scp: Invalid credentials\n").Flush();
                 yield break;
             }
 
@@ -110,7 +110,7 @@ namespace HacknetSharp.Server.CorePrograms
                     // Prevent copying common root to subdirectory
                     if (System == rSystem && GetPathInCommon(inputFmt, targetFmt) == inputFmt)
                     {
-                        Write(Output($"{inputFmt}: Cannot copy to {targetFmt}\n")).Flush();
+                        Write($"{inputFmt}: Cannot copy to {targetFmt}\n").Flush();
                         yield break;
                     }
 
@@ -135,23 +135,23 @@ namespace HacknetSharp.Server.CorePrograms
                     }
                     catch (IOException e)
                     {
-                        Write(Output($"{e.Message}\n")).Flush();
+                        Write($"{e.Message}\n").Flush();
                     }
                 }
                 else
                     switch (result)
                     {
                         case ReadAccessResult.NotReadable:
-                            Write(Output($"{closestStr}: Permission denied\n")).Flush();
+                            Write($"{closestStr}: Permission denied\n").Flush();
                             yield break;
                         case ReadAccessResult.NoExist:
-                            Write(Output($"{inputFmt}: No such file or directory\n")).Flush();
+                            Write($"{inputFmt}: No such file or directory\n").Flush();
                             yield break;
                     }
             }
             catch (Exception e)
             {
-                Write(Output($"{e.Message}\n")).Flush();
+                Write($"{e.Message}\n").Flush();
             }
         }
     }

@@ -6,7 +6,7 @@ and a `server.yaml` configuration file (detailed below).
 
 [Template reference](template-reference.md)
 
-[Mission API reference](mission-api-reference.md)
+[Lua API reference](lua-api-reference.md)
 
 ## 1. SSL certificate
 

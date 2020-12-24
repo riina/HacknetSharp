@@ -14,7 +14,7 @@ namespace HacknetSharp.Server.CorePrograms
         public override IEnumerator<YieldToken?> Run()
         {
             var (flags, _, _) = IsolateArgvFlags(Argv);
-            Write(Output(new StringBuilder()
+            Write(new StringBuilder()
                 .Append("     ACC    PID   PPID LINE\n").AppendJoin("\n",
                     System.Ps(Login.Admin ? null : Login, null, flags.Contains("e") ? (uint?)null : ParentPid)
                         .Select(proc =>
@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.CorePrograms
                         }))
                 .Append('\n')
                 .ToString()
-            )).Flush();
+            ).Flush();
             yield break;
         }
     }

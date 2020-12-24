@@ -17,7 +17,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length < 2)
             {
-                Write(Output("At least 1 operand is required by this command:\n\t<file>...\n")).Flush();
+                Write("At least 1 operand is required by this command:\n\t<file>...\n").Flush();
                 yield break;
             }
 
@@ -35,7 +35,7 @@ namespace HacknetSharp.Server.CorePrograms
                             string fp = closest.FullPath;
                             if (closest.Kind == FileModel.FileKind.Folder && System.Files.Any(f => f.Path == fp))
                             {
-                                Write(Output($"{inputFmt}: Directory not empty\n")).Flush();
+                                Write($"{inputFmt}: Directory not empty\n").Flush();
                                 yield break;
                             }
 
@@ -43,7 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
                         }
                         catch (IOException e)
                         {
-                            Write(Output($"{e.Message}\n")).Flush();
+                            Write($"{e.Message}\n").Flush();
                             yield break;
                         }
                     }
@@ -51,17 +51,17 @@ namespace HacknetSharp.Server.CorePrograms
                         switch (result)
                         {
                             case ReadAccessResult.NotReadable:
-                                Write(Output($"{closestStr}: Permission denied\n")).Flush();
+                                Write($"{closestStr}: Permission denied\n").Flush();
                                 yield break;
                             case ReadAccessResult.NoExist:
-                                Write(Output($"{inputFmt}: No such file or directory\n")).Flush();
+                                Write($"{inputFmt}: No such file or directory\n").Flush();
                                 yield break;
                         }
                 }
             }
             catch (Exception e)
             {
-                Write(Output($"{e.Message}\n")).Flush();
+                Write($"{e.Message}\n").Flush();
             }
         }
     }

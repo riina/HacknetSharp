@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (!Login.Admin)
             {
-                Write(Output("Permission denied.")).Flush();
+                Write("Permission denied.").Flush();
                 yield break;
             }
 
@@ -39,7 +39,7 @@ namespace HacknetSharp.Server.CorePrograms
                     .Append('\n');
             }
 
-            Write(Output(sb.ToString())).Flush();
+            Write(sb.ToString()).Flush();
         }
     }
 }

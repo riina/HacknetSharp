@@ -14,19 +14,19 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2)
             {
-                Write(Output("1 operand is required by this command\n")).Flush();
+                Write("1 operand is required by this command\n").Flush();
                 yield break;
             }
 
             string p = Argv[1];
             if (!ushort.TryParse(p, out ushort pid))
-                Write(Output($"trap: {p}: arguments must be process ids\n")).Flush();
+                Write($"trap: {p}: arguments must be process ids\n").Flush();
             else if (!System.Processes.TryGetValue(pid, out var pr) || pr is not ProgramProcess proc ||
                      proc.ProgramContext.Remote == null)
-                Write(Output($"trap: ({pid}) - Invalid process\n")).Flush();
+                Write($"trap: ({pid}) - Invalid process\n").Flush();
             else
             {
-                Write(Output("SENDING TRAP\n")).Flush();
+                Write("SENDING TRAP\n").Flush();
                 System.Pulse?.Invoke(SystemModel.TrapSignal.Singleton);
             }
         }

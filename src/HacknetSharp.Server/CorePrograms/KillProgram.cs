@@ -15,12 +15,12 @@ namespace HacknetSharp.Server.CorePrograms
             foreach (var p in Argv.Skip(1))
             {
                 if (!ushort.TryParse(p, out ushort pid))
-                    Write(Output($"kill: {p}: arguments must be process ids\n")).Flush();
+                    Write($"kill: {p}: arguments must be process ids\n").Flush();
                 else if (System.Processes.TryGetValue(pid, out var proc) &&
                          (proc.ProcessContext.Login == Login || Login.Admin))
                     World.CompleteRecurse(proc, Process.CompletionKind.KillLocal);
                 else
-                    Write(Output($"kill: ({pid}) - No such process\n")).Flush();
+                    Write($"kill: ({pid}) - No such process\n").Flush();
             }
 
             yield break;

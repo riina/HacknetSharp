@@ -17,7 +17,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2)
             {
-                Write(Output("1 operand is required by this command\n")).Flush();
+                Write("1 operand is required by this command\n").Flush();
                 yield break;
             }
 
@@ -26,22 +26,22 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write(Output("Not currently connected to a server\n")).Flush();
+                Write("Not currently connected to a server\n").Flush();
                 yield break;
             }
 
             string p = Argv[1];
             if (!ushort.TryParse(p, out ushort pid))
-                Write(Output($"overload: {p}: arguments must be process ids\n")).Flush();
+                Write($"overload: {p}: arguments must be process ids\n").Flush();
             else if (!System.Processes.TryGetValue(pid, out var pr) || pr is not ProgramProcess proc ||
                      proc.ProgramContext.Remote == null)
-                Write(Output($"overload: ({pid}) - Invalid process\n")).Flush();
+                Write($"overload: ({pid}) - Invalid process\n").Flush();
             else
             {
                 var crackState = Shell.GetCrackState(system);
                 var shellSystem = proc.ProgramContext.System;
                 _signalWaiter = new SignalWaiter(system);
-                Write(Output("«««« OVERLOADING PROXY »»»»\n"));
+                Write("«««« OVERLOADING PROXY »»»»\n");
                 SignalUnbindProcess();
                 bool first = true;
                 int warningGate = 0;
@@ -50,7 +50,7 @@ namespace HacknetSharp.Server.CorePrograms
                     // If server happened to go down in between, escape.
                     if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
                     {
-                        Write(Output("Error: connection to server lost\n"));
+                        Write("Error: connection to server lost\n").Flush();
                         yield break;
                     }
 
@@ -58,11 +58,11 @@ namespace HacknetSharp.Server.CorePrograms
                     {
                         if (first)
                         {
-                            Write(Output("\n" +
-                                         "»»»»   ERROR: OVERLOAD FAILED   ««««\n" +
-                                         "»»     REMOTE TRAP TRIGGERED      ««\n" +
-                                         "»»    MEMORY OVERFLOW DETECTED    ««\n" +
-                                         "»»»» USER INTERVENTION REQUIRED ««««\n")).Flush();
+                            Write("\n" +
+                                  "»»»»   ERROR: OVERLOAD FAILED   ««««\n" +
+                                  "»»     REMOTE TRAP TRIGGERED      ««\n" +
+                                  "»»    MEMORY OVERFLOW DETECTED    ««\n" +
+                                  "»»»» USER INTERVENTION REQUIRED ««««\n").Flush();
                             first = false;
                         }
 
@@ -70,7 +70,7 @@ namespace HacknetSharp.Server.CorePrograms
                         int tf = (int)(100.0 * System.GetUsedMemory() / System.SystemMemory) / 25;
                         if (tf > warningGate)
                         {
-                            Write(Output($"\nMEMORY {tf * 25}% CONSUMED\n")).Flush();
+                            Write($"\nMEMORY {tf * 25}% CONSUMED\n").Flush();
                             warningGate = tf;
                         }
 
@@ -82,7 +82,7 @@ namespace HacknetSharp.Server.CorePrograms
                     yield return null;
                 }
 
-                Write(Output("\n«««« PROXY OVERLOAD COMPLETE »»»»\n")).Flush();
+                Write("\n«««« PROXY OVERLOAD COMPLETE »»»»\n").Flush();
             }
         }
 

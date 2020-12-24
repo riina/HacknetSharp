@@ -299,6 +299,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">Task&lt;TResult&gt; GetAsync&lt;TKey, TResult&gt;(TKey key)
+
     where TKey : IEquatable&lt;TKey&gt; where TResult : Model&lt;TKey&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -371,6 +372,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">Task&lt;List&lt;TResult&gt;&gt; GetBulkAsync&lt;TKey, TResult&gt;(ICollection&lt;TKey&gt; keys)
+
     where TKey : IEquatable&lt;TKey&gt; where TResult : Model&lt;TKey&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -575,6 +577,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">Task&lt;List&lt;TResult&gt;&gt; WhereAsync&lt;TResult&gt;(Expression&lt;Func&lt;TResult, bool&gt;&gt; predicate)
+
     where TResult : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

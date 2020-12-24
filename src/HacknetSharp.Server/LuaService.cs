@@ -23,11 +23,23 @@ namespace HacknetSharp.Server
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            while (_coroutine.State != CoroutineState.Dead)
+            World.ScriptManager.SetGlobal("self", this);
+            World.ScriptManager.SetGlobal("login", Login);
+            World.ScriptManager.SetGlobal("argv", Argv);
+            World.ScriptManager.SetGlobal("argc", Argv.Length);
+            try
             {
-                var result = _coroutine.Resume();
+                DynValue? result;
+                result = _coroutine.Resume();
                 if (_coroutine.State == CoroutineState.Suspended)
                     yield return result?.ToObject() as YieldToken;
+            }
+            finally
+            {
+                World.ScriptManager.ClearGlobal("self");
+                World.ScriptManager.ClearGlobal("login");
+                World.ScriptManager.ClearGlobal("argv");
+                World.ScriptManager.ClearGlobal("argc");
             }
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
 
@@ -26,9 +25,28 @@ namespace HacknetSharp.Server
         {
             while (_coroutine.State != CoroutineState.Dead)
             {
-                var result = _coroutine.Resume();
-                if (_coroutine.State == CoroutineState.Suspended)
-                    yield return result?.ToObject() as YieldToken;
+                World.ScriptManager.SetGlobal("self", this);
+                World.ScriptManager.SetGlobal("login", Login);
+                World.ScriptManager.SetGlobal("argv", Argv);
+                World.ScriptManager.SetGlobal("argc", Argv.Length);
+                World.ScriptManager.SetGlobal("shell", Shell);
+                World.ScriptManager.SetGlobal("me", Person);
+                try
+                {
+                    DynValue? result;
+                    result = _coroutine.Resume();
+                    if (_coroutine.State == CoroutineState.Suspended)
+                        yield return result?.ToObject() as YieldToken;
+                }
+                finally
+                {
+                    World.ScriptManager.ClearGlobal("self");
+                    World.ScriptManager.ClearGlobal("login");
+                    World.ScriptManager.ClearGlobal("argv");
+                    World.ScriptManager.ClearGlobal("argc");
+                    World.ScriptManager.ClearGlobal("shell");
+                    World.ScriptManager.ClearGlobal("me");
+                }
             }
         }
     }

@@ -30,9 +30,9 @@ namespace HacknetSharp.Server.CorePrograms
                 out string? host, out _, out string? error, AutoLoginName, AutoLoginHost))
             {
                 if (pargs.Count == 1)
-                    Write(Output("Needs connection target\n")).Flush();
+                    Write("Needs connection target\n").Flush();
                 else
-                    Write(Output($"{error}\n")).Flush();
+                    Write($"{error}\n").Flush();
 
                 yield break;
             }
@@ -44,14 +44,14 @@ namespace HacknetSharp.Server.CorePrograms
                     hostUint = Shell.Target.Address;
                 else
                 {
-                    Write(Output("No server specified, and not currently connected to a server\n")).Flush();
+                    Write("No server specified, and not currently connected to a server\n").Flush();
                     yield break;
                 }
             }
             else if (!IPAddressRange.TryParse(host, false, out var range) ||
                      !range.TryGetIPv4HostAndSubnetMask(out hostUint, out _))
             {
-                Write(Output($"Invalid host {host}\n")).Flush();
+                Write($"Invalid host {host}\n").Flush();
                 yield break;
             }
 
@@ -59,7 +59,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 if (name == AutoLoginName && !Shell.TryGetVariable("NAME", out name))
                 {
-                    Write(Output("Login name not specified\n")).Flush();
+                    Write("Login name not specified\n").Flush();
                     yield break;
                 }
 
@@ -68,7 +68,7 @@ namespace HacknetSharp.Server.CorePrograms
                     password = shellPass;
                 else
                 {
-                    Write(Output("Password:"));
+                    Write("Password:");
                     var input = Input(true);
                     yield return input;
                     password = input.Input!.Input;
@@ -80,7 +80,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write(Output($"{e.Message}\n")).Flush();
+                    Write($"{e.Message}\n").Flush();
                 }
             }
             else if (flags.Contains("l"))
@@ -96,22 +96,22 @@ namespace HacknetSharp.Server.CorePrograms
 
                     if (sb.Length == 0) sb.Append('\n');
 
-                    Write(Output(sb.ToString())).Flush();
+                    Write(sb.ToString()).Flush();
                 }
                 catch (IOException e)
                 {
-                    Write(Output($"{e.Message}\n")).Flush();
+                    Write($"{e.Message}\n").Flush();
                 }
             }
             else if (flags.Contains("d"))
             {
                 if (name == AutoLoginName)
                 {
-                    Write(Output("Login name not specified\n")).Flush();
+                    Write("Login name not specified\n").Flush();
                     yield break;
                 }
 
-                Write(Output($"Are you sure you want to delete logins for {Util.UintToAddress(hostUint)}?\n"));
+                Write($"Are you sure you want to delete logins for {Util.UintToAddress(hostUint)}?\n");
                 var confirm = Confirm(false);
                 yield return confirm;
                 if (!confirm.Confirmed) yield break;
@@ -122,7 +122,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write(Output($"{e.Message}\n")).Flush();
+                    Write($"{e.Message}\n").Flush();
                 }
             }
             else
@@ -137,7 +137,7 @@ namespace HacknetSharp.Server.CorePrograms
                         var logins = LoginManager.GetLogins(Login, hostUint);
                         if (logins.Count == 0)
                         {
-                            Write(Output($"No known logins for {Util.UintToAddress(hostUint)}\n")).Flush();
+                            Write($"No known logins for {Util.UintToAddress(hostUint)}\n").Flush();
                             yield break;
                         }
 
@@ -152,14 +152,14 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write(Output($"{e.Message}\n")).Flush();
+                    Write($"{e.Message}\n").Flush();
                     yield break;
                 }
 
                 // Fallback to asking for password
                 if (password == null)
                 {
-                    Write(Output("Password:"));
+                    Write("Password:");
                     var input = Input(true);
                     yield return input;
                     password = input.Input!.Input;

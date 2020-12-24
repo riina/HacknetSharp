@@ -150,7 +150,7 @@ namespace hsh
             };
             connection.OnDisconnect += e =>
             {
-                Console.WriteLine($"Disconnected by server. Reason: {e.Reason}");
+                Console.WriteLine($"\nDisconnected by server. Reason: {e.Reason}");
                 connection.DisposeAsync().Wait();
                 Environment.Exit(0);
             };

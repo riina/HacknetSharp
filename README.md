@@ -6,7 +6,7 @@
 
 [Documentation](https://the-council-of-wills.github.io/HacknetSharp/articles/intro.html)
 
-[API Reference](https://the-council-of-wills.github.io/HacknetSharp/api/index.html)
+[Lua API reference](lua-api-reference.md)
 
 ## Current Status
 

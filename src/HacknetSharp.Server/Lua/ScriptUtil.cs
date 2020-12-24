@@ -25,9 +25,12 @@ namespace HacknetSharp.Server.Lua
             // HacknetSharp.Server.Lua
             typeof(ScriptManager),
             // HacknetSharp.Server
-            typeof(IWorld),
+            typeof(IWorld), typeof(ShellProcess), typeof(ProgramProcess), typeof(ServiceProcess), typeof(Executable),
+            typeof(Program), typeof(Service),
+            // HacknetSharp.Server.Executable
+            typeof(Executable.DelayYieldToken),
             // HacknetSharp.Server.Models
-            typeof(PersonModel), typeof(MissionModel), typeof(SystemModel),
+            typeof(PersonModel), typeof(MissionModel), typeof(SystemModel), typeof(LoginModel),
         };
 
         /// <summary>

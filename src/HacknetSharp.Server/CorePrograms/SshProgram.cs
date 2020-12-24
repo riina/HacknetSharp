@@ -14,14 +14,14 @@ namespace HacknetSharp.Server.CorePrograms
             if (!ServerUtil.TryParseConString(Argv.Length == 1 ? "" : Argv[1], 22, out string? name, out string? host,
                 out _, out string? error))
             {
-                Write(Output($"{error}\n")).Flush();
+                Write($"{error}\n").Flush();
                 yield break;
             }
 
             if (!IPAddressRange.TryParse(host, false, out var range) ||
                 !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
             {
-                Write(Output($"Invalid host {host}\n")).Flush();
+                Write($"Invalid host {host}\n").Flush();
                 yield break;
             }
 
@@ -30,7 +30,7 @@ namespace HacknetSharp.Server.CorePrograms
                 password = shellPass;
             else
             {
-                Write(Output("Password:"));
+                Write("Password:");
                 var input = Input(true);
                 yield return input;
                 password = input.Input!.Input;

@@ -16,38 +16,38 @@ namespace HacknetSharp.Server.CorePrograms
             var (_, _, pargs) = IsolateArgvFlags(Argv);
             if (pargs.Count != 2)
             {
-                Write(Output("2 operands are required for this command: <name> <room@host>\n")).Flush();
+                Write("2 operands are required for this command: <name> <room@host>\n").Flush();
                 yield break;
             }
 
             if (!ServerUtil.TryParseConString(pargs[1], 22, out string? room,
                 out string? host, out _, out string? error))
             {
-                Write(Output($"{error}\n")).Flush();
+                Write($"{error}\n").Flush();
                 yield break;
             }
 
             if (!IPAddressRange.TryParse(host, false, out var range) ||
                 !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
             {
-                Write(Output($"Invalid host {host}\n")).Flush();
+                Write($"Invalid host {host}\n").Flush();
                 yield break;
             }
 
-            Write(Output("Password:"));
+            Write("Password:");
             var input = Input(true);
             yield return input;
             string password = input.Input!.Input;
 
             if (!World.Model.AddressedSystems.TryGetValue(hostUint, out var system))
             {
-                Write(Output("No route to host\n")).Flush();
+                Write("No route to host\n").Flush();
                 yield break;
             }
 
             if (!system.TryGetService(out ChatService? service))
             {
-                Write(Output("Chat service not available on server\n")).Flush();
+                Write("Chat service not available on server\n").Flush();
                 yield break;
             }
 
@@ -55,7 +55,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!rooms.TryGetValue(room, out string? roomPassword) || roomPassword != password)
             {
-                Write(Output("Invalid credentials\n")).Flush();
+                Write("Invalid credentials\n").Flush();
                 yield break;
             }
 
@@ -71,8 +71,8 @@ namespace HacknetSharp.Server.CorePrograms
         private void OnChat(string? room, Guid sender, string name, string message)
         {
             if (sender == Login.Key || room != null && Shell.ChatRoom != room) return;
-            Write(Output($"\n[{room ?? "BROADCAST"}] {name}: {message}\n"))
-                .Write(ServerUtil.CreatePromptEvent(Shell)).Flush();
+            Write($"\n[{room ?? "BROADCAST"}] {name}: {message}\n")
+                .WriteEvent(ServerUtil.CreatePromptEvent(Shell)).Flush();
         }
 
         /// <inheritdoc />

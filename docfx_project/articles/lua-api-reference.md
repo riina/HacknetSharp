@@ -1,16 +1,98 @@
-# Mission API reference
+# Lua API reference
 
-The mission API provides some rudimentary logic for missions.
+The lua API provides some rudimentary logic for missions, programs/services, and
+hackscripts.
+
+Some examples are available under `sample/env_sample`.
 
 Missions are defined as mission templates in YAML
 ([Template reference](template-reference.md)) with conditions and behaviour
 written inline as lua code.
+Missions are required to end in `.mission.yaml`.
+
+Programs and services are lua scripts that are treated like standard managed-code
+executables. Programs are required to end in `.program.script.yaml` and services
+are required to end in `.service.script.yaml`.
 
 ## me
 
 `PersonModel me`
 
-The person undertaking the active mission.
+The current person in the context.
+
+Only available to missions/programs.
+
+## self
+
+`Executable self`
+
+Current executable.
+
+Only available to programs/services.
+
+## login
+
+`LoginModel login`
+
+Current login.
+
+Only available to programs/services.
+
+## argv
+
+`string[] argv`
+
+Current command arguments.
+
+Only available to programs/services.
+
+## argc
+
+`int argc`
+
+Number of command arguments.
+
+Only available to programs/services.
+
+## shell
+
+`ShellProcess shell`
+
+Current shell.
+
+Only available to programs.
+
+## delay
+
+`void delay(float delay)`
+
+Pauses coroutine and triggers a delay in seconds.
+
+Only available to programs/services.
+
+## write
+
+`void write(string text)`
+
+Queues text to be written to shell output.
+
+Only available to programs.
+
+## flush
+
+`void flush()`
+
+Triggers a request for text to be written to shell output.
+
+Only available to programs.
+
+## unbind
+
+`void unbind()`
+
+Returns control to the user while still continuing execution.
+
+Only available to programs.
 
 ## person_t
 

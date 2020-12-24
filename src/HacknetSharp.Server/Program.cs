@@ -79,9 +79,20 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="evt">Event to write.</param>
         /// <returns>This object (for chaining).</returns>
-        public Program Write(ServerEvent evt)
+        public Program WriteEvent(ServerEvent evt)
         {
             User.WriteEventSafe(evt);
+            return this;
+        }
+
+        /// <summary>
+        /// Write content to pseudo-terminal output.
+        /// </summary>
+        /// <param name="text">Text to write.</param>
+        /// <returns>This object (for chaining).</returns>
+        public Program Write(string text)
+        {
+            User.WriteEventSafe(Output(text));
             return this;
         }
 

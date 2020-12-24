@@ -1,5 +1,7 @@
 # Template reference
 
+Some examples are available under `sample/env_sample`.
+
 ## System templates
 
 `hss new system -n <templateName>`
@@ -105,7 +107,7 @@ selected (weighted)
   considered).
   - Next(`string?`): Output of mission as lua code.
 
-[Mission API reference](mission-api-reference.md)
+[Lua API reference](mission-api-reference.md)
 
 ## Server configuration
 

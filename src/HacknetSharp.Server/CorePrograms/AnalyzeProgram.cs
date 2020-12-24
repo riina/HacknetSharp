@@ -18,13 +18,13 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write(Output("Not currently connected to a server\n")).Flush();
+                Write("Not currently connected to a server\n").Flush();
                 yield break;
             }
 
             if (system.FirewallIterations <= 0)
             {
-                Write(Output("Firewall not active.\n")).Flush();
+                Write("Firewall not active.\n").Flush();
                 yield break;
             }
 
@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.CorePrograms
             string[] analysisLines = ServerUtil.GenerateFirewallAnalysis(crackState.FirewallSolution,
                 crackState.FirewallIterations, system.FirewallLength);
 
-            Write(Output($"Pass {crackState.FirewallIterations}...\n")).Flush();
+            Write($"Pass {crackState.FirewallIterations}...\n").Flush();
             double delay = system.FirewallDelay * crackState.FirewallIterations;
             foreach (var analysisLine in analysisLines)
             {
@@ -44,11 +44,11 @@ namespace HacknetSharp.Server.CorePrograms
                 // If server happened to go down in between, escape.
                 if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
                 {
-                    Write(Output("Error: connection to server lost\n"));
+                    Write("Error: connection to server lost\n").Flush();
                     yield break;
                 }
 
-                Write(Output($"{analysisLine}\n")).Flush();
+                Write($"{analysisLine}\n").Flush();
             }
         }
     }

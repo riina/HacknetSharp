@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.Lua
         public ScriptManager(IWorld world)
         {
             _world = world;
-            _script = new Script(CoreModules.Preset_HardSandbox);
+            _script = new Script(CoreModules.Preset_SoftSandbox);
             _script.Globals["mg"] = this;
             _script.Globals["world"] = _world;
             _expressions = new Dictionary<string, DynValue>();
@@ -64,7 +64,14 @@ namespace HacknetSharp.Server.Lua
             RegisterFunction<SystemModel?, string, string, FileModel?>("spawn_file", SpawnFile);
             RegisterAction<FileModel?>("remove_file", RemoveFile);
 
+            // Program, service, and hackscript members
+            RunVoidScript(@"function delay(d) coroutine.yield(get_delay(d)) end");
+            RegisterFunction<float, YieldToken>("get_delay", GetDelay);
+
             // Program-only members
+            RunVoidScript(@"function write(text) return self.Write(text) end");
+            RunVoidScript(@"function flush() return self.Flush() end");
+            RunVoidScript(@"function unbind() return self.SignalUnbindProcess() end");
 
             #endregion
         }
@@ -214,17 +221,25 @@ namespace HacknetSharp.Server.Lua
         }
 
         /// <summary>
-        /// Set current person.
+        /// Sets value in global table.
         /// </summary>
-        /// <param name="person">Person.</param>
-        public void SetScriptCurrentPerson(PersonModel person)
-            => _script.Globals["me"] = person;
+        /// <param name="key">Key.</param>
+        /// <param name="value">Value.</param>
+        public void SetGlobal(string key, object? value)
+            => _script.Globals[key] = value;
 
         /// <summary>
-        /// Clear current person.
+        /// Clears value in global table.
         /// </summary>
-        public void ClearScriptCurrentPerson()
-            => _script.Globals["me"] = DynValue.Nil;
+        /// <param name="key">Key.</param>
+        public void ClearGlobal(string key)
+            => _script.Globals[key] = DynValue.Nil;
+
+        #endregion
+
+        #region Program, service, and hackscript members
+
+        private static YieldToken GetDelay(float delay) => Executable.Delay(delay);
 
         #endregion
 
@@ -922,7 +937,7 @@ namespace HacknetSharp.Server.Lua
         /// <returns>Retrieved object.</returns>
         public TR? RunScript<TR>(string script)
         {
-            var res =  _script.DoString(script).ToObject();
+            var res = _script.DoString(script).ToObject();
             try
             {
                 return res is TR || res.GetType().IsValueType ? (TR)res : default;

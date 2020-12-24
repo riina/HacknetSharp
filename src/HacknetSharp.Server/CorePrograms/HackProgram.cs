@@ -17,13 +17,13 @@ namespace HacknetSharp.Server.CorePrograms
             // Need harg[1] = protocol to hack harg[2] hack time
             if (HArgv.Length < 3 || !float.TryParse(HArgv[2], out float hackTime))
             {
-                Write(Output("This program is corrupt and cannot be executed.\n")).Flush();
+                Write("This program is corrupt and cannot be executed.\n").Flush();
                 yield break;
             }
 
             if (Argv.Length != 2)
             {
-                Write(Output("1 operand is required by this command\n")).Flush();
+                Write("1 operand is required by this command\n").Flush();
                 yield break;
             }
 
@@ -32,7 +32,7 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write(Output("Not currently connected to a server\n")).Flush();
+                Write("Not currently connected to a server\n").Flush();
                 yield break;
             }
 
@@ -43,7 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (vuln == null)
             {
-                Write(Output("Entrypoint is closed\n")).Flush();
+                Write("Entrypoint is closed\n").Flush();
                 yield break;
             }
 
@@ -51,12 +51,12 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!string.Equals(vuln.Protocol, protocol, StringComparison.InvariantCultureIgnoreCase))
             {
-                Write(Output("Unexpected protocol on entrypoint\n")).Flush();
+                Write("Unexpected protocol on entrypoint\n").Flush();
                 yield break;
             }
 
 
-            Write(Output($"«««« RUNNING {Argv[0]} »»»»\n"));
+            Write($"«««« RUNNING {Argv[0]} »»»»\n");
             SignalUnbindProcess();
 
             yield return Delay(hackTime);
@@ -64,13 +64,13 @@ namespace HacknetSharp.Server.CorePrograms
             // If server happened to go down in between, escape.
             if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
             {
-                Write(Output("Error: connection to server lost\n"));
+                Write("Error: connection to server lost\n").Flush();
                 yield break;
             }
 
             Shell.GetCrackState(system).OpenVulnerability(vuln);
 
-            Write(Output($"\n«««« {Argv[0]} COMPLETE »»»»\n")).Flush();
+            Write($"\n«««« {Argv[0]} COMPLETE »»»»\n").Flush();
         }
     }
 }

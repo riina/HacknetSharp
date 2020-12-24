@@ -1635,6 +1635,32 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Events.Server.ShellPromptEvent.Serialize
   nameWithType: ShellPromptEvent.Serialize
+- uid: HacknetSharp.Events.Server.ShellPromptEvent.TargetAddress
+  name: TargetAddress
+  href: api/HacknetSharp.Events.Server.ShellPromptEvent.html#HacknetSharp_Events_Server_ShellPromptEvent_TargetAddress
+  commentId: P:HacknetSharp.Events.Server.ShellPromptEvent.TargetAddress
+  fullName: HacknetSharp.Events.Server.ShellPromptEvent.TargetAddress
+  nameWithType: ShellPromptEvent.TargetAddress
+- uid: HacknetSharp.Events.Server.ShellPromptEvent.TargetAddress*
+  name: TargetAddress
+  href: api/HacknetSharp.Events.Server.ShellPromptEvent.html#HacknetSharp_Events_Server_ShellPromptEvent_TargetAddress_
+  commentId: Overload:HacknetSharp.Events.Server.ShellPromptEvent.TargetAddress
+  isSpec: "True"
+  fullName: HacknetSharp.Events.Server.ShellPromptEvent.TargetAddress
+  nameWithType: ShellPromptEvent.TargetAddress
+- uid: HacknetSharp.Events.Server.ShellPromptEvent.TargetConnected
+  name: TargetConnected
+  href: api/HacknetSharp.Events.Server.ShellPromptEvent.html#HacknetSharp_Events_Server_ShellPromptEvent_TargetConnected
+  commentId: P:HacknetSharp.Events.Server.ShellPromptEvent.TargetConnected
+  fullName: HacknetSharp.Events.Server.ShellPromptEvent.TargetConnected
+  nameWithType: ShellPromptEvent.TargetConnected
+- uid: HacknetSharp.Events.Server.ShellPromptEvent.TargetConnected*
+  name: TargetConnected
+  href: api/HacknetSharp.Events.Server.ShellPromptEvent.html#HacknetSharp_Events_Server_ShellPromptEvent_TargetConnected_
+  commentId: Overload:HacknetSharp.Events.Server.ShellPromptEvent.TargetConnected
+  isSpec: "True"
+  fullName: HacknetSharp.Events.Server.ShellPromptEvent.TargetConnected
+  nameWithType: ShellPromptEvent.TargetConnected
 - uid: HacknetSharp.Events.Server.ShellPromptEvent.WorkingDirectory
   name: WorkingDirectory
   href: api/HacknetSharp.Events.Server.ShellPromptEvent.html#HacknetSharp_Events_Server_ShellPromptEvent_WorkingDirectory
@@ -2217,6 +2243,25 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.CorePrograms.ChatProgram.Run
   nameWithType: ChatProgram.Run
+- uid: HacknetSharp.Server.CorePrograms.ConnectProgram
+  name: ConnectProgram
+  href: api/HacknetSharp.Server.CorePrograms.ConnectProgram.html
+  commentId: T:HacknetSharp.Server.CorePrograms.ConnectProgram
+  fullName: HacknetSharp.Server.CorePrograms.ConnectProgram
+  nameWithType: ConnectProgram
+- uid: HacknetSharp.Server.CorePrograms.ConnectProgram.Run
+  name: Run()
+  href: api/HacknetSharp.Server.CorePrograms.ConnectProgram.html#HacknetSharp_Server_CorePrograms_ConnectProgram_Run
+  commentId: M:HacknetSharp.Server.CorePrograms.ConnectProgram.Run
+  fullName: HacknetSharp.Server.CorePrograms.ConnectProgram.Run()
+  nameWithType: ConnectProgram.Run()
+- uid: HacknetSharp.Server.CorePrograms.ConnectProgram.Run*
+  name: Run
+  href: api/HacknetSharp.Server.CorePrograms.ConnectProgram.html#HacknetSharp_Server_CorePrograms_ConnectProgram_Run_
+  commentId: Overload:HacknetSharp.Server.CorePrograms.ConnectProgram.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CorePrograms.ConnectProgram.Run
+  nameWithType: ConnectProgram.Run
 - uid: HacknetSharp.Server.CorePrograms.CpProgram
   name: CpProgram
   href: api/HacknetSharp.Server.CorePrograms.CpProgram.html
@@ -2255,6 +2300,25 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.CorePrograms.CProgram.Run
   nameWithType: CProgram.Run
+- uid: HacknetSharp.Server.CorePrograms.DcProgram
+  name: DcProgram
+  href: api/HacknetSharp.Server.CorePrograms.DcProgram.html
+  commentId: T:HacknetSharp.Server.CorePrograms.DcProgram
+  fullName: HacknetSharp.Server.CorePrograms.DcProgram
+  nameWithType: DcProgram
+- uid: HacknetSharp.Server.CorePrograms.DcProgram.Run
+  name: Run()
+  href: api/HacknetSharp.Server.CorePrograms.DcProgram.html#HacknetSharp_Server_CorePrograms_DcProgram_Run
+  commentId: M:HacknetSharp.Server.CorePrograms.DcProgram.Run
+  fullName: HacknetSharp.Server.CorePrograms.DcProgram.Run()
+  nameWithType: DcProgram.Run()
+- uid: HacknetSharp.Server.CorePrograms.DcProgram.Run*
+  name: Run
+  href: api/HacknetSharp.Server.CorePrograms.DcProgram.html#HacknetSharp_Server_CorePrograms_DcProgram_Run_
+  commentId: Overload:HacknetSharp.Server.CorePrograms.DcProgram.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.CorePrograms.DcProgram.Run
+  nameWithType: DcProgram.Run
 - uid: HacknetSharp.Server.CorePrograms.EchoProgram
   name: EchoProgram
   href: api/HacknetSharp.Server.CorePrograms.EchoProgram.html
@@ -3875,6 +3939,15 @@ references:
   fullName.vb: HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel, System.String, ByRef HacknetSharp.Server.Models.SystemModel, ByRef System.Nullable(Of System.String))
   nameWithType: Executable.TryGetSystem(WorldModel, String, out SystemModel, out Nullable<String>)
   nameWithType.vb: Executable.TryGetSystem(WorldModel, String, ByRef SystemModel, ByRef Nullable(Of String))
+- uid: HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel,System.UInt32,HacknetSharp.Server.Models.SystemModel@,System.Nullable{System.String}@)
+  name: TryGetSystem(WorldModel, UInt32, out SystemModel, out Nullable<String>)
+  href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_UInt32_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___
+  commentId: M:HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel,System.UInt32,HacknetSharp.Server.Models.SystemModel@,System.Nullable{System.String}@)
+  name.vb: TryGetSystem(WorldModel, UInt32, ByRef SystemModel, ByRef Nullable(Of String))
+  fullName: HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel, System.UInt32, out HacknetSharp.Server.Models.SystemModel, out System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Executable.TryGetSystem(HacknetSharp.Server.Models.WorldModel, System.UInt32, ByRef HacknetSharp.Server.Models.SystemModel, ByRef System.Nullable(Of System.String))
+  nameWithType: Executable.TryGetSystem(WorldModel, UInt32, out SystemModel, out Nullable<String>)
+  nameWithType.vb: Executable.TryGetSystem(WorldModel, UInt32, ByRef SystemModel, ByRef Nullable(Of String))
 - uid: HacknetSharp.Server.Executable.TryGetSystem*
   name: TryGetSystem
   href: api/HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryGetSystem_
@@ -3911,6 +3984,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Executable.World
   nameWithType: Executable.World
+- uid: HacknetSharp.Server.IgnoreRegistrationAttribute
+  name: IgnoreRegistrationAttribute
+  href: api/HacknetSharp.Server.IgnoreRegistrationAttribute.html
+  commentId: T:HacknetSharp.Server.IgnoreRegistrationAttribute
+  fullName: HacknetSharp.Server.IgnoreRegistrationAttribute
+  nameWithType: IgnoreRegistrationAttribute
 - uid: HacknetSharp.Server.IPAddressRange
   name: IPAddressRange
   href: api/HacknetSharp.Server.IPAddressRange.html
@@ -4640,19 +4719,32 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Lua.ScriptManager.ScriptManager
   nameWithType: ScriptManager.ScriptManager
-- uid: HacknetSharp.Server.Lua.ScriptManager.ClearScriptCurrentPerson
-  name: ClearScriptCurrentPerson()
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_ClearScriptCurrentPerson
-  commentId: M:HacknetSharp.Server.Lua.ScriptManager.ClearScriptCurrentPerson
-  fullName: HacknetSharp.Server.Lua.ScriptManager.ClearScriptCurrentPerson()
-  nameWithType: ScriptManager.ClearScriptCurrentPerson()
-- uid: HacknetSharp.Server.Lua.ScriptManager.ClearScriptCurrentPerson*
-  name: ClearScriptCurrentPerson
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_ClearScriptCurrentPerson_
-  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.ClearScriptCurrentPerson
+- uid: HacknetSharp.Server.Lua.ScriptManager.ClearGlobal(System.String)
+  name: ClearGlobal(String)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_ClearGlobal_System_String_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.ClearGlobal(System.String)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.ClearGlobal(System.String)
+  nameWithType: ScriptManager.ClearGlobal(String)
+- uid: HacknetSharp.Server.Lua.ScriptManager.ClearGlobal*
+  name: ClearGlobal
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_ClearGlobal_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.ClearGlobal
   isSpec: "True"
-  fullName: HacknetSharp.Server.Lua.ScriptManager.ClearScriptCurrentPerson
-  nameWithType: ScriptManager.ClearScriptCurrentPerson
+  fullName: HacknetSharp.Server.Lua.ScriptManager.ClearGlobal
+  nameWithType: ScriptManager.ClearGlobal
+- uid: HacknetSharp.Server.Lua.ScriptManager.GetCoroutine(DynValue)
+  name: GetCoroutine(DynValue)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_GetCoroutine_DynValue_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.GetCoroutine(DynValue)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.GetCoroutine(DynValue)
+  nameWithType: ScriptManager.GetCoroutine(DynValue)
+- uid: HacknetSharp.Server.Lua.ScriptManager.GetCoroutine*
+  name: GetCoroutine
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_GetCoroutine_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.GetCoroutine
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Lua.ScriptManager.GetCoroutine
+  nameWithType: ScriptManager.GetCoroutine
 - uid: HacknetSharp.Server.Lua.ScriptManager.RegisterAction(System.String,Action)
   name: RegisterAction(String, Action)
   href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterAction_System_String_Action_
@@ -4810,6 +4902,25 @@ references:
   fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RegisterAction(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(System.String, Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9))
   nameWithType: ScriptManager.RegisterAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(String, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>)
   nameWithType.vb: ScriptManager.RegisterAction(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(String, Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9))
+- uid: HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String,Stream)
+  name: RegisterExpression(String, Stream)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_System_String_Stream_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String,Stream)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String, Stream)
+  nameWithType: ScriptManager.RegisterExpression(String, Stream)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String,System.String)
+  name: RegisterExpression(String, String)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_System_String_System_String_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String,System.String)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String, System.String)
+  nameWithType: ScriptManager.RegisterExpression(String, String)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RegisterExpression*
+  name: RegisterExpression
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.RegisterExpression
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RegisterExpression
+  nameWithType: ScriptManager.RegisterExpression
 - uid: HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*
   name: RegisterFunction
   href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_
@@ -4970,19 +5081,31 @@ references:
   fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RegisterFunction(Of T1, T2, T3, T4, T5, T6, T7, T8, TR)(System.String, Func(Of T1, T2, T3, T4, T5, T6, T7, T8, TR))
   nameWithType: ScriptManager.RegisterFunction<T1, T2, T3, T4, T5, T6, T7, T8, TR>(String, Func<T1, T2, T3, T4, T5, T6, T7, T8, TR>)
   nameWithType.vb: ScriptManager.RegisterFunction(Of T1, T2, T3, T4, T5, T6, T7, T8, TR)(String, Func(Of T1, T2, T3, T4, T5, T6, T7, T8, TR))
-- uid: HacknetSharp.Server.Lua.ScriptManager.RegisterScript(System.String)
-  name: RegisterScript(String)
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterScript_System_String_
-  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RegisterScript(System.String)
-  fullName: HacknetSharp.Server.Lua.ScriptManager.RegisterScript(System.String)
-  nameWithType: ScriptManager.RegisterScript(String)
-- uid: HacknetSharp.Server.Lua.ScriptManager.RegisterScript*
-  name: RegisterScript
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RegisterScript_
-  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.RegisterScript
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName*
+  name: RunFunctionByName
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName
   isSpec: "True"
-  fullName: HacknetSharp.Server.Lua.ScriptManager.RegisterScript
-  nameWithType: ScriptManager.RegisterScript
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName
+  nameWithType: ScriptManager.RunFunctionByName
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName``1(System.String)
+  name: RunFunctionByName<TR>(String)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName__1_System_String_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName``1(System.String)
+  name.vb: RunFunctionByName(Of TR)(String)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName<TR>(System.String)
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName(Of TR)(System.String)
+  nameWithType: ScriptManager.RunFunctionByName<TR>(String)
+  nameWithType.vb: ScriptManager.RunFunctionByName(Of TR)(String)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName``1(System.String,System.Object[])
+  name: RunFunctionByName<TR>(String, Object[])
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName__1_System_String_System_Object___
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName``1(System.String,System.Object[])
+  name.vb: RunFunctionByName(Of TR)(String, Object())
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName<TR>(System.String, System.Object[])
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName(Of TR)(System.String, System.Object())
+  nameWithType: ScriptManager.RunFunctionByName<TR>(String, Object[])
+  nameWithType.vb: ScriptManager.RunFunctionByName(Of TR)(String, Object())
 - uid: HacknetSharp.Server.Lua.ScriptManager.RunScript*
   name: RunScript
   href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunScript_
@@ -4990,30 +5113,76 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Lua.ScriptManager.RunScript
   nameWithType: ScriptManager.RunScript
-- uid: HacknetSharp.Server.Lua.ScriptManager.RunScript``1(System.String,System.Object[])
-  name: RunScript<TR>(String, Object[])
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunScript__1_System_String_System_Object___
-  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunScript``1(System.String,System.Object[])
-  name.vb: RunScript(Of TR)(String, Object())
-  fullName: HacknetSharp.Server.Lua.ScriptManager.RunScript<TR>(System.String, System.Object[])
-  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunScript(Of TR)(System.String, System.Object())
-  nameWithType: ScriptManager.RunScript<TR>(String, Object[])
-  nameWithType.vb: ScriptManager.RunScript(Of TR)(String, Object())
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunScript``1(DynValue)
+  name: RunScript<TR>(DynValue)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunScript__1_DynValue_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunScript``1(DynValue)
+  name.vb: RunScript(Of TR)(DynValue)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunScript<TR>(DynValue)
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunScript(Of TR)(DynValue)
+  nameWithType: ScriptManager.RunScript<TR>(DynValue)
+  nameWithType.vb: ScriptManager.RunScript(Of TR)(DynValue)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunScript``1(DynValue,System.Object[])
+  name: RunScript<TR>(DynValue, Object[])
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunScript__1_DynValue_System_Object___
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunScript``1(DynValue,System.Object[])
+  name.vb: RunScript(Of TR)(DynValue, Object())
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunScript<TR>(DynValue, System.Object[])
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunScript(Of TR)(DynValue, System.Object())
+  nameWithType: ScriptManager.RunScript<TR>(DynValue, Object[])
+  nameWithType.vb: ScriptManager.RunScript(Of TR)(DynValue, Object())
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunScript``1(System.String)
+  name: RunScript<TR>(String)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunScript__1_System_String_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunScript``1(System.String)
+  name.vb: RunScript(Of TR)(String)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunScript<TR>(System.String)
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunScript(Of TR)(System.String)
+  nameWithType: ScriptManager.RunScript<TR>(String)
+  nameWithType.vb: ScriptManager.RunScript(Of TR)(String)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String)
+  name: RunVoidFunctionByName(String)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_System_String_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String)
+  nameWithType: ScriptManager.RunVoidFunctionByName(String)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String,System.Object[])
+  name: RunVoidFunctionByName(String, Object[])
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_System_String_System_Object___
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String,System.Object[])
+  name.vb: RunVoidFunctionByName(String, Object())
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String, System.Object[])
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String, System.Object())
+  nameWithType: ScriptManager.RunVoidFunctionByName(String, Object[])
+  nameWithType.vb: ScriptManager.RunVoidFunctionByName(String, Object())
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName*
+  name: RunVoidFunctionByName
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName
+  nameWithType: ScriptManager.RunVoidFunctionByName
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue)
+  name: RunVoidScript(DynValue)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_DynValue_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue)
+  nameWithType: ScriptManager.RunVoidScript(DynValue)
+- uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue,System.Object[])
+  name: RunVoidScript(DynValue, Object[])
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_DynValue_System_Object___
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue,System.Object[])
+  name.vb: RunVoidScript(DynValue, Object())
+  fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue, System.Object[])
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue, System.Object())
+  nameWithType: ScriptManager.RunVoidScript(DynValue, Object[])
+  nameWithType.vb: ScriptManager.RunVoidScript(DynValue, Object())
 - uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String)
   name: RunVoidScript(String)
   href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_System_String_
   commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String)
   fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String)
   nameWithType: ScriptManager.RunVoidScript(String)
-- uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String,System.Object[])
-  name: RunVoidScript(String, Object[])
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_System_String_System_Object___
-  commentId: M:HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String,System.Object[])
-  name.vb: RunVoidScript(String, Object())
-  fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String, System.Object[])
-  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String, System.Object())
-  nameWithType: ScriptManager.RunVoidScript(String, Object[])
-  nameWithType.vb: ScriptManager.RunVoidScript(String, Object())
 - uid: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript*
   name: RunVoidScript
   href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_
@@ -5021,19 +5190,38 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Lua.ScriptManager.RunVoidScript
   nameWithType: ScriptManager.RunVoidScript
-- uid: HacknetSharp.Server.Lua.ScriptManager.SetScriptCurrentPerson(HacknetSharp.Server.Models.PersonModel)
-  name: SetScriptCurrentPerson(PersonModel)
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_SetScriptCurrentPerson_HacknetSharp_Server_Models_PersonModel_
-  commentId: M:HacknetSharp.Server.Lua.ScriptManager.SetScriptCurrentPerson(HacknetSharp.Server.Models.PersonModel)
-  fullName: HacknetSharp.Server.Lua.ScriptManager.SetScriptCurrentPerson(HacknetSharp.Server.Models.PersonModel)
-  nameWithType: ScriptManager.SetScriptCurrentPerson(PersonModel)
-- uid: HacknetSharp.Server.Lua.ScriptManager.SetScriptCurrentPerson*
-  name: SetScriptCurrentPerson
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_SetScriptCurrentPerson_
-  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.SetScriptCurrentPerson
+- uid: HacknetSharp.Server.Lua.ScriptManager.SetGlobal(System.String,System.Nullable{System.Object})
+  name: SetGlobal(String, Nullable<Object>)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_SetGlobal_System_String_System_Nullable_System_Object__
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.SetGlobal(System.String,System.Nullable{System.Object})
+  name.vb: SetGlobal(String, Nullable(Of Object))
+  fullName: HacknetSharp.Server.Lua.ScriptManager.SetGlobal(System.String, System.Nullable<System.Object>)
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.SetGlobal(System.String, System.Nullable(Of System.Object))
+  nameWithType: ScriptManager.SetGlobal(String, Nullable<Object>)
+  nameWithType.vb: ScriptManager.SetGlobal(String, Nullable(Of Object))
+- uid: HacknetSharp.Server.Lua.ScriptManager.SetGlobal*
+  name: SetGlobal
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_SetGlobal_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.SetGlobal
   isSpec: "True"
-  fullName: HacknetSharp.Server.Lua.ScriptManager.SetScriptCurrentPerson
-  nameWithType: ScriptManager.SetScriptCurrentPerson
+  fullName: HacknetSharp.Server.Lua.ScriptManager.SetGlobal
+  nameWithType: ScriptManager.SetGlobal
+- uid: HacknetSharp.Server.Lua.ScriptManager.TryGetExpression(System.String,System.Nullable{DynValue}@)
+  name: TryGetExpression(String, out Nullable<DynValue>)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_TryGetExpression_System_String_System_Nullable_DynValue___
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.TryGetExpression(System.String,System.Nullable{DynValue}@)
+  name.vb: TryGetExpression(String, ByRef Nullable(Of DynValue))
+  fullName: HacknetSharp.Server.Lua.ScriptManager.TryGetExpression(System.String, out System.Nullable<DynValue>)
+  fullName.vb: HacknetSharp.Server.Lua.ScriptManager.TryGetExpression(System.String, ByRef System.Nullable(Of DynValue))
+  nameWithType: ScriptManager.TryGetExpression(String, out Nullable<DynValue>)
+  nameWithType.vb: ScriptManager.TryGetExpression(String, ByRef Nullable(Of DynValue))
+- uid: HacknetSharp.Server.Lua.ScriptManager.TryGetExpression*
+  name: TryGetExpression
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_TryGetExpression_
+  commentId: Overload:HacknetSharp.Server.Lua.ScriptManager.TryGetExpression
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Lua.ScriptManager.TryGetExpression
+  nameWithType: ScriptManager.TryGetExpression
 - uid: HacknetSharp.Server.Lua.ScriptUtil
   name: ScriptUtil
   href: api/HacknetSharp.Server.Lua.ScriptUtil.html
@@ -5069,6 +5257,70 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Lua.ScriptUtil.MsRegisterTypes
   nameWithType: ScriptUtil.MsRegisterTypes
+- uid: HacknetSharp.Server.LuaProgram
+  name: LuaProgram
+  href: api/HacknetSharp.Server.LuaProgram.html
+  commentId: T:HacknetSharp.Server.LuaProgram
+  fullName: HacknetSharp.Server.LuaProgram
+  nameWithType: LuaProgram
+- uid: HacknetSharp.Server.LuaProgram.#ctor(Coroutine)
+  name: LuaProgram(Coroutine)
+  href: api/HacknetSharp.Server.LuaProgram.html#HacknetSharp_Server_LuaProgram__ctor_Coroutine_
+  commentId: M:HacknetSharp.Server.LuaProgram.#ctor(Coroutine)
+  fullName: HacknetSharp.Server.LuaProgram.LuaProgram(Coroutine)
+  nameWithType: LuaProgram.LuaProgram(Coroutine)
+- uid: HacknetSharp.Server.LuaProgram.#ctor*
+  name: LuaProgram
+  href: api/HacknetSharp.Server.LuaProgram.html#HacknetSharp_Server_LuaProgram__ctor_
+  commentId: Overload:HacknetSharp.Server.LuaProgram.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.Server.LuaProgram.LuaProgram
+  nameWithType: LuaProgram.LuaProgram
+- uid: HacknetSharp.Server.LuaProgram.Run
+  name: Run()
+  href: api/HacknetSharp.Server.LuaProgram.html#HacknetSharp_Server_LuaProgram_Run
+  commentId: M:HacknetSharp.Server.LuaProgram.Run
+  fullName: HacknetSharp.Server.LuaProgram.Run()
+  nameWithType: LuaProgram.Run()
+- uid: HacknetSharp.Server.LuaProgram.Run*
+  name: Run
+  href: api/HacknetSharp.Server.LuaProgram.html#HacknetSharp_Server_LuaProgram_Run_
+  commentId: Overload:HacknetSharp.Server.LuaProgram.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.LuaProgram.Run
+  nameWithType: LuaProgram.Run
+- uid: HacknetSharp.Server.LuaService
+  name: LuaService
+  href: api/HacknetSharp.Server.LuaService.html
+  commentId: T:HacknetSharp.Server.LuaService
+  fullName: HacknetSharp.Server.LuaService
+  nameWithType: LuaService
+- uid: HacknetSharp.Server.LuaService.#ctor(Coroutine)
+  name: LuaService(Coroutine)
+  href: api/HacknetSharp.Server.LuaService.html#HacknetSharp_Server_LuaService__ctor_Coroutine_
+  commentId: M:HacknetSharp.Server.LuaService.#ctor(Coroutine)
+  fullName: HacknetSharp.Server.LuaService.LuaService(Coroutine)
+  nameWithType: LuaService.LuaService(Coroutine)
+- uid: HacknetSharp.Server.LuaService.#ctor*
+  name: LuaService
+  href: api/HacknetSharp.Server.LuaService.html#HacknetSharp_Server_LuaService__ctor_
+  commentId: Overload:HacknetSharp.Server.LuaService.#ctor
+  isSpec: "True"
+  fullName: HacknetSharp.Server.LuaService.LuaService
+  nameWithType: LuaService.LuaService
+- uid: HacknetSharp.Server.LuaService.Run
+  name: Run()
+  href: api/HacknetSharp.Server.LuaService.html#HacknetSharp_Server_LuaService_Run
+  commentId: M:HacknetSharp.Server.LuaService.Run
+  fullName: HacknetSharp.Server.LuaService.Run()
+  nameWithType: LuaService.Run()
+- uid: HacknetSharp.Server.LuaService.Run*
+  name: Run
+  href: api/HacknetSharp.Server.LuaService.html#HacknetSharp_Server_LuaService_Run_
+  commentId: Overload:HacknetSharp.Server.LuaService.Run
+  isSpec: "True"
+  fullName: HacknetSharp.Server.LuaService.Run
+  nameWithType: LuaService.Run
 - uid: HacknetSharp.Server.Model`1
   name: Model<T>
   href: api/HacknetSharp.Server.Model-1.html
@@ -6116,6 +6368,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.Name
   nameWithType: SystemModel.Name
+- uid: HacknetSharp.Server.Models.SystemModel.OpenVulnerability(HacknetSharp.Server.ShellProcess.CrackState,HacknetSharp.Server.Models.VulnerabilityModel)
+  name: OpenVulnerability(ShellProcess.CrackState, VulnerabilityModel)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_OpenVulnerability_HacknetSharp_Server_ShellProcess_CrackState_HacknetSharp_Server_Models_VulnerabilityModel_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.OpenVulnerability(HacknetSharp.Server.ShellProcess.CrackState,HacknetSharp.Server.Models.VulnerabilityModel)
+  fullName: HacknetSharp.Server.Models.SystemModel.OpenVulnerability(HacknetSharp.Server.ShellProcess.CrackState, HacknetSharp.Server.Models.VulnerabilityModel)
+  nameWithType: SystemModel.OpenVulnerability(ShellProcess.CrackState, VulnerabilityModel)
+- uid: HacknetSharp.Server.Models.SystemModel.OpenVulnerability*
+  name: OpenVulnerability
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_OpenVulnerability_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.OpenVulnerability
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.OpenVulnerability
+  nameWithType: SystemModel.OpenVulnerability
 - uid: HacknetSharp.Server.Models.SystemModel.OsName
   name: OsName
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_OsName
@@ -6239,6 +6504,45 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.RequiredExploits
   nameWithType: SystemModel.RequiredExploits
+- uid: HacknetSharp.Server.Models.SystemModel.ResetFirewall
+  name: ResetFirewall()
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ResetFirewall
+  commentId: M:HacknetSharp.Server.Models.SystemModel.ResetFirewall
+  fullName: HacknetSharp.Server.Models.SystemModel.ResetFirewall()
+  nameWithType: SystemModel.ResetFirewall()
+- uid: HacknetSharp.Server.Models.SystemModel.ResetFirewall*
+  name: ResetFirewall
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ResetFirewall_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.ResetFirewall
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.ResetFirewall
+  nameWithType: SystemModel.ResetFirewall
+- uid: HacknetSharp.Server.Models.SystemModel.ResetProxy
+  name: ResetProxy()
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ResetProxy
+  commentId: M:HacknetSharp.Server.Models.SystemModel.ResetProxy
+  fullName: HacknetSharp.Server.Models.SystemModel.ResetProxy()
+  nameWithType: SystemModel.ResetProxy()
+- uid: HacknetSharp.Server.Models.SystemModel.ResetProxy*
+  name: ResetProxy
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ResetProxy_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.ResetProxy
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.ResetProxy
+  nameWithType: SystemModel.ResetProxy
+- uid: HacknetSharp.Server.Models.SystemModel.ResetVulnerability(HacknetSharp.Server.Models.VulnerabilityModel)
+  name: ResetVulnerability(VulnerabilityModel)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ResetVulnerability_HacknetSharp_Server_Models_VulnerabilityModel_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.ResetVulnerability(HacknetSharp.Server.Models.VulnerabilityModel)
+  fullName: HacknetSharp.Server.Models.SystemModel.ResetVulnerability(HacknetSharp.Server.Models.VulnerabilityModel)
+  nameWithType: SystemModel.ResetVulnerability(VulnerabilityModel)
+- uid: HacknetSharp.Server.Models.SystemModel.ResetVulnerability*
+  name: ResetVulnerability
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_ResetVulnerability_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.ResetVulnerability
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.ResetVulnerability
+  nameWithType: SystemModel.ResetVulnerability
 - uid: HacknetSharp.Server.Models.SystemModel.SystemMemory
   name: SystemMemory
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_SystemMemory
@@ -6265,6 +6569,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Models.SystemModel.Tag
   nameWithType: SystemModel.Tag
+- uid: HacknetSharp.Server.Models.SystemModel.TargetingShells
+  name: TargetingShells
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TargetingShells
+  commentId: P:HacknetSharp.Server.Models.SystemModel.TargetingShells
+  fullName: HacknetSharp.Server.Models.SystemModel.TargetingShells
+  nameWithType: SystemModel.TargetingShells
+- uid: HacknetSharp.Server.Models.SystemModel.TargetingShells*
+  name: TargetingShells
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_TargetingShells_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.TargetingShells
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.TargetingShells
+  nameWithType: SystemModel.TargetingShells
 - uid: HacknetSharp.Server.Models.SystemModel.TrapSignal
   name: SystemModel.TrapSignal
   href: api/HacknetSharp.Server.Models.SystemModel.TrapSignal.html
@@ -6325,6 +6642,19 @@ references:
   fullName.vb: HacknetSharp.Server.Models.SystemModel.TryGetService(Of TService)(ByRef TService)
   nameWithType: SystemModel.TryGetService<TService>(out TService)
   nameWithType.vb: SystemModel.TryGetService(Of TService)(ByRef TService)
+- uid: HacknetSharp.Server.Models.SystemModel.UpdateCrackState(HacknetSharp.Server.ShellProcess.CrackState)
+  name: UpdateCrackState(ShellProcess.CrackState)
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_UpdateCrackState_HacknetSharp_Server_ShellProcess_CrackState_
+  commentId: M:HacknetSharp.Server.Models.SystemModel.UpdateCrackState(HacknetSharp.Server.ShellProcess.CrackState)
+  fullName: HacknetSharp.Server.Models.SystemModel.UpdateCrackState(HacknetSharp.Server.ShellProcess.CrackState)
+  nameWithType: SystemModel.UpdateCrackState(ShellProcess.CrackState)
+- uid: HacknetSharp.Server.Models.SystemModel.UpdateCrackState*
+  name: UpdateCrackState
+  href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_UpdateCrackState_
+  commentId: Overload:HacknetSharp.Server.Models.SystemModel.UpdateCrackState
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Models.SystemModel.UpdateCrackState
+  nameWithType: SystemModel.UpdateCrackState
 - uid: HacknetSharp.Server.Models.SystemModel.Vulnerabilities
   name: Vulnerabilities
   href: api/HacknetSharp.Server.Models.SystemModel.html#HacknetSharp_Server_Models_SystemModel_Vulnerabilities
@@ -7285,6 +7615,15 @@ references:
   fullName.vb: HacknetSharp.Server.Program.TryGetSystem(System.String, ByRef HacknetSharp.Server.Models.SystemModel, ByRef System.Nullable(Of System.String))
   nameWithType: Program.TryGetSystem(String, out SystemModel, out Nullable<String>)
   nameWithType.vb: Program.TryGetSystem(String, ByRef SystemModel, ByRef Nullable(Of String))
+- uid: HacknetSharp.Server.Program.TryGetSystem(System.UInt32,HacknetSharp.Server.Models.SystemModel@,System.Nullable{System.String}@)
+  name: TryGetSystem(UInt32, out SystemModel, out Nullable<String>)
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystem_System_UInt32_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___
+  commentId: M:HacknetSharp.Server.Program.TryGetSystem(System.UInt32,HacknetSharp.Server.Models.SystemModel@,System.Nullable{System.String}@)
+  name.vb: TryGetSystem(UInt32, ByRef SystemModel, ByRef Nullable(Of String))
+  fullName: HacknetSharp.Server.Program.TryGetSystem(System.UInt32, out HacknetSharp.Server.Models.SystemModel, out System.Nullable<System.String>)
+  fullName.vb: HacknetSharp.Server.Program.TryGetSystem(System.UInt32, ByRef HacknetSharp.Server.Models.SystemModel, ByRef System.Nullable(Of System.String))
+  nameWithType: Program.TryGetSystem(UInt32, out SystemModel, out Nullable<String>)
+  nameWithType.vb: Program.TryGetSystem(UInt32, ByRef SystemModel, ByRef Nullable(Of String))
 - uid: HacknetSharp.Server.Program.TryGetSystem*
   name: TryGetSystem
   href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystem_
@@ -7343,12 +7682,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Program.User
   nameWithType: Program.User
-- uid: HacknetSharp.Server.Program.Write(HacknetSharp.ServerEvent)
-  name: Write(ServerEvent)
-  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Write_HacknetSharp_ServerEvent_
-  commentId: M:HacknetSharp.Server.Program.Write(HacknetSharp.ServerEvent)
-  fullName: HacknetSharp.Server.Program.Write(HacknetSharp.ServerEvent)
-  nameWithType: Program.Write(ServerEvent)
+- uid: HacknetSharp.Server.Program.Write(System.String)
+  name: Write(String)
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Write_System_String_
+  commentId: M:HacknetSharp.Server.Program.Write(System.String)
+  fullName: HacknetSharp.Server.Program.Write(System.String)
+  nameWithType: Program.Write(String)
 - uid: HacknetSharp.Server.Program.Write*
   name: Write
   href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Write_
@@ -7356,6 +7695,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Program.Write
   nameWithType: Program.Write
+- uid: HacknetSharp.Server.Program.WriteEvent(HacknetSharp.ServerEvent)
+  name: WriteEvent(ServerEvent)
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_WriteEvent_HacknetSharp_ServerEvent_
+  commentId: M:HacknetSharp.Server.Program.WriteEvent(HacknetSharp.ServerEvent)
+  fullName: HacknetSharp.Server.Program.WriteEvent(HacknetSharp.ServerEvent)
+  nameWithType: Program.WriteEvent(ServerEvent)
+- uid: HacknetSharp.Server.Program.WriteEvent*
+  name: WriteEvent
+  href: api/HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_WriteEvent_
+  commentId: Overload:HacknetSharp.Server.Program.WriteEvent
+  isSpec: "True"
+  fullName: HacknetSharp.Server.Program.WriteEvent
+  nameWithType: Program.WriteEvent
 - uid: HacknetSharp.Server.ProgramContext
   name: ProgramContext
   href: api/HacknetSharp.Server.ProgramContext.html
@@ -8806,6 +9158,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerabilities
   nameWithType: ShellProcess.CrackState.OpenVulnerabilities
+- uid: HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerability(HacknetSharp.Server.Models.VulnerabilityModel)
+  name: OpenVulnerability(VulnerabilityModel)
+  href: api/HacknetSharp.Server.ShellProcess.CrackState.html#HacknetSharp_Server_ShellProcess_CrackState_OpenVulnerability_HacknetSharp_Server_Models_VulnerabilityModel_
+  commentId: M:HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerability(HacknetSharp.Server.Models.VulnerabilityModel)
+  fullName: HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerability(HacknetSharp.Server.Models.VulnerabilityModel)
+  nameWithType: ShellProcess.CrackState.OpenVulnerability(VulnerabilityModel)
+- uid: HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerability*
+  name: OpenVulnerability
+  href: api/HacknetSharp.Server.ShellProcess.CrackState.html#HacknetSharp_Server_ShellProcess_CrackState_OpenVulnerability_
+  commentId: Overload:HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerability
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ShellProcess.CrackState.OpenVulnerability
+  nameWithType: ShellProcess.CrackState.OpenVulnerability
 - uid: HacknetSharp.Server.ShellProcess.CrackState.ProxyClocks
   name: ProxyClocks
   href: api/HacknetSharp.Server.ShellProcess.CrackState.html#HacknetSharp_Server_ShellProcess_CrackState_ProxyClocks
@@ -8949,6 +9314,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.ShellProcess.SetVariable
   nameWithType: ShellProcess.SetVariable
+- uid: HacknetSharp.Server.ShellProcess.Target
+  name: Target
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_Target
+  commentId: P:HacknetSharp.Server.ShellProcess.Target
+  fullName: HacknetSharp.Server.ShellProcess.Target
+  nameWithType: ShellProcess.Target
+- uid: HacknetSharp.Server.ShellProcess.Target*
+  name: Target
+  href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_Target_
+  commentId: Overload:HacknetSharp.Server.ShellProcess.Target
+  isSpec: "True"
+  fullName: HacknetSharp.Server.ShellProcess.Target
+  nameWithType: ShellProcess.Target
 - uid: HacknetSharp.Server.ShellProcess.TryGetVariable(System.String,System.Nullable{System.String}@)
   name: TryGetVariable(String, out Nullable<String>)
   href: api/HacknetSharp.Server.ShellProcess.html#HacknetSharp_Server_ShellProcess_TryGetVariable_System_String_System_Nullable_System_String___
@@ -9125,6 +9503,19 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.TemplateGroup.TemplateGroup
   nameWithType: TemplateGroup.TemplateGroup
+- uid: HacknetSharp.Server.TemplateGroup.LuaSources
+  name: LuaSources
+  href: api/HacknetSharp.Server.TemplateGroup.html#HacknetSharp_Server_TemplateGroup_LuaSources
+  commentId: P:HacknetSharp.Server.TemplateGroup.LuaSources
+  fullName: HacknetSharp.Server.TemplateGroup.LuaSources
+  nameWithType: TemplateGroup.LuaSources
+- uid: HacknetSharp.Server.TemplateGroup.LuaSources*
+  name: LuaSources
+  href: api/HacknetSharp.Server.TemplateGroup.html#HacknetSharp_Server_TemplateGroup_LuaSources_
+  commentId: Overload:HacknetSharp.Server.TemplateGroup.LuaSources
+  isSpec: "True"
+  fullName: HacknetSharp.Server.TemplateGroup.LuaSources
+  nameWithType: TemplateGroup.LuaSources
 - uid: HacknetSharp.Server.TemplateGroup.MissionTemplates
   name: MissionTemplates
   href: api/HacknetSharp.Server.TemplateGroup.html#HacknetSharp_Server_TemplateGroup_MissionTemplates

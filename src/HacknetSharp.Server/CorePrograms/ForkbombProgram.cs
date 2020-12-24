@@ -11,7 +11,7 @@ namespace HacknetSharp.Server.CorePrograms
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            Write(Output("«««« RUNNING FORKBOMB »»»»\n"));
+            Write("«««« RUNNING FORKBOMB »»»»\n");
             SignalUnbindProcess();
             int warningGate = 0;
             while (true)
@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.CorePrograms
                 int tf = (int)(100.0 * System.GetUsedMemory() / System.SystemMemory) / 25;
                 if (tf > warningGate)
                 {
-                    Write(Output($"\nMEMORY {tf * 25}% CONSUMED\n")).Flush();
+                    Write($"\nMEMORY {tf * 25}% CONSUMED\n").Flush();
                     warningGate = tf;
                 }
 

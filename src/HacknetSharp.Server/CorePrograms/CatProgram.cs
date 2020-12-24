@@ -18,7 +18,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length == 1)
             {
-                Write(Output("At least 1 operand is required by this command\n")).Flush();
+                Write("At least 1 operand is required by this command\n").Flush();
                 yield break;
             }
 
@@ -27,7 +27,7 @@ namespace HacknetSharp.Server.CorePrograms
                 string path = GetNormalized(Combine(Shell.WorkingDirectory, file));
                 if (path == "/")
                 {
-                    Write(Output($"cat: {path}: Is a directory\n"));
+                    Write($"cat: {path}: Is a directory\n");
                     continue;
                 }
 
@@ -35,26 +35,26 @@ namespace HacknetSharp.Server.CorePrograms
                     switch (closest.Kind)
                     {
                         case FileModel.FileKind.TextFile:
-                            Write(Output(closest.Content ?? "")).Write(_newlineOutput);
+                            Write(closest.Content ?? "").WriteEvent(_newlineOutput);
                             break;
                         case FileModel.FileKind.FileFile:
-                            Write(Output($"cat: {path}: Is a binary file\n"));
+                            Write($"cat: {path}: Is a binary file\n");
                             break;
                         case FileModel.FileKind.ProgFile:
-                            Write(Output($"cat: {path}: Is a binary file\n"));
+                            Write($"cat: {path}: Is a binary file\n");
                             break;
                         case FileModel.FileKind.Folder:
-                            Write(Output($"cat: {path}: Is a directory\n"));
+                            Write($"cat: {path}: Is a directory\n");
                             break;
                     }
                 else
                     switch (result)
                     {
                         case ReadAccessResult.NotReadable:
-                            Write(Output($"cat: {closestStr}: Permission denied\n")).Flush();
+                            Write($"cat: {closestStr}: Permission denied\n").Flush();
                             yield break;
                         case ReadAccessResult.NoExist:
-                            Write(Output($"cat: {path}: No such file or directory\n")).Flush();
+                            Write($"cat: {path}: No such file or directory\n").Flush();
                             yield break;
                     }
             }

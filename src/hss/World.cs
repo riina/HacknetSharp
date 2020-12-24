@@ -128,9 +128,9 @@ namespace hss
             tmpMissions.UnionWith(Model.ActiveMissions);
             foreach (var mission in tmpMissions)
             {
+                ScriptManager.SetGlobal("me", mission.Person);
                 try
                 {
-                    ScriptManager.SetScriptCurrentPerson(mission.Person);
                     ProcessMission(mission);
                 }
                 catch (Exception e)
@@ -141,7 +141,7 @@ namespace hss
                 }
                 finally
                 {
-                    ScriptManager.ClearScriptCurrentPerson();
+                    ScriptManager.ClearGlobal("me");
                 }
             }
         }
@@ -641,10 +641,16 @@ namespace hss
             var mission = Spawn.Mission(missionPath, person);
             if (!string.IsNullOrWhiteSpace(template.Start))
             {
-                ScriptManager.SetScriptCurrentPerson(person);
-                if (TryGetScriptMissionStart(missionPath, out var script))
-                    ScriptManager.RunVoidScript(script);
-                ScriptManager.ClearScriptCurrentPerson();
+                ScriptManager.SetGlobal("me", person);
+                try
+                {
+                    if (TryGetScriptMissionStart(missionPath, out var script))
+                        ScriptManager.RunVoidScript(script);
+                }
+                finally
+                {
+                    ScriptManager.ClearGlobal("me");
+                }
             }
 
             Logger.LogInformation("Successfully started mission {Path} for person {Id}", mission.Template,

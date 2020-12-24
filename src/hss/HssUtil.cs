@@ -62,10 +62,7 @@ namespace hss
                     ".mission.yaml",
                     (file, path) => templates.MissionTemplates.Add(file, ReadFromFile<MissionTemplate>(path).Item2)
                 },
-                {
-                    ".script.lua",
-                    (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path))
-                }
+                {".script.lua", (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path))}
             };
             LoadTree(dir, templateLoadDict);
         }

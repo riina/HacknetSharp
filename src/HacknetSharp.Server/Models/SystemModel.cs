@@ -310,7 +310,7 @@ namespace HacknetSharp.Server.Models
                 : Processes.Values;
             src = pid.HasValue ? src.Where(p => p.ProcessContext.Pid == pid.Value) : src;
             src = parentPid.HasValue ? src.Where(p => p.ProcessContext.ParentPid == parentPid.Value) : src;
-            return src.OrderBy(p=>p.ProcessContext.Pid);
+            return src.OrderBy(p => p.ProcessContext.Pid);
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2)
             {
-                Write(Output("1 operand are required by this command\n")).Flush();
+                Write("1 operand are required by this command\n").Flush();
                 yield break;
             }
 
@@ -23,17 +23,17 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write(Output("Not currently connected to a server\n")).Flush();
+                Write("Not currently connected to a server\n").Flush();
                 yield break;
             }
 
             if (system.FirewallIterations <= 0)
             {
-                Write(Output("Firewall not active on target system.\n")).Flush();
+                Write("Firewall not active on target system.\n").Flush();
                 yield break;
             }
 
-            Write(Output("Solving firewall...\n")).Flush();
+            Write("Solving firewall...\n").Flush();
 
             yield return Delay(6);
 
@@ -42,18 +42,18 @@ namespace HacknetSharp.Server.CorePrograms
             // If server happened to go down in between, escape.
             if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
             {
-                Write(Output("Error: connection to server lost\n"));
+                Write("Error: connection to server lost\n").Flush();
                 yield break;
             }
 
             string solution = Argv[1];
             var crackState = Shell.GetCrackState(system);
             if (crackState.FirewallSolution != solution)
-                Write(Output("Incorrect solution. Bypass failed.\n")).Flush();
+                Write("Incorrect solution. Bypass failed.\n").Flush();
             else
             {
                 crackState.FirewallSolved = true;
-                Write(Output("Firewall bypassed.\n")).Flush();
+                Write("Firewall bypassed.\n").Flush();
             }
         }
     }
