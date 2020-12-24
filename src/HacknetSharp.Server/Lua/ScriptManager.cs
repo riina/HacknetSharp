@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
@@ -21,7 +22,7 @@ namespace HacknetSharp.Server.Lua
 
         private readonly IWorld _world;
         private readonly Script _script;
-        private readonly Dictionary<string, DynValue> _scripts;
+        private readonly Dictionary<string, DynValue> _expressions;
 
         /// <summary>
         /// Creates a new instance of <see cref="ScriptManager"/>.
@@ -33,7 +34,7 @@ namespace HacknetSharp.Server.Lua
             _script = new Script(CoreModules.Preset_HardSandbox);
             _script.Globals["mg"] = this;
             _script.Globals["world"] = _world;
-            _scripts = new Dictionary<string, DynValue>();
+            _expressions = new Dictionary<string, DynValue>();
 
             #region Function registration
 
@@ -234,27 +235,50 @@ namespace HacknetSharp.Server.Lua
         #region Script functions
 
         /// <summary>
-        /// Registers a raw lua script.
+        /// Registers a raw lua expression.
         /// </summary>
         /// <param name="key">Script key.</param>
-        /// <param name="script">Script raw contents.</param>
-        /// <returns>New script or existing script.</returns>
-        public DynValue RegisterScript(string key, string script)
+        /// <param name="expression">Expression.</param>
+        /// <returns>New value or existing value.</returns>
+        public DynValue RegisterExpression(string key, string expression)
         {
-            if (!_scripts.TryGetValue(key, out var dyn))
-                _scripts[key] = dyn = _script.DoString(script);
+            if (!_expressions.TryGetValue(key, out var dyn))
+                _expressions[key] = dyn = _script.DoString(expression);
             return dyn;
         }
 
         /// <summary>
-        /// Attempts to retrieve registered script.
+        /// Registers a raw lua expression.
         /// </summary>
         /// <param name="key">Script key.</param>
-        /// <param name="script">Obtained script.</param>
-        /// <returns>True if found,</returns>
-        public bool TryGetScript(string key, [NotNullWhen(true)] out DynValue? script)
+        /// <param name="stream">Expression stream.</param>
+        /// <returns>New value or existing value.</returns>
+        public DynValue RegisterExpression(string key, Stream stream)
         {
-            return _scripts.TryGetValue(key, out script);
+            if (!_expressions.TryGetValue(key, out var dyn))
+                _expressions[key] = dyn = _script.DoStream(stream);
+            return dyn;
+        }
+
+        /// <summary>
+        /// Attempts to retrieve registered expression.
+        /// </summary>
+        /// <param name="key">Script key.</param>
+        /// <param name="expression">Obtained expression.</param>
+        /// <returns>True if found.</returns>
+        public bool TryGetExpression(string key, [NotNullWhen(true)] out DynValue? expression)
+        {
+            return _expressions.TryGetValue(key, out expression);
+        }
+
+        /// <summary>
+        /// Creates a coroutine.
+        /// </summary>
+        /// <param name="fun">Target function.</param>
+        /// <returns>Coroutine.</returns>
+        public Coroutine GetCoroutine(DynValue fun)
+        {
+            return _script.CreateCoroutine(fun).Coroutine;
         }
 
         /// <summary>

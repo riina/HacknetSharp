@@ -138,9 +138,13 @@ namespace hss
             {
                 foreach (var type in _programTypes)
                 {
-                    var info = type.GetCustomAttribute(typeof(ProgramInfoAttribute)) as ProgramInfoAttribute ??
-                               throw new ApplicationException(
-                                   $"{type.FullName} supplied as program but did not have {nameof(ProgramInfoAttribute)}");
+                    if (type.GetCustomAttribute(typeof(IgnoreRegistrationAttribute)) != null) continue;
+                    if (type.GetCustomAttribute(typeof(ProgramInfoAttribute)) is not ProgramInfoAttribute info)
+                    {
+                        Logger.LogWarning(
+                            $"{type.FullName} supplied as program but did not have {nameof(ProgramInfoAttribute)}");
+                        continue;
+                    }
 
                     var func = (Func<Program>)(_getConstructorDelegate.MakeGenericMethod(type, typeof(Program))
                                                    .Invoke(null, Array.Empty<object>()) ??
@@ -153,9 +157,14 @@ namespace hss
 
                 foreach (var type in _serviceTypes)
                 {
-                    var info = type.GetCustomAttribute(typeof(ServiceInfoAttribute)) as ServiceInfoAttribute ??
-                               throw new ApplicationException(
-                                   $"{type.FullName} supplied as service but did not have {nameof(ServiceInfoAttribute)}");
+                    if (type.GetCustomAttribute(typeof(IgnoreRegistrationAttribute)) != null) continue;
+                    if (type.GetCustomAttribute(typeof(ServiceInfoAttribute)) is not ServiceInfoAttribute info)
+                    {
+                        Logger.LogWarning(
+                            $"{type.FullName} supplied as service but did not have {nameof(ServiceInfoAttribute)}");
+                        continue;
+                    }
+
                     var func = (Func<Service>)(_getConstructorDelegate.MakeGenericMethod(type, typeof(Service))
                                                    .Invoke(null, Array.Empty<object>()) ??
                                                throw new ApplicationException(

@@ -47,7 +47,7 @@ namespace hss.Runnables
 
                 var templates = new TemplateGroup();
 
-                HssUtil.LoadTemplates(templates, servConf, ".");
+                HssUtil.LoadTemplates(templates, servConf.ContentFolders, ".");
                 if (!templates.WorldTemplates.TryGetValue(Template, out var template))
                 {
                     Console.WriteLine("Could not find a template with the specified name.");

@@ -34,11 +34,11 @@ namespace hss
             (StoreName.Root, StoreLocation.CurrentUser), (StoreName.My, StoreLocation.CurrentUser)
         };
 
-        public static void LoadTemplates(TemplateGroup templates, ServerSettings settings, string dir)
+        public static void LoadTemplates(TemplateGroup templates, IEnumerable<string>? contentFolders, string dir)
         {
             LoadTemplates(templates, Path.Combine(dir, HssConstants.ContentFolder));
-            if (settings.ContentFolders == null) return;
-            foreach (var path in settings.ContentFolders)
+            if (contentFolders == null) return;
+            foreach (var path in contentFolders)
                 LoadTemplates(templates, Path.Combine(dir, path));
         }
 
@@ -61,6 +61,10 @@ namespace hss
                 {
                     ".mission.yaml",
                     (file, path) => templates.MissionTemplates.Add(file, ReadFromFile<MissionTemplate>(path).Item2)
+                },
+                {
+                    ".script.lua",
+                    (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path))
                 }
             };
             LoadTree(dir, templateLoadDict);

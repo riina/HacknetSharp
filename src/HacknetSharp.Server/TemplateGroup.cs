@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using HacknetSharp.Server.Templates;
 
 namespace HacknetSharp.Server
@@ -29,6 +31,11 @@ namespace HacknetSharp.Server
         public Dictionary<string, MissionTemplate> MissionTemplates { get; }
 
         /// <summary>
+        /// Lua sources.
+        /// </summary>
+        public Dictionary<string, Func<Stream>> LuaSources { get; }
+
+        /// <summary>
         /// Creates an empty instance of <see cref="TemplateGroup"/>.
         /// </summary>
         public TemplateGroup()
@@ -37,6 +44,7 @@ namespace HacknetSharp.Server
             PersonTemplates = new Dictionary<string, PersonTemplate>();
             SystemTemplates = new Dictionary<string, SystemTemplate>();
             MissionTemplates = new Dictionary<string, MissionTemplate>();
+            LuaSources = new Dictionary<string, Func<Stream>>();
         }
     }
 }

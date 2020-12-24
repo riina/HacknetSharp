@@ -2,6 +2,7 @@
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using HacknetSharp;
 using HacknetSharp.Events.Server;
@@ -33,6 +34,7 @@ namespace hss
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
         private readonly HashSet<SystemModel> _tmpSystems;
         private readonly HashSet<MissionModel> _tmpMissions;
+        private readonly Dictionary<string, DynValue> _scriptFile;
         private readonly Dictionary<string, DynValue> _scriptMissionStart;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionGoal;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionNext;
@@ -47,6 +49,7 @@ namespace hss
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Logger = server.Logger;
+            _scriptFile = new Dictionary<string, DynValue>();
             _scriptMissionStart = new Dictionary<string, DynValue>();
             _scriptMissionGoal = new Dictionary<string, Dictionary<int, DynValue>>();
             _scriptMissionNext = new Dictionary<string, Dictionary<int, DynValue>>();
@@ -85,6 +88,12 @@ namespace hss
                     }
             }
 
+            foreach (var (name, fun) in Templates.LuaSources)
+            {
+                using var fs = fun();
+                RegisterScriptFile(name, fs);
+            }
+
             _processes = new HashSet<Process>();
             _tmpProcesses = new HashSet<Process>();
             _shellProcesses = new HashSet<ShellProcess>();
@@ -95,8 +104,14 @@ namespace hss
 
         private static string GetWrappedLua(string body, bool isVoid) =>
             isVoid
-                ? $"return function()\n{body}\nend"
-                : $"return function()\nreturn {body}\nend";
+                ? $"return function() {body} end"
+                : $"return function() return {body} end";
+
+        private static string GetWrappedLua(Stream body, bool isVoid)
+        {
+            using var sr = new StreamReader(body);
+            return GetWrappedLua(sr.ReadToEnd(), isVoid);
+        }
 
         public void Tick()
         {
@@ -637,11 +652,24 @@ namespace hss
             return mission;
         }
 
+        private void RegisterScriptFile(string name, Stream stream)
+        {
+            _scriptFile[name] =
+                ScriptManager.RegisterExpression(name, GetWrappedLua(stream, true));
+        }
+
+        private bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
+        {
+            if (_scriptFile.TryGetValue(name, out script)) return true;
+            script = null;
+            return false;
+        }
+
         private void RegisterScriptMissionStart(string missionPath, string content)
         {
             string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Start";
             _scriptMissionStart[missionPath] =
-                ScriptManager.RegisterScript(script, GetWrappedLua(content, true));
+                ScriptManager.RegisterExpression(script, GetWrappedLua(content, true));
         }
 
         private bool TryGetScriptMissionStart(string missionPath, [NotNullWhen(true)] out DynValue? script)
@@ -655,7 +683,7 @@ namespace hss
         {
             string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Goal{index}";
             string lua = GetWrappedLua(content, false);
-            var res = ScriptManager.RegisterScript(script, lua);
+            var res = ScriptManager.RegisterExpression(script, lua);
             if (!_scriptMissionGoal.TryGetValue(missionPath, out var dict))
                 _scriptMissionGoal[missionPath] = dict = new Dictionary<int, DynValue>();
             dict[index] = res;
@@ -674,7 +702,7 @@ namespace hss
         {
             string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Next{index}";
             string lua = GetWrappedLua(content, true);
-            var res = ScriptManager.RegisterScript(script, lua);
+            var res = ScriptManager.RegisterExpression(script, lua);
             if (!_scriptMissionNext.TryGetValue(missionPath, out var dict))
                 _scriptMissionNext[missionPath] = dict = new Dictionary<int, DynValue>();
             dict[index] = res;
@@ -704,7 +732,7 @@ namespace hss
             return success;
         }
 
-        private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute, string[]) result)
+        private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute?, string[]) result)
         {
             string[] line = ServerUtil.SplitCommandLine(command);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
@@ -713,12 +741,25 @@ namespace hss
                 return false;
             }
 
-            bool success = Server.Programs.TryGetValue(line[0], out var res);
-            result = success ? (res.Item1(), res.Item2, line) : default;
-            return success;
+            string id = line[0];
+
+            if (Server.Programs.TryGetValue(id, out var res))
+            {
+                result = (res.Item1(), res.Item2, line);
+                return true;
+            }
+
+            if (id.EndsWith(".program.script.lua") && TryGetScriptFile(id, out var script))
+            {
+                result = (new LuaProgram(ScriptManager.GetCoroutine(script)), null, line);
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
-        private bool TryGetServiceWithHargs(string command, out (Service, ServiceInfoAttribute, string[]) result)
+        private bool TryGetServiceWithHargs(string command, out (Service, ServiceInfoAttribute?, string[]) result)
         {
             string[] line = ServerUtil.SplitCommandLine(command);
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
@@ -727,9 +768,23 @@ namespace hss
                 return false;
             }
 
-            bool success = Server.Services.TryGetValue(line[0], out var res);
-            result = success ? (res.Item1(), res.Item2, line) : default;
-            return success;
+            string id = line[0];
+
+            if (Server.Services.TryGetValue(id, out var res))
+            {
+                result = (res.Item1(), res.Item2, line);
+                return true;
+            }
+
+
+            if (id.EndsWith(".service.script.lua") && TryGetScriptFile(id, out var script))
+            {
+                result = (new LuaService(ScriptManager.GetCoroutine(script)), null, line);
+                return true;
+            }
+
+            result = default;
+            return false;
         }
     }
 }

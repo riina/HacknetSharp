@@ -1,0 +1,1 @@
+log("I am hibiki misora ;D")
