@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace HacknetSharp.Server.Lua
 
         private readonly IWorld _world;
         private readonly Script _script;
-        private readonly HashSet<string> _scripts;
+        private readonly Dictionary<string, DynValue> _scripts;
 
         /// <summary>
         /// Creates a new instance of <see cref="ScriptManager"/>.
@@ -32,7 +33,7 @@ namespace HacknetSharp.Server.Lua
             _script = new Script(CoreModules.Preset_HardSandbox);
             _script.Globals["mg"] = this;
             _script.Globals["world"] = _world;
-            _scripts = new HashSet<string>();
+            _scripts = new Dictionary<string, DynValue>();
 
             #region Function registration
 
@@ -41,6 +42,8 @@ namespace HacknetSharp.Server.Lua
             RegisterFunction("world", World);
 
             // Misc convenience
+
+            // Standard members
             RegisterFunction<string, PersonModel?>("person_t", PersonT);
             RegisterFunction<string, SystemModel?>("system_t", SystemT);
             RegisterFunction<string, SystemModel?>("system_a", SystemA);
@@ -60,6 +63,8 @@ namespace HacknetSharp.Server.Lua
             RegisterFunction<SystemModel?, string, string, FileModel?>("spawn_file", SpawnFile);
             RegisterAction<FileModel?>("remove_file", RemoveFile);
 
+            // Program-only members
+
             #endregion
         }
 
@@ -73,6 +78,10 @@ namespace HacknetSharp.Server.Lua
         #region Miscellaneous convenience functions
 
         /*private static Cell2 CvCell2(int x, int y) => new Cell2(x, y);*/
+
+        #endregion
+
+        #region Standard members
 
         private PersonModel? PersonT(string tag)
         {
@@ -218,18 +227,7 @@ namespace HacknetSharp.Server.Lua
 
         #endregion
 
-        #region Entity proxy funcitons
-
-        /*public void SetScriptCurrentEntity(Entity entity)
-            => _script.Globals["nt"] = entity;
-
-        public void ClearScriptCurrentEntity()
-            => _script.Globals["nt"] = DynValue.Nil;
-
-        private Entity Nt() {
-            var res = _script.Globals.Get("nt");
-            return Equals(res, DynValue.Nil) ? null : (Entity) res.ToObject();
-        }*/
+        #region Program-only members
 
         #endregion
 
@@ -238,11 +236,25 @@ namespace HacknetSharp.Server.Lua
         /// <summary>
         /// Registers a raw lua script.
         /// </summary>
+        /// <param name="key">Script key.</param>
         /// <param name="script">Script raw contents.</param>
-        public void RegisterScript(string script)
+        /// <returns>New script or existing script.</returns>
+        public DynValue RegisterScript(string key, string script)
         {
-            if (_scripts.Add(script))
-                _script.DoString(script);
+            if (!_scripts.TryGetValue(key, out var dyn))
+                _scripts[key] = dyn = _script.DoString(script);
+            return dyn;
+        }
+
+        /// <summary>
+        /// Attempts to retrieve registered script.
+        /// </summary>
+        /// <param name="key">Script key.</param>
+        /// <param name="script">Obtained script.</param>
+        /// <returns>True if found,</returns>
+        public bool TryGetScript(string key, [NotNullWhen(true)] out DynValue? script)
+        {
+            return _scripts.TryGetValue(key, out script);
         }
 
         /// <summary>
@@ -829,38 +841,144 @@ namespace HacknetSharp.Server.Lua
             _script.Globals[name] = function;
 
         /// <summary>
-        /// Runs a named script.
+        /// Runs a function by name.
         /// </summary>
-        /// <param name="script">Script to execute.</param>
-        public void RunVoidScript(string script)
+        /// <param name="name">Function to execute.</param>
+        public void RunVoidFunctionByName(string name)
         {
-            var fn = _script.Globals.Get(script);
+            var fn = _script.Globals.Get(name);
             if (Equals(fn, DynValue.Nil)) return;
             _script.Call(fn);
         }
 
         /// <summary>
-        /// Runs a named script with specified arguments.
+        /// Runs a script.
         /// </summary>
         /// <param name="script">Script to execute.</param>
-        /// <param name="args">Arguments to pass.</param>
-        public void RunVoidScript(string script, params object[] args)
+        public void RunVoidScript(DynValue script)
         {
-            var fn = _script.Globals.Get(script);
+            _script.Call(script);
+        }
+
+        /// <summary>
+        /// Runs a raw lua script.
+        /// </summary>
+        /// <param name="script">Script raw contents.</param>
+        public void RunVoidScript(string script)
+        {
+            _script.DoString(script);
+        }
+
+        /// <summary>
+        /// Runs a function by name with specified arguments.
+        /// </summary>
+        /// <param name="name">Function to execute.</param>
+        /// <param name="args">Arguments to pass.</param>
+        public void RunVoidFunctionByName(string name, params object[] args)
+        {
+            var fn = _script.Globals.Get(name);
             if (Equals(fn, DynValue.Nil)) return;
             _script.Call(fn, args);
         }
 
         /// <summary>
-        /// Runs a named script with specified arguments and gets the result.
+        /// Runs a script with specified arguments.
+        /// </summary>
+        /// <param name="script">Script to execute.</param>
+        /// <param name="args">Arguments to pass.</param>
+        public void RunVoidScript(DynValue script, params object[] args)
+        {
+            _script.Call(script, args);
+        }
+
+        /// <summary>
+        /// Runs a raw lua script and gets the result.
+        /// </summary>
+        /// <param name="script">Script raw contents.</param>
+        /// <returns>Retrieved object.</returns>
+        public TR? RunScript<TR>(string script)
+        {
+            var res =  _script.DoString(script).ToObject();
+            try
+            {
+                return res is TR || res.GetType().IsValueType ? (TR)res : default;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// Runs a script and gets the result.
+        /// </summary>
+        /// <param name="script">Script to execute.</param>
+        /// <typeparam name="TR">Return type.</typeparam>
+        /// <returns>Retrieved object.</returns>
+        public TR? RunScript<TR>(DynValue script)
+        {
+            var res = _script.Call(script).ToObject();
+            try
+            {
+                return res is TR || res.GetType().IsValueType ? (TR)res : default;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// Runs a script with specified arguments and gets the result.
         /// </summary>
         /// <param name="script">Script to execute.</param>
         /// <param name="args">Arguments to pass.</param>
         /// <typeparam name="TR">Return type.</typeparam>
         /// <returns>Retrieved object.</returns>
-        public TR? RunScript<TR>(string script, params object[] args)
+        public TR? RunScript<TR>(DynValue script, params object[] args)
         {
-            var fn = _script.Globals.Get(script);
+            var res = _script.Call(script, args).ToObject();
+            try
+            {
+                return res is TR || res.GetType().IsValueType ? (TR)res : default;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// Runs a function by name and gets the result.
+        /// </summary>
+        /// <param name="name">Function to execute.</param>
+        /// <typeparam name="TR">Return type.</typeparam>
+        /// <returns>Retrieved object.</returns>
+        public TR? RunFunctionByName<TR>(string name)
+        {
+            var fn = _script.Globals.Get(name);
+            if (Equals(fn, DynValue.Nil)) return default;
+            var res = _script.Call(fn).ToObject();
+            try
+            {
+                return res is TR || res.GetType().IsValueType ? (TR)res : default;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// Runs a function by name with specified arguments and gets the result.
+        /// </summary>
+        /// <param name="name">Function to execute.</param>
+        /// <param name="args">Arguments to pass.</param>
+        /// <typeparam name="TR">Return type.</typeparam>
+        /// <returns>Retrieved object.</returns>
+        public TR? RunFunctionByName<TR>(string name, params object[] args)
+        {
+            var fn = _script.Globals.Get(name);
             if (Equals(fn, DynValue.Nil)) return default;
             var res = _script.Call(fn, args).ToObject();
             try

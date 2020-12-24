@@ -10,6 +10,7 @@ using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
+using MoonSharp.Interpreter;
 
 namespace hss
 {
@@ -32,7 +33,9 @@ namespace hss
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
         private readonly HashSet<SystemModel> _tmpSystems;
         private readonly HashSet<MissionModel> _tmpMissions;
-
+        private readonly Dictionary<string, DynValue> _scriptMissionStart;
+        private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionGoal;
+        private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionNext;
 
         internal World(Server server, WorldModel model, IServerDatabase database)
         {
@@ -44,6 +47,9 @@ namespace hss
             Database = database;
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Logger = server.Logger;
+            _scriptMissionStart = new Dictionary<string, DynValue>();
+            _scriptMissionGoal = new Dictionary<string, Dictionary<int, DynValue>>();
+            _scriptMissionNext = new Dictionary<string, Dictionary<int, DynValue>>();
             foreach (var person in Model.Persons)
             {
                 Model.ActiveMissions.UnionWith(person.Missions);
@@ -61,15 +67,13 @@ namespace hss
             foreach (var (missionPath, mission) in Templates.MissionTemplates)
             {
                 if (!string.IsNullOrWhiteSpace(mission.Start))
-                    ScriptManager.RegisterScript(
-                        GetWrappedLua(GetScriptIdStart(missionPath), mission.Start, true));
+                    RegisterScriptMissionStart(missionPath, mission.Start);
                 if (mission.Goals != null)
                     for (int i = 0; i < mission.Goals.Count; i++)
                     {
                         string goal = mission.Goals[i];
                         if (!string.IsNullOrWhiteSpace(goal))
-                            ScriptManager.RegisterScript(
-                                GetWrappedLua(GetScriptIdGoal(missionPath, i), goal, false));
+                            RegisterScriptMissionGoal(missionPath, i, goal);
                     }
 
                 if (mission.Outcomes != null)
@@ -77,8 +81,7 @@ namespace hss
                     {
                         var outcome = mission.Outcomes[i];
                         if (!string.IsNullOrWhiteSpace(outcome.Next))
-                            ScriptManager.RegisterScript(
-                                GetWrappedLua(GetScriptIdNext(missionPath, i), outcome.Next, true));
+                            RegisterScriptMissionNext(missionPath, i, outcome.Next);
                     }
             }
 
@@ -90,10 +93,10 @@ namespace hss
             _tmpMissions = new HashSet<MissionModel>();
         }
 
-        private static string GetWrappedLua(string name, string body, bool isVoid)
-        {
-            return isVoid ? $"function {name}()\n{body}\nend\n" : $"function {name}()\nreturn {body}\nend\n";
-        }
+        private static string GetWrappedLua(string body, bool isVoid) =>
+            isVoid
+                ? $"return function()\n{body}\nend"
+                : $"return function()\nreturn {body}\nend";
 
         public void Tick()
         {
@@ -138,8 +141,11 @@ namespace hss
             for (int i = 0; i < goals.Count; i++)
             {
                 if (GetFlag(flags, i)) continue;
-                bool? res = ScriptManager.RunScript<bool?>(GetScriptIdGoal(mission.Template, i));
-                if (res != null && res.Value) SetFlag(flags, i, true);
+                if (TryGetScriptMissionGoal(mission.Template, i, out var script))
+                {
+                    bool? res = ScriptManager.RunScript<bool?>(script);
+                    if (res != null && res.Value) SetFlag(flags, i, true);
+                }
             }
 
             bool end = false;
@@ -170,7 +176,8 @@ namespace hss
                 {
                     Logger.LogInformation("Gracefully finished mission {Path} for person {Id}", mission.Template,
                         mission.Person.Key);
-                    ScriptManager.RunVoidScript(GetScriptIdNext(mission.Template, i));
+                    if (TryGetScriptMissionNext(mission.Template, i, out var script))
+                        ScriptManager.RunVoidScript(script);
                     Spawn.RemoveMission(mission);
                     end = true;
                     break;
@@ -620,7 +627,8 @@ namespace hss
             if (!string.IsNullOrWhiteSpace(template.Start))
             {
                 ScriptManager.SetScriptCurrentPerson(person);
-                ScriptManager.RunVoidScript(GetScriptIdStart(missionPath));
+                if (TryGetScriptMissionStart(missionPath, out var script))
+                    ScriptManager.RunVoidScript(script);
                 ScriptManager.ClearScriptCurrentPerson();
             }
 
@@ -629,14 +637,57 @@ namespace hss
             return mission;
         }
 
-        private static string GetScriptIdStart(string missionPath) =>
-            $"{missionPath.Replace('/', '_').Replace('.', '_')}_Start";
+        private void RegisterScriptMissionStart(string missionPath, string content)
+        {
+            string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Start";
+            _scriptMissionStart[missionPath] =
+                ScriptManager.RegisterScript(script, GetWrappedLua(content, true));
+        }
 
-        private static string GetScriptIdGoal(string missionPath, int index) =>
-            $"{missionPath.Replace('/', '_').Replace('.', '_')}_Goal{index}";
+        private bool TryGetScriptMissionStart(string missionPath, [NotNullWhen(true)] out DynValue? script)
+        {
+            if (_scriptMissionStart.TryGetValue(missionPath, out script)) return true;
+            script = null;
+            return false;
+        }
 
-        private static string GetScriptIdNext(string missionPath, int index) =>
-            $"{missionPath.Replace('/', '_').Replace('.', '_')}_Next{index}";
+        private void RegisterScriptMissionGoal(string missionPath, int index, string content)
+        {
+            string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Goal{index}";
+            string lua = GetWrappedLua(content, false);
+            var res = ScriptManager.RegisterScript(script, lua);
+            if (!_scriptMissionGoal.TryGetValue(missionPath, out var dict))
+                _scriptMissionGoal[missionPath] = dict = new Dictionary<int, DynValue>();
+            dict[index] = res;
+        }
+
+        private bool TryGetScriptMissionGoal(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
+        {
+            if (_scriptMissionGoal.TryGetValue(missionPath, out var dict) && dict.TryGetValue(index, out script))
+                return true;
+
+            script = null;
+            return false;
+        }
+
+        private void RegisterScriptMissionNext(string missionPath, int index, string content)
+        {
+            string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Next{index}";
+            string lua = GetWrappedLua(content, true);
+            var res = ScriptManager.RegisterScript(script, lua);
+            if (!_scriptMissionNext.TryGetValue(missionPath, out var dict))
+                _scriptMissionNext[missionPath] = dict = new Dictionary<int, DynValue>();
+            dict[index] = res;
+        }
+
+        private bool TryGetScriptMissionNext(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
+        {
+            if (_scriptMissionNext.TryGetValue(missionPath, out var dict) && dict.TryGetValue(index, out script))
+                return true;
+
+            script = null;
+            return false;
+        }
 
         private bool TryGetIntrinsicProgramWithHargs(string command,
             out (Program, ProgramInfoAttribute, string[]) result)
