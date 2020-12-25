@@ -107,7 +107,7 @@ selected (weighted)
   considered).
   - Next(`string?`): Output of mission as lua code.
 
-[Lua API reference](mission-api-reference.md)
+[Lua API reference](lua-api-reference.md)
 
 ## Server configuration
 

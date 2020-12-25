@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IWorld
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.53.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -141,7 +141,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="HacknetSharp.Server.Program.html">Program</a>&gt;, <a class="xref" href="HacknetSharp.Server.ProgramInfoAttribute.html">ProgramInfoAttribute</a>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Func</span>&lt;<a class="xref" href="HacknetSharp.Server.Program.html">Program</a>&gt;, <a class="xref" href="HacknetSharp.Server.ProgramInfoAttribute.html">ProgramInfoAttribute</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -172,7 +172,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ILogger</span></td>
+        <td><span class="xref">Microsoft.Extensions.Logging.ILogger</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -461,7 +461,7 @@
   </span>
   <a id="HacknetSharp_Server_IWorld_ExecuteCommand_" data-uid="HacknetSharp.Server.IWorld.ExecuteCommand*"></a>
   <h4 id="HacknetSharp_Server_IWorld_ExecuteCommand_HacknetSharp_Server_ProgramContext_" data-uid="HacknetSharp.Server.IWorld.ExecuteCommand(HacknetSharp.Server.ProgramContext)">ExecuteCommand(ProgramContext)</h4>
-  <div class="markdown level1 summary"><p>Executes a command that was prepared with <a class="xref" href="HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_InitTentativeProgramContext_HacknetSharp_Server_IWorld_Guid_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_System_String___HacknetSharp_Server_ProgramContext_InvocationType_System_Int32_">InitTentativeProgramContext(IWorld, Guid, IPersonContext, PersonModel, String[], ProgramContext.InvocationType, Int32)</a>.</p>
+  <div class="markdown level1 summary"><p>Executes a command that was prepared with <a class="xref" href="HacknetSharp.Server.ServerUtil.html#HacknetSharp_Server_ServerUtil_InitTentativeProgramContext_HacknetSharp_Server_IWorld_System_Guid_HacknetSharp_Server_IPersonContext_HacknetSharp_Server_Models_PersonModel_System_String___HacknetSharp_Server_ProgramContext_InvocationType_System_Int32_">InitTentativeProgramContext(IWorld, Guid, IPersonContext, PersonModel, String[], ProgramContext.InvocationType, Int32)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -488,19 +488,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IWorld_GetProgramInfo_System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IWorld_GetProgramInfo_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.GetProgramInfo(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IWorld.cs/#L132">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_GetProgramInfo_" data-uid="HacknetSharp.Server.IWorld.GetProgramInfo*"></a>
-  <h4 id="HacknetSharp_Server_IWorld_GetProgramInfo_System_Nullable_System_String__" data-uid="HacknetSharp.Server.IWorld.GetProgramInfo(System.Nullable{System.String})">GetProgramInfo(Nullable&lt;String&gt;)</h4>
+  <h4 id="HacknetSharp_Server_IWorld_GetProgramInfo_System_String_" data-uid="HacknetSharp.Server.IWorld.GetProgramInfo(System.String)">GetProgramInfo(String)</h4>
   <div class="markdown level1 summary"><p>Attempts to get a program's information from the specified command line.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ProgramInfoAttribute GetProgramInfo(string? argv)</code></pre>
+    <pre><code class="lang-csharp hljs">ProgramInfoAttribute GetProgramInfo(string argv)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -513,7 +513,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">argv</span></td>
         <td><p>Command line to get program information from.</p>
 </td>
@@ -815,13 +815,13 @@ or the executable doesn't exist.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IWorld_TryGetSystem_Guid_HacknetSharp_Server_Models_SystemModel__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.TryGetSystem(Guid%2CHacknetSharp.Server.Models.SystemModel%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IWorld_TryGetSystem_System_Guid_HacknetSharp_Server_Models_SystemModel__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IWorld.TryGetSystem(System.Guid%2CHacknetSharp.Server.Models.SystemModel%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IWorld.cs/#L72">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IWorld_TryGetSystem_" data-uid="HacknetSharp.Server.IWorld.TryGetSystem*"></a>
-  <h4 id="HacknetSharp_Server_IWorld_TryGetSystem_Guid_HacknetSharp_Server_Models_SystemModel__" data-uid="HacknetSharp.Server.IWorld.TryGetSystem(Guid,HacknetSharp.Server.Models.SystemModel@)">TryGetSystem(Guid, out SystemModel)</h4>
+  <h4 id="HacknetSharp_Server_IWorld_TryGetSystem_System_Guid_HacknetSharp_Server_Models_SystemModel__" data-uid="HacknetSharp.Server.IWorld.TryGetSystem(System.Guid,HacknetSharp.Server.Models.SystemModel@)">TryGetSystem(Guid, out SystemModel)</h4>
   <div class="markdown level1 summary"><p>Attempts to find a system with the specified ID.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -840,7 +840,7 @@ or the executable doesn't exist.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Guid</span></td>
+        <td><span class="xref">System.Guid</span></td>
         <td><span class="parametername">id</span></td>
         <td><p>System ID.</p>
 </td>
@@ -885,8 +885,7 @@ or the executable doesn't exist.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
-                <div></div>
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
               </nav>
             </div>
           </div>

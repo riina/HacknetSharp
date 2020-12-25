@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Executable.EditYieldToken
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.53.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -82,6 +82,30 @@
     <div class="level1"><a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a></div>
     <div class="level2"><span class="xref">Executable.EditYieldToken</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
   <h5 id="HacknetSharp_Server_Executable_EditYieldToken_syntax">Syntax</h5>
@@ -92,13 +116,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Executable_EditYieldToken__ctor_HacknetSharp_Server_IPersonContext_Guid_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.EditYieldToken.%23ctor(HacknetSharp.Server.IPersonContext%2CGuid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Executable_EditYieldToken__ctor_HacknetSharp_Server_IPersonContext_System_Guid_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Executable.EditYieldToken.%23ctor(HacknetSharp.Server.IPersonContext%2CSystem.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Executable.cs/#L630">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Executable_EditYieldToken__ctor_" data-uid="HacknetSharp.Server.Executable.EditYieldToken.#ctor*"></a>
-  <h4 id="HacknetSharp_Server_Executable_EditYieldToken__ctor_HacknetSharp_Server_IPersonContext_Guid_" data-uid="HacknetSharp.Server.Executable.EditYieldToken.#ctor(HacknetSharp.Server.IPersonContext,Guid)">EditYieldToken(IPersonContext, Guid)</h4>
+  <h4 id="HacknetSharp_Server_Executable_EditYieldToken__ctor_HacknetSharp_Server_IPersonContext_System_Guid_" data-uid="HacknetSharp.Server.Executable.EditYieldToken.#ctor(HacknetSharp.Server.IPersonContext,System.Guid)">EditYieldToken(IPersonContext, Guid)</h4>
   <div class="markdown level1 summary"><p>Creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -123,7 +147,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Guid</span></td>
+        <td><span class="xref">System.Guid</span></td>
         <td><span class="parametername">operation</span></td>
         <td><p>Operation ID to check for.</p>
 </td>
@@ -220,7 +244,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Guid</span></td>
+        <td><span class="xref">System.Guid</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -236,7 +260,8 @@
   </span>
   <a id="HacknetSharp_Server_Executable_EditYieldToken_Yield_" data-uid="HacknetSharp.Server.Executable.EditYieldToken.Yield*"></a>
   <h4 id="HacknetSharp_Server_Executable_EditYieldToken_Yield_HacknetSharp_Server_IWorld_" data-uid="HacknetSharp.Server.Executable.EditYieldToken.Yield(HacknetSharp.Server.IWorld)">Yield(IWorld)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Checks yield condition of this token.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -255,7 +280,8 @@
       <tr>
         <td><a class="xref" href="HacknetSharp.Server.IWorld.html">IWorld</a></td>
         <td><span class="parametername">world</span></td>
-        <td></td>
+        <td><p>World to check token against.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -270,7 +296,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><p>True if yield is over and execution should resume.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -292,8 +319,7 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
-                <div></div>
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
               </nav>
             </div>
           </div>

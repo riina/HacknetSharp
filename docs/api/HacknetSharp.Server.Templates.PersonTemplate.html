@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PersonTemplate
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.53.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -81,11 +81,35 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">PersonTemplate</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.Templates.html">HacknetSharp.Server.Templates</a></h6>
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
   <h5 id="HacknetSharp_Server_Templates_PersonTemplate_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PersonTemplate : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class PersonTemplate</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -121,7 +145,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? AddressRange { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string AddressRange { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,7 +157,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -214,7 +238,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? EmailProvider { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string EmailProvider { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -226,7 +250,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -245,7 +269,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt;? EmailProviders { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt; EmailProviders { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -257,7 +281,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -338,7 +362,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt;? FleetTemplates { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt; FleetTemplates { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -350,7 +374,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -369,7 +393,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;PersonTemplate.NetworkEntry&gt;? Network { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;PersonTemplate.NetworkEntry&gt; Network { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -381,7 +405,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">List</span>&lt;<a class="xref" href="HacknetSharp.Server.Templates.PersonTemplate.NetworkEntry.html">PersonTemplate.NetworkEntry</a>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="HacknetSharp.Server.Templates.PersonTemplate.NetworkEntry.html">PersonTemplate.NetworkEntry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -400,7 +424,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? Password { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Password { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -412,7 +436,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -431,7 +455,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt;? Passwords { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt; Passwords { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -443,7 +467,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -462,7 +486,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? PrimaryAddress { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string PrimaryAddress { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -474,7 +498,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -493,7 +517,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? PrimaryTemplate { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string PrimaryTemplate { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -505,7 +529,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -524,7 +548,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt;? PrimaryTemplates { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt; PrimaryTemplates { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -536,7 +560,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -643,12 +667,12 @@
   </span>
   <a id="HacknetSharp_Server_Templates_PersonTemplate_Tag_" data-uid="HacknetSharp.Server.Templates.PersonTemplate.Tag*"></a>
   <h4 id="HacknetSharp_Server_Templates_PersonTemplate_Tag" data-uid="HacknetSharp.Server.Templates.PersonTemplate.Tag">Tag</h4>
-  <div class="markdown level1 summary"><p>Unique tag for lookup.</p>
+  <div class="markdown level1 summary"><p>Tag for lookup.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? Tag { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Tag { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -660,7 +684,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -679,7 +703,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? Username { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Username { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -691,7 +715,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -710,7 +734,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt;? Usernames { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, float&gt; Usernames { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -722,7 +746,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Single</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -731,19 +755,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Templates_PersonTemplate_Generate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_TemplateGroup_System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn%2CHacknetSharp.Server.TemplateGroup%2CSystem.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Templates_PersonTemplate_Generate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_TemplateGroup_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn%2CHacknetSharp.Server.TemplateGroup%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Templates/PersonTemplate.cs/#L160">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Templates_PersonTemplate_Generate_" data-uid="HacknetSharp.Server.Templates.PersonTemplate.Generate*"></a>
-  <h4 id="HacknetSharp_Server_Templates_PersonTemplate_Generate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_TemplateGroup_System_Nullable_System_String__" data-uid="HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.TemplateGroup,System.Nullable{System.String})">Generate(WorldSpawn, TemplateGroup, Nullable&lt;String&gt;)</h4>
+  <h4 id="HacknetSharp_Server_Templates_PersonTemplate_Generate_HacknetSharp_Server_WorldSpawn_HacknetSharp_Server_TemplateGroup_System_String_" data-uid="HacknetSharp.Server.Templates.PersonTemplate.Generate(HacknetSharp.Server.WorldSpawn,HacknetSharp.Server.TemplateGroup,System.String)">Generate(WorldSpawn, TemplateGroup, String)</h4>
   <div class="markdown level1 summary"><p>Generates a person using this template.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Generate(WorldSpawn spawn, TemplateGroup templates, string? addressRange)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Generate(WorldSpawn spawn, TemplateGroup templates, string addressRange)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -768,9 +792,30 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">addressRange</span></td>
         <td><p>Address range to override template with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when there is insufficient data to successfully apply template.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.KeyNotFoundException</span></td>
+        <td><p>Thrown when a template is not found.</p>
 </td>
       </tr>
     </tbody>
@@ -791,8 +836,7 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
-                <div></div>
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
               </nav>
             </div>
           </div>

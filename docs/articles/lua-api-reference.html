@@ -8,7 +8,7 @@
     <title>Lua API reference </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Lua API reference ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.53.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,6 +79,7 @@ Missions are required to end in <code>.mission.yaml</code>.</p>
 <p>Programs and services are lua scripts that are treated like standard managed-code
 executables. Programs are required to end in <code>.program.script.yaml</code> and services
 are required to end in <code>.service.script.yaml</code>.</p>
+<h1 id="fields">Fields</h1>
 <h2 id="me">me</h2>
 <p><code>PersonModel me</code></p>
 <p>The current person in the context.</p>
@@ -103,55 +104,106 @@ are required to end in <code>.service.script.yaml</code>.</p>
 <p><code>ShellProcess shell</code></p>
 <p>Current shell.</p>
 <p>Only available to programs.</p>
-<h2 id="delay">delay</h2>
-<p><code>void delay(float delay)</code></p>
+<h2 id="system">system</h2>
+<p><code>SystemModel system</code></p>
+<p>Current system.</p>
+<p>Only available to programs/services/tasks.</p>
+<h1 id="specialized-members">Specialized Members</h1>
+<h2 id="delay">Delay</h2>
+<p><code>void Delay(float delay)</code></p>
 <p>Pauses coroutine and triggers a delay in seconds.</p>
 <p>Only available to programs/services.</p>
-<h2 id="write">write</h2>
-<p><code>void write(string text)</code></p>
+<h2 id="write">Write</h2>
+<p><code>void Write(string text)</code></p>
 <p>Queues text to be written to shell output.</p>
 <p>Only available to programs.</p>
-<h2 id="flush">flush</h2>
-<p><code>void flush()</code></p>
+<h2 id="flush">Flush</h2>
+<p><code>void Flush()</code></p>
 <p>Triggers a request for text to be written to shell output.</p>
 <p>Only available to programs.</p>
-<h2 id="unbind">unbind</h2>
-<p><code>void unbind()</code></p>
+<h2 id="unbind">Unbind</h2>
+<p><code>void Unbind()</code></p>
 <p>Returns control to the user while still continuing execution.</p>
 <p>Only available to programs.</p>
-<h2 id="person_t">person_t</h2>
-<p><code>PersonModel? person_t(string tag)</code></p>
-<p>Tries to get a person with the specified unique tag.</p>
-<h2 id="system_t">system_t</h2>
-<p><code>SystemModel? system_t(string tag)</code></p>
-<p>Tries to get a system with the specified unique tag.</p>
-<h2 id="system_a">system_a</h2>
-<p><code>SystemModel? system_a(string tag)</code></p>
-<p>Tries to get a system with the specified IP address.</p>
-<h2 id="home">home</h2>
-<p><code>SystemModel? home(PersonModel? person)</code></p>
-<p>Attempts to get the home system for a person.</p>
-<h2 id="start_mission">start_mission</h2>
-<p><code>MissionModel? start_mission(PersonModel? person, string missionPath)</code></p>
+<h1 id="stanadard-members">Stanadard Members</h1>
+<h2 id="startmission">StartMission</h2>
+<p><code>MissionModel? StartMission(PersonModel? person, string missionPath)</code></p>
 <p>Attempts to start the specified mission.</p>
-<h2 id="remove_mission">remove_mission</h2>
-<p><code>void remove_mission(MissionModel? mission)</code></p>
+<h2 id="removemission">RemoveMission</h2>
+<p><code>void RemoveMission(MissionModel? mission)</code></p>
 <p>Removes (ends) a mission.</p>
-<h2 id="system_up">system_up</h2>
-<p><code>bool system_up(SystemModel? system)</code></p>
+<h2 id="persont">PersonT</h2>
+<p><code>PersonModel[]? PersonT(string tag)</code></p>
+<p>Tries to get persons with the specified tag.</p>
+<h2 id="spawnperson">SpawnPerson</h2>
+<p><code>PersonModel SpawnPerson(string name, string username)</code></p>
+<p>Spawns a person with the specified proper name and username.</p>
+<h2 id="spawnpersong">SpawnPersonG</h2>
+<p><code>PersonModel SpawnPersonG(string name, string username, Guid key)</code></p>
+<p>Spawns a person with the specified proper name, username, and group key.</p>
+<h2 id="spawnpersont">SpawnPersonT</h2>
+<p><code>PersonModel SpawnPersonT(string name, string username, string tag)</code></p>
+<p>Spawns a person with the specified proper name, username, tag.</p>
+<h2 id="spawnpersongt">SpawnPersonGT</h2>
+<p><code>PersonModel SpawnPersonG(string name, string username, string tag, Guid key)</code></p>
+<p>Spawns a person with the specified proper name, username, tag, and group key.</p>
+<h2 id="removeperson">RemovePerson</h2>
+<p><code>void RemovePerson(PersonModel? person)</code></p>
+<p>Removes a person (and all systems).</p>
+<h2 id="systemt">SystemT</h2>
+<p><code>SystemModel[]? SystemT(string tag)</code></p>
+<p>Tries to get system with the specified tag.</p>
+<h2 id="systema">SystemA</h2>
+<p><code>SystemModel? SystemA(string tag)</code></p>
+<p>Tries to get a system with the specified IP address.</p>
+<h2 id="home">Home</h2>
+<p><code>SystemModel? Home(PersonModel? person)</code></p>
+<p>Attempts to get the home system for a person.</p>
+<h2 id="systemup">SystemUp</h2>
+<p><code>bool SystemUp(SystemModel? system)</code></p>
 <p>Checks if a system is up. Returns false if system is null.</p>
-<h2 id="file_exists">file_exists</h2>
-<p><code>bool file_exists(SystemModel? system, string path)</code></p>
+<h2 id="spawnsystem">SpawnSystem</h2>
+<p><code>SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressOrAddressRange)</code></p>
+<p>Attempts to spawn a system.</p>
+<h2 id="spawnsystemg">SpawnSystemG</h2>
+<p><code>SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressOrAddressRange, Guid key)</code></p>
+<p>Attempts to spawn a system with the specified group key.</p>
+<h2 id="spawnsystemt">SpawnSystemT</h2>
+<p><code>SystemModel? SpawnSystemT(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag)</code></p>
+<p>Attempts to spawn a system with the specified tag.</p>
+<h2 id="spawnsystemgt">SpawnSystemGT</h2>
+<p><code>SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag, Guid key)</code></p>
+<p>Attempts to spawn a system with the specified tag and group key.</p>
+<h2 id="removesystem">RemoveSystem</h2>
+<p><code>void RemoveSystem(SystemModel? system)</code></p>
+<p>Removes a system.</p>
+<h2 id="reset">Reset</h2>
+<p><code>void ResetSystem(SystemModel? system)</code></p>
+<p>Resets a specified system to its template state.</p>
+<h2 id="fileexists">FileExists</h2>
+<p><code>bool FileExists(SystemModel? system, string path)</code></p>
 <p>Checks if the filesystem on the specified system contains
 a file/folder with the provided path.</p>
-<h2 id="file_contains">file_contains</h2>
-<p><code>bool file_contains(SystemModel? system, string path, string text, bool ignoreCase)</code></p>
+<h2 id="filecontains">FileContains</h2>
+<p><code>bool FileContains(SystemModel? system, string path, string text, bool ignoreCase)</code></p>
 <p>Checks if a file exists on the specified system and contains the specified text.</p>
-<h2 id="log">log</h2>
-<p><code>void log(string message)</code></p>
+<h2 id="spawnfile">SpawnFile</h2>
+<p><code>FileModel? SpawnFile(SystemModel? system, string path, string content)</code></p>
+<p>Spawns a text file with the specified content. Returns an existing file if applicable.</p>
+<h2 id="removefile">RemoveFile</h2>
+<p><code>void RemoveFile(FileModel? file)</code></p>
+<p>Removes a file (recursive).</p>
+<h2 id="spawncron">SpawnCron</h2>
+<p><code>CronModel? SpawnCron(SystemModel? system, string content, float start, float delay, float end)</code></p>
+<p>Spawns a task with the specified content.</p>
+<h2 id="removecron">RemoveCron</h2>
+<p><code>void RemoveCron(CronModel? cron)</code></p>
+<p>Removes a task.</p>
+<h2 id="log">Log</h2>
+<p><code>void Log(string message)</code></p>
 <p>Writes a <code>LogLevel.Information</code> message to the world's logger.</p>
-<h2 id="log_ex">log_ex</h2>
-<p><code>void log_ex(string message, int level)</code></p>
+<h2 id="logex">LogEx</h2>
+<p><code>void LogEx(string message, int level)</code></p>
 <p>Writes a message to the world's logger.</p>
 <ul>
 <li>0: LogLevel.Information</li>
@@ -159,27 +211,6 @@ a file/folder with the provided path.</p>
 <li>2: LogLevel.Error</li>
 <li>default: LogLevel.Critical</li>
 </ul>
-<h2 id="spawn_person">spawn_person</h2>
-<p><code>PersonModel spawn_person(string name, string username)</code></p>
-<p>Spawns a person with the specified proper name and username.</p>
-<h2 id="spawn_person_tagged">spawn_person_tagged</h2>
-<p><code>PersonModel spawn_person_tagged(string name, string username, string tag)</code></p>
-<p>Spawns a person with the specified proper name, username, and unique tag.</p>
-<h2 id="spawn_system">spawn_system</h2>
-<p><code>SystemModel? spawn_system(PersonModel? owner, string password, string template, string addressOrAddressRange)</code></p>
-<p>Attempts to spawn a system.</p>
-<h2 id="remove_person">remove_person</h2>
-<p><code>void remove_person(PersonModel? person)</code></p>
-<p>Removes a person (and all systems).</p>
-<h2 id="remove_system">remove_system</h2>
-<p><code>void remove_system(SystemModel? system)</code></p>
-<p>Removes a system.</p>
-<h2 id="spawn_file">spawn_file</h2>
-<p><code>FileModel? spawn_file(SystemModel? system, string path, string content)</code></p>
-<p>Spawns a file with the specified content. Returns an existing file if applicable.</p>
-<h2 id="remove_file">remove_file</h2>
-<p><code>void remove_file(FileModel? file)</code></p>
-<p>Removes a file.</p>
 </article>
           </div>
           
@@ -193,8 +224,7 @@ a file/folder with the provided path.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
-                <div></div>
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
               </nav>
             </div>
           </div>
