@@ -350,10 +350,19 @@ namespace HacknetSharp.Server.Lua
         /// Executes and returns the raw result of a raw lua script.
         /// </summary>
         /// <param name="script">Script.</param>
+        /// <param name="errorToString">If true, returns error as string.</param>
         /// <returns>Result.</returns>
-        public DynValue EvaluateScript(string script)
+        public DynValue EvaluateScript(string script, bool errorToString = false)
         {
-            return _script.DoString(script);
+            try
+            {
+                return _script.DoString(script);
+            }
+            catch (Exception e)
+            {
+                if (!errorToString) throw;
+                return DynValue.FromObject(_script, e.ToString());
+            }
         }
 
         /// <summary>
@@ -372,7 +381,7 @@ namespace HacknetSharp.Server.Lua
         /// <param name="expression">Expression.</param>
         /// <param name="errorToString">If true, returns error as string.</param>
         /// <returns>Result.</returns>
-        public DynValue EvaluateExpression(string expression, bool errorToString)
+        public DynValue EvaluateExpression(string expression, bool errorToString = false)
         {
             try
             {
