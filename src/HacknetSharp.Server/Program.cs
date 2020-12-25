@@ -88,11 +88,11 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Write content to pseudo-terminal output.
         /// </summary>
-        /// <param name="text">Text to write.</param>
+        /// <param name="obj">Object to write.</param>
         /// <returns>This object (for chaining).</returns>
-        public Program Write(string text)
+        public Program Write(object obj)
         {
-            User.WriteEventSafe(Output(text));
+            User.WriteEventSafe(Output(obj is string str ? str : obj.ToString() ?? "<object>"));
             return this;
         }
 
@@ -172,7 +172,7 @@ namespace HacknetSharp.Server
                 context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
             {
-                string[] chainLine = ServerUtil.SplitCommandLine(system.ConnectCommandLine);
+                string[] chainLine = system.ConnectCommandLine.SplitCommandLine();
                 if (chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
                     context.ChainLine = chainLine;
             }

@@ -25,11 +25,13 @@ namespace HacknetSharp.Server
         {
             while (_coroutine.State != CoroutineState.Dead)
             {
+                World.ScriptManager.SetGlobal("world", World);
                 World.ScriptManager.SetGlobal("system", System);
                 World.ScriptManager.SetGlobal("self", this);
                 World.ScriptManager.SetGlobal("login", Login);
                 World.ScriptManager.SetGlobal("argv", Argv);
                 World.ScriptManager.SetGlobal("argc", Argv.Length);
+                World.ScriptManager.SetGlobal("args", Context.Args);
                 World.ScriptManager.SetGlobal("shell", Shell);
                 World.ScriptManager.SetGlobal("me", Person);
                 try
@@ -41,11 +43,13 @@ namespace HacknetSharp.Server
                 }
                 finally
                 {
+                    World.ScriptManager.ClearGlobal("world");
                     World.ScriptManager.ClearGlobal("system");
                     World.ScriptManager.ClearGlobal("self");
                     World.ScriptManager.ClearGlobal("login");
                     World.ScriptManager.ClearGlobal("argv");
                     World.ScriptManager.ClearGlobal("argc");
+                    World.ScriptManager.ClearGlobal("args");
                     World.ScriptManager.ClearGlobal("shell");
                     World.ScriptManager.ClearGlobal("me");
                 }

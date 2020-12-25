@@ -43,6 +43,11 @@ namespace HacknetSharp.Server
         public string[] Argv { get; set; } = null!;
 
         /// <summary>
+        /// Original argument string.
+        /// </summary>
+        public string Args { get; set; } = null!;
+
+        /// <summary>
         /// Hidden arguments for this process.
         /// </summary>
         public string[] HArgv { get; set; } = null!;

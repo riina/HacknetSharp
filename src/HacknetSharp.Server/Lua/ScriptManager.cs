@@ -32,15 +32,12 @@ namespace HacknetSharp.Server.Lua
         {
             _world = world;
             _script = new Script(CoreModules.Preset_SoftSandbox);
-            _script.Globals["mg"] = this;
             _script.Globals["world"] = _world;
             _expressions = new Dictionary<string, DynValue>();
 
             #region Function registration
 
             // Manager
-            RegisterFunction("mg", Mg);
-            RegisterFunction("world", World);
 
             // Misc convenience
 
@@ -91,18 +88,16 @@ namespace HacknetSharp.Server.Lua
             RunVoidScript(@"function Delay(d) coroutine.yield(self.Delay(d)) end");
 
             // Program-only members
-            RunVoidScript(@"function Write(text) return self.Write(text) end");
+            RunVoidScript(@"function Write(obj) return self.Write(obj) end");
             RunVoidScript(@"function Flush() return self.Flush() end");
             RunVoidScript(@"function Unbind() return self.SignalUnbindProcess() end");
-            RunVoidScript(@"function Confirm() c = self.Confirm(false) coroutine.yield(c) return c.Confirmed end");
+            RunVoidScript(
+                @"function Confirm() local c = self.Confirm(false) coroutine.yield(c) return c.Confirmed end");
 
             #endregion
         }
 
         #region ScriptManager proxy functions
-
-        private ScriptManager Mg() => this;
-        private IWorld World() => _world;
 
         #endregion
 
@@ -291,7 +286,7 @@ namespace HacknetSharp.Server.Lua
         {
             if (system == null) return null;
             var cron = _world.Spawn.Cron(system, script, start, delay, end);
-            cron.Task = _world.ScriptManager.EvaluateExpression(script);
+            cron.Task = EvaluateScript(script);
             return cron;
         }
 
@@ -352,13 +347,53 @@ namespace HacknetSharp.Server.Lua
         #region Script functions
 
         /// <summary>
-        /// Executes and returns the raw result of a raw lua expression.
+        /// Executes and returns the raw result of a raw lua script.
+        /// </summary>
+        /// <param name="script">Script.</param>
+        /// <returns>Result.</returns>
+        public DynValue EvaluateScript(string script)
+        {
+            return _script.DoString(script);
+        }
+
+        /// <summary>
+        /// Creates a dynamic expression.
         /// </summary>
         /// <param name="expression">Expression.</param>
-        /// <returns>New value or existing value.</returns>
-        public DynValue EvaluateExpression(string expression)
+        /// <returns>Expression.</returns>
+        public DynamicExpression CreateDynamicExpression(string expression)
         {
-            return _script.DoString(expression);
+            return _script.CreateDynamicExpression(expression);
+        }
+
+        /// <summary>
+        /// Evaluates an expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <param name="errorToString">If true, returns error as string.</param>
+        /// <returns>Result.</returns>
+        public DynValue EvaluateExpression(string expression, bool errorToString)
+        {
+            try
+            {
+                return CreateDynamicExpression(expression).Evaluate();
+            }
+            catch (Exception e)
+            {
+                if (!errorToString) throw;
+                return DynValue.FromObject(_script, e.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Gets string from a dynvalue.
+        /// </summary>
+        /// <param name="value">Value.</param>
+        /// <returns>String</returns>
+        public string GetString(DynValue value)
+        {
+            var obj = value.ToObject();
+            return obj is string str ? str : obj.ToString() ?? "<object>";
         }
 
         /// <summary>

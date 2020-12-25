@@ -302,8 +302,7 @@ namespace hss
 
                 var person = context.GetPerson(world);
 
-                _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context, person,
-                    Array.Empty<string>(),
+                _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context, person, "",
                     invocationType: person.StartedUp
                         ? ProgramContext.InvocationType.Connect
                         : ProgramContext.InvocationType.StartUp, conWidth: conWidth));
@@ -315,7 +314,7 @@ namespace hss
             }
         }
 
-        public void QueueCommand(HostConnection context, UserModel user, Guid operationId, int conWidth, string[] line)
+        public void QueueCommand(HostConnection context, UserModel user, Guid operationId, int conWidth, string command)
         {
             _queueOp.WaitOne();
             try
@@ -328,7 +327,7 @@ namespace hss
                 }
 
                 _inputQueue.Enqueue(ServerUtil.InitTentativeProgramContext(world, operationId, context,
-                    context.GetPerson(world), line, conWidth: conWidth));
+                    context.GetPerson(world), command, conWidth: conWidth));
             }
             finally
             {

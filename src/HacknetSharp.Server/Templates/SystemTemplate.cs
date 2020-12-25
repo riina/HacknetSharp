@@ -308,7 +308,7 @@ namespace HacknetSharp.Server.Templates
                     {
                         var match = _fileRegex.Match(file);
                         if (!match.Success) throw new ApplicationException($"Failed to parse file entry for {match}");
-                        var args = ServerUtil.SplitCommandLine(match.Groups[3].Value);
+                        var args = match.Groups[3].Value.SplitCommandLine();
                         if (args.Length == 0)
                             throw new ApplicationException($"Not enough arguments to file entry {file}");
                         string mainPath = Executable.GetNormalized(args[0]).ApplyReplacements(repDict);

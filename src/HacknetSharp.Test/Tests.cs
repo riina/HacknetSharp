@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -119,8 +120,12 @@ namespace HacknetSharp.Test
         [Test]
         public void Test_Args()
         {
-            Assert.AreEqual(new[] {"li\"yue", "\"ki \\nda\" ", "\"sucks", "bro\"", "\"lm\"ao\""},
-                ServerUtil.SplitCommandLine("li\\\"yue \"\\\"ki \\nda\\\" \" \\\"sucks bro\\\" \\\"lm\\\"ao\\\""));
+            const string src = "li\\\"yue \"\\\"ki \\nda\\\" \" \\\"sucks bro\\\" \\\"lm\\\"ao\\\"";
+            string[] expected = new[] {"li\"yue", "\"ki \\nda\" ", "\"sucks", "bro\"", "\"lm\"ao\""};
+            Assert.AreEqual(expected, src.SplitCommandLine());
+            Assert.AreEqual(expected,
+                src.DivideCommandLineElements().Select(sp => src.SliceCommandLineElement(sp)));
+            Assert.AreEqual(src, expected.UnsplitCommandLine());
         }
 
         [Test]

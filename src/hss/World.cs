@@ -90,7 +90,7 @@ namespace hss
                 }
 
                 foreach (var cron in system.Tasks)
-                    cron.Task = ScriptManager.EvaluateExpression(GetWrappedLua(cron.Content, true));
+                    cron.Task = ScriptManager.EvaluateScript(GetWrappedLua(cron.Content, true));
             }
 
             foreach (var (missionPath, mission) in Templates.MissionTemplates)
@@ -163,11 +163,12 @@ namespace hss
                         Spawn.RemoveCron(task);
                     if (task.LastRunAt + task.Delay < Time)
                     {
+                        ScriptManager.SetGlobal("world", this);
                         ScriptManager.SetGlobal("system", task.System);
 
                         try
                         {
-                            task.Task ??= ScriptManager.EvaluateExpression(GetWrappedLua(task.Content, true));
+                            task.Task ??= ScriptManager.EvaluateScript(GetWrappedLua(task.Content, true));
                             ScriptManager.RunVoidScript(task.Task);
                         }
                         catch (Exception e)
@@ -195,6 +196,7 @@ namespace hss
             tmpMissions.UnionWith(Model.ActiveMissions);
             foreach (var mission in tmpMissions)
             {
+                ScriptManager.SetGlobal("world", this);
                 ScriptManager.SetGlobal("me", mission.Person);
                 try
                 {
@@ -408,7 +410,7 @@ namespace hss
                 if (chainLine != null && completionKind == Process.CompletionKind.Normal)
                 {
                     var genPc = ServerUtil.InitTentativeProgramContext(pc.World, pc.OperationId, pc.User, pc.Person,
-                        chainLine, conWidth: pc.ConWidth);
+                        ServerUtil.UnsplitCommandLine(chainLine), conWidth: pc.ConWidth);
                     ExecuteCommand(genPc);
                 }
             }
@@ -570,7 +572,7 @@ namespace hss
         public ProgramInfoAttribute? GetProgramInfo(string? argv)
         {
             if (argv == null) return null;
-            string[] line = ServerUtil.SplitCommandLine(argv);
+            string[] line = argv.SplitCommandLine();
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
             if (Server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
                 return prog.Item2;
@@ -598,10 +600,10 @@ namespace hss
             programContext.Argv = programContext.Type switch
             {
                 ProgramContext.InvocationType.Connect => systemModel.ConnectCommandLine != null
-                    ? ServerUtil.SplitCommandLine(systemModel.ConnectCommandLine)
+                    ? systemModel.ConnectCommandLine.SplitCommandLine()
                     : Array.Empty<string>(),
                 ProgramContext.InvocationType.StartUp => Model.StartupCommandLine != null
-                    ? ServerUtil.SplitCommandLine(Model.StartupCommandLine)
+                    ? Model.StartupCommandLine.SplitCommandLine()
                     : Array.Empty<string>(),
                 _ => programContext.Argv
             };
@@ -708,6 +710,7 @@ namespace hss
             var mission = Spawn.Mission(missionPath, person);
             if (!string.IsNullOrWhiteSpace(template.Start))
             {
+                ScriptManager.SetGlobal("world", this);
                 ScriptManager.SetGlobal("me", person);
                 try
                 {
@@ -727,7 +730,7 @@ namespace hss
 
         private void RegisterScriptFile(string name, Stream stream)
         {
-            _scriptFile[name] = ScriptManager.EvaluateExpression(GetWrappedLua(stream, true));
+            _scriptFile[name] = ScriptManager.EvaluateScript(GetWrappedLua(stream, true));
         }
 
         private bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
@@ -739,7 +742,7 @@ namespace hss
 
         private void RegisterScriptMissionStart(string missionPath, string content)
         {
-            _scriptMissionStart[missionPath] = ScriptManager.EvaluateExpression(GetWrappedLua(content, true));
+            _scriptMissionStart[missionPath] = ScriptManager.EvaluateScript(GetWrappedLua(content, true));
         }
 
         private bool TryGetScriptMissionStart(string missionPath, [NotNullWhen(true)] out DynValue? script)
@@ -753,7 +756,7 @@ namespace hss
         {
             if (!_scriptMissionGoal.TryGetValue(missionPath, out var dict))
                 _scriptMissionGoal[missionPath] = dict = new Dictionary<int, DynValue>();
-            dict[index] = ScriptManager.EvaluateExpression(GetWrappedLua(content, false));
+            dict[index] = ScriptManager.EvaluateScript(GetWrappedLua(content, false));
         }
 
         private bool TryGetScriptMissionGoal(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
@@ -769,7 +772,7 @@ namespace hss
         {
             if (!_scriptMissionNext.TryGetValue(missionPath, out var dict))
                 _scriptMissionNext[missionPath] = dict = new Dictionary<int, DynValue>();
-            dict[index] = ScriptManager.EvaluateExpression(GetWrappedLua(content, true));
+            dict[index] = ScriptManager.EvaluateScript(GetWrappedLua(content, true));
         }
 
         private bool TryGetScriptMissionNext(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
@@ -784,7 +787,7 @@ namespace hss
         private bool TryGetIntrinsicProgramWithHargs(string command,
             out (Program, ProgramInfoAttribute, string[]) result)
         {
-            string[] line = ServerUtil.SplitCommandLine(command);
+            string[] line = command.SplitCommandLine();
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
             {
                 result = default;
@@ -798,7 +801,7 @@ namespace hss
 
         private bool TryGetProgramWithHargs(string command, out (Program, ProgramInfoAttribute?, string[]) result)
         {
-            string[] line = ServerUtil.SplitCommandLine(command);
+            string[] line = command.SplitCommandLine();
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
             {
                 result = default;
@@ -825,7 +828,7 @@ namespace hss
 
         private bool TryGetServiceWithHargs(string command, out (Service, ServiceInfoAttribute?, string[]) result)
         {
-            string[] line = ServerUtil.SplitCommandLine(command);
+            string[] line = command.SplitCommandLine();
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0]))
             {
                 result = default;

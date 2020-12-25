@@ -226,8 +226,7 @@ namespace hss
                                 _ranInit = true;
                             }
                             else
-                                _server.QueueCommand(this, _user, op, command.ConWidth,
-                                    ServerUtil.SplitCommandLine(command.Text));
+                                _server.QueueCommand(this, _user, op, command.ConWidth, command.Text);
 
                             break;
                         }

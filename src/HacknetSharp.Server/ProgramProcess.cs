@@ -74,7 +74,7 @@ namespace HacknetSharp.Server
             string[]? chainLine = ProgramContext.ChainLine;
             if (ProgramContext.Type == ProgramContext.InvocationType.StartUp &&
                 ProgramContext.System.ConnectCommandLine != null)
-                chainLine ??= ServerUtil.SplitCommandLine(ProgramContext.System.ConnectCommandLine);
+                chainLine ??= ProgramContext.System.ConnectCommandLine.SplitCommandLine();
             if (chainLine != null && chainLine.Length != 0 && !string.IsNullOrWhiteSpace(chainLine[0]))
             {
                 ProgramContext.ChainLine = chainLine;

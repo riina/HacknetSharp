@@ -81,7 +81,7 @@ namespace HacknetSharp.Server.CorePrograms
         private static void GenReplacements(Dictionary<string, string> replacements, string content)
         {
             replacements.Clear();
-            string[] line = ServerUtil.SplitCommandLine(content);
+            string[] line = content.SplitCommandLine();
             for (int i = 0; i < line.Length; i++) replacements[$"HARG:{i}"] = line[i];
         }
     }

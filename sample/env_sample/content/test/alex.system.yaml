@@ -47,4 +47,6 @@ Filesystem:
   - prog:/bin/edit core:edit
   - prog:/bin/hibiki test/hibiki.program.script.lua
   - prog:/bin/reset test/reset.program.script.lua
+  - prog:/bin/args test/args.program.script.lua
+  - prog:/bin/eval test/eval.program.script.lua
   - text:/home/{UserName}/readme.txt "my name is alex and I have hard on for sabina lol"

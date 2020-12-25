@@ -377,6 +377,7 @@ namespace HacknetSharp.Server
                 User = user,
                 OperationId = operationId,
                 Argv = line,
+                Args = line.UnsplitCommandLine().GetArgs(),
                 Type = invocationType,
                 ConWidth = conWidth,
                 System = login.System,
@@ -391,12 +392,12 @@ namespace HacknetSharp.Server
         /// <param name="operationId">Operation ID, if applicable.</param>
         /// <param name="user">Target user.</param>
         /// <param name="person">Target person.</param>
-        /// <param name="line">Split command line (argv).</param>
+        /// <param name="command">Command line (argv).</param>
         /// <param name="invocationType">Invocation type for this program.</param>
         /// <param name="conWidth">Console width.</param>
         /// <returns>Generated program context.</returns>
         public static ProgramContext InitTentativeProgramContext(IWorld world, Guid operationId, IPersonContext user,
-            PersonModel person, string[] line,
+            PersonModel person, string command,
             ProgramContext.InvocationType invocationType = ProgramContext.InvocationType.Standard, int conWidth = -1)
         {
             return new()
@@ -405,7 +406,8 @@ namespace HacknetSharp.Server
                 Person = person,
                 User = user,
                 OperationId = operationId,
-                Argv = line,
+                Args = command.GetArgs(),
+                Argv = command.SplitCommandLine(),
                 Type = invocationType,
                 ConWidth = conWidth
             };
@@ -502,11 +504,206 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
-        /// Splits a command line into its components.
+        /// Escapes a command line element.
+        /// </summary>
+        /// <param name="str">Element to escape.</param>
+        /// <returns>Escaped element.</returns>
+        public static string EscapeCommandLineElement(this string str)
+        {
+            if (str.Contains(' ') || str.Contains('\t') || str.Contains('\n'))
+                return $"\"{str.Replace("\"", "\\\"")}\"";
+            else
+                return str.Replace("\"", "\\\"");
+        }
+
+        /// <summary>
+        /// Un-splits a command line.
+        /// </summary>
+        /// <param name="line">Line to unsplit.</param>
+        /// <returns>Unsplit line.</returns>
+        public static string UnsplitCommandLine(this string[] line)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < line.Length; i++)
+            {
+                string str = line[i];
+                if (str.Contains(' ') || str.Contains('\t') || str.Contains('\n'))
+                    sb.Append('"').Append(str.Replace("\"", "\\\"")).Append('"');
+                else
+                    sb.Append(str.Replace("\"", "\\\""));
+                if (i + 1 != line.Length)
+                    sb.Append(' ');
+            }
+
+            return sb.ToString();
+        }
+
+        private static string GetArgs(this string command)
+        {
+            int count = command.CountCommandLineElements();
+            string args;
+            if (count < 2)
+                args = "";
+            else
+            {
+                (Range range, bool quoted)[] splits = new (Range range, bool quoted)[2];
+                command.DivideCommandLineElements(splits);
+                (Range range, bool quoted) = splits[1];
+                var start = range.Start;
+                if (quoted)
+                    start = new Index(start.Value - 1, start.IsFromEnd);
+                args = command[start..];
+            }
+
+            return args;
+        }
+
+        /// <summary>
+        /// Gets the ranges created when splitting a command line into its components.
         /// </summary>
         /// <param name="line">String to split.</param>
-        /// <returns>Command line with separated components.</returns>
-        public static string[] SplitCommandLine(string line)
+        /// <param name="target">Pre-allocated array (parsing ends when array is filled).</param>
+        /// <returns>Input array.</returns>
+        public static (Range range, bool quoted)[] DivideCommandLineElements(this string line,
+            (Range range, bool quoted)[]? target = null)
+        {
+            target ??= new (Range range, bool quoted)[line.CountCommandLineElements()];
+            if (target.Length == 0) return target;
+            int count = line.Length;
+            var state = State.Void;
+            int baseIdx = 0;
+            int arrayIdx = 0;
+            for (int i = 0; i < count; i++)
+            {
+                char c = line[i];
+                switch (state)
+                {
+                    case State.Void:
+                        baseIdx = i;
+                        if (c == '"')
+                        {
+                            baseIdx++;
+                            state = State.Quoted;
+                        }
+                        else if (c == '\\')
+                            state = State.EscapeNonQuoted;
+                        else if (!char.IsWhiteSpace(c))
+                            state = State.NonQuoted;
+
+                        break;
+                    case State.NonQuoted:
+                        if (c == '\\')
+                            state = State.EscapeNonQuoted;
+                        else if (char.IsWhiteSpace(c))
+                        {
+                            state = State.Void;
+                            target[arrayIdx] = (new Range(baseIdx, i), false);
+                            arrayIdx++;
+                            if (target.Length <= arrayIdx) return target;
+                        }
+
+                        break;
+                    case State.Quoted:
+                        if (c == '\\')
+                            state = State.EscapeQuoted;
+                        else if (c == '"')
+                        {
+                            state = State.Void;
+                            target[arrayIdx] = (new Range(baseIdx, i), true);
+                            arrayIdx++;
+                            if (target.Length <= arrayIdx) return target;
+                        }
+
+                        break;
+                    case State.EscapeNonQuoted:
+                        state = State.NonQuoted;
+                        break;
+                    case State.EscapeQuoted:
+                        state = State.Quoted;
+                        break;
+                }
+            }
+
+            if (target.Length > arrayIdx && state != State.Void)
+                target[arrayIdx] = (new Range(baseIdx, count), state == State.Quoted || state == State.EscapeQuoted);
+            return target;
+        }
+
+        /// <summary>
+        /// Obtains a string from the specified range.
+        /// </summary>
+        /// <param name="line">String to operate on.</param>
+        /// <param name="range">Range and quote type.</param>
+        /// <param name="sb">Preexisting string builder.</param>
+        /// <returns>Component string.</returns>
+        public static string SliceCommandLineElement(this string line, (Range range, bool quoted) range,
+            StringBuilder? sb = null)
+        {
+            sb ??= new StringBuilder();
+            var segment = line.AsSpan()[range.range];
+            int count = segment.Length;
+            var state = range.quoted ? State.Quoted : State.NonQuoted;
+            for (int i = 0; i < count; i++)
+            {
+                char c = segment[i];
+                switch (state)
+                {
+                    case State.Void:
+                        if (c == '"')
+                            state = State.Quoted;
+                        else if (c == '\\')
+                            state = State.EscapeNonQuoted;
+                        else if (!char.IsWhiteSpace(c))
+                        {
+                            state = State.NonQuoted;
+                            sb.Append(c);
+                        }
+
+                        break;
+                    case State.NonQuoted:
+                        if (c == '\\')
+                            state = State.EscapeNonQuoted;
+                        else if (!char.IsWhiteSpace(c))
+                            sb.Append(c);
+                        else
+                            return sb.ToString();
+
+                        break;
+                    case State.Quoted:
+                        if (c == '\\')
+                            state = State.EscapeQuoted;
+                        else if (c != '"')
+                            sb.Append(c);
+                        else
+                            return sb.ToString();
+
+                        break;
+                    case State.EscapeNonQuoted:
+                        if (c != '"')
+                            sb.Append('\\');
+                        sb.Append(c);
+                        state = State.NonQuoted;
+                        break;
+                    case State.EscapeQuoted:
+                        if (c != '"')
+                            sb.Append('\\');
+                        sb.Append(c);
+                        state = State.Quoted;
+                        break;
+                }
+            }
+
+            if (state == State.EscapeQuoted || state == State.EscapeNonQuoted)
+                sb.Append('\\');
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Counts the number of command line elements in a string.
+        /// </summary>
+        /// <param name="line">String to split.</param>
+        /// <returns>Number of command line elements.</returns>
+        public static int CountCommandLineElements(this string line)
         {
             int count = line.Length;
             var state = State.Void;
@@ -552,10 +749,22 @@ namespace HacknetSharp.Server
 
             if (state != State.Void)
                 entryCount++;
+            return entryCount;
+        }
 
+        /// <summary>
+        /// Splits a command line into its components.
+        /// </summary>
+        /// <param name="line">String to split.</param>
+        /// <returns>Command line with separated components.</returns>
+        public static string[] SplitCommandLine(this string line)
+        {
+            int count = line.Length;
+
+            int entryCount = line.CountCommandLineElements();
             string[] res = new string[entryCount];
             var sb = new StringBuilder();
-            state = State.Void;
+            var state = State.Void;
             entryCount = 0;
             for (int i = 0; i < count; i++)
             {
@@ -617,6 +826,8 @@ namespace HacknetSharp.Server
                 }
             }
 
+            if (state == State.EscapeQuoted || state == State.EscapeNonQuoted)
+                sb.Append('\\');
             if (state != State.Void)
                 res[entryCount] = sb.ToString();
             return res;
