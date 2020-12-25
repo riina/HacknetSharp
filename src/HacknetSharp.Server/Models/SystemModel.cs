@@ -414,8 +414,8 @@ namespace HacknetSharp.Server.Models
         /// <returns>File or null if not found.</returns>
         public FileModel? GetFileSystemEntry(string path, bool hidden = false)
         {
-            var (nPath, nName) = Executable.GetDirectoryAndName(path);
-            return Files.FirstOrDefault(f => f.Hidden == hidden && f.Path == nPath && f.Name == nName);
+            path = Executable.GetNormalized(path);
+            return Files.FirstOrDefault(f => f.Hidden == hidden && f.FullPath == path);
         }
 
         /// <summary>

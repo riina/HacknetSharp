@@ -191,6 +191,12 @@ a file/folder with the provided path.</p>
 <h2 id="filecontains">FileContains</h2>
 <p><code>bool FileContains(SystemModel? system, string path, string text, bool ignoreCase)</code></p>
 <p>Checks if a file exists on the specified system and contains the specified text.</p>
+<h2 id="file">File</h2>
+<p><code>FileModel? File(SystemModel? system, string path)</code></p>
+<p>Tries to get a filesystem element at the specified path.</p>
+<h2 id="folder">Folder</h2>
+<p><code>FileModel[]? Folder(SystemModel? system, string path)</code></p>
+<p>Tries to get folder contents as a table (nil if no folder or path is file).</p>
 <h2 id="spawnfile">SpawnFile</h2>
 <p><code>FileModel? SpawnFile(SystemModel? system, string path, string content)</code></p>
 <p>Spawns a text file with the specified content. Returns an existing file if applicable.</p>

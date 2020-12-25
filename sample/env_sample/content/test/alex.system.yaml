@@ -50,4 +50,5 @@ Filesystem:
   - prog:/bin/args test/args.program.script.lua
   - prog:/bin/eval test/eval.program.script.lua
   - prog:/bin/exec test/exec.program.script.lua
+  - prog:/bin/lua_ls test/lua_ls.program.script.lua
   - text:/home/{UserName}/readme.txt "my name is alex and I have hard on for sabina lol"

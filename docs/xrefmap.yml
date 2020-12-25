@@ -4758,12 +4758,12 @@ references:
   isSpec: "True"
   fullName: HacknetSharp.Server.Lua.ScriptManager.EvaluateExpression
   nameWithType: ScriptManager.EvaluateExpression
-- uid: HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String)
-  name: EvaluateScript(String)
-  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_EvaluateScript_System_String_
-  commentId: M:HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String)
-  fullName: HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String)
-  nameWithType: ScriptManager.EvaluateScript(String)
+- uid: HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String,System.Boolean)
+  name: EvaluateScript(String, Boolean)
+  href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_EvaluateScript_System_String_System_Boolean_
+  commentId: M:HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String,System.Boolean)
+  fullName: HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String, System.Boolean)
+  nameWithType: ScriptManager.EvaluateScript(String, Boolean)
 - uid: HacknetSharp.Server.Lua.ScriptManager.EvaluateScript*
   name: EvaluateScript
   href: api/HacknetSharp.Server.Lua.ScriptManager.html#HacknetSharp_Server_Lua_ScriptManager_EvaluateScript_

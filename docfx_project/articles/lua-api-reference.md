@@ -237,6 +237,18 @@ a file/folder with the provided path.
 
 Checks if a file exists on the specified system and contains the specified text.
 
+## File
+
+`FileModel? File(SystemModel? system, string path)`
+
+Tries to get a filesystem element at the specified path.
+
+## Folder
+
+`FileModel[]? Folder(SystemModel? system, string path)`
+
+Tries to get folder contents as a table (nil if no folder or path is file).
+
 ## SpawnFile
 
 `FileModel? SpawnFile(SystemModel? system, string path, string content)`

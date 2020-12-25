@@ -31,7 +31,8 @@ namespace HacknetSharp.Server.Lua
             typeof(Executable.DelayYieldToken), typeof(Executable.InputYieldToken),
             typeof(Executable.ConfirmYieldToken), typeof(Executable.EditYieldToken),
             // HacknetSharp.Server.Models
-            typeof(PersonModel), typeof(MissionModel), typeof(SystemModel), typeof(LoginModel),
+            typeof(PersonModel), typeof(MissionModel), typeof(SystemModel), typeof(LoginModel), typeof(FileModel),
+            typeof(FileModel.FileKind)
         };
 
         /// <summary>

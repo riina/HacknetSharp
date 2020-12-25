@@ -73,7 +73,10 @@ namespace HacknetSharp.Server.Lua
             // Files
             RegisterFunction<SystemModel?, string, bool>(nameof(FileExists), FileExists);
             RegisterFunction<SystemModel?, string, string, bool, bool>(nameof(FileContains), FileContains);
+            RegisterFunction<SystemModel?, string, FileModel?>(nameof(File), File);
+            RegisterFunction<SystemModel?, string, DynValue?>(nameof(Folder), Folder);
             RegisterFunction<SystemModel?, string, string, FileModel?>(nameof(SpawnFile), SpawnFile);
+            RegisterFunction<SystemModel?, string, string, FileModel?>(nameof(SpawnFolder), SpawnFolder);
             RegisterAction<FileModel?>(nameof(RemoveFile), RemoveFile);
 
             // Tasks
@@ -260,6 +263,34 @@ namespace HacknetSharp.Server.Lua
                 ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture);
         }
 
+        internal FileModel? File(SystemModel? system, string path)
+        {
+            return system?.GetFileSystemEntry(path);
+        }
+
+        internal DynValue? Folder(SystemModel? system, string path)
+        {
+            if (system == null) return null;
+            path = Executable.GetNormalized(path);
+            if (path != "/")
+            {
+                var file = system.GetFileSystemEntry(path);
+                if (file == null || file.Kind != FileModel.FileKind.Folder) return null;
+            }
+
+            return PopulateNewtable(system.EnumerateDirectory(path));
+        }
+
+        private DynValue PopulateNewtable<TElement>(IEnumerable<TElement> enumerable)
+        {
+            var table = DynValue.NewTable(_script);
+            var tb = table.Table;
+            using var iterator = enumerable.GetEnumerator();
+            for (int i = 0; iterator.MoveNext(); i++)
+                tb[i + 1] = iterator.Current;
+            return table;
+        }
+
         private FileModel? SpawnFile(SystemModel? system, string path, string content)
         {
             if (system == null) return null;
@@ -270,6 +301,18 @@ namespace HacknetSharp.Server.Lua
             var existing = system.Files.FirstOrDefault(f => f.FullPath == path);
             if (existing != null) return existing;
             return _world.Spawn.TextFile(system, login, path, content);
+        }
+
+        private FileModel? SpawnFolder(SystemModel? system, string path, string content)
+        {
+            if (system == null) return null;
+            var owner = system.Owner.Key;
+            var login = system.Logins.FirstOrDefault(l => l.Person == owner);
+            if (login == null) return null;
+            path = Executable.GetNormalized(path);
+            var existing = system.Files.FirstOrDefault(f => f.FullPath == path);
+            if (existing != null) return existing;
+            return _world.Spawn.Folder(system, login, path, content);
         }
 
         private void RemoveFile(FileModel? file)

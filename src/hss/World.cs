@@ -147,11 +147,13 @@ namespace hss
             // Check processes for memory overflow (shells are static and therefore don't matter)
             TickOverflows(_processes, _tmpProcesses, _tmpSystems);
             TickMissions(_tmpMissions);
-            TickTasks(_tmpTasks);
+            TickTasks(_tmpSystems, _tmpTasks);
         }
 
-        private void TickTasks(HashSet<CronModel> tmpTasks)
+        private void TickTasks(HashSet<SystemModel> tmpSystems, HashSet<CronModel> tmpTasks)
         {
+            tmpSystems.Clear();
+            tmpSystems.UnionWith(Model.Systems);
             foreach (var system in Model.Systems)
             {
                 if (system.BootTime > Time) continue;

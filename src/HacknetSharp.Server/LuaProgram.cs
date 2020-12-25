@@ -33,6 +33,7 @@ namespace HacknetSharp.Server
                 World.ScriptManager.SetGlobal("argc", Argv.Length);
                 World.ScriptManager.SetGlobal("args", Context.Args);
                 World.ScriptManager.SetGlobal("shell", Shell);
+                World.ScriptManager.SetGlobal("pwd", Shell.WorkingDirectory);
                 World.ScriptManager.SetGlobal("me", Person);
                 try
                 {
@@ -51,6 +52,7 @@ namespace HacknetSharp.Server
                     World.ScriptManager.ClearGlobal("argc");
                     World.ScriptManager.ClearGlobal("args");
                     World.ScriptManager.ClearGlobal("shell");
+                    World.ScriptManager.ClearGlobal("pwd");
                     World.ScriptManager.ClearGlobal("me");
                 }
             }
