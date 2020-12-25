@@ -15,7 +15,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Shell.Chat == null || Shell.ChatRoom == null || Shell.ChatName == null)
             {
-                Write("No chat room is active in this shell.\n").Flush();
+                Write("No chat room is active in this shell.\n");
                 yield break;
             }
 

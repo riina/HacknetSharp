@@ -13,7 +13,7 @@ namespace HacknetSharp.Server.CorePrograms
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            Write(new StringBuilder().AppendJoin(' ', Argv.Skip(1)).Append('\n').ToString()).Flush();
+            Write(new StringBuilder().AppendJoin(' ', Argv.Skip(1)).Append('\n').ToString());
             yield break;
         }
     }

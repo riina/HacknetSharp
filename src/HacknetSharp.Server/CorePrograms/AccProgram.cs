@@ -23,7 +23,7 @@ namespace HacknetSharp.Server.CorePrograms
             var (flags, _, args) = IsolateArgvFlags(Argv);
             if (args.Count == 0)
             {
-                Write("Verb not specified, must be add, list, or delete\n").Flush();
+                Write("Verb not specified, must be add, list, or delete\n");
                 yield break;
             }
 
@@ -33,27 +33,27 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     if (!Login.Admin)
                     {
-                        Write("Permission denied\n").Flush();
+                        Write("Permission denied\n");
                         break;
                     }
 
                     if (args.Count != 2)
                     {
-                        Write("Invalid number of arguments, must be <account>\n").Flush();
+                        Write("Invalid number of arguments, must be <account>\n");
                         break;
                     }
 
                     string name = args[1];
                     if (logins.Any(l => l.User == name))
                     {
-                        Write("An account with the specified name already exists\n").Flush();
+                        Write("An account with the specified name already exists\n");
                         break;
                     }
 
                     bool admin = flags.Contains("a");
                     if (admin && Login.Person != System.Owner.Key)
                     {
-                        Write("Only the system owner may create admin accounts\n").Flush();
+                        Write("Only the system owner may create admin accounts\n");
                         break;
                     }
 
@@ -68,13 +68,13 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     if (!Login.Admin)
                     {
-                        Write("Permission denied\n").Flush();
+                        Write("Permission denied\n");
                         break;
                     }
 
                     if (args.Count != 2)
                     {
-                        Write("Invalid number of arguments, must be <account>\n").Flush();
+                        Write("Invalid number of arguments, must be <account>\n");
                         break;
                     }
 
@@ -82,13 +82,13 @@ namespace HacknetSharp.Server.CorePrograms
                     var toDelete = logins.FirstOrDefault(l => l.User == name);
                     if (toDelete == null)
                     {
-                        Write("The specified account does not exist\n").Flush();
+                        Write("The specified account does not exist\n");
                         break;
                     }
 
                     if (toDelete.Admin && Login.Person != System.Owner.Key)
                     {
-                        Write("Only the system owner may delete admin accounts\n").Flush();
+                        Write("Only the system owner may delete admin accounts\n");
                         break;
                     }
 
@@ -105,12 +105,12 @@ namespace HacknetSharp.Server.CorePrograms
                     var sb = new StringBuilder();
                     foreach (var l in logins) sb.Append($"{l.User} ({(l.Admin ? "admin" : "standard")})\n");
                     if (sb.Length == 0) sb.Append('\n');
-                    Write(sb.ToString()).Flush();
+                    Write(sb.ToString());
                     break;
                 }
                 default:
                 {
-                    Write("Invalid verb, must be add, list, or delete\n").Flush();
+                    Write("Invalid verb, must be add, list, or delete\n");
                     break;
                 }
             }

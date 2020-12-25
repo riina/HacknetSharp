@@ -14,7 +14,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2)
             {
-                Write("1 operand are required by this command\n").Flush();
+                Write("1 operand are required by this command\n");
                 yield break;
             }
 
@@ -23,17 +23,17 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write("Not currently connected to a server\n").Flush();
+                Write("Not currently connected to a server\n");
                 yield break;
             }
 
             if (system.FirewallIterations <= 0)
             {
-                Write("Firewall not active on target system.\n").Flush();
+                Write("Firewall not active on target system.\n");
                 yield break;
             }
 
-            Write("Solving firewall...\n").Flush();
+            Write("Solving firewall...\n");
 
             yield return Delay(6);
 
@@ -42,18 +42,18 @@ namespace HacknetSharp.Server.CorePrograms
             // If server happened to go down in between, escape.
             if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
             {
-                Write("Error: connection to server lost\n").Flush();
+                Write("Error: connection to server lost\n");
                 yield break;
             }
 
             string solution = Argv[1];
             var crackState = Shell.GetCrackState(system);
             if (crackState.FirewallSolution != solution)
-                Write("Incorrect solution. Bypass failed.\n").Flush();
+                Write("Incorrect solution. Bypass failed.\n");
             else
             {
                 crackState.FirewallSolved = true;
-                Write("Firewall bypassed.\n").Flush();
+                Write("Firewall bypassed.\n");
             }
         }
     }

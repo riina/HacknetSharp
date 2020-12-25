@@ -21,15 +21,14 @@ namespace HacknetSharp.Server.CorePrograms
             if (Argv.Length != 2 && Argv.Length != 3)
             {
                 Write(
-                        "scp: 1 or 2 operands are required by this command:\n\t<username>@<server>:<source> [<dest>]\n")
-                    .Flush();
+                        "scp: 1 or 2 operands are required by this command:\n\t<username>@<server>:<source> [<dest>]\n");
             }
 
             if (!ServerUtil.TryParseScpConString(Argv[1], out string? name, out string? host, out string? path,
                 out string? error, Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
                 AutoLoginHost))
             {
-                Write($"scp: {error}\n").Flush();
+                Write($"scp: {error}\n");
                 yield break;
             }
 
@@ -40,14 +39,14 @@ namespace HacknetSharp.Server.CorePrograms
                     hostUint = Shell.Target.Address;
                 else
                 {
-                    Write("No server specified, and not currently connected to a server\n").Flush();
+                    Write("No server specified, and not currently connected to a server\n");
                     yield break;
                 }
             }
             else if (!IPAddressRange.TryParse(host, false, out var range) ||
                      !range.TryGetIPv4HostAndSubnetMask(out hostUint, out _))
             {
-                Write($"Invalid host {host}\n").Flush();
+                Write($"Invalid host {host}\n");
                 yield break;
             }
 
@@ -63,7 +62,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write($"{e.Message}\n").Flush();
+                    Write($"{e.Message}\n");
                     yield break;
                 }
 
@@ -78,14 +77,14 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!World.Model.AddressedSystems.TryGetValue(hostUint, out var rSystem))
             {
-                Write("scp: No route to host\n").Flush();
+                Write("scp: No route to host\n");
                 yield break;
             }
 
             var rLogin = rSystem.Logins.FirstOrDefault(l => l.User == name);
             if (rLogin == null || !ServerUtil.ValidatePassword(password, rLogin.Hash, rLogin.Salt))
             {
-                Write("scp: Invalid credentials\n").Flush();
+                Write("scp: Invalid credentials\n");
                 yield break;
             }
 
@@ -110,7 +109,7 @@ namespace HacknetSharp.Server.CorePrograms
                     // Prevent copying common root to subdirectory
                     if (System == rSystem && GetPathInCommon(inputFmt, targetFmt) == inputFmt)
                     {
-                        Write($"{inputFmt}: Cannot copy to {targetFmt}\n").Flush();
+                        Write($"{inputFmt}: Cannot copy to {targetFmt}\n");
                         yield break;
                     }
 
@@ -135,23 +134,23 @@ namespace HacknetSharp.Server.CorePrograms
                     }
                     catch (IOException e)
                     {
-                        Write($"{e.Message}\n").Flush();
+                        Write($"{e.Message}\n");
                     }
                 }
                 else
                     switch (result)
                     {
                         case ReadAccessResult.NotReadable:
-                            Write($"{closestStr}: Permission denied\n").Flush();
+                            Write($"{closestStr}: Permission denied\n");
                             yield break;
                         case ReadAccessResult.NoExist:
-                            Write($"{inputFmt}: No such file or directory\n").Flush();
+                            Write($"{inputFmt}: No such file or directory\n");
                             yield break;
                     }
             }
             catch (Exception e)
             {
-                Write($"{e.Message}\n").Flush();
+                Write($"{e.Message}\n");
             }
         }
     }

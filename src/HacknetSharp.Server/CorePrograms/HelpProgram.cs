@@ -51,7 +51,7 @@ namespace HacknetSharp.Server.CorePrograms
 
                     if (info == null)
                     {
-                        Write("Unknown program\n").Flush();
+                        Write("Unknown program\n");
                         yield break;
                     }
 
@@ -63,17 +63,17 @@ namespace HacknetSharp.Server.CorePrograms
                     sb.Append("\n\n");
                 }
 
-                Write(sb.ToString()).Flush();
+                Write(sb.ToString());
                 yield break;
             }
 
             switch (result)
             {
                 case ReadAccessResult.NotReadable:
-                    Write($"{closestStr}: Permission denied\n").Flush();
+                    Write($"{closestStr}: Permission denied\n");
                     yield break;
                 case ReadAccessResult.NoExist:
-                    Write("/bin: No such file or directory\n").Flush();
+                    Write("/bin: No such file or directory\n");
                     yield break;
             }
         }

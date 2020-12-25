@@ -14,14 +14,14 @@ namespace HacknetSharp.Server.CorePrograms
             if (!ServerUtil.TryParseConString(Argv.Length == 1 ? "" : Argv[1], 22, out string? name, out string? host,
                 out _, out string? error))
             {
-                Write($"{error}\n").Flush();
+                Write($"{error}\n");
                 yield break;
             }
 
             if (!IPAddressRange.TryParse(host, false, out var range) ||
                 !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
             {
-                Write($"Invalid host {host}\n").Flush();
+                Write($"Invalid host {host}\n");
                 yield break;
             }
 

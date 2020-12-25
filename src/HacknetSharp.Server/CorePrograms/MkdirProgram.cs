@@ -15,7 +15,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length < 2)
             {
-                Write("At least 1 operand is required by this command:\n\t<dir>...\n").Flush();
+                Write("At least 1 operand is required by this command:\n\t<dir>...\n");
                 yield break;
             }
 
@@ -32,10 +32,10 @@ namespace HacknetSharp.Server.CorePrograms
                         switch (result)
                         {
                             case ReadAccessResult.Readable:
-                                Write($"{inputFmt}: Path exists\n").Flush();
+                                Write($"{inputFmt}: Path exists\n");
                                 yield break;
                             case ReadAccessResult.NotReadable:
-                                Write($"{closestStr}: Permission denied\n").Flush();
+                                Write($"{closestStr}: Permission denied\n");
                                 yield break;
                             case ReadAccessResult.NoExist:
                                 try
@@ -45,7 +45,7 @@ namespace HacknetSharp.Server.CorePrograms
                                 }
                                 catch (IOException e)
                                 {
-                                    Write($"{e.Message}\n").Flush();
+                                    Write($"{e.Message}\n");
                                     yield break;
                                 }
 
@@ -56,7 +56,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
             catch (Exception e)
             {
-                Write($"{e.Message}\n").Flush();
+                Write($"{e.Message}\n");
             }
         }
     }

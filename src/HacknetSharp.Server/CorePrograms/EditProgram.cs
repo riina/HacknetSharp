@@ -14,7 +14,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length != 2)
             {
-                Write("1 operand is required by this command\n").Flush();
+                Write("1 operand is required by this command\n");
                 yield break;
             }
 
@@ -22,7 +22,7 @@ namespace HacknetSharp.Server.CorePrograms
             string path = GetNormalized(Combine(Shell.WorkingDirectory, file));
             if (path == "/")
             {
-                Write($"{path}: Is a directory\n").Flush();
+                Write($"{path}: Is a directory\n");
                 yield break;
             }
 
@@ -56,7 +56,7 @@ namespace HacknetSharp.Server.CorePrograms
                     case ReadAccessResult.Readable:
                         break;
                     case ReadAccessResult.NotReadable:
-                        Write($"{closestStr}: Permission denied\n").Flush();
+                        Write($"{closestStr}: Permission denied\n");
                         yield break;
                     case ReadAccessResult.NoExist:
                         var (directory, name) = GetDirectoryAndName(path);
@@ -68,10 +68,10 @@ namespace HacknetSharp.Server.CorePrograms
                                 switch (result2)
                                 {
                                     case ReadAccessResult.NotReadable:
-                                        Write($"{closest2Str}: Permission denied\n").Flush();
+                                        Write($"{closest2Str}: Permission denied\n");
                                         break;
                                     case ReadAccessResult.NoExist:
-                                        Write($"{directory}: No such file or directory\n").Flush();
+                                        Write($"{directory}: No such file or directory\n");
                                         break;
                                 }
 
@@ -80,7 +80,7 @@ namespace HacknetSharp.Server.CorePrograms
 
                             if (!closest2.CanWrite(Login))
                             {
-                                Write($"{path}: Permission denied\n").Flush();
+                                Write($"{path}: Permission denied\n");
                                 yield break;
                             }
                         }
@@ -102,8 +102,6 @@ namespace HacknetSharp.Server.CorePrograms
 
                         yield break;
                 }
-
-            Flush();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 if (!TryGetSystem(Argv[1], out system, out string? systemConnectError))
                 {
-                    Write($"{systemConnectError}\n").Flush();
+                    Write($"{systemConnectError}\n");
                     yield break;
                 }
             }
@@ -31,19 +31,19 @@ namespace HacknetSharp.Server.CorePrograms
                     system = Shell.Target;
                 else
                 {
-                    Write("No server specified, and not currently connected to a server\n").Flush();
+                    Write("No server specified, and not currently connected to a server\n");
                     yield break;
                 }
             }
 
-            Write($"Probing {Util.UintToAddress(system.Address)}...\n").Flush();
+            Write($"Probing {Util.UintToAddress(system.Address)}...\n");
 
             yield return Delay(1.0f);
 
             // If server happened to go down in between, escape.
             if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
             {
-                Write("Error: connection to server lost\n").Flush();
+                Write("Error: connection to server lost\n");
                 yield break;
             }
 
@@ -72,7 +72,7 @@ namespace HacknetSharp.Server.CorePrograms
             sb.Append($"\nRequired exploits: {system.RequiredExploits}\n");
             sb.Append(
                 $"Current exploits: {crackState.OpenVulnerabilities.Aggregate(0, (n, v) => n + v.Key.Exploits)}\n");
-            Write(sb.ToString()).Flush();
+            Write(sb.ToString());
         }
     }
 }

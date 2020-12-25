@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (!Login.Admin)
             {
-                Write("Permission denied.\n").Flush();
+                Write("Permission denied.\n");
                 yield break;
             }
 
@@ -30,13 +30,13 @@ namespace HacknetSharp.Server.CorePrograms
                     if (!IPAddressRange.TryParse(arg, false, out var addr) ||
                         !addr.TryGetIPv4HostAndSubnetMask(out uint host, out _))
                     {
-                        Write("Invalid address format.\n").Flush();
+                        Write("Invalid address format.\n");
                     }
                     else
                     {
                         if (!World.Model.AddressedSystems.TryGetValue(host, out var remote))
                         {
-                            Write($"Invalid host {addr}\n").Flush();
+                            Write($"Invalid host {addr}\n");
                         }
                         else
                             PrintForSystem(remote, sb, curTime);
@@ -49,7 +49,7 @@ namespace HacknetSharp.Server.CorePrograms
                     PrintForSystem(s.To, sb, curTime);
             }
 
-            Write(sb.ToString()).Flush();
+            Write(sb.ToString());
         }
 
         private static void PrintForSystem(SystemModel system, StringBuilder sb, double curTime)

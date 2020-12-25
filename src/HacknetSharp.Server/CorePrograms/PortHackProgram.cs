@@ -21,7 +21,7 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write("Not currently connected to a server\n").Flush();
+                Write("Not currently connected to a server\n");
                 yield break;
             }
 
@@ -29,13 +29,13 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (system.FirewallIterations > 0 && !crackState.FirewallSolved)
             {
-                Write("Failed: Firewall active.\n").Flush();
+                Write("Failed: Firewall active.\n");
                 yield break;
             }
 
             if (crackState.ProxyClocks < system.ProxyClocks)
             {
-                Write("Failed: Proxy active.\n").Flush();
+                Write("Failed: Proxy active.\n");
                 yield break;
             }
 
@@ -43,8 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (sum < system.RequiredExploits)
             {
                 Write(
-                        $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n")
-                    .Flush();
+                        $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n");
                 yield break;
             }
 
@@ -56,7 +55,7 @@ namespace HacknetSharp.Server.CorePrograms
             // If server happened to go down in between, escape.
             if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
             {
-                Write("Error: connection to server lost\n").Flush();
+                Write("Error: connection to server lost\n");
                 yield break;
             }
 
@@ -66,14 +65,14 @@ namespace HacknetSharp.Server.CorePrograms
             World.Spawn.Login(system, un, hash, salt, true);
             Shell.SetVariable("NAME", un);
             Shell.SetVariable("PASS", pw);
-            Write($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n").Flush();
+            Write($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n");
             try
             {
                 LoginManager.AddLogin(World, Login, system.Address, un, pw);
             }
             catch (IOException e)
             {
-                Write($"{e.Message}\n").Flush();
+                Write($"{e.Message}\n");
             }
         }
     }

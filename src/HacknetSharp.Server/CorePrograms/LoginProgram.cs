@@ -30,9 +30,9 @@ namespace HacknetSharp.Server.CorePrograms
                 out string? host, out _, out string? error, AutoLoginName, AutoLoginHost))
             {
                 if (pargs.Count == 1)
-                    Write("Needs connection target\n").Flush();
+                    Write("Needs connection target\n");
                 else
-                    Write($"{error}\n").Flush();
+                    Write($"{error}\n");
 
                 yield break;
             }
@@ -44,14 +44,14 @@ namespace HacknetSharp.Server.CorePrograms
                     hostUint = Shell.Target.Address;
                 else
                 {
-                    Write("No server specified, and not currently connected to a server\n").Flush();
+                    Write("No server specified, and not currently connected to a server\n");
                     yield break;
                 }
             }
             else if (!IPAddressRange.TryParse(host, false, out var range) ||
                      !range.TryGetIPv4HostAndSubnetMask(out hostUint, out _))
             {
-                Write($"Invalid host {host}\n").Flush();
+                Write($"Invalid host {host}\n");
                 yield break;
             }
 
@@ -59,7 +59,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 if (name == AutoLoginName && !Shell.TryGetVariable("NAME", out name))
                 {
-                    Write("Login name not specified\n").Flush();
+                    Write("Login name not specified\n");
                     yield break;
                 }
 
@@ -80,7 +80,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write($"{e.Message}\n").Flush();
+                    Write($"{e.Message}\n");
                 }
             }
             else if (flags.Contains("l"))
@@ -96,18 +96,18 @@ namespace HacknetSharp.Server.CorePrograms
 
                     if (sb.Length == 0) sb.Append('\n');
 
-                    Write(sb.ToString()).Flush();
+                    Write(sb.ToString());
                 }
                 catch (IOException e)
                 {
-                    Write($"{e.Message}\n").Flush();
+                    Write($"{e.Message}\n");
                 }
             }
             else if (flags.Contains("d"))
             {
                 if (name == AutoLoginName)
                 {
-                    Write("Login name not specified\n").Flush();
+                    Write("Login name not specified\n");
                     yield break;
                 }
 
@@ -122,7 +122,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write($"{e.Message}\n").Flush();
+                    Write($"{e.Message}\n");
                 }
             }
             else
@@ -137,7 +137,7 @@ namespace HacknetSharp.Server.CorePrograms
                         var logins = LoginManager.GetLogins(Login, hostUint);
                         if (logins.Count == 0)
                         {
-                            Write($"No known logins for {Util.UintToAddress(hostUint)}\n").Flush();
+                            Write($"No known logins for {Util.UintToAddress(hostUint)}\n");
                             yield break;
                         }
 
@@ -152,7 +152,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 catch (IOException e)
                 {
-                    Write($"{e.Message}\n").Flush();
+                    Write($"{e.Message}\n");
                     yield break;
                 }
 

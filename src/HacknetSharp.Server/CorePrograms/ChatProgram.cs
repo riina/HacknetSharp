@@ -16,21 +16,21 @@ namespace HacknetSharp.Server.CorePrograms
             var (_, _, pargs) = IsolateArgvFlags(Argv);
             if (pargs.Count != 2)
             {
-                Write("2 operands are required for this command: <name> <room@host>\n").Flush();
+                Write("2 operands are required for this command: <name> <room@host>\n");
                 yield break;
             }
 
             if (!ServerUtil.TryParseConString(pargs[1], 22, out string? room,
                 out string? host, out _, out string? error))
             {
-                Write($"{error}\n").Flush();
+                Write($"{error}\n");
                 yield break;
             }
 
             if (!IPAddressRange.TryParse(host, false, out var range) ||
                 !range.TryGetIPv4HostAndSubnetMask(out uint hostUint, out _))
             {
-                Write($"Invalid host {host}\n").Flush();
+                Write($"Invalid host {host}\n");
                 yield break;
             }
 
@@ -41,13 +41,13 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!World.Model.AddressedSystems.TryGetValue(hostUint, out var system))
             {
-                Write("No route to host\n").Flush();
+                Write("No route to host\n");
                 yield break;
             }
 
             if (!system.TryGetService(out ChatService? service))
             {
-                Write("Chat service not available on server\n").Flush();
+                Write("Chat service not available on server\n");
                 yield break;
             }
 
@@ -55,7 +55,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!rooms.TryGetValue(room, out string? roomPassword) || roomPassword != password)
             {
-                Write("Invalid credentials\n").Flush();
+                Write("Invalid credentials\n");
                 yield break;
             }
 
@@ -72,7 +72,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (sender == Login.Key || room != null && Shell.ChatRoom != room) return;
             Write($"\n[{room ?? "BROADCAST"}] {name}: {message}\n")
-                .WriteEvent(ServerUtil.CreatePromptEvent(Shell)).Flush();
+                .WriteEvent(ServerUtil.CreatePromptEvent(Shell));
         }
 
         /// <inheritdoc />

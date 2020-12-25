@@ -33,10 +33,10 @@ namespace HacknetSharp.Server.CorePrograms
                 switch (result)
                 {
                     case ReadAccessResult.NotReadable:
-                        Write($"ls: {closestStr}: Permission denied\n").Flush();
+                        Write($"ls: {closestStr}: Permission denied\n");
                         yield break;
                     case ReadAccessResult.NoExist:
-                        Write($"ls: {path}: No such file or directory\n").Flush();
+                        Write($"ls: {path}: No such file or directory\n");
                         yield break;
                     default:
                         yield break;
@@ -68,7 +68,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             sb.Append('\n');
-            Write(sb.ToString()).Flush();
+            Write(sb.ToString());
         }
     }
 }

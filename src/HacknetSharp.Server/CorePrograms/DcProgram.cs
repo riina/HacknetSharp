@@ -15,7 +15,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 Shell.Target.TargetingShells.Remove(Shell);
                 Shell.Target = null;
-                Write("Disconnected.\n").Flush();
+                Write("Disconnected.\n");
                 yield break;
             }
         }

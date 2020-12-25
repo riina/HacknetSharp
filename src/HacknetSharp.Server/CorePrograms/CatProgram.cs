@@ -18,7 +18,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length == 1)
             {
-                Write("At least 1 operand is required by this command\n").Flush();
+                Write("At least 1 operand is required by this command\n");
                 yield break;
             }
 
@@ -51,15 +51,13 @@ namespace HacknetSharp.Server.CorePrograms
                     switch (result)
                     {
                         case ReadAccessResult.NotReadable:
-                            Write($"cat: {closestStr}: Permission denied\n").Flush();
+                            Write($"cat: {closestStr}: Permission denied\n");
                             yield break;
                         case ReadAccessResult.NoExist:
-                            Write($"cat: {path}: No such file or directory\n").Flush();
+                            Write($"cat: {path}: No such file or directory\n");
                             yield break;
                     }
             }
-
-            Flush();
         }
     }
 }

@@ -17,13 +17,13 @@ namespace HacknetSharp.Server.CorePrograms
             // Need harg[1] = protocol to hack harg[2] hack time
             if (HArgv.Length < 3 || !float.TryParse(HArgv[2], out float hackTime))
             {
-                Write("This program is corrupt and cannot be executed.\n").Flush();
+                Write("This program is corrupt and cannot be executed.\n");
                 yield break;
             }
 
             if (Argv.Length != 2)
             {
-                Write("1 operand is required by this command\n").Flush();
+                Write("1 operand is required by this command\n");
                 yield break;
             }
 
@@ -32,7 +32,7 @@ namespace HacknetSharp.Server.CorePrograms
                 system = Shell.Target;
             else
             {
-                Write("Not currently connected to a server\n").Flush();
+                Write("Not currently connected to a server\n");
                 yield break;
             }
 
@@ -43,7 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (vuln == null)
             {
-                Write("Entrypoint is closed\n").Flush();
+                Write("Entrypoint is closed\n");
                 yield break;
             }
 
@@ -51,7 +51,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             if (!string.Equals(vuln.Protocol, protocol, StringComparison.InvariantCultureIgnoreCase))
             {
-                Write("Unexpected protocol on entrypoint\n").Flush();
+                Write("Unexpected protocol on entrypoint\n");
                 yield break;
             }
 
@@ -64,13 +64,13 @@ namespace HacknetSharp.Server.CorePrograms
             // If server happened to go down in between, escape.
             if (Shell.Target == null || !TryGetSystem(system.Address, out _, out _))
             {
-                Write("Error: connection to server lost\n").Flush();
+                Write("Error: connection to server lost\n");
                 yield break;
             }
 
             Shell.GetCrackState(system).OpenVulnerability(vuln);
 
-            Write($"\n«««« {Argv[0]} COMPLETE »»»»\n").Flush();
+            Write($"\n«««« {Argv[0]} COMPLETE »»»»\n");
         }
     }
 }

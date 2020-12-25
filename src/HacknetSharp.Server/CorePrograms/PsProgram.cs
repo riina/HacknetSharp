@@ -28,7 +28,7 @@ namespace HacknetSharp.Server.CorePrograms
                         }))
                 .Append('\n')
                 .ToString()
-            ).Flush();
+            );
             yield break;
         }
     }

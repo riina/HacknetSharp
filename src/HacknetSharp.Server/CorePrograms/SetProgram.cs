@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 foreach (var kvp in Shell.GetVariables()) sb.Append(kvp.Key).Append('=').Append(kvp.Value).Append('\n');
 
-                Write(sb.ToString()).Flush();
+                Write(sb.ToString());
             }
             else
             {
@@ -36,7 +36,7 @@ namespace HacknetSharp.Server.CorePrograms
                 }
                 else
                 {
-                    Write("Invalid format, need [<name>[=[<value>]]]\n").Flush();
+                    Write("Invalid format, need [<name>[=[<value>]]]\n");
                 }
             }
 

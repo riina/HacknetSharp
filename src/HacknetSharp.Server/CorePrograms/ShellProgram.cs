@@ -32,13 +32,11 @@ namespace HacknetSharp.Server.CorePrograms
                 }
 
                 hostShell.Remotes.Remove(System.Address);
-                Write("Host process creation failed: out of memory on host\n").Flush();
+                Write("Host process creation failed: out of memory on host\n");
                 World.CompleteRecurse(shell, Process.CompletionKind.KillRemote);
             }
             else
                 Write("Process creation failed: out of memory\n");
-
-            Flush();
         }
     }
 

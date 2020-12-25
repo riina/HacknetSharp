@@ -17,7 +17,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             if (Argv.Length < 3)
             {
-                Write("At least 2 operands are required by this command:\n\t<source>... <dest>\n").Flush();
+                Write("At least 2 operands are required by this command:\n\t<source>... <dest>\n");
                 yield break;
             }
 
@@ -43,7 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
                         // Prevent copying common root to subdirectory
                         if (GetPathInCommon(inputFmt, target) == inputFmt)
                         {
-                            Write($"{inputFmt}: Cannot copy to {target}\n").Flush();
+                            Write($"{inputFmt}: Cannot copy to {target}\n");
                             yield break;
                         }
 
@@ -69,7 +69,7 @@ namespace HacknetSharp.Server.CorePrograms
                         }
                         catch (IOException e)
                         {
-                            Write($"{e.Message}\n").Flush();
+                            Write($"{e.Message}\n");
                             yield break;
                         }
                     }
@@ -77,17 +77,17 @@ namespace HacknetSharp.Server.CorePrograms
                         switch (result)
                         {
                             case ReadAccessResult.NotReadable:
-                                Write($"{closestStr}: Permission denied\n").Flush();
+                                Write($"{closestStr}: Permission denied\n");
                                 yield break;
                             case ReadAccessResult.NoExist:
-                                Write($"{inputFmt}: No such file or directory\n").Flush();
+                                Write($"{inputFmt}: No such file or directory\n");
                                 yield break;
                         }
                 }
             }
             catch (Exception e)
             {
-                Write($"{e.Message}\n").Flush();
+                Write($"{e.Message}\n");
             }
         }
     }

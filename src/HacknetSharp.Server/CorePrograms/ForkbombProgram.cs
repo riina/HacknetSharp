@@ -20,7 +20,7 @@ namespace HacknetSharp.Server.CorePrograms
                 int tf = (int)(100.0 * System.GetUsedMemory() / System.SystemMemory) / 25;
                 if (tf > warningGate)
                 {
-                    Write($"\nMEMORY {tf * 25}% CONSUMED\n").Flush();
+                    Write($"\nMEMORY {tf * 25}% CONSUMED\n");
                     warningGate = tf;
                 }
 
