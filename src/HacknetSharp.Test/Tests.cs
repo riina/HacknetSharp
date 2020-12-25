@@ -137,7 +137,7 @@ namespace HacknetSharp.Test
             var ws = new WorldSpawn(db, w);
             var person = ws.Person("Barney from Black Mesa", "barney");
             var (hash, salt) = ServerUtil.HashPassword("password");
-            var sys = ws.System(st, person, hash, salt, new IPAddressRange("69.69.0.0/16"));
+            var sys = ws.System(st, "system", person, hash, salt, new IPAddressRange("69.69.0.0/16"));
             var li = ws.Login(sys, "jacob", hash, salt, true, person);
             ws.Folder(sys, li, "/etc");
             ws.Folder(sys, li, "/bin");

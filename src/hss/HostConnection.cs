@@ -381,8 +381,8 @@ namespace hss
         private static SystemModel RegisterNewSystem(IWorld world, UserModel user,
             PersonModel person)
         {
-            var system = world.Spawn.System(world.PlayerSystemTemplate, person, user.Hash, user.Salt,
-                new IPAddressRange(world.Model.PlayerAddressRange));
+            var system = world.Spawn.System(world.PlayerSystemTemplate, world.Model.PlayerSystemTemplate, person,
+                user.Hash, user.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
             person.DefaultSystem = system.Key;
             return system;
         }

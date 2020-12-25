@@ -210,6 +210,12 @@ Attempts to spawn a system with the specified tag and group key.
 
 Removes a system.
 
+## Reset
+
+`void ResetSystem(SystemModel? system)`
+
+Resets a specified system to its template state.
+
 ## FileExists
 
 `bool FileExists(SystemModel? system, string path)`

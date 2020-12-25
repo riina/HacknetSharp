@@ -13,6 +13,11 @@ namespace HacknetSharp.Server.Models
     public class SystemModel : WorldMember<Guid>
     {
         /// <summary>
+        /// Template name.
+        /// </summary>
+        public virtual string Template { get; set; } = null!;
+
+        /// <summary>
         /// Device name.
         /// </summary>
         public virtual string Name { get; set; } = null!;
@@ -278,7 +283,7 @@ namespace HacknetSharp.Server.Models
         public void UpdateCrackState(ShellProcess.CrackState crackState)
         {
             foreach ((var key, int value) in VulnerabilityVersions)
-                if (crackState.OpenVulnerabilities.TryGetValue(key, out int ver) && ver != value)
+                if (!crackState.OpenVulnerabilities.TryGetValue(key, out int ver) || ver != value)
                     crackState.OpenVulnerabilities.Remove(key);
 
             if (crackState.FirewallVersion != FirewallVersion)

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
-    [Migration("20201225050324_Initial")]
+    [Migration("20201225053246_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -328,6 +328,10 @@ namespace hss.Sqlite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Tag")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Template")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("WorldKey")

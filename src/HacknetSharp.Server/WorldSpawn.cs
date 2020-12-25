@@ -101,6 +101,7 @@ namespace HacknetSharp.Server
         /// Creates a new system.
         /// </summary>
         /// <param name="template">System template.</param>
+        /// <param name="templateName">Template name.</param>
         /// <param name="owner">System owner.</param>
         /// <param name="hash">Owner password hash.</param>
         /// <param name="salt">Owner password salt.</param>
@@ -109,8 +110,8 @@ namespace HacknetSharp.Server
         /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="ApplicationException">Thrown when address range is not IPv4 range.</exception>
-        public unsafe SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt,
-            IPAddressRange range, string? tag = null, Guid? spawnGroup = null)
+        public unsafe SystemModel System(SystemTemplate template, string templateName, PersonModel owner, byte[] hash,
+            byte[] salt, IPAddressRange range, string? tag = null, Guid? spawnGroup = null)
         {
             if (!range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask))
                 throw new ApplicationException("Address range is not IPv4");
@@ -140,13 +141,14 @@ namespace HacknetSharp.Server
                 resAddr = host;
             }
 
-            return System(template, owner, hash, salt, resAddr, tag, spawnGroup);
+            return System(template, templateName, owner, hash, salt, resAddr, tag, spawnGroup);
         }
 
         /// <summary>
         /// Creates a new system.
         /// </summary>
         /// <param name="template">System template.</param>
+        /// <param name="templateName">Template name.</param>
         /// <param name="owner">System owner.</param>
         /// <param name="hash">Owner password hash.</param>
         /// <param name="salt">Owner password salt.</param>
@@ -154,11 +156,13 @@ namespace HacknetSharp.Server
         /// <param name="tag">Tag to apply.</param>
         /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <returns>Generated model.</returns>
-        public SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt, uint address,
+        public SystemModel System(SystemTemplate template, string templateName, PersonModel owner, byte[] hash,
+            byte[] salt, uint address,
             string? tag = null, Guid? spawnGroup = null)
         {
             var system = new SystemModel
             {
+                Template = templateName,
                 Address = address,
                 Key = Guid.NewGuid(),
                 World = World,
@@ -173,7 +177,8 @@ namespace HacknetSharp.Server
                 Tag = tag,
                 SpawnGroup = spawnGroup ?? Guid.Empty
             };
-            template.ApplyTemplate(this, system, owner, hash, salt);
+            template.ApplyOwner(this, system, owner, hash, salt);
+            template.ApplyTemplate(this, system);
             owner.Systems.Add(system);
             World.Systems.Add(system);
             World.AddressedSystems[system.Address] = system;
@@ -855,6 +860,26 @@ namespace HacknetSharp.Server
 
             system.Files.ExceptWith(toRemove);
             Database.DeleteBulk(toRemove);
+        }
+
+        /// <summary>
+        /// Removes a file from the world.
+        /// </summary>
+        /// <param name="file">Model to remove.</param>
+        public void RemoveFileRaw(FileModel file)
+        {
+            file.System.Files.Remove(file);
+            Database.Delete(file);
+        }
+
+        /// <summary>
+        /// Removes a vulnerability.
+        /// </summary>
+        /// <param name="vuln">Model to remove.</param>
+        public void RemoveVulnerability(VulnerabilityModel vuln)
+        {
+            vuln.System.Vulnerabilities.Remove(vuln);
+            Database.Delete(vuln);
         }
 
         /// <summary>

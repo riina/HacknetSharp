@@ -71,6 +71,7 @@ namespace HacknetSharp.Server.Lua
             RegisterFunction<PersonModel?, string, string, string, string, Guid, SystemModel?>(nameof(SpawnSystemGT),
                 SpawnSystemGT);
             RegisterAction<SystemModel?>(nameof(RemoveSystem), RemoveSystem);
+            RegisterAction<SystemModel?>(nameof(ResetSystem), ResetSystem);
 
             // Files
             RegisterFunction<SystemModel?, string, bool>(nameof(FileExists), FileExists);
@@ -87,13 +88,13 @@ namespace HacknetSharp.Server.Lua
             RegisterAction<string, int>(nameof(LogEx), LogEx);
 
             // Program, service, and hackscript members
-            RunVoidScript(@"function Delay(d) coroutine.yield(GetDelay(d)) end");
-            RegisterFunction<float, YieldToken>(nameof(GetDelay), GetDelay);
+            RunVoidScript(@"function Delay(d) coroutine.yield(self.Delay(d)) end");
 
             // Program-only members
             RunVoidScript(@"function Write(text) return self.Write(text) end");
             RunVoidScript(@"function Flush() return self.Flush() end");
             RunVoidScript(@"function Unbind() return self.SignalUnbindProcess() end");
+            RunVoidScript(@"function Confirm() c = self.Confirm(false) coroutine.yield(c) return c.Confirmed end");
 
             #endregion
         }
@@ -229,13 +230,20 @@ namespace HacknetSharp.Server.Lua
             if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
             if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
             var (hash, salt) = ServerUtil.HashPassword(password);
-            return _world.Spawn.System(sysTemplate, owner, hash, salt, range, tag, key);
+            return _world.Spawn.System(sysTemplate, template, owner, hash, salt, range, tag, key);
         }
 
         private void RemoveSystem(SystemModel? system)
         {
             if (system == null) return;
             _world.Spawn.RemoveSystem(system);
+        }
+
+        private void ResetSystem(SystemModel? system)
+        {
+            if (system == null) return;
+            if (!_world.Templates.SystemTemplates.TryGetValue(system.Template, out var template)) return;
+            template.ApplyTemplate(_world.Spawn, system);
         }
 
         #endregion
@@ -334,8 +342,6 @@ namespace HacknetSharp.Server.Lua
         #endregion
 
         #region Program, service, and hackscript members
-
-        private static YieldToken GetDelay(float delay) => Executable.Delay(delay);
 
         #endregion
 

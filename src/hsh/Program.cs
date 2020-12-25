@@ -128,7 +128,8 @@ namespace hsh
                     case InputRequestEvent inputRequest:
                         connection.WriteEvent(new InputResponseEvent
                         {
-                            Operation = inputRequest.Operation, Input = Util.ReadPassword() ?? ""
+                            Operation = inputRequest.Operation,
+                            Input = (inputRequest.Hidden ? Util.ReadPassword() : LockIO.GetLine()) ?? ""
                         });
                         connection.FlushAsync();
                         break;

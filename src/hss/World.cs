@@ -167,13 +167,13 @@ namespace hss
 
                         try
                         {
-                            task.Task ??= ScriptManager.EvaluateExpression(task.Content);
+                            task.Task ??= ScriptManager.EvaluateExpression(GetWrappedLua(task.Content, true));
                             ScriptManager.RunVoidScript(task.Task);
                         }
                         catch (Exception e)
                         {
                             Logger.LogWarning(
-                                "Exception thrown while processing task on system {Id} with contents:\n{Content}:\n{Exception}",
+                                "Exception thrown while processing task on system {Id} with contents:\n{Content}\n{Exception}",
                                 task.System.Key, task.Content, e);
                             Spawn.RemoveCron(task);
                         }
@@ -183,6 +183,7 @@ namespace hss
                         }
 
                         task.LastRunAt += task.Delay;
+                        Database.Update(task);
                     }
                 }
             }

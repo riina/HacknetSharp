@@ -209,15 +209,31 @@ namespace HacknetSharp.Server.Templates
         /// <param name="owner">Owner model.</param>
         /// <param name="hash">Owner's password hash.</param>
         /// <param name="salt">Owner's password salt.</param>
+        /// <exception cref="InvalidOperationException">Thrown when there are missing elements.</exception>
+        /// <exception cref="ApplicationException">Thrown when failed to parse template contents.</exception>
+        public virtual void ApplyOwner(WorldSpawn spawn, SystemModel model, PersonModel owner, byte[] hash,
+            byte[] salt)
+        {
+            spawn.Login(model, owner.UserName, hash, salt, true, owner);
+        }
+
+        /// <summary>
+        /// Applies this template to a system.
+        /// </summary>
+        /// <param name="spawn">World spawner instance.</param>
+        /// <param name="model">System model to apply to.</param>
         /// <param name="configuration">Additional replacement set.</param>
         /// <exception cref="InvalidOperationException">Thrown when there are missing elements.</exception>
         /// <exception cref="ApplicationException">Thrown when failed to parse template contents.</exception>
-        public virtual void ApplyTemplate(WorldSpawn spawn, SystemModel model, PersonModel owner, byte[] hash,
-            byte[] salt, Dictionary<string, string>? configuration = null)
+        public virtual void ApplyTemplate(WorldSpawn spawn, SystemModel model,
+            Dictionary<string, string>? configuration = null)
         {
             var repDict = configuration != null
                 ? new Dictionary<string, string>(configuration)
                 : new Dictionary<string, string>();
+            var owner = model.Owner;
+            var ownerLogin = model.Logins.FirstOrDefault(l => l.Person == owner.Key);
+            if (ownerLogin == null) throw new InvalidOperationException("Owner has no login");
             repDict["Owner.Name"] = owner.Name;
             repDict["Owner.UserName"] = owner.UserName;
             model.Name = (Name ?? throw new InvalidOperationException($"{nameof(Name)} is null."))
@@ -245,10 +261,8 @@ namespace HacknetSharp.Server.Templates
             model.SystemMemory = SystemMemory > 0 ? SystemMemory :
                 owner.SystemMemory > 0 ? owner.SystemMemory :
                 model.World.SystemMemory > 0 ? model.World.SystemMemory : ServerConstants.DefaultSystemMemory;
-            var unameToLoginDict = new Dictionary<string, LoginModel>
-            {
-                {owner.UserName, spawn.Login(model, owner.UserName, hash, salt, true, owner)}
-            };
+            var unameToLoginDict = new Dictionary<string, LoginModel> {[ownerLogin.User] = ownerLogin};
+            foreach (var login in model.Logins.Where(l => l != ownerLogin).ToList()) spawn.RemoveLogin(login);
             if (Users != null)
                 foreach (var userKvp in Users)
                 {
@@ -272,14 +286,16 @@ namespace HacknetSharp.Server.Templates
                     spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint, vuln.Exploits, vuln.Cve);
                 }
 
+            foreach (var task in model.Tasks.ToList()) spawn.RemoveCron(task);
             if (Tasks != null)
                 foreach (var task in Tasks)
                 {
                     if (task.Content == null)
                         throw new InvalidOperationException($"Task does not have {nameof(Cron.Content)}");
-                    spawn.Cron(model, task.Content, task.Start, task.Delay, task.End);
+                    spawn.Cron(model, task.Content, task.Start + model.World.Now, task.Delay, task.End);
                 }
 
+            foreach (var file in model.Files) spawn.RemoveFileRaw(file);
             if (Filesystem != null)
                 foreach (var kvp in Filesystem)
                 {

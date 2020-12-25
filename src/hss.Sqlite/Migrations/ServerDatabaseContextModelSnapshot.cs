@@ -328,6 +328,10 @@ namespace hss.Sqlite.Migrations
                     b.Property<string>("Tag")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Template")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("WorldKey")
                         .HasColumnType("TEXT");
 

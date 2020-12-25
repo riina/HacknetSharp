@@ -43,7 +43,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (sum < system.RequiredExploits)
             {
                 Write(
-                        $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n");
+                    $"Failed: insufficient exploits established.\nCurrent: {sum}\nRequired: {system.RequiredExploits}\n");
                 yield break;
             }
 

@@ -131,6 +131,7 @@ namespace hss.Sqlite.Migrations
                 columns: table => new
                 {
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Template = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     OsName = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<uint>(type: "INTEGER", nullable: false),

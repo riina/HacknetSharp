@@ -46,4 +46,5 @@ Filesystem:
   - prog:/bin/scp core:scp
   - prog:/bin/edit core:edit
   - prog:/bin/hibiki test/hibiki.program.script.lua
+  - prog:/bin/reset test/reset.program.script.lua
   - text:/home/{UserName}/readme.txt "my name is alex and I have hard on for sabina lol"
