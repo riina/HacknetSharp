@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Delegate ChatService.MessageHandlerDelegate
    ">
-    <meta name="generator" content="docfx 2.53.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -80,7 +80,7 @@
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
   <h5 id="HacknetSharp_Server_CoreServices_ChatService_MessageHandlerDelegate_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate void MessageHandlerDelegate(string channel, Guid sender, string name, string message);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate void MessageHandlerDelegate(string? channel, Guid sender, string name, string message);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -93,13 +93,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">channel</span></td>
         <td><p>Message channel, or null if server broadcast.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">sender</span></td>
         <td><p>Sender model ID.</p>
 </td>
@@ -134,7 +134,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

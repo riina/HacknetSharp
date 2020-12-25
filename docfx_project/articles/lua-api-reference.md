@@ -56,6 +56,14 @@ Number of command arguments.
 
 Only available to programs/services.
 
+## args
+
+`string args`
+
+Arguments part of command line as a single string.
+
+Only available to programs/services.
+
 ## shell
 
 `ShellProcess shell`

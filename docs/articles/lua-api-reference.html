@@ -8,7 +8,7 @@
     <title>Lua API reference </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Lua API reference ">
-    <meta name="generator" content="docfx 2.53.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -99,6 +99,10 @@ are required to end in <code>.service.script.yaml</code>.</p>
 <h2 id="argc">argc</h2>
 <p><code>int argc</code></p>
 <p>Number of command arguments.</p>
+<p>Only available to programs/services.</p>
+<h2 id="args">args</h2>
+<p><code>string args</code></p>
+<p>Arguments part of command line as a single string.</p>
 <p>Only available to programs/services.</p>
 <h2 id="shell">shell</h2>
 <p><code>ShellProcess shell</code></p>
@@ -224,7 +228,8 @@ a file/folder with the provided path.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

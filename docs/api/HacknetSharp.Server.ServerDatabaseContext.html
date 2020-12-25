@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ServerDatabaseContext
    ">
-    <meta name="generator" content="docfx 2.53.1.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,240 +79,25 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Microsoft.EntityFrameworkCore.DbContext</span></div>
-    <div class="level2"><span class="xref">ServerDatabaseContext</span></div>
-  </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><span class="xref">Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure</span>&lt;<span class="xref">System.IServiceProvider</span>&gt;</div>
-    <div><span class="xref">Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies</span></div>
-    <div><span class="xref">Microsoft.EntityFrameworkCore.Internal.IDbSetCache</span></div>
-    <div><span class="xref">Microsoft.EntityFrameworkCore.Internal.IDbContextPoolable</span></div>
-    <div><span class="xref">System.IDisposable</span></div>
-    <div><span class="xref">System.IAsyncDisposable</span></div>
-    <div><span class="xref">Microsoft.EntityFrameworkCore.Infrastructure.IResettableService</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbSetCache.GetOrAddSet(Microsoft.EntityFrameworkCore.Internal.IDbSetSource, System.Type)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbSetCache.GetOrAddSet(Microsoft.EntityFrameworkCore.Internal.IDbSetSource, System.String, System.Type)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Set&lt;TEntity&gt;()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Set&lt;TEntity&gt;(System.String)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SaveChanges()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SaveChanges(System.Boolean)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(System.Boolean, System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextPoolable.ClearLease()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextPoolable.SetLease(Microsoft.EntityFrameworkCore.Internal.DbContextLease)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextPoolable.SnapshotConfiguration()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IResettableService.ResetState()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IResettableService.ResetStateAsync(System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Dispose()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.DisposeAsync()</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Entry&lt;TEntity&gt;(TEntity)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Entry(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Add&lt;TEntity&gt;(TEntity)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AddAsync&lt;TEntity&gt;(TEntity, System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Attach&lt;TEntity&gt;(TEntity)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Update&lt;TEntity&gt;(TEntity)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Remove&lt;TEntity&gt;(TEntity)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Add(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AddAsync(System.Object, System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Attach(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Update(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Remove(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AddRange(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AddRangeAsync(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AttachRange(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.UpdateRange(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.RemoveRange(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AddRange(System.Collections.Generic.IEnumerable&lt;System.Object&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AddRangeAsync(System.Collections.Generic.IEnumerable&lt;System.Object&gt;, System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.AttachRange(System.Collections.Generic.IEnumerable&lt;System.Object&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.UpdateRange(System.Collections.Generic.IEnumerable&lt;System.Object&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.RemoveRange(System.Collections.Generic.IEnumerable&lt;System.Object&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Find(System.Type, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.FindAsync(System.Type, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.FindAsync(System.Type, System.Object[], System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Find&lt;TEntity&gt;(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.FindAsync&lt;TEntity&gt;(System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.FindAsync&lt;TEntity&gt;(System.Object[], System.Threading.CancellationToken)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.FromExpression&lt;TResult&gt;(System.Linq.Expressions.Expression&lt;System.Func&lt;System.Linq.IQueryable&lt;TResult&gt;&gt;&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Database</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.ChangeTracker</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Model</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.ContextId</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.SetSource</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.EntityFinderFactory</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.QueryProvider</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.StateManager</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.ChangeDetector</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.EntityGraphAttacher</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.UpdateLogger</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.InfrastructureLogger</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure&lt;System.IServiceProvider&gt;.Instance</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SavingChanges</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SavedChanges</span>
-    </div>
-    <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.DbContext.SaveChangesFailed</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div class="level1"><span class="xref">ServerDatabaseContext</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
   <h5 id="HacknetSharp_Server_ServerDatabaseContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ServerDatabaseContext : DbContext, IInfrastructure&lt;IServiceProvider&gt;, IDbContextDependencies, IDbSetCache, IDbContextPoolable, IDisposable, IAsyncDisposable, IResettableService</code></pre>
+    <pre><code class="lang-csharp hljs">public class ServerDatabaseContext : DbContext</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_ServerDatabaseContext__ctor_Microsoft_EntityFrameworkCore_DbContextOptions_System_Collections_Generic_IEnumerable_System_Type__System_Collections_Generic_IEnumerable_System_Type__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.ServerDatabaseContext.%23ctor(Microsoft.EntityFrameworkCore.DbContextOptions%2CSystem.Collections.Generic.IEnumerable%7BSystem.Type%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.Type%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_ServerDatabaseContext__ctor_DbContextOptions_IEnumerable_Type__IEnumerable_Type__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.ServerDatabaseContext.%23ctor(DbContextOptions%2CIEnumerable%7BType%7D%2CIEnumerable%7BType%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/ServerDatabaseContext.cs/#L28">View Source</a>
   </span>
   <a id="HacknetSharp_Server_ServerDatabaseContext__ctor_" data-uid="HacknetSharp.Server.ServerDatabaseContext.#ctor*"></a>
-  <h4 id="HacknetSharp_Server_ServerDatabaseContext__ctor_Microsoft_EntityFrameworkCore_DbContextOptions_System_Collections_Generic_IEnumerable_System_Type__System_Collections_Generic_IEnumerable_System_Type__" data-uid="HacknetSharp.Server.ServerDatabaseContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions,System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type})">ServerDatabaseContext(DbContextOptions, IEnumerable&lt;Type&gt;, IEnumerable&lt;Type&gt;)</h4>
+  <h4 id="HacknetSharp_Server_ServerDatabaseContext__ctor_DbContextOptions_IEnumerable_Type__IEnumerable_Type__" data-uid="HacknetSharp.Server.ServerDatabaseContext.#ctor(DbContextOptions,IEnumerable{Type},IEnumerable{Type})">ServerDatabaseContext(DbContextOptions, IEnumerable&lt;Type&gt;, IEnumerable&lt;Type&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.ServerDatabaseContext.html">ServerDatabaseContext</a> with the given database options and components.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -331,19 +116,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Microsoft.EntityFrameworkCore.DbContextOptions</span></td>
+        <td><span class="xref">DbContextOptions</span></td>
         <td><span class="parametername">options</span></td>
         <td><p>The options for this context.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Type</span>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Type</span>&gt;</td>
         <td><span class="parametername">executables</span></td>
         <td><p>The executable types to initialize.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Type</span>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Type</span>&gt;</td>
         <td><span class="parametername">models</span></td>
         <td><p>Additional model types to initialize.</p>
 </td>
@@ -354,13 +139,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_Microsoft_EntityFrameworkCore_DbContextOptionsBuilder_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_DbContextOptionsBuilder_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(DbContextOptionsBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/ServerDatabaseContext.cs/#L64">View Source</a>
   </span>
   <a id="HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_" data-uid="HacknetSharp.Server.ServerDatabaseContext.OnConfiguring*"></a>
-  <h4 id="HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_Microsoft_EntityFrameworkCore_DbContextOptionsBuilder_" data-uid="HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">OnConfiguring(DbContextOptionsBuilder)</h4>
+  <h4 id="HacknetSharp_Server_ServerDatabaseContext_OnConfiguring_DbContextOptionsBuilder_" data-uid="HacknetSharp.Server.ServerDatabaseContext.OnConfiguring(DbContextOptionsBuilder)">OnConfiguring(DbContextOptionsBuilder)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -378,23 +163,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Microsoft.EntityFrameworkCore.DbContextOptionsBuilder</span></td>
+        <td><span class="xref">DbContextOptionsBuilder</span></td>
         <td><span class="parametername">options</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_Microsoft_EntityFrameworkCore_ModelBuilder_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_ModelBuilder_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(ModelBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/ServerDatabaseContext.cs/#L68">View Source</a>
   </span>
   <a id="HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_" data-uid="HacknetSharp.Server.ServerDatabaseContext.OnModelCreating*"></a>
-  <h4 id="HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_Microsoft_EntityFrameworkCore_ModelBuilder_" data-uid="HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">OnModelCreating(ModelBuilder)</h4>
+  <h4 id="HacknetSharp_Server_ServerDatabaseContext_OnModelCreating_ModelBuilder_" data-uid="HacknetSharp.Server.ServerDatabaseContext.OnModelCreating(ModelBuilder)">OnModelCreating(ModelBuilder)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -412,36 +195,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Microsoft.EntityFrameworkCore.ModelBuilder</span></td>
+        <td><span class="xref">ModelBuilder</span></td>
         <td><span class="parametername">builder</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Microsoft.EntityFrameworkCore.DbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)</span></div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies</span>
-  </div>
-  <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.Internal.IDbSetCache</span>
-  </div>
-  <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.Internal.IDbContextPoolable</span>
-  </div>
-  <div>
-      <span class="xref">System.IDisposable</span>
-  </div>
-  <div>
-      <span class="xref">System.IAsyncDisposable</span>
-  </div>
-  <div>
-      <span class="xref">Microsoft.EntityFrameworkCore.Infrastructure.IResettableService</span>
-  </div>
 </article>
           </div>
           
@@ -458,7 +217,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
