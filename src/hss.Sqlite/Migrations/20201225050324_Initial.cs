@@ -19,7 +19,10 @@ namespace hss.Sqlite.Migrations
                     PasswordResetTokenExpiry = table.Column<long>(type: "INTEGER", nullable: false),
                     ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -37,7 +40,10 @@ namespace hss.Sqlite.Migrations
                     SystemMemory = table.Column<long>(type: "INTEGER", nullable: false),
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
@@ -170,7 +176,8 @@ namespace hss.Sqlite.Migrations
                     SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
                     LastRunAt = table.Column<double>(type: "REAL", nullable: false),
-                    Frequency = table.Column<double>(type: "REAL", nullable: false),
+                    Delay = table.Column<double>(type: "REAL", nullable: false),
+                    End = table.Column<double>(type: "REAL", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -202,7 +209,7 @@ namespace hss.Sqlite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KnownSystemModel", x => new {x.FromKey, x.ToKey});
+                    table.PrimaryKey("PK_KnownSystemModel", x => new { x.FromKey, x.ToKey });
                     table.ForeignKey(
                         name: "FK_KnownSystemModel_SystemModel_FromKey",
                         column: x => x.FromKey,

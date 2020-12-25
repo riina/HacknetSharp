@@ -122,9 +122,9 @@ Removes (ends) a mission.
 
 ## PersonT
 
-`PersonModel? PersonT(string tag)`
+`PersonModel[]? PersonT(string tag)`
 
-Tries to get a person with the specified unique tag.
+Tries to get persons with the specified tag.
 
 ## SpawnPerson
 
@@ -132,11 +132,23 @@ Tries to get a person with the specified unique tag.
 
 Spawns a person with the specified proper name and username.
 
+## SpawnPersonG
+
+`PersonModel SpawnPersonG(string name, string username, Guid key)`
+
+Spawns a person with the specified proper name, username, and group key.
+
 ## SpawnPersonT
 
 `PersonModel SpawnPersonT(string name, string username, string tag)`
 
-Spawns a person with the specified proper name, username, and unique tag.
+Spawns a person with the specified proper name, username, tag.
+
+## SpawnPersonGT
+
+`PersonModel SpawnPersonG(string name, string username, string tag, Guid key)`
+
+Spawns a person with the specified proper name, username, tag, and group key.
 
 ## RemovePerson
 
@@ -146,9 +158,9 @@ Removes a person (and all systems).
 
 ## SystemT
 
-`SystemModel? SystemT(string tag)`
+`SystemModel[]? SystemT(string tag)`
 
-Tries to get a system with the specified unique tag.
+Tries to get system with the specified tag.
 
 ## SystemA
 
@@ -174,6 +186,24 @@ Checks if a system is up. Returns false if system is null.
 
 Attempts to spawn a system.
 
+## SpawnSystemG
+
+`SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressOrAddressRange, Guid key)`
+
+Attempts to spawn a system with the specified group key.
+
+## SpawnSystemT
+
+`SystemModel? SpawnSystemT(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag)`
+
+Attempts to spawn a system with the specified tag.
+
+## SpawnSystemGT
+
+`SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag, Guid key)`
+
+Attempts to spawn a system with the specified tag and group key.
+
 ## RemoveSystem
 
 `void RemoveSystem(SystemModel? system)`
@@ -197,13 +227,25 @@ Checks if a file exists on the specified system and contains the specified text.
 
 `FileModel? SpawnFile(SystemModel? system, string path, string content)`
 
-Spawns a file with the specified content. Returns an existing file if applicable.
+Spawns a text file with the specified content. Returns an existing file if applicable.
 
 ## RemoveFile
 
 `void RemoveFile(FileModel? file)`
 
-Removes a file.
+Removes a file (recursive).
+
+## SpawnCron
+
+`CronModel? SpawnCron(SystemModel? system, string content, float start, float delay, float end)`
+
+Spawns a task with the specified content.
+
+## RemoveCron
+
+`void RemoveCron(CronModel? cron)`
+
+Removes a task.
 
 ## Log
 

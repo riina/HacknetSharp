@@ -53,7 +53,9 @@ namespace HacknetSharp.Server.Lua
             // Persons
             RegisterFunction<string, PersonModel[]?>(nameof(PersonT), PersonT);
             RegisterFunction<string, string, PersonModel>(nameof(SpawnPerson), SpawnPerson);
+            RegisterFunction<string, string, Guid, PersonModel>(nameof(SpawnPersonG), SpawnPersonG);
             RegisterFunction<string, string, string, PersonModel>(nameof(SpawnPersonT), SpawnPersonT);
+            RegisterFunction<string, string, string, Guid, PersonModel>(nameof(SpawnPersonGT), SpawnPersonGT);
             RegisterAction<PersonModel?>(nameof(RemovePerson), RemovePerson);
 
             // Systems
@@ -62,6 +64,12 @@ namespace HacknetSharp.Server.Lua
             RegisterFunction<PersonModel?, SystemModel?>(nameof(Home), Home);
             RegisterFunction<SystemModel?, bool>(nameof(SystemUp), SystemUp);
             RegisterFunction<PersonModel?, string, string, string, SystemModel?>(nameof(SpawnSystem), SpawnSystem);
+            RegisterFunction<PersonModel?, string, string, string, Guid, SystemModel?>(nameof(SpawnSystemG),
+                SpawnSystemG);
+            RegisterFunction<PersonModel?, string, string, string, string, SystemModel?>(nameof(SpawnSystemT),
+                SpawnSystemT);
+            RegisterFunction<PersonModel?, string, string, string, string, Guid, SystemModel?>(nameof(SpawnSystemGT),
+                SpawnSystemGT);
             RegisterAction<SystemModel?>(nameof(RemoveSystem), RemoveSystem);
 
             // Files
@@ -71,6 +79,8 @@ namespace HacknetSharp.Server.Lua
             RegisterAction<FileModel?>(nameof(RemoveFile), RemoveFile);
 
             // Tasks
+            RegisterFunction<SystemModel?, string, float, float, float, CronModel?>(nameof(SpawnCron), SpawnCron);
+            RegisterAction<CronModel?>(nameof(RemoveCron), RemoveCron);
 
             // Generals
             RegisterAction<string>(nameof(Log), Log);
@@ -136,9 +146,19 @@ namespace HacknetSharp.Server.Lua
             return _world.Spawn.Person(name, username);
         }
 
+        private PersonModel SpawnPersonG(string name, string username, Guid key)
+        {
+            return _world.Spawn.Person(name, username, null, key);
+        }
+
         private PersonModel SpawnPersonT(string name, string username, string tag)
         {
             return _world.Spawn.Person(name, username, tag);
+        }
+
+        private PersonModel SpawnPersonGT(string name, string username, string tag, Guid key)
+        {
+            return _world.Spawn.Person(name, username, tag, key);
         }
 
         private void RemovePerson(PersonModel? person)
@@ -180,11 +200,36 @@ namespace HacknetSharp.Server.Lua
 
         private SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressRange)
         {
+            return SpawnSystemBase(owner, password, template, addressRange);
+        }
+
+
+        private SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressRange,
+            Guid key)
+        {
+            return SpawnSystemBase(owner, password, template, addressRange, null, key);
+        }
+
+        private SystemModel? SpawnSystemT(PersonModel? owner, string password, string template, string addressRange,
+            string tag)
+        {
+            return SpawnSystemBase(owner, password, template, addressRange, tag);
+        }
+
+        private SystemModel? SpawnSystemGT(PersonModel? owner, string password, string template, string addressRange,
+            string tag, Guid key)
+        {
+            return SpawnSystemBase(owner, password, template, addressRange, tag, key);
+        }
+
+        private SystemModel? SpawnSystemBase(PersonModel? owner, string password, string template, string addressRange,
+            string? tag = null, Guid? key = null)
+        {
             if (owner == null) return null;
             if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
             if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
             var (hash, salt) = ServerUtil.HashPassword(password);
-            return _world.Spawn.System(sysTemplate, owner, hash, salt, range);
+            return _world.Spawn.System(sysTemplate, owner, hash, salt, range, tag, key);
         }
 
         private void RemoveSystem(SystemModel? system)
@@ -233,6 +278,20 @@ namespace HacknetSharp.Server.Lua
         #endregion
 
         #region Tasks
+
+        private CronModel? SpawnCron(SystemModel? system, string script, float start, float delay, float end)
+        {
+            if (system == null) return null;
+            var cron = _world.Spawn.Cron(system, script, start, delay, end);
+            cron.Task = _world.ScriptManager.EvaluateExpression(script);
+            return cron;
+        }
+
+        private void RemoveCron(CronModel? cron)
+        {
+            if (cron == null) return;
+            _world.Spawn.RemoveCron(cron);
+        }
 
         #endregion
 

@@ -482,10 +482,11 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="system">System task runs on.</param>
         /// <param name="content">Script content.</param>
-        /// <param name="lastRunAt">Time task was last run at.</param>
-        /// <param name="frequency">Task frequency.</param>
+        /// <param name="start">Initial time to run task.</param>
+        /// <param name="delay">Task delay.</param>
+        /// <param name="end">Task end time.</param>
         /// <returns>Generated model.</returns>
-        public CronModel Cron(SystemModel system, string content, double lastRunAt, double frequency)
+        public CronModel Cron(SystemModel system, string content, double start, double delay, double end)
         {
             var cron = new CronModel
             {
@@ -493,8 +494,9 @@ namespace HacknetSharp.Server
                 World = system.World,
                 System = system,
                 Content = content,
-                LastRunAt = lastRunAt,
-                Frequency = frequency
+                LastRunAt = start - delay,
+                Delay = delay,
+                End = end
             };
 
             system.Tasks.Add(cron);

@@ -11,6 +11,9 @@ Vulnerabilities:
   Protocol: ssh
   Exploits: 1
   Cve: CVE-2020-3200
+Tasks:
+- Content: Log("Every 10 seconds")
+  Delay: 10
 #FirewallIterations: 9
 ProxyClocks: 24.0
 FirewallLength: 14

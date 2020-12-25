@@ -26,9 +26,14 @@ namespace HacknetSharp.Server.Models
         public virtual double LastRunAt { get; set; }
 
         /// <summary>
-        /// Task frequency.
+        /// Task delay.
         /// </summary>
-        public virtual double Frequency { get; set; }
+        public virtual double Delay { get; set; }
+
+        /// <summary>
+        /// Task end time.
+        /// </summary>
+        public virtual double End { get; set; }
 
         /// <summary>
         /// Task object.

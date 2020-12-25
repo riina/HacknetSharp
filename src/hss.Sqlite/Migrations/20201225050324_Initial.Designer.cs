@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace hss.Sqlite.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
-    [Migration("20201225042701_Initial")]
+    [Migration("20201225050324_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,10 @@ namespace hss.Sqlite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("Frequency")
+                    b.Property<double>("Delay")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("End")
                         .HasColumnType("REAL");
 
                     b.Property<double>("LastRunAt")

@@ -159,12 +159,15 @@ namespace hss
                 tmpTasks.UnionWith(system.Tasks);
                 foreach (var task in tmpTasks)
                 {
-                    if (task.Task != null)
+                    if (task.End > Time)
+                        Spawn.RemoveCron(task);
+                    if (task.LastRunAt + task.Delay < Time)
                     {
                         ScriptManager.SetGlobal("system", task.System);
 
                         try
                         {
+                            task.Task ??= ScriptManager.EvaluateExpression(task.Content);
                             ScriptManager.RunVoidScript(task.Task);
                         }
                         catch (Exception e)
@@ -178,9 +181,9 @@ namespace hss
                         {
                             ScriptManager.ClearGlobal("system");
                         }
+
+                        task.LastRunAt += task.Delay;
                     }
-                    else
-                        system.Tasks.Remove(task);
                 }
             }
         }

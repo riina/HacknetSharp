@@ -72,6 +72,11 @@ namespace HacknetSharp.Server.Templates
         public Dictionary<string, List<string>>? Filesystem { get; set; }
 
         /// <summary>
+        /// Timed tasks.
+        /// </summary>
+        public List<Cron>? Tasks { get; set; }
+
+        /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
         public double RebootDuration { get; set; }
@@ -145,6 +150,32 @@ namespace HacknetSharp.Server.Templates
             /// Optional CVE string (trivia).
             /// </summary>
             public string? Cve { get; set; }
+        }
+
+        /// <summary>
+        /// Represents a timed task.
+        /// </summary>
+        public class Cron
+        {
+            /// <summary>
+            /// Task content.
+            /// </summary>
+            public string? Content { get; set; }
+
+            /// <summary>
+            /// Initial start time.
+            /// </summary>
+            public double Start { get; set; }
+
+            /// <summary>
+            /// Task delay.
+            /// </summary>
+            public double Delay { get; set; }
+
+            /// <summary>
+            /// End time.
+            /// </summary>
+            public double End { get; set; }
         }
 
         private static readonly Regex _userRegex = new(@"([A-Za-z]+)(\+)?");
@@ -239,6 +270,14 @@ namespace HacknetSharp.Server.Templates
                         throw new InvalidOperationException(
                             $"Vulnerability does not have {nameof(Vulnerability.Protocol)}");
                     spawn.Vulnerability(model, vuln.Protocol, vuln.EntryPoint, vuln.Exploits, vuln.Cve);
+                }
+
+            if (Tasks != null)
+                foreach (var task in Tasks)
+                {
+                    if (task.Content == null)
+                        throw new InvalidOperationException($"Task does not have {nameof(Cron.Content)}");
+                    spawn.Cron(model, task.Content, task.Start, task.Delay, task.End);
                 }
 
             if (Filesystem != null)
