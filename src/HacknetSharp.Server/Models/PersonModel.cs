@@ -77,9 +77,14 @@ namespace HacknetSharp.Server.Models
         public virtual long SystemMemory { get; set; }
 
         /// <summary>
-        /// Unique tag for lookup.
+        /// Tag for lookup.
         /// </summary>
         public virtual string? Tag { get; set; }
+
+        /// <summary>
+        /// Logical group this entity was spawned in.
+        /// </summary>
+        public virtual Guid SpawnGroup { get; set; }
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

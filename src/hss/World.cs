@@ -34,6 +34,7 @@ namespace hss
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
         private readonly HashSet<SystemModel> _tmpSystems;
         private readonly HashSet<MissionModel> _tmpMissions;
+        private readonly HashSet<CronModel> _tmpTasks;
         private readonly Dictionary<string, DynValue> _scriptFile;
         private readonly Dictionary<string, DynValue> _scriptMissionStart;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionGoal;
@@ -57,14 +58,39 @@ namespace hss
             {
                 Model.ActiveMissions.UnionWith(person.Missions);
                 if (person.Tag != null)
-                    Model.TaggedPersons[person.Tag] = person;
+                {
+                    if (!Model.TaggedPersons.TryGetValue(person.Tag, out var list))
+                        Model.TaggedPersons[person.Tag] = list = new List<PersonModel>();
+                    list.Add(person);
+                }
+
+                if (person.SpawnGroup != Guid.Empty)
+                {
+                    if (!Model.SpawnGroupPersons.TryGetValue(person.SpawnGroup, out var list))
+                        Model.SpawnGroupPersons[person.SpawnGroup] = list = new List<PersonModel>();
+                    list.Add(person);
+                }
             }
 
             foreach (var system in Model.Systems)
             {
                 Model.AddressedSystems[system.Address] = system;
                 if (system.Tag != null)
-                    Model.TaggedSystems[system.Tag] = system;
+                {
+                    if (!Model.TaggedSystems.TryGetValue(system.Tag, out var list))
+                        Model.TaggedSystems[system.Tag] = list = new List<SystemModel>();
+                    list.Add(system);
+                }
+
+                if (system.SpawnGroup != Guid.Empty)
+                {
+                    if (!Model.SpawnGroupSystems.TryGetValue(system.SpawnGroup, out var list))
+                        Model.SpawnGroupSystems[system.SpawnGroup] = list = new List<SystemModel>();
+                    list.Add(system);
+                }
+
+                foreach (var cron in system.Tasks)
+                    cron.Task = ScriptManager.EvaluateExpression(GetWrappedLua(cron.Content, true));
             }
 
             foreach (var (missionPath, mission) in Templates.MissionTemplates)
@@ -100,6 +126,7 @@ namespace hss
             _tmpShellProcesses = new HashSet<ShellProcess>();
             _tmpSystems = new HashSet<SystemModel>();
             _tmpMissions = new HashSet<MissionModel>();
+            _tmpTasks = new HashSet<CronModel>();
         }
 
         private static string GetWrappedLua(string body, bool isVoid) =>
@@ -120,6 +147,42 @@ namespace hss
             // Check processes for memory overflow (shells are static and therefore don't matter)
             TickOverflows(_processes, _tmpProcesses, _tmpSystems);
             TickMissions(_tmpMissions);
+            TickTasks(_tmpTasks);
+        }
+
+        private void TickTasks(HashSet<CronModel> tmpTasks)
+        {
+            foreach (var system in Model.Systems)
+            {
+                if (system.BootTime > Time) continue;
+                tmpTasks.Clear();
+                tmpTasks.UnionWith(system.Tasks);
+                foreach (var task in tmpTasks)
+                {
+                    if (task.Task != null)
+                    {
+                        ScriptManager.SetGlobal("system", task.System);
+
+                        try
+                        {
+                            ScriptManager.RunVoidScript(task.Task);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogWarning(
+                                "Exception thrown while processing task on system {Id} with contents:\n{Content}:\n{Exception}",
+                                task.System.Key, task.Content, e);
+                            Spawn.RemoveCron(task);
+                        }
+                        finally
+                        {
+                            ScriptManager.ClearGlobal("system");
+                        }
+                    }
+                    else
+                        system.Tasks.Remove(task);
+                }
+            }
         }
 
         private void TickMissions(HashSet<MissionModel> tmpMissions)
@@ -189,7 +252,7 @@ namespace hss
 
                 if (!fail)
                 {
-                    Logger.LogInformation("Gracefully finished mission {Path} for person {Id}", mission.Template,
+                    Logger.LogInformation("Successfully finished mission {Path} for person {Id}", mission.Template,
                         mission.Person.Key);
                     if (TryGetScriptMissionNext(mission.Template, i, out var script))
                         ScriptManager.RunVoidScript(script);
@@ -660,8 +723,7 @@ namespace hss
 
         private void RegisterScriptFile(string name, Stream stream)
         {
-            _scriptFile[name] =
-                ScriptManager.RegisterExpression(name, GetWrappedLua(stream, true));
+            _scriptFile[name] = ScriptManager.EvaluateExpression(GetWrappedLua(stream, true));
         }
 
         private bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
@@ -673,9 +735,7 @@ namespace hss
 
         private void RegisterScriptMissionStart(string missionPath, string content)
         {
-            string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Start";
-            _scriptMissionStart[missionPath] =
-                ScriptManager.RegisterExpression(script, GetWrappedLua(content, true));
+            _scriptMissionStart[missionPath] = ScriptManager.EvaluateExpression(GetWrappedLua(content, true));
         }
 
         private bool TryGetScriptMissionStart(string missionPath, [NotNullWhen(true)] out DynValue? script)
@@ -687,12 +747,9 @@ namespace hss
 
         private void RegisterScriptMissionGoal(string missionPath, int index, string content)
         {
-            string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Goal{index}";
-            string lua = GetWrappedLua(content, false);
-            var res = ScriptManager.RegisterExpression(script, lua);
             if (!_scriptMissionGoal.TryGetValue(missionPath, out var dict))
                 _scriptMissionGoal[missionPath] = dict = new Dictionary<int, DynValue>();
-            dict[index] = res;
+            dict[index] = ScriptManager.EvaluateExpression(GetWrappedLua(content, false));
         }
 
         private bool TryGetScriptMissionGoal(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
@@ -706,12 +763,9 @@ namespace hss
 
         private void RegisterScriptMissionNext(string missionPath, int index, string content)
         {
-            string script = $"{missionPath.Replace('/', '_').Replace('.', '_')}_Next{index}";
-            string lua = GetWrappedLua(content, true);
-            var res = ScriptManager.RegisterExpression(script, lua);
             if (!_scriptMissionNext.TryGetValue(missionPath, out var dict))
                 _scriptMissionNext[missionPath] = dict = new Dictionary<int, DynValue>();
-            dict[index] = res;
+            dict[index] = ScriptManager.EvaluateExpression(GetWrappedLua(content, true));
         }
 
         private bool TryGetScriptMissionNext(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)

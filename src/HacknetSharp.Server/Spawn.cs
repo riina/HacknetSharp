@@ -74,12 +74,7 @@ namespace HacknetSharp.Server
         /// <param name="isCascade">If true, does not directly delete from database.</param>
         public void RemoveUser(UserModel user, bool isCascade = false)
         {
-            foreach (var person in user.Identities)
-            {
-                var worldSpawn = new WorldSpawn(Database, person.World);
-                foreach (var mission in person.Missions) worldSpawn.RemoveMission(mission);
-                foreach (var system in person.Systems) worldSpawn.RemoveSystem(system);
-            }
+            foreach (var person in user.Identities) new WorldSpawn(Database, person.World).RemovePerson(person);
 
             if (isCascade) return;
             Database.Delete(user);

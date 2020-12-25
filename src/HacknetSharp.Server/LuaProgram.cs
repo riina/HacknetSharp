@@ -25,6 +25,7 @@ namespace HacknetSharp.Server
         {
             while (_coroutine.State != CoroutineState.Dead)
             {
+                World.ScriptManager.SetGlobal("system", System);
                 World.ScriptManager.SetGlobal("self", this);
                 World.ScriptManager.SetGlobal("login", Login);
                 World.ScriptManager.SetGlobal("argv", Argv);
@@ -40,6 +41,7 @@ namespace HacknetSharp.Server
                 }
                 finally
                 {
+                    World.ScriptManager.ClearGlobal("system");
                     World.ScriptManager.ClearGlobal("self");
                     World.ScriptManager.ClearGlobal("login");
                     World.ScriptManager.ClearGlobal("argv");

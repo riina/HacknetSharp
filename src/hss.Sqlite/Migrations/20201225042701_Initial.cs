@@ -73,6 +73,7 @@ namespace hss.Sqlite.Migrations
                     ClockSpeed = table.Column<double>(type: "REAL", nullable: false),
                     SystemMemory = table.Column<long>(type: "INTEGER", nullable: false),
                     Tag = table.Column<string>(type: "TEXT", nullable: true),
+                    SpawnGroup = table.Column<Guid>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -141,6 +142,7 @@ namespace hss.Sqlite.Migrations
                     FirewallDelay = table.Column<double>(type: "REAL", nullable: false),
                     FixedFirewall = table.Column<string>(type: "TEXT", nullable: true),
                     Tag = table.Column<string>(type: "TEXT", nullable: true),
+                    SpawnGroup = table.Column<Guid>(type: "TEXT", nullable: false),
                     WorldKey = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -158,6 +160,34 @@ namespace hss.Sqlite.Migrations
                         principalTable: "WorldModel",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CronModel",
+                columns: table => new
+                {
+                    Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SystemKey = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    LastRunAt = table.Column<double>(type: "REAL", nullable: false),
+                    Frequency = table.Column<double>(type: "REAL", nullable: false),
+                    WorldKey = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CronModel", x => x.Key);
+                    table.ForeignKey(
+                        name: "FK_CronModel_SystemModel_SystemKey",
+                        column: x => x.SystemKey,
+                        principalTable: "SystemModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CronModel_WorldModel_WorldKey",
+                        column: x => x.WorldKey,
+                        principalTable: "WorldModel",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -293,6 +323,16 @@ namespace hss.Sqlite.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CronModel_SystemKey",
+                table: "CronModel",
+                column: "SystemKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CronModel_WorldKey",
+                table: "CronModel",
+                column: "WorldKey");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FileModel_OwnerKey",
                 table: "FileModel",
                 column: "OwnerKey");
@@ -375,6 +415,9 @@ namespace hss.Sqlite.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CronModel");
+
             migrationBuilder.DropTable(
                 name: "FileModel");
 

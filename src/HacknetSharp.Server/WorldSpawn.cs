@@ -38,10 +38,12 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="name">Proper name.</param>
         /// <param name="userName">Username.</param>
-        /// <param name="tag">Unique tag to apply.</param>
+        /// <param name="tag">Tag to apply.</param>
+        /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <param name="user">User model if associated with a user.</param>
         /// <returns>Generated model.</returns>
-        public PersonModel Person(string name, string userName, string? tag = null, UserModel? user = null)
+        public PersonModel Person(string name, string userName, string? tag = null, Guid? spawnGroup = null,
+            UserModel? user = null)
         {
             var person = new PersonModel
             {
@@ -52,13 +54,26 @@ namespace HacknetSharp.Server
                 Systems = new HashSet<SystemModel>(),
                 Missions = new HashSet<MissionModel>(),
                 Tag = tag,
+                SpawnGroup = spawnGroup ?? Guid.Empty,
                 User = user
             };
             user?.Identities.Add(person);
             World.Persons.Add(person);
             Database.Add(person);
             if (person.Tag != null)
-                World.TaggedPersons[person.Tag] = person;
+            {
+                if (!World.TaggedPersons.TryGetValue(person.Tag, out var list))
+                    World.TaggedPersons[person.Tag] = list = new List<PersonModel>();
+                list.Add(person);
+            }
+
+            if (person.SpawnGroup != Guid.Empty)
+            {
+                if (!World.SpawnGroupPersons.TryGetValue(person.SpawnGroup, out var list))
+                    World.SpawnGroupPersons[person.SpawnGroup] = list = new List<PersonModel>();
+                list.Add(person);
+            }
+
             return person;
         }
 
@@ -90,10 +105,12 @@ namespace HacknetSharp.Server
         /// <param name="hash">Owner password hash.</param>
         /// <param name="salt">Owner password salt.</param>
         /// <param name="range">Address range or single address.</param>
+        /// <param name="tag">Tag to apply.</param>
+        /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="ApplicationException">Thrown when address range is not IPv4 range.</exception>
         public unsafe SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt,
-            IPAddressRange range)
+            IPAddressRange range, string? tag = null, Guid? spawnGroup = null)
         {
             if (!range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask))
                 throw new ApplicationException("Address range is not IPv4");
@@ -123,7 +140,7 @@ namespace HacknetSharp.Server
                 resAddr = host;
             }
 
-            return System(template, owner, hash, salt, resAddr);
+            return System(template, owner, hash, salt, resAddr, tag, spawnGroup);
         }
 
         /// <summary>
@@ -134,8 +151,11 @@ namespace HacknetSharp.Server
         /// <param name="hash">Owner password hash.</param>
         /// <param name="salt">Owner password salt.</param>
         /// <param name="address">Address.</param>
+        /// <param name="tag">Tag to apply.</param>
+        /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <returns>Generated model.</returns>
-        public SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt, uint address)
+        public SystemModel System(SystemTemplate template, PersonModel owner, byte[] hash, byte[] salt, uint address,
+            string? tag = null, Guid? spawnGroup = null)
         {
             var system = new SystemModel
             {
@@ -145,10 +165,13 @@ namespace HacknetSharp.Server
                 Owner = owner,
                 Files = new HashSet<FileModel>(),
                 Logins = new HashSet<LoginModel>(),
+                Tasks = new HashSet<CronModel>(),
                 KnownSystems = new HashSet<KnownSystemModel>(),
                 KnowingSystems = new HashSet<KnownSystemModel>(),
                 Vulnerabilities = new HashSet<VulnerabilityModel>(),
-                BootTime = World.Now
+                BootTime = World.Now,
+                Tag = tag,
+                SpawnGroup = spawnGroup ?? Guid.Empty
             };
             template.ApplyTemplate(this, system, owner, hash, salt);
             owner.Systems.Add(system);
@@ -156,7 +179,19 @@ namespace HacknetSharp.Server
             World.AddressedSystems[system.Address] = system;
             Database.Add(system);
             if (system.Tag != null)
-                World.TaggedSystems[system.Tag] = system;
+            {
+                if (!World.TaggedSystems.TryGetValue(system.Tag, out var list))
+                    World.TaggedSystems[system.Tag] = list = new List<SystemModel>();
+                list.Add(system);
+            }
+
+            if (system.SpawnGroup != Guid.Empty)
+            {
+                if (!World.SpawnGroupSystems.TryGetValue(system.SpawnGroup, out var list))
+                    World.SpawnGroupSystems[system.SpawnGroup] = list = new List<SystemModel>();
+                list.Add(system);
+            }
+
             return system;
         }
 
@@ -443,6 +478,31 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
+        /// Create a time-based task.
+        /// </summary>
+        /// <param name="system">System task runs on.</param>
+        /// <param name="content">Script content.</param>
+        /// <param name="lastRunAt">Time task was last run at.</param>
+        /// <param name="frequency">Task frequency.</param>
+        /// <returns>Generated model.</returns>
+        public CronModel Cron(SystemModel system, string content, double lastRunAt, double frequency)
+        {
+            var cron = new CronModel
+            {
+                Key = Guid.NewGuid(),
+                World = system.World,
+                System = system,
+                Content = content,
+                LastRunAt = lastRunAt,
+                Frequency = frequency
+            };
+
+            system.Tasks.Add(cron);
+            Database.Add(cron);
+            return cron;
+        }
+
+        /// <summary>
         /// Creates a program file.
         /// </summary>
         /// <param name="system">System file resides on.</param>
@@ -661,6 +721,30 @@ namespace HacknetSharp.Server
         }
 
         /// <summary>
+        /// Removes dependent entities of specified entity.
+        /// </summary>
+        /// <param name="key">Entity key.</param>
+        private void RemoveDependents(Guid key)
+        {
+            if (key == Guid.Empty) return;
+            if (World.SpawnGroupSystems.TryGetValue(key, out var systems))
+            {
+                var systems2 = new List<SystemModel>(systems);
+                foreach (var s in systems2)
+                    RemoveSystem(s);
+                World.SpawnGroupSystems.Remove(key);
+            }
+
+            if (World.SpawnGroupPersons.TryGetValue(key, out var persons))
+            {
+                var persons2 = new List<PersonModel>(persons);
+                foreach (var p in persons2)
+                    RemovePerson(p);
+                World.SpawnGroupPersons.Remove(key);
+            }
+        }
+
+        /// <summary>
         /// Removes a mission from the world.
         /// </summary>
         /// <param name="mission">Mission to remove.</param>
@@ -669,6 +753,7 @@ namespace HacknetSharp.Server
         {
             mission.Person.Missions.Remove(mission);
             World.ActiveMissions.Remove(mission);
+            RemoveDependents(mission.Key);
             if (isCascade) return;
             Database.Delete(mission);
         }
@@ -687,7 +772,12 @@ namespace HacknetSharp.Server
             system.KnowingSystems.Clear();
             World.AddressedSystems.Remove(system.Address);
             if (system.Tag != null)
-                World.TaggedSystems.Remove(system.Tag);
+                if (World.TaggedSystems.TryGetValue(system.Tag, out var list))
+                    list.Remove(system);
+            if (system.SpawnGroup != Guid.Empty)
+                if (World.SpawnGroupSystems.TryGetValue(system.SpawnGroup, out var list))
+                    list.Remove(system);
+            RemoveDependents(system.Key);
             foreach (var targetingShell in system.TargetingShells)
                 targetingShell.Target = null;
             system.TargetingShells.Clear();
@@ -729,10 +819,15 @@ namespace HacknetSharp.Server
         public void RemovePerson(PersonModel person, bool isCascade = false)
         {
             var systems = person.Systems.ToList();
-            foreach (var system in systems)
-                RemoveSystem(system, true);
+            foreach (var system in systems) RemoveSystem(system, true);
+            foreach (var mission in person.Missions) RemoveMission(mission);
             if (person.Tag != null)
-                World.TaggedPersons.Remove(person.Tag);
+                if (World.TaggedPersons.TryGetValue(person.Tag, out var list))
+                    list.Remove(person);
+            if (person.SpawnGroup != Guid.Empty)
+                if (World.SpawnGroupPersons.TryGetValue(person.SpawnGroup, out var list))
+                    list.Remove(person);
+            RemoveDependents(person.Key);
             if (isCascade) return;
             Database.Delete(person);
         }
@@ -783,6 +878,17 @@ namespace HacknetSharp.Server
 
             system.Files.ExceptWith(toRemove);
             Database.DeleteBulk(toRemove);
+        }
+
+        /// <summary>
+        /// Removes a task.
+        /// </summary>
+        /// <param name="cron">Model to remove.</param>
+        public void RemoveCron(CronModel cron)
+        {
+            var system = cron.System;
+            system.Tasks.Remove(cron);
+            Database.Delete(cron);
         }
     }
 }

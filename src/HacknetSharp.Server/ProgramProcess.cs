@@ -43,10 +43,12 @@ namespace HacknetSharp.Server
 
             if (!_enumerator.MoveNext())
             {
+                _program.Flush();
                 world.CompleteRecurse(this, CompletionKind.Normal);
                 return true;
             }
 
+            _program.Flush();
             _currentToken = _enumerator.Current;
             return false;
         }

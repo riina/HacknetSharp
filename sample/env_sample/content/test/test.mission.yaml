@@ -1,6 +1,6 @@
-Start: log("Starting mission.")
+Start: Log("Starting mission.")
 Goals:
-- file_exists(home(me), "makeme.txt")
+- FileExists(Home(me), "makeme.txt")
 Outcomes:
 - Goals: [0]
-  Next: log("Mission complete.")
+  Next: Log("Mission complete.")

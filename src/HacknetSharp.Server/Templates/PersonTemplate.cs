@@ -108,7 +108,7 @@ namespace HacknetSharp.Server.Templates
         public long SystemMemory { get; set; }
 
         /// <summary>
-        /// Unique tag for lookup.
+        /// Tag for lookup.
         /// </summary>
         public string? Tag { get; set; }
 

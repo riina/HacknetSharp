@@ -61,6 +61,11 @@ namespace HacknetSharp.Server.Models
         public virtual HashSet<FileModel> Files { get; set; } = null!;
 
         /// <summary>
+        /// Time-based tasks.
+        /// </summary>
+        public virtual HashSet<CronModel> Tasks { get; set; } = null!;
+
+        /// <summary>
         /// Vulnerabilities.
         /// </summary>
         public virtual HashSet<VulnerabilityModel> Vulnerabilities { get; set; } = null!;
@@ -121,9 +126,14 @@ namespace HacknetSharp.Server.Models
         public virtual string? FixedFirewall { get; set; }
 
         /// <summary>
-        /// Unique tag for lookup.
+        /// Tag for lookup.
         /// </summary>
         public virtual string? Tag { get; set; }
+
+        /// <summary>
+        /// Logical group this entity was spawned in.
+        /// </summary>
+        public virtual Guid SpawnGroup { get; set; }
 
         /// <summary>
         /// Processes currently running on this system.
@@ -228,6 +238,7 @@ namespace HacknetSharp.Server.Models
             {
                 x.HasKey(v => v.Key);
                 x.HasMany(y => y.Files).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Tasks).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(y => y.Logins).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.HasMany(y => y.Vulnerabilities).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(y => y.Processes);

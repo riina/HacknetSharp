@@ -369,7 +369,7 @@ namespace hss
 
         private static PersonModel RegisterNewPerson(IWorld world, UserModel user)
         {
-            var person = world.Spawn.Person(user.Key, user.Key, null, user);
+            var person = world.Spawn.Person(user.Key, user.Key, null, null, user);
             RegisterNewSystem(world, user, person);
             string? startingMission = world.Model.StartingMission;
             if (!string.IsNullOrWhiteSpace(startingMission) &&

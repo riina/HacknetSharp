@@ -4,6 +4,7 @@ using System;
 using HacknetSharp.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace hss.Sqlite.Migrations
 {
@@ -15,6 +16,37 @@ namespace hss.Sqlite.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("HacknetSharp.Server.Models.CronModel", b =>
+            {
+                b.Property<Guid>("Key")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Content")
+                    .IsRequired()
+                    .HasColumnType("TEXT");
+
+                b.Property<double>("Frequency")
+                    .HasColumnType("REAL");
+
+                b.Property<double>("LastRunAt")
+                    .HasColumnType("REAL");
+
+                b.Property<Guid>("SystemKey")
+                    .HasColumnType("TEXT");
+
+                b.Property<Guid?>("WorldKey")
+                    .HasColumnType("TEXT");
+
+                b.HasKey("Key");
+
+                b.HasIndex("SystemKey");
+
+                b.HasIndex("WorldKey");
+
+                b.ToTable("CronModel");
+            });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.FileModel", b =>
             {
@@ -186,6 +218,9 @@ namespace hss.Sqlite.Migrations
                 b.Property<double>("RebootDuration")
                     .HasColumnType("REAL");
 
+                b.Property<Guid>("SpawnGroup")
+                    .HasColumnType("TEXT");
+
                 b.Property<bool>("StartedUp")
                     .HasColumnType("INTEGER");
 
@@ -281,6 +316,9 @@ namespace hss.Sqlite.Migrations
 
                 b.Property<int>("RequiredExploits")
                     .HasColumnType("INTEGER");
+
+                b.Property<Guid>("SpawnGroup")
+                    .HasColumnType("TEXT");
 
                 b.Property<long>("SystemMemory")
                     .HasColumnType("INTEGER");
@@ -408,6 +446,23 @@ namespace hss.Sqlite.Migrations
                 b.HasKey("Key");
 
                 b.ToTable("WorldModel");
+            });
+
+            modelBuilder.Entity("HacknetSharp.Server.Models.CronModel", b =>
+            {
+                b.HasOne("HacknetSharp.Server.Models.SystemModel", "System")
+                    .WithMany("Tasks")
+                    .HasForeignKey("SystemKey")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("HacknetSharp.Server.Models.WorldModel", "World")
+                    .WithMany()
+                    .HasForeignKey("WorldKey");
+
+                b.Navigation("System");
+
+                b.Navigation("World");
             });
 
             modelBuilder.Entity("HacknetSharp.Server.Models.FileModel", b =>
@@ -571,6 +626,8 @@ namespace hss.Sqlite.Migrations
                 b.Navigation("KnownSystems");
 
                 b.Navigation("Logins");
+
+                b.Navigation("Tasks");
 
                 b.Navigation("Vulnerabilities");
             });

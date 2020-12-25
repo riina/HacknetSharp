@@ -45,33 +45,45 @@ namespace HacknetSharp.Server.Lua
             // Misc convenience
 
             // Standard members
-            RegisterFunction<string, PersonModel?>("person_t", PersonT);
-            RegisterFunction<string, SystemModel?>("system_t", SystemT);
-            RegisterFunction<string, SystemModel?>("system_a", SystemA);
-            RegisterFunction<PersonModel?, SystemModel?>("home", Home);
-            RegisterFunction<PersonModel?, string, MissionModel?>("start_mission", StartMission);
-            RegisterFunction<PersonModel?, string, bool>("remove_mission", RemoveMission);
-            RegisterFunction<SystemModel?, bool>("system_up", SystemUp);
-            RegisterFunction<SystemModel?, string, bool>("file_exists", FileExists);
-            RegisterFunction<SystemModel?, string, string, bool, bool>("file_contains", FileContains);
-            RegisterAction<string>("log", Log);
-            RegisterAction<string, int>("log_ex", LogEx);
-            RegisterFunction<string, string, PersonModel>("spawn_person", SpawnPerson);
-            RegisterFunction<string, string, string, PersonModel>("spawn_person_tagged", SpawnPersonTagged);
-            RegisterFunction<PersonModel?, string, string, string, SystemModel?>("spawn_system", SpawnSystem);
-            RegisterAction<PersonModel?>("remove_person", RemovePerson);
-            RegisterAction<SystemModel?>("remove_system", RemoveSystem);
-            RegisterFunction<SystemModel?, string, string, FileModel?>("spawn_file", SpawnFile);
-            RegisterAction<FileModel?>("remove_file", RemoveFile);
+
+            // Missions
+            RegisterFunction<PersonModel?, string, MissionModel?>(nameof(StartMission), StartMission);
+            RegisterFunction<PersonModel?, string, bool>(nameof(RemoveMission), RemoveMission);
+
+            // Persons
+            RegisterFunction<string, PersonModel[]?>(nameof(PersonT), PersonT);
+            RegisterFunction<string, string, PersonModel>(nameof(SpawnPerson), SpawnPerson);
+            RegisterFunction<string, string, string, PersonModel>(nameof(SpawnPersonT), SpawnPersonT);
+            RegisterAction<PersonModel?>(nameof(RemovePerson), RemovePerson);
+
+            // Systems
+            RegisterFunction<string, SystemModel[]?>(nameof(SystemT), SystemT);
+            RegisterFunction<string, SystemModel?>(nameof(SystemA), SystemA);
+            RegisterFunction<PersonModel?, SystemModel?>(nameof(Home), Home);
+            RegisterFunction<SystemModel?, bool>(nameof(SystemUp), SystemUp);
+            RegisterFunction<PersonModel?, string, string, string, SystemModel?>(nameof(SpawnSystem), SpawnSystem);
+            RegisterAction<SystemModel?>(nameof(RemoveSystem), RemoveSystem);
+
+            // Files
+            RegisterFunction<SystemModel?, string, bool>(nameof(FileExists), FileExists);
+            RegisterFunction<SystemModel?, string, string, bool, bool>(nameof(FileContains), FileContains);
+            RegisterFunction<SystemModel?, string, string, FileModel?>(nameof(SpawnFile), SpawnFile);
+            RegisterAction<FileModel?>(nameof(RemoveFile), RemoveFile);
+
+            // Tasks
+
+            // Generals
+            RegisterAction<string>(nameof(Log), Log);
+            RegisterAction<string, int>(nameof(LogEx), LogEx);
 
             // Program, service, and hackscript members
-            RunVoidScript(@"function delay(d) coroutine.yield(get_delay(d)) end");
-            RegisterFunction<float, YieldToken>("get_delay", GetDelay);
+            RunVoidScript(@"function Delay(d) coroutine.yield(GetDelay(d)) end");
+            RegisterFunction<float, YieldToken>(nameof(GetDelay), GetDelay);
 
             // Program-only members
-            RunVoidScript(@"function write(text) return self.Write(text) end");
-            RunVoidScript(@"function flush() return self.Flush() end");
-            RunVoidScript(@"function unbind() return self.SignalUnbindProcess() end");
+            RunVoidScript(@"function Write(text) return self.Write(text) end");
+            RunVoidScript(@"function Flush() return self.Flush() end");
+            RunVoidScript(@"function Unbind() return self.SignalUnbindProcess() end");
 
             #endregion
         }
@@ -91,30 +103,7 @@ namespace HacknetSharp.Server.Lua
 
         #region Standard members
 
-        private PersonModel? PersonT(string tag)
-        {
-            return _world.Model.TaggedPersons.TryGetValue(tag, out var person) ? person : null;
-        }
-
-        private SystemModel? SystemT(string tag)
-        {
-            return _world.Model.TaggedSystems.TryGetValue(tag, out var system) ? system : null;
-        }
-
-        private SystemModel? SystemA(string address)
-        {
-            if (!IPAddressRange.TryParse(address, false, out var addr) ||
-                !addr.TryGetIPv4HostAndSubnetMask(out uint host, out _))
-                return null;
-            return _world.Model.AddressedSystems.TryGetValue(host, out var system) ? system : null;
-        }
-
-        private SystemModel? Home(PersonModel? person)
-        {
-            if (person == null) return null;
-            var key = person.DefaultSystem;
-            return person.Systems.FirstOrDefault(s => s.Key == key);
-        }
+        #region Missions
 
         private MissionModel? StartMission(PersonModel? person, string missionPath)
         {
@@ -133,11 +122,80 @@ namespace HacknetSharp.Server.Lua
             return true;
         }
 
+        #endregion
+
+        #region Persons
+
+        private PersonModel[]? PersonT(string tag)
+        {
+            return _world.Model.TaggedPersons.TryGetValue(tag, out var person) ? person.ToArray() : null;
+        }
+
+        private PersonModel SpawnPerson(string name, string username)
+        {
+            return _world.Spawn.Person(name, username);
+        }
+
+        private PersonModel SpawnPersonT(string name, string username, string tag)
+        {
+            return _world.Spawn.Person(name, username, tag);
+        }
+
+        private void RemovePerson(PersonModel? person)
+        {
+            if (person == null) return;
+            _world.Spawn.RemovePerson(person);
+        }
+
+        #endregion
+
+        #region Systems
+
+        private SystemModel[]? SystemT(string tag)
+        {
+            return _world.Model.TaggedSystems.TryGetValue(tag, out var system) ? system.ToArray() : null;
+        }
+
+        private SystemModel? SystemA(string address)
+        {
+            if (!IPAddressRange.TryParse(address, false, out var addr) ||
+                !addr.TryGetIPv4HostAndSubnetMask(out uint host, out _))
+                return null;
+            return _world.Model.AddressedSystems.TryGetValue(host, out var system) ? system : null;
+        }
+
+
+        private SystemModel? Home(PersonModel? person)
+        {
+            if (person == null) return null;
+            var key = person.DefaultSystem;
+            return person.Systems.FirstOrDefault(s => s.Key == key);
+        }
+
         private bool SystemUp(SystemModel? system)
         {
             if (system == null) return false;
             return system.BootTime <= _world.Time;
         }
+
+        private SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressRange)
+        {
+            if (owner == null) return null;
+            if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
+            if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
+            var (hash, salt) = ServerUtil.HashPassword(password);
+            return _world.Spawn.System(sysTemplate, owner, hash, salt, range);
+        }
+
+        private void RemoveSystem(SystemModel? system)
+        {
+            if (system == null) return;
+            _world.Spawn.RemoveSystem(system);
+        }
+
+        #endregion
+
+        #region Files
 
         private bool FileExists(SystemModel? system, string path)
         {
@@ -152,54 +210,6 @@ namespace HacknetSharp.Server.Lua
             var file = system?.Files.FirstOrDefault(f => f.FullPath == path);
             return file?.Content != null && file.Content.Contains(substring,
                 ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture);
-        }
-
-        private void Log(string text)
-        {
-            _world.Logger.LogInformation(text);
-        }
-
-        private void LogEx(string text, int level)
-        {
-            var lv = level switch
-            {
-                0 => LogLevel.Information,
-                1 => LogLevel.Warning,
-                2 => LogLevel.Error,
-                _ => LogLevel.Critical
-            };
-            _world.Logger.Log(lv, text);
-        }
-
-        private PersonModel SpawnPerson(string name, string username)
-        {
-            return _world.Spawn.Person(name, username);
-        }
-
-        private PersonModel SpawnPersonTagged(string name, string username, string tag)
-        {
-            return _world.Spawn.Person(name, username, tag);
-        }
-
-        private SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressRange)
-        {
-            if (owner == null) return null;
-            if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
-            if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
-            var (hash, salt) = ServerUtil.HashPassword(password);
-            return _world.Spawn.System(sysTemplate, owner, hash, salt, range);
-        }
-
-        private void RemovePerson(PersonModel? person)
-        {
-            if (person == null) return;
-            _world.Spawn.RemovePerson(person);
-        }
-
-        private void RemoveSystem(SystemModel? system)
-        {
-            if (system == null) return;
-            _world.Spawn.RemoveSystem(system);
         }
 
         private FileModel? SpawnFile(SystemModel? system, string path, string content)
@@ -220,6 +230,31 @@ namespace HacknetSharp.Server.Lua
             _world.Spawn.RemoveFile(file);
         }
 
+        #endregion
+
+        #region Tasks
+
+        #endregion
+
+        #region General
+
+        private void Log(string text)
+        {
+            _world.Logger.LogInformation(text);
+        }
+
+        private void LogEx(string text, int level)
+        {
+            var lv = level switch
+            {
+                0 => LogLevel.Information,
+                1 => LogLevel.Warning,
+                2 => LogLevel.Error,
+                _ => LogLevel.Critical
+            };
+            _world.Logger.Log(lv, text);
+        }
+
         /// <summary>
         /// Sets value in global table.
         /// </summary>
@@ -237,6 +272,8 @@ namespace HacknetSharp.Server.Lua
 
         #endregion
 
+        #endregion
+
         #region Program, service, and hackscript members
 
         private static YieldToken GetDelay(float delay) => Executable.Delay(delay);
@@ -248,6 +285,16 @@ namespace HacknetSharp.Server.Lua
         #endregion
 
         #region Script functions
+
+        /// <summary>
+        /// Executes and returns the raw result of a raw lua expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <returns>New value or existing value.</returns>
+        public DynValue EvaluateExpression(string expression)
+        {
+            return _script.DoString(expression);
+        }
 
         /// <summary>
         /// Registers a raw lua expression.

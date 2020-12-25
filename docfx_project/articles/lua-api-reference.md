@@ -14,6 +14,8 @@ Programs and services are lua scripts that are treated like standard managed-cod
 executables. Programs are required to end in `.program.script.yaml` and services
 are required to end in `.service.script.yaml`.
 
+# Fields
+
 ## me
 
 `PersonModel me`
@@ -62,102 +64,156 @@ Current shell.
 
 Only available to programs.
 
-## delay
+## system
 
-`void delay(float delay)`
+`SystemModel system`
+
+Current system.
+
+Only available to programs/services/tasks.
+
+# Specialized Members
+
+## Delay
+
+`void Delay(float delay)`
 
 Pauses coroutine and triggers a delay in seconds.
 
 Only available to programs/services.
 
-## write
+## Write
 
-`void write(string text)`
+`void Write(string text)`
 
 Queues text to be written to shell output.
 
 Only available to programs.
 
-## flush
+## Flush
 
-`void flush()`
+`void Flush()`
 
 Triggers a request for text to be written to shell output.
 
 Only available to programs.
 
-## unbind
+## Unbind
 
-`void unbind()`
+`void Unbind()`
 
 Returns control to the user while still continuing execution.
 
 Only available to programs.
 
-## person_t
+# Stanadard Members
 
-`PersonModel? person_t(string tag)`
+## StartMission
 
-Tries to get a person with the specified unique tag.
-
-## system_t
-
-`SystemModel? system_t(string tag)`
-
-Tries to get a system with the specified unique tag.
-
-## system_a
-
-`SystemModel? system_a(string tag)`
-
-Tries to get a system with the specified IP address.
-
-## home
-
-`SystemModel? home(PersonModel? person)`
-
-Attempts to get the home system for a person.
-
-## start_mission
-
-`MissionModel? start_mission(PersonModel? person, string missionPath)`
+`MissionModel? StartMission(PersonModel? person, string missionPath)`
 
 Attempts to start the specified mission.
 
-## remove_mission
+## RemoveMission
 
-`void remove_mission(MissionModel? mission)`
+`void RemoveMission(MissionModel? mission)`
 
 Removes (ends) a mission.
 
-## system_up
+## PersonT
 
-`bool system_up(SystemModel? system)`
+`PersonModel? PersonT(string tag)`
+
+Tries to get a person with the specified unique tag.
+
+## SpawnPerson
+
+`PersonModel SpawnPerson(string name, string username)`
+
+Spawns a person with the specified proper name and username.
+
+## SpawnPersonT
+
+`PersonModel SpawnPersonT(string name, string username, string tag)`
+
+Spawns a person with the specified proper name, username, and unique tag.
+
+## RemovePerson
+
+`void RemovePerson(PersonModel? person)`
+
+Removes a person (and all systems).
+
+## SystemT
+
+`SystemModel? SystemT(string tag)`
+
+Tries to get a system with the specified unique tag.
+
+## SystemA
+
+`SystemModel? SystemA(string tag)`
+
+Tries to get a system with the specified IP address.
+
+## Home
+
+`SystemModel? Home(PersonModel? person)`
+
+Attempts to get the home system for a person.
+
+## SystemUp
+
+`bool SystemUp(SystemModel? system)`
 
 Checks if a system is up. Returns false if system is null.
 
-## file_exists
+## SpawnSystem
 
-`bool file_exists(SystemModel? system, string path)`
+`SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressOrAddressRange)`
+
+Attempts to spawn a system.
+
+## RemoveSystem
+
+`void RemoveSystem(SystemModel? system)`
+
+Removes a system.
+
+## FileExists
+
+`bool FileExists(SystemModel? system, string path)`
 
 Checks if the filesystem on the specified system contains
 a file/folder with the provided path.
 
-## file_contains
+## FileContains
 
-`bool file_contains(SystemModel? system, string path, string text, bool ignoreCase)`
+`bool FileContains(SystemModel? system, string path, string text, bool ignoreCase)`
 
 Checks if a file exists on the specified system and contains the specified text.
 
-## log
+## SpawnFile
 
-`void log(string message)`
+`FileModel? SpawnFile(SystemModel? system, string path, string content)`
+
+Spawns a file with the specified content. Returns an existing file if applicable.
+
+## RemoveFile
+
+`void RemoveFile(FileModel? file)`
+
+Removes a file.
+
+## Log
+
+`void Log(string message)`
 
 Writes a `LogLevel.Information` message to the world's logger.
 
-## log_ex
+## LogEx
 
-`void log_ex(string message, int level)`
+`void LogEx(string message, int level)`
 
 Writes a message to the world's logger.
 
@@ -165,45 +221,3 @@ Writes a message to the world's logger.
 * 1: LogLevel.Warning
 * 2: LogLevel.Error
 * default: LogLevel.Critical
-
-## spawn_person
-
-`PersonModel spawn_person(string name, string username)`
-
-Spawns a person with the specified proper name and username.
-
-## spawn_person_tagged
-
-`PersonModel spawn_person_tagged(string name, string username, string tag)`
-
-Spawns a person with the specified proper name, username, and unique tag.
-
-## spawn_system
-
-`SystemModel? spawn_system(PersonModel? owner, string password, string template, string addressOrAddressRange)`
-
-Attempts to spawn a system.
-
-## remove_person
-
-`void remove_person(PersonModel? person)`
-
-Removes a person (and all systems).
-
-## remove_system
-
-`void remove_system(SystemModel? system)`
-
-Removes a system.
-
-## spawn_file
-
-`FileModel? spawn_file(SystemModel? system, string path, string content)`
-
-Spawns a file with the specified content. Returns an existing file if applicable.
-
-## remove_file
-
-`void remove_file(FileModel? file)`
-
-Removes a file.

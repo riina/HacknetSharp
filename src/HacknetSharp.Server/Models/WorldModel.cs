@@ -78,7 +78,12 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Tagged systems in world.
         /// </summary>
-        public Dictionary<string, SystemModel> TaggedSystems { get; set; } = new();
+        public Dictionary<string, List<SystemModel>> TaggedSystems { get; set; } = new();
+
+        /// <summary>
+        /// Systems with non-<see cref="Guid.Empty"/> spawn groups.
+        /// </summary>
+        public Dictionary<Guid, List<SystemModel>> SpawnGroupSystems { get; set; } = new();
 
         /// <summary>
         /// Addressed systems in world.
@@ -88,7 +93,12 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Tagged systems in world.
         /// </summary>
-        public Dictionary<string, PersonModel> TaggedPersons { get; set; } = new();
+        public Dictionary<string, List<PersonModel>> TaggedPersons { get; set; } = new();
+
+        /// <summary>
+        /// Systems with non-<see cref="Guid.Empty"/> spawn groups.
+        /// </summary>
+        public Dictionary<Guid, List<PersonModel>> SpawnGroupPersons { get; set; } = new();
 
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -103,6 +113,8 @@ namespace HacknetSharp.Server.Models
                 x.Ignore(y => y.TaggedSystems);
                 x.Ignore(y => y.TaggedPersons);
                 x.Ignore(y => y.ActiveMissions);
+                x.Ignore(y => y.SpawnGroupPersons);
+                x.Ignore(y => y.SpawnGroupSystems);
             });
 #pragma warning restore 1591
     }
