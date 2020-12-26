@@ -393,7 +393,7 @@ Lists all processes for specified login.
 
 ## RunHackScript
 
-`void RunHackScript(PersonModel|MissionModel|SystemModel host, string systemTag, string personTag, string script)`
+`void RunHackScript(Guid key, string systemTag, string personTag, string script)`
 
 Sets up and runs the specified hack script (as a standard Lua program).
 
@@ -407,5 +407,4 @@ Success depends on several factors, including:
 
 * Hackscript exists
 
-host is used to determine what spawn group is used to locate / generate the system
-and person used for execution.
+Spawn group key is used to locate / generate the system and person used for execution.

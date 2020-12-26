@@ -97,9 +97,7 @@ namespace HacknetSharp.Server.Lua
             RegisterAction<Process?>(nameof(KillProcess), KillProcess);
             RegisterFunction<SystemModel?, DynValue?>(nameof(Ps), Ps);
             RegisterFunction<LoginModel?, DynValue?>(nameof(PsLogin), PsLogin);
-            RegisterAction<Guid, string, string, string>(nameof(RunHackScriptInternal), RunHackScriptInternal);
-            RunVoidScript(
-                @"function RunHackScript(host, systemTag, personTag, script) RunHackScriptInternal(host.Key, systemTag, personTag, script) end");
+            RegisterAction<Guid, string, string, string>(nameof(RunHackScript), RunHackScript);
 
             // Program and service members
             RunVoidScript(@"function Delay(d) coroutine.yield(self.Delay(d)) end");
@@ -444,7 +442,7 @@ namespace HacknetSharp.Server.Lua
             return PopulateNewtable(login.System.Ps(login, null, null));
         }
 
-        private void RunHackScriptInternal(Guid hostKey, string systemTag, string personTag, string script)
+        private void RunHackScript(Guid hostKey, string systemTag, string personTag, string script)
         {
             LuaProgram program;
             try
