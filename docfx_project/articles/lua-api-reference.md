@@ -170,13 +170,13 @@ Gets persons with the specified tag.
 
 ## PersonGT
 
-`PersonModel[] PersonGT(Guid key, string tag)`
+`PersonModel[] PersonGT(Guid? key, string? tag)`
 
 Gets persons with the specified group and tag.
 
 ## PersonGTSingle
 
-`PersonModel? PersonGTSingle(Guid key, string tag)`
+`PersonModel? PersonGTSingle(Guid? key, string? tag)`
 
 Gets first existing person with the specified group and tag or nil.
 
@@ -226,13 +226,13 @@ Gets systems with the specified tag.
 
 ## PersonGT
 
-`SystemModel[] SystemGT(Guid key, string tag)`
+`SystemModel[] SystemGT(Guid? key, string? tag)`
 
 Gets systems with the specified group and tag.
 
 ## PersonGTSingle
 
-`SystemModel? SystemGTSingle(Guid key, string tag)`
+`SystemModel? SystemGTSingle(Guid? key, string? tag)`
 
 Gets first existing system with the specified group and tag or nil.
 

@@ -49,8 +49,8 @@ namespace HacknetSharp.Server.Lua
 
             // Persons
             RegisterFunction<string, PersonModel[]?>(nameof(PersonT), PersonT);
-            RegisterFunction<Guid, string, PersonModel[]>(nameof(PersonGT), PersonGT);
-            RegisterFunction<Guid, string, PersonModel?>(nameof(PersonGTSingle), PersonGTSingle);
+            RegisterFunction<Guid?, string?, PersonModel[]>(nameof(PersonGT), PersonGT);
+            RegisterFunction<Guid?, string?, PersonModel?>(nameof(PersonGTSingle), PersonGTSingle);
             RegisterFunction<string, string, PersonModel>(nameof(SpawnPerson), SpawnPerson);
             RegisterFunction<string, string, Guid, PersonModel>(nameof(SpawnPersonG), SpawnPersonG);
             RegisterFunction<string, string, string, PersonModel>(nameof(SpawnPersonT), SpawnPersonT);
@@ -60,8 +60,8 @@ namespace HacknetSharp.Server.Lua
 
             // Systems
             RegisterFunction<string, SystemModel[]?>(nameof(SystemT), SystemT);
-            RegisterFunction<Guid, string, SystemModel[]>(nameof(SystemGT), SystemGT);
-            RegisterFunction<Guid, string, SystemModel?>(nameof(SystemGTSingle), SystemGTSingle);
+            RegisterFunction<Guid?, string?, SystemModel[]>(nameof(SystemGT), SystemGT);
+            RegisterFunction<Guid?, string?, SystemModel?>(nameof(SystemGTSingle), SystemGTSingle);
             RegisterFunction<string, SystemModel?>(nameof(SystemA), SystemA);
             RegisterFunction<PersonModel?, SystemModel?>(nameof(Home), Home);
             RegisterFunction<SystemModel?, bool>(nameof(SystemUp), SystemUp);
@@ -158,12 +158,12 @@ namespace HacknetSharp.Server.Lua
                 : Array.Empty<PersonModel>();
         }
 
-        private PersonModel[] PersonGT(Guid key, string tag)
+        private PersonModel[] PersonGT(Guid? key, string? tag)
         {
             return _world.SearchPersons(key, tag).ToArray();
         }
 
-        private PersonModel? PersonGTSingle(Guid key, string tag)
+        private PersonModel? PersonGTSingle(Guid? key, string? tag)
         {
             return _world.SearchPersons(key, tag).FirstOrDefault();
         }
@@ -211,12 +211,12 @@ namespace HacknetSharp.Server.Lua
                 : Array.Empty<SystemModel>();
         }
 
-        private SystemModel[] SystemGT(Guid key, string tag)
+        private SystemModel[] SystemGT(Guid? key, string? tag)
         {
             return _world.SearchSystems(key, tag).ToArray();
         }
 
-        private SystemModel? SystemGTSingle(Guid key, string tag)
+        private SystemModel? SystemGTSingle(Guid? key, string? tag)
         {
             return _world.SearchSystems(key, tag).FirstOrDefault();
         }
