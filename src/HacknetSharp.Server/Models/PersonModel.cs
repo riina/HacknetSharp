@@ -98,5 +98,11 @@ namespace HacknetSharp.Server.Models
                 x.Ignore(v => v.ShellChain);
             });
 #pragma warning restore 1591
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"Person {Key} SG {SpawnGroup} {UserName} ({Name})";
+        }
     }
 }

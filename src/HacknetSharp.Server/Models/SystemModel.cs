@@ -459,5 +459,11 @@ namespace HacknetSharp.Server.Models
             return Files.Count;
             //return Files.Count(f => f.Kind != FileModel.FileKind.Folder);
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"System {Key} SG {SpawnGroup} {Name}@{Util.UintToAddress(Address)} (owned by {Owner})";
+        }
     }
 }
