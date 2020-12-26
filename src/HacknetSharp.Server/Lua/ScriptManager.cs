@@ -97,7 +97,8 @@ namespace HacknetSharp.Server.Lua
             RegisterAction<Process?>(nameof(KillProcess), KillProcess);
             RegisterFunction<SystemModel?, DynValue?>(nameof(Ps), Ps);
             RegisterFunction<LoginModel?, DynValue?>(nameof(PsLogin), PsLogin);
-            RegisterAction<Guid, string, string, string>(nameof(RunHackScript), RunHackScript);
+            RegisterAction<Guid, string, string, string>(nameof(RunRandoHackScript), RunRandoHackScript);
+            RegisterAction<Guid, string, string>(nameof(RunHackScript), RunHackScript);
 
             // Program and service members
             RunVoidScript(@"function Delay(d) coroutine.yield(self.Delay(d)) end");
@@ -442,7 +443,23 @@ namespace HacknetSharp.Server.Lua
             return PopulateNewtable(login.System.Ps(login, null, null));
         }
 
-        private void RunHackScript(Guid hostKey, string systemTag, string personTag, string script)
+        private void RunRandoHackScript(Guid hostKey, string systemTag, string personTag, string script)
+        {
+            var system = SystemGTSingle(hostKey, systemTag);
+            if (system == null) return;
+            var person = PersonGTSingle(hostKey, personTag);
+            if (person == null) return;
+            RunHackScriptBase(system, person, script);
+        }
+
+        private void RunHackScript(Guid hostKey, string systemTag, string script)
+        {
+            var system = SystemGTSingle(hostKey, systemTag);
+            if (system == null) return;
+            RunHackScriptBase(system, system.Owner, script);
+        }
+
+        private void RunHackScriptBase(SystemModel system, PersonModel person, string script)
         {
             LuaProgram program;
             try
@@ -455,10 +472,6 @@ namespace HacknetSharp.Server.Lua
                 return;
             }
 
-            var system = SystemGTSingle(hostKey, systemTag);
-            if (system == null) return;
-            var person = PersonGTSingle(hostKey, personTag);
-            if (person == null) return;
             var shellRes = StartShell(person, system);
             if (shellRes == null) return;
             var (shell, login) = shellRes.Value;

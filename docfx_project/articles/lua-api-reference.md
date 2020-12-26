@@ -393,6 +393,25 @@ Lists all processes for specified login.
 
 ## RunHackScript
 
+`void RunHackScript(Guid key, string systemTag, string script)`
+
+Sets up and runs the specified hack script (as a standard Lua program).
+
+Success depends on several factors, including:
+
+* System with tag/host key is found
+
+* Person with tag/host key is found
+
+* Person has a valid directly associated login on the system
+
+* Hackscript exists
+
+Spawn group key is used to locate / generate the system and person used for execution.
+
+
+## RunRandoHackScript
+
 `void RunHackScript(Guid key, string systemTag, string personTag, string script)`
 
 Sets up and runs the specified hack script (as a standard Lua program).
