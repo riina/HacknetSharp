@@ -24,13 +24,23 @@ The current person in the context.
 
 Only available to missions/programs.
 
+Note: this is what should generally be used as the spawn group key source (`me.Key`)
+when spawning systems / running hack scripts. This ensures that applicable
+entity searches are properly scoped.
+
 ## self
 
-`Executable self`
+`Program|Service|MissionModel|SystemModel self`
 
-Current executable.
+Current context.
 
-Only available to programs/services.
+Programs: Program
+
+Services: Service
+
+Missions: MissionModel
+
+Tasks: SystemModel
 
 ## login
 
@@ -114,7 +124,31 @@ Returns control to the user while still continuing execution.
 
 Only available to programs.
 
-# Stanadard Members
+## QueueInput
+
+`void QueueInput(ShellProcess? shell, string input)`
+
+Queues an input with the specified string.
+
+Only available to programs.
+
+## QueueEdit
+
+`void QueueEdit(ShellProcess? shell, Func<string, string> edit)`
+
+Queues an edit based on the specified lua function.
+
+Only available to programs.
+
+## QueueFixedEdit
+
+`void QueueFixedEdit(ShellProcess? shell, string content)`
+
+Queues an edit that will just write the specified content.
+
+Only available to programs.
+
+# Standard Members
 
 ## StartMission
 
@@ -130,9 +164,21 @@ Removes (ends) a mission.
 
 ## PersonT
 
-`PersonModel[]? PersonT(string tag)`
+`PersonModel[] PersonT(string tag)`
 
-Tries to get persons with the specified tag.
+Gets persons with the specified tag.
+
+## PersonGT
+
+`PersonModel[] PersonGT(Guid key, string tag)`
+
+Gets persons with the specified group and tag.
+
+## PersonGTSingle
+
+`PersonModel? PersonGTSingle(Guid key, string tag)`
+
+Gets first existing person with the specified group and tag or nil.
 
 ## SpawnPerson
 
@@ -154,9 +200,16 @@ Spawns a person with the specified proper name, username, tag.
 
 ## SpawnPersonGT
 
-`PersonModel SpawnPersonG(string name, string username, string tag, Guid key)`
+`PersonModel SpawnPersonGT(string name, string username, Guid key, string tag)`
 
 Spawns a person with the specified proper name, username, tag, and group key.
+
+## EnsurePersonGT
+
+`PersonModel EnsurePersonGT(string name, string username, Guid key, string tag)`
+
+Ensures a person with the specified proper name, username, tag, and group key exists
+or is created.
 
 ## RemovePerson
 
@@ -166,9 +219,22 @@ Removes a person (and all systems).
 
 ## SystemT
 
-`SystemModel[]? SystemT(string tag)`
+`SystemModel[] SystemT(string tag)`
 
-Tries to get system with the specified tag.
+Gets systems with the specified tag.
+
+
+## PersonGT
+
+`SystemModel[] SystemGT(Guid key, string tag)`
+
+Gets systems with the specified group and tag.
+
+## PersonGTSingle
+
+`SystemModel? SystemGTSingle(Guid key, string tag)`
+
+Gets first existing system with the specified group and tag or nil.
 
 ## SystemA
 
@@ -208,9 +274,17 @@ Attempts to spawn a system with the specified tag.
 
 ## SpawnSystemGT
 
-`SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag, Guid key)`
+`SystemModel? SpawnSystemGT(PersonModel? owner, string password, string template, string addressOrAddressRange, Guid key, string tag)`
 
 Attempts to spawn a system with the specified tag and group key.
+
+## EnsureSystemGT
+
+`SystemModel? EnsureSystemGT(PersonModel? owner, string password, string template, string addressOrAddressRange, Guid key, string tag)`
+
+Ensures that a system with the specified tag and group key exists
+or is created.
+Still fails if invalid setup parameters are passed.
 
 ## RemoveSystem
 
@@ -289,3 +363,49 @@ Writes a message to the world's logger.
 * 1: LogLevel.Warning
 * 2: LogLevel.Error
 * default: LogLevel.Critical
+
+## StartShell
+
+`(ShellProcess, LoginModel)? StartShell(PersonModel? person, SystemModel? system)`
+
+Starts a shell for the specified person/system.
+
+Fails if either arg is null or if person doesn't have a valid login directly
+associated with them on the target system.
+
+## KillProcess
+
+`void KillProcess(Process? process)`
+
+Kills a process.
+
+## Ps
+
+`Process[]? Ps(SystemModel? system)`
+
+Lists all processes on system.
+
+## PsLogin
+
+`Process[]? PsLogin(LoginModel? login)`
+
+Lists all processes for specified login.
+
+## RunHackScript
+
+`void RunHackScript(PersonModel|MissionModel|SystemModel host, string systemTag, string personTag, string script)`
+
+Sets up and runs the specified hack script (as a standard Lua program).
+
+Success depends on several factors, including:
+
+* System with tag/host key is found
+
+* Person with tag/host key is found
+
+* Person has a valid directly associated login on the system
+
+* Hackscript exists
+
+host is used to determine what spawn group is used to locate / generate the system
+and person used for execution.

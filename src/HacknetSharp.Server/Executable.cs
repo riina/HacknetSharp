@@ -24,12 +24,20 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Parent process ID.
         /// </summary>
-        public uint ParentPid => ProcessContext.ParentPid;
+        public uint ParentPid
+        {
+            get => ProcessContext.ParentPid;
+            set => ProcessContext.ParentPid = value;
+        }
 
         /// <summary>
         /// Process ID.
         /// </summary>
-        public uint Pid => ProcessContext.Pid;
+        public uint Pid
+        {
+            get => ProcessContext.Pid;
+            set => ProcessContext.Pid = value;
+        }
 
         /// <summary>
         /// Memory used by this process.

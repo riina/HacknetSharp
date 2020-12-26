@@ -49,14 +49,19 @@ namespace HacknetSharp.Server.Lua
 
             // Persons
             RegisterFunction<string, PersonModel[]?>(nameof(PersonT), PersonT);
+            RegisterFunction<Guid, string, PersonModel[]>(nameof(PersonGT), PersonGT);
+            RegisterFunction<Guid, string, PersonModel?>(nameof(PersonGTSingle), PersonGTSingle);
             RegisterFunction<string, string, PersonModel>(nameof(SpawnPerson), SpawnPerson);
             RegisterFunction<string, string, Guid, PersonModel>(nameof(SpawnPersonG), SpawnPersonG);
             RegisterFunction<string, string, string, PersonModel>(nameof(SpawnPersonT), SpawnPersonT);
-            RegisterFunction<string, string, string, Guid, PersonModel>(nameof(SpawnPersonGT), SpawnPersonGT);
+            RegisterFunction<string, string, Guid, string, PersonModel>(nameof(SpawnPersonGT), SpawnPersonGT);
+            RegisterFunction<string, string, Guid, string, PersonModel>(nameof(EnsurePersonGT), EnsurePersonGT);
             RegisterAction<PersonModel?>(nameof(RemovePerson), RemovePerson);
 
             // Systems
             RegisterFunction<string, SystemModel[]?>(nameof(SystemT), SystemT);
+            RegisterFunction<Guid, string, SystemModel[]>(nameof(SystemGT), SystemGT);
+            RegisterFunction<Guid, string, SystemModel?>(nameof(SystemGTSingle), SystemGTSingle);
             RegisterFunction<string, SystemModel?>(nameof(SystemA), SystemA);
             RegisterFunction<PersonModel?, SystemModel?>(nameof(Home), Home);
             RegisterFunction<SystemModel?, bool>(nameof(SystemUp), SystemUp);
@@ -65,8 +70,10 @@ namespace HacknetSharp.Server.Lua
                 SpawnSystemG);
             RegisterFunction<PersonModel?, string, string, string, string, SystemModel?>(nameof(SpawnSystemT),
                 SpawnSystemT);
-            RegisterFunction<PersonModel?, string, string, string, string, Guid, SystemModel?>(nameof(SpawnSystemGT),
+            RegisterFunction<PersonModel?, string, string, string, Guid, string, SystemModel?>(nameof(SpawnSystemGT),
                 SpawnSystemGT);
+            RegisterFunction<PersonModel?, string, string, string, Guid, string, SystemModel?>(nameof(EnsureSystemGT),
+                EnsureSystemGT);
             RegisterAction<SystemModel?>(nameof(RemoveSystem), RemoveSystem);
             RegisterAction<SystemModel?>(nameof(ResetSystem), ResetSystem);
 
@@ -86,8 +93,15 @@ namespace HacknetSharp.Server.Lua
             // Generals
             RegisterAction<string>(nameof(Log), Log);
             RegisterAction<string, int>(nameof(LogEx), LogEx);
+            RegisterFunction<PersonModel?, SystemModel?, (ShellProcess, LoginModel)?>(nameof(StartShell), StartShell);
+            RegisterAction<Process?>(nameof(KillProcess), KillProcess);
+            RegisterFunction<SystemModel?, DynValue?>(nameof(Ps), Ps);
+            RegisterFunction<LoginModel?, DynValue?>(nameof(PsLogin), PsLogin);
+            RegisterAction<Guid, string, string, string>(nameof(RunHackScriptInternal), RunHackScriptInternal);
+            RunVoidScript(
+                @"function RunHackScript(host, systemTag, personTag, script) RunHackScriptInternal(host.Key, systemTag, personTag, script) end");
 
-            // Program, service, and hackscript members
+            // Program and service members
             RunVoidScript(@"function Delay(d) coroutine.yield(self.Delay(d)) end");
 
             // Program-only members
@@ -96,6 +110,9 @@ namespace HacknetSharp.Server.Lua
             RunVoidScript(@"function Unbind() return self.SignalUnbindProcess() end");
             RunVoidScript(
                 @"function Confirm() local c = self.Confirm(false) coroutine.yield(c) return c.Confirmed end");
+            RegisterAction<ShellProcess?, string>(nameof(QueueInput), QueueInput);
+            RegisterAction<ShellProcess?, DynValue>(nameof(QueueEdit), QueueEdit);
+            RegisterAction<ShellProcess?, string>(nameof(QueueFixedEdit), QueueFixedEdit);
 
             #endregion
         }
@@ -135,9 +152,21 @@ namespace HacknetSharp.Server.Lua
 
         #region Persons
 
-        private PersonModel[]? PersonT(string tag)
+        private PersonModel[] PersonT(string tag)
         {
-            return _world.Model.TaggedPersons.TryGetValue(tag, out var person) ? person.ToArray() : null;
+            return _world.Model.TaggedPersons.TryGetValue(tag, out var person)
+                ? person.ToArray()
+                : Array.Empty<PersonModel>();
+        }
+
+        private PersonModel[] PersonGT(Guid key, string tag)
+        {
+            return _world.SearchPersons(key, tag).ToArray();
+        }
+
+        private PersonModel? PersonGTSingle(Guid key, string tag)
+        {
+            return _world.SearchPersons(key, tag).FirstOrDefault();
         }
 
         private PersonModel SpawnPerson(string name, string username)
@@ -155,9 +184,15 @@ namespace HacknetSharp.Server.Lua
             return _world.Spawn.Person(name, username, tag);
         }
 
-        private PersonModel SpawnPersonGT(string name, string username, string tag, Guid key)
+        private PersonModel SpawnPersonGT(string name, string username, Guid key, string tag)
         {
             return _world.Spawn.Person(name, username, tag, key);
+        }
+
+        private PersonModel EnsurePersonGT(string name, string username, Guid key, string tag)
+        {
+            return _world.SearchPersons(key, tag).FirstOrDefault()
+                   ?? _world.Spawn.Person(name, username, tag, key);
         }
 
         private void RemovePerson(PersonModel? person)
@@ -170,9 +205,21 @@ namespace HacknetSharp.Server.Lua
 
         #region Systems
 
-        private SystemModel[]? SystemT(string tag)
+        private SystemModel[] SystemT(string tag)
         {
-            return _world.Model.TaggedSystems.TryGetValue(tag, out var system) ? system.ToArray() : null;
+            return _world.Model.TaggedSystems.TryGetValue(tag, out var system)
+                ? system.ToArray()
+                : Array.Empty<SystemModel>();
+        }
+
+        private SystemModel[] SystemGT(Guid key, string tag)
+        {
+            return _world.SearchSystems(key, tag).ToArray();
+        }
+
+        private SystemModel? SystemGTSingle(Guid key, string tag)
+        {
+            return _world.SearchSystems(key, tag).FirstOrDefault();
         }
 
         private SystemModel? SystemA(string address)
@@ -216,9 +263,16 @@ namespace HacknetSharp.Server.Lua
         }
 
         private SystemModel? SpawnSystemGT(PersonModel? owner, string password, string template, string addressRange,
-            string tag, Guid key)
+            Guid key, string tag)
         {
             return SpawnSystemBase(owner, password, template, addressRange, tag, key);
+        }
+
+        private SystemModel? EnsureSystemGT(PersonModel? owner, string password, string template, string addressRange,
+            Guid key, string tag)
+        {
+            return _world.SearchSystems(key, tag).FirstOrDefault()
+                   ?? SpawnSystemBase(owner, password, template, addressRange, tag, key);
         }
 
         private SystemModel? SpawnSystemBase(PersonModel? owner, string password, string template, string addressRange,
@@ -360,6 +414,95 @@ namespace HacknetSharp.Server.Lua
             _world.Logger.Log(lv, text);
         }
 
+        private (ShellProcess, LoginModel)? StartShell(PersonModel? person, SystemModel? system)
+        {
+            if (person == null || system == null) return null;
+            var login = system.Logins.FirstOrDefault(l => l.Person == person.Key);
+            if (login == null) return null;
+            var shell = _world.StartShell(new AIPersonContext(person), person, login,
+                new[] {ServerConstants.ShellName, "HIVE"},
+                false);
+            if (shell == null) return null;
+            return (shell, login);
+        }
+
+        private void KillProcess(Process? process)
+        {
+            if (process == null) return;
+            _world.CompleteRecurse(process, Process.CompletionKind.KillLocal);
+        }
+
+        private DynValue? Ps(SystemModel? system)
+        {
+            if (system == null) return null;
+            return PopulateNewtable(system.Ps(null, null, null));
+        }
+
+        private DynValue? PsLogin(LoginModel? login)
+        {
+            if (login == null) return null;
+            return PopulateNewtable(login.System.Ps(login, null, null));
+        }
+
+        private void RunHackScriptInternal(Guid hostKey, string systemTag, string personTag, string script)
+        {
+            LuaProgram program;
+            try
+            {
+                if (!_world.TryGetScriptFile(script, out var scriptDyn)) return;
+                program = new LuaProgram(GetCoroutine(scriptDyn));
+            }
+            catch
+            {
+                return;
+            }
+
+            var system = SystemGTSingle(hostKey, systemTag);
+            if (system == null) return;
+            var person = PersonGTSingle(hostKey, personTag);
+            if (person == null) return;
+            var shellRes = StartShell(person, system);
+            if (shellRes == null) return;
+            var (shell, login) = shellRes.Value;
+            var process = _world.StartProgram(shell, new[] {script}, null, program);
+            if (process == null)
+            {
+                _world.CompleteRecurse(shell, Process.CompletionKind.Normal);
+                return;
+            }
+
+            var service = new HackScriptHostService(shell, process);
+            var serviceProcess = _world.StartService(login, new[] {"HACKSCRIPT_HOST"}, null, service);
+            if (serviceProcess == null)
+            {
+                _world.CompleteRecurse(shell, Process.CompletionKind.Normal);
+            }
+        }
+
+        [IgnoreRegistration]
+        private class HackScriptHostService : Service
+        {
+            private readonly ShellProcess _shell;
+            private readonly Process _process;
+
+            public HackScriptHostService(ShellProcess shell, Process process)
+            {
+                _shell = shell;
+                _process = process;
+            }
+
+            public override IEnumerator<YieldToken?> Run()
+            {
+                // The shell should be a child of this host service, so change its parent PID here
+                _shell.ProgramContext.ParentPid = Pid;
+                // Hold until child program is done executing, then exit after
+                while (_process.Completed == null)
+                    yield return null;
+                // Gracefully kill shell process
+                World.CompleteRecurse(_shell, Process.CompletionKind.Normal);
+            }
+        }
+
         /// <summary>
         /// Sets value in global table.
         /// </summary>
@@ -379,11 +522,40 @@ namespace HacknetSharp.Server.Lua
 
         #endregion
 
-        #region Program, service, and hackscript members
+        #region Program and service
 
         #endregion
 
         #region Program-only members
+
+        private void QueueInput(ShellProcess? shell, string input)
+        {
+            if (shell?.ProgramContext.User is not AIPersonContext apc) return;
+            apc.InputQueue.Enqueue(input);
+        }
+
+        private void QueueEdit(ShellProcess? shell, DynValue function)
+        {
+            if (function.Type != DataType.Function) return;
+            if (shell?.ProgramContext.User is not AIPersonContext apc) return;
+            apc.EditQueue.Enqueue(s =>
+            {
+                try
+                {
+                    return _script.Call(function, s).CastToString();
+                }
+                catch
+                {
+                    return "";
+                }
+            });
+        }
+
+        private void QueueFixedEdit(ShellProcess? shell, string content)
+        {
+            if (shell?.ProgramContext.User is not AIPersonContext apc) return;
+            apc.EditQueue.Enqueue(_ => content);
+        }
 
         #endregion
 

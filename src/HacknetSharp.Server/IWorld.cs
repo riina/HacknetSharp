@@ -5,6 +5,7 @@ using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
+using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
 {
@@ -70,6 +71,22 @@ namespace HacknetSharp.Server
         /// <param name="system">Retrieved system.</param>
         /// <returns>True if system found.</returns>
         bool TryGetSystem(Guid id, [NotNullWhen(true)] out SystemModel? system);
+
+        /// <summary>
+        /// Searches for systems with the specified parameters.
+        /// </summary>
+        /// <param name="key">Group key.</param>
+        /// <param name="tag">Tag.</param>
+        /// <returns>Retrieved systems.</returns>
+        IEnumerable<SystemModel> SearchSystems(Guid? key, string? tag);
+
+        /// <summary>
+        /// Searches for persons with the specified parameters.
+        /// </summary>
+        /// <param name="key">Group key.</param>
+        /// <param name="tag">Tag.</param>
+        /// <returns>Retrieved systems.</returns>
+        IEnumerable<PersonModel> SearchPersons(Guid? key, string? tag);
 
         /// <summary>
         /// Attempts to complete the specified process recursively with the specified completion kind.
@@ -144,5 +161,13 @@ namespace HacknetSharp.Server
         /// <param name="missionPath">Mission template path.</param>
         /// <returns>Started mission</returns>
         MissionModel? StartMission(PersonModel person, string missionPath);
+
+        /// <summary>
+        /// Tries to get a script file's function from the specified path.
+        /// </summary>
+        /// <param name="name">Path to search.</param>
+        /// <param name="script">Function object.</param>
+        /// <returns>True if successful.</returns>
+        bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script);
     }
 }

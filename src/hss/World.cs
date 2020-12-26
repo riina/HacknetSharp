@@ -166,6 +166,7 @@ namespace hss
                     if (task.LastRunAt + task.Delay < Time)
                     {
                         ScriptManager.SetGlobal("world", this);
+                        ScriptManager.SetGlobal("self", task.System);
                         ScriptManager.SetGlobal("system", task.System);
 
                         try
@@ -182,6 +183,7 @@ namespace hss
                         }
                         finally
                         {
+                            ScriptManager.ClearGlobal("self");
                             ScriptManager.ClearGlobal("system");
                         }
 
@@ -199,6 +201,7 @@ namespace hss
             foreach (var mission in tmpMissions)
             {
                 ScriptManager.SetGlobal("world", this);
+                ScriptManager.SetGlobal("self", mission);
                 ScriptManager.SetGlobal("me", mission.Person);
                 try
                 {
@@ -212,6 +215,7 @@ namespace hss
                 }
                 finally
                 {
+                    ScriptManager.ClearGlobal("self");
                     ScriptManager.ClearGlobal("me");
                 }
             }
@@ -372,6 +376,46 @@ namespace hss
             //system = Database.GetAsync<Guid, SystemModel>(id).Result;
             system = Model.Systems.FirstOrDefault(f => f.Key == id);
             return system != null;
+        }
+
+        public IEnumerable<SystemModel> SearchSystems(Guid? key, string? tag)
+        {
+            if (tag != null)
+            {
+                if (Model.TaggedSystems.TryGetValue(tag, out var list))
+                    return key != null ? list.Where(s => s.SpawnGroup == key) : list;
+
+                return Enumerable.Empty<SystemModel>();
+            }
+
+            if (key != null)
+            {
+                return Model.SpawnGroupSystems.TryGetValue(key.Value, out var list)
+                    ? list
+                    : Enumerable.Empty<SystemModel>();
+            }
+
+            return Model.Systems;
+        }
+
+        public IEnumerable<PersonModel> SearchPersons(Guid? key, string? tag)
+        {
+            if (tag != null)
+            {
+                if (Model.TaggedPersons.TryGetValue(tag, out var list))
+                    return key != null ? list.Where(s => s.SpawnGroup == key) : list;
+
+                return Enumerable.Empty<PersonModel>();
+            }
+
+            if (key != null)
+            {
+                return Model.SpawnGroupPersons.TryGetValue(key.Value, out var list)
+                    ? list
+                    : Enumerable.Empty<PersonModel>();
+            }
+
+            return Model.Persons;
         }
 
         public bool CompleteRecurse(Process process, Process.CompletionKind completionKind)
@@ -713,6 +757,7 @@ namespace hss
             if (!string.IsNullOrWhiteSpace(template.Start))
             {
                 ScriptManager.SetGlobal("world", this);
+                ScriptManager.SetGlobal("self", mission);
                 ScriptManager.SetGlobal("me", person);
                 try
                 {
@@ -721,6 +766,7 @@ namespace hss
                 }
                 finally
                 {
+                    ScriptManager.ClearGlobal("self");
                     ScriptManager.ClearGlobal("me");
                 }
             }
@@ -735,7 +781,7 @@ namespace hss
             _scriptFile[name] = ScriptManager.EvaluateScript(GetWrappedLua(stream, true));
         }
 
-        private bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
+        public bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
         {
             if (_scriptFile.TryGetValue(name, out script)) return true;
             script = null;
