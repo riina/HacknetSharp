@@ -9,6 +9,10 @@ namespace HacknetSharp.Server.Models
     /// </summary>
     public class MissionModel : WorldMember<Guid>
     {
+         /*TODO campaign_key...
+          worldspawn MUST take this as a parameter, spread requirement to everything, use THIS as key.
+          Executed hackscripts also use this in program, make flexible LuaProgram with additional context properties .*/
+
         /// <summary>
         /// Objective completion flags.
         /// </summary>
