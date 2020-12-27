@@ -56,12 +56,21 @@ namespace HacknetSharp.Server.Lua
 
         #region Missions
 
-        [Global(typeof(Func<PersonModel?, string, MissionModel?>))]
-        private MissionModel? StartMission(PersonModel? person, string missionPath)
+        [Global(typeof(Func<PersonModel?, Guid?, MissionModel[]?>))]
+        private MissionModel[]? Missions(PersonModel? person, Guid? campaignKey)
         {
             if (person == null) return null;
+            return (campaignKey != null ? person.Missions.Where(m => m.CampaignKey == campaignKey) : person.Missions)
+                .ToArray();
+        }
+
+        [Global(typeof(Func<PersonModel?, string, Guid?, MissionModel?>))]
+        private MissionModel? StartMission(PersonModel? person, string missionPath, Guid? campaignKey)
+        {
+            campaignKey ??= Guid.NewGuid();
+            if (person == null) return null;
             if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return null;
-            return _world.StartMission(person, missionPath);
+            return _world.StartMission(person, missionPath, campaignKey.Value);
         }
 
         [Global(typeof(Func<PersonModel?, string, bool>))]
@@ -69,10 +78,37 @@ namespace HacknetSharp.Server.Lua
         {
             if (person == null) return false;
             if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return false;
-            var mission = person.Missions.FirstOrDefault(m => m.Template == missionPath);
-            if (mission == null) return false;
-            _world.Spawn.RemoveMission(mission);
-            return true;
+            var missions = person.Missions.Where(m => m.Template == missionPath).ToList();
+            foreach (var mission in missions)
+                _world.Spawn.RemoveMission(mission);
+            return missions.Count != 0;
+        }
+
+        [Global(typeof(Action<Guid?>))]
+        private void DropSpawns(Guid? key)
+        {
+            if (key == null) return;
+            _world.Spawn.RemoveDependents(key.Value);
+        }
+
+        [Global(typeof(Action<PersonModel?, string>))]
+        private void DropCampaign(PersonModel? person, string campaignName)
+        {
+            if (person == null) return;
+            foreach (var mission in person.Missions.Where(m => m.Data.Campaign == campaignName).ToList())
+            {
+                _world.Spawn.RemoveMission(mission);
+                _world.Spawn.RemoveDependents(mission.CampaignKey);
+            }
+        }
+
+        [Global(typeof(Action<PersonModel?, Guid?>))]
+        private void DropCampaignK(PersonModel? person, Guid? campaignKey)
+        {
+            if (person == null || campaignKey == null) return;
+            foreach (var mission in person.Missions.Where(m => m.CampaignKey == campaignKey.Value).ToList())
+                _world.Spawn.RemoveMission(mission);
+            _world.Spawn.RemoveDependents(campaignKey.Value);
         }
 
         #endregion
@@ -397,30 +433,31 @@ namespace HacknetSharp.Server.Lua
         }
 
         [Global(typeof(Action<Guid, string, string, string>))]
-        private void RunRandoHackScript(Guid hostKey, string systemTag, string personTag, string script)
+        private void RunRandoHackScript(Guid key, string systemTag, string personTag, string script)
         {
-            var system = SystemGTSingle(hostKey, systemTag);
+            var system = SystemGTSingle(key, systemTag);
             if (system == null) return;
-            var person = PersonGTSingle(hostKey, personTag);
+            var person = PersonGTSingle(key, personTag);
             if (person == null) return;
-            RunHackScriptBase(system, person, script);
+            RunHackScriptBase(system, person, script, key);
         }
 
         [Global(typeof(Action<Guid, string, string>))]
-        private void RunHackScript(Guid hostKey, string systemTag, string script)
+        private void RunHackScript(Guid key, string systemTag, string script)
         {
-            var system = SystemGTSingle(hostKey, systemTag);
+            var system = SystemGTSingle(key, systemTag);
             if (system == null) return;
-            RunHackScriptBase(system, system.Owner, script);
+            RunHackScriptBase(system, system.Owner, script, key);
         }
 
-        private void RunHackScriptBase(SystemModel system, PersonModel person, string script)
+        private void RunHackScriptBase(SystemModel system, PersonModel person, string script, Guid key)
         {
             LuaProgram program;
             try
             {
                 if (!_world.TryGetScriptFile(script, out var scriptDyn)) return;
-                program = new LuaProgram(_scriptManager.GetCoroutine(scriptDyn));
+                program = new LuaProgram(_scriptManager.GetCoroutine(scriptDyn),
+                    new Dictionary<string, object> {{"key", key}});
             }
             catch
             {

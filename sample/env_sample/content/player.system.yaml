@@ -42,4 +42,5 @@ Filesystem:
   - prog:/bin/chatd core:chatd
   - prog:/bin/chat core:chat
   - prog:/bin/c core:c
+  - prog:/bin/missions missions.program.script.lua
   - text:"/home/{UserName}/readme.txt" "nothing to report, {Name}."

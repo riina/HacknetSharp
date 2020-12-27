@@ -1,3 +1,10 @@
+Campaign: Introduction
+Title: Getting started...
+Message: |-
+  All you have to do is create a "makeme.txt" file
+  at the root of your system.
+
+  Good luck, have fun.
 Start: Log("Starting mission.")
 Goals:
 - FileExists(Home(me), "makeme.txt")

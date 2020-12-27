@@ -8,6 +8,21 @@ namespace HacknetSharp.Server.Templates
     public class MissionTemplate
     {
         /// <summary>
+        /// Campaign name.
+        /// </summary>
+        public string? Campaign { get; set; }
+
+        /// <summary>
+        /// Friendly title of mission.
+        /// </summary>
+        public string? Title { get; set; }
+
+        /// <summary>
+        /// Text content of mission.
+        /// </summary>
+        public string? Message { get; set; }
+
+        /// <summary>
         /// Lua code to execute when mission starts.
         /// </summary>
         public string? Start { get; set; }

@@ -33,7 +33,6 @@ namespace HacknetSharp.Server
             var manager = World.ScriptManager;
             while (_coroutine.State != CoroutineState.Dead)
             {
-                manager.SetGlobal("world", World);
                 manager.SetGlobal("system", System);
                 manager.SetGlobal("self", this);
                 manager.SetGlobal("login", Login);
@@ -53,7 +52,6 @@ namespace HacknetSharp.Server
                 }
                 finally
                 {
-                    manager.ClearGlobal("world");
                     manager.ClearGlobal("system");
                     manager.ClearGlobal("self");
                     manager.ClearGlobal("login");

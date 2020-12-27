@@ -100,6 +100,9 @@ selected (weighted)
 
 `hss new mission [-n <templateName>]`
 
+* Campaign(`string`): Campaign name.
+* Title(`string`): Friendly title of mission.
+* Message(`string`): Text content of mission.
 * Start(`string?`): Lua code to execute when mission starts.
 * Goals(`List<string>?`): Mission goals as lua expressions that evaluate to a boolean.
 * Outcomes(`List<Outcome>?`): Objective outcomes.

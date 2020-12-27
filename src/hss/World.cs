@@ -43,6 +43,7 @@ namespace hss
         internal World(Server server, WorldModel model, IServerDatabase database)
         {
             ScriptManager = new ScriptManager();
+            ScriptManager.SetGlobal("world", this);
             ScriptManager.AddGlobals(new BaseGlobals(ScriptManager, this).MyGlobals);
             Templates = server.Templates;
             Server = server;
@@ -55,8 +56,17 @@ namespace hss
             _scriptMissionStart = new Dictionary<string, DynValue>();
             _scriptMissionGoal = new Dictionary<string, Dictionary<int, DynValue>>();
             _scriptMissionNext = new Dictionary<string, Dictionary<int, DynValue>>();
+            _tmpMissions = new HashSet<MissionModel>();
             foreach (var person in Model.Persons)
             {
+                _tmpMissions.Clear();
+                _tmpMissions.UnionWith(person.Missions);
+                foreach (var mission in _tmpMissions)
+                    if (person.Missions.Contains(mission))
+                        if (!Templates.MissionTemplates.TryGetValue(mission.Template, out var m))
+                            Spawn.RemoveMission(mission);
+                        else mission.Data = m;
+
                 Model.ActiveMissions.UnionWith(person.Missions);
                 if (person.Tag != null)
                 {
@@ -126,7 +136,6 @@ namespace hss
             _shellProcesses = new HashSet<ShellProcess>();
             _tmpShellProcesses = new HashSet<ShellProcess>();
             _tmpSystems = new HashSet<SystemModel>();
-            _tmpMissions = new HashSet<MissionModel>();
             _tmpTasks = new HashSet<CronModel>();
         }
 
@@ -166,7 +175,6 @@ namespace hss
                         Spawn.RemoveCron(task);
                     if (task.LastRunAt + task.Delay < Time)
                     {
-                        ScriptManager.SetGlobal("world", this);
                         ScriptManager.SetGlobal("self", task.System);
                         ScriptManager.SetGlobal("system", task.System);
 
@@ -201,12 +209,13 @@ namespace hss
             tmpMissions.UnionWith(Model.ActiveMissions);
             foreach (var mission in tmpMissions)
             {
-                ScriptManager.SetGlobal("world", this);
                 ScriptManager.SetGlobal("self", mission);
                 ScriptManager.SetGlobal("me", mission.Person);
+                ScriptManager.SetGlobal("key", mission.CampaignKey);
                 try
                 {
-                    ProcessMission(mission);
+                    if (!ProcessMission(mission))
+                        Spawn.RemoveMission(mission);
                 }
                 catch (Exception e)
                 {
@@ -218,15 +227,16 @@ namespace hss
                 {
                     ScriptManager.ClearGlobal("self");
                     ScriptManager.ClearGlobal("me");
+                    ScriptManager.ClearGlobal("key");
                 }
             }
         }
 
-        private void ProcessMission(MissionModel mission)
+        private bool ProcessMission(MissionModel mission)
         {
             Span<byte> flags = stackalloc byte[8];
-            if (!Templates.MissionTemplates.TryGetValue(mission.Template, out var m)) return;
-            if (m.Goals is not { } goals || m.Outcomes is not { } outcomes) return;
+            if (!Templates.MissionTemplates.TryGetValue(mission.Template, out var m)) return false;
+            if (m.Goals is not { } goals || m.Outcomes is not { } outcomes) return false;
             long original = mission.Flags;
             BinaryPrimitives.WriteInt64BigEndian(flags, original);
             for (int i = 0; i < goals.Count; i++)
@@ -265,6 +275,20 @@ namespace hss
 
                 if (!fail)
                 {
+
+                    if (mission.Person.User is { } user)
+                        foreach (var output in user.Outputs)
+                        {
+                            output.WriteEventSafe(new AlertEvent
+                            {
+                                AlertKind = AlertEvent.Kind.System,
+                                Header = "MISSION COMPLETE",
+                                Body =
+                                    $"<< {m.Campaign} - {m.Title} >>"
+                            });
+                            output.FlushSafeAsync();
+                        }
+
                     Logger.LogInformation("Successfully finished mission {Path} for person {Id}", mission.Template,
                         mission.Person.Key);
                     if (TryGetScriptMissionNext(mission.Template, i, out var script))
@@ -284,6 +308,8 @@ namespace hss
                     Database.Update(mission);
                 }
             }
+
+            return true;
         }
 
         private static bool GetFlag(Span<byte> flags, int i)
@@ -750,16 +776,17 @@ namespace hss
             programContext.User.FlushSafeAsync();
         }
 
-        public MissionModel? StartMission(PersonModel person, string missionPath)
+        public MissionModel? StartMission(PersonModel person, string missionPath, Guid campaignKey)
         {
             if (!Templates.MissionTemplates.TryGetValue(missionPath, out var template))
                 return null;
-            var mission = Spawn.Mission(missionPath, person);
+            var mission = Spawn.Mission(missionPath, person, campaignKey);
+            mission.Data = template;
             if (!string.IsNullOrWhiteSpace(template.Start))
             {
-                ScriptManager.SetGlobal("world", this);
                 ScriptManager.SetGlobal("self", mission);
                 ScriptManager.SetGlobal("me", person);
+                ScriptManager.SetGlobal("key", campaignKey);
                 try
                 {
                     if (TryGetScriptMissionStart(missionPath, out var script))
@@ -769,8 +796,22 @@ namespace hss
                 {
                     ScriptManager.ClearGlobal("self");
                     ScriptManager.ClearGlobal("me");
+                    ScriptManager.ClearGlobal("key");
                 }
             }
+
+            if (person.User is { } user)
+                foreach (var output in user.Outputs)
+                {
+                    output.WriteEventSafe(new AlertEvent
+                    {
+                        AlertKind = AlertEvent.Kind.System,
+                        Header = "New Mission",
+                        Body =
+                            $"<< {template.Campaign} - {template.Title} >>\n\n{template.Message}"
+                    });
+                    output.FlushSafeAsync();
+                }
 
             Logger.LogInformation("Successfully started mission {Path} for person {Id}", mission.Template,
                 mission.Person.Key);

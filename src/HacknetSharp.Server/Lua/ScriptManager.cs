@@ -894,7 +894,6 @@ namespace HacknetSharp.Server.Lua
 
         private TR? DynValueToTarget<TR>(DynValue value)
         {
-            // TODO
             if (typeof(TR) == typeof(DynValue)) return (TR)(object)value;
             var res = value.ToObject();
             try

@@ -45,6 +45,11 @@ namespace HacknetSharp.Server.Models
         /// </summary>
         public virtual HashSet<PersonModel> Identities { get; set; } = null!;
 
+        /// <summary>
+        /// Currently available outputs for server events.
+        /// </summary>
+        public HashSet<IPersonContext> Outputs { get; set; } = new();
+
         [ModelBuilderCallback]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
 #pragma warning disable 1591
@@ -53,6 +58,7 @@ namespace HacknetSharp.Server.Models
             {
                 x.HasKey(v => v.Key);
                 x.HasMany(p => p!.Identities).WithOne(p => p.User!).OnDelete(DeleteBehavior.Cascade);
+                x.Ignore(v => v.Outputs);
             });
 #pragma warning restore 1591
     }

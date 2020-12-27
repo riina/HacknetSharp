@@ -84,15 +84,17 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="missionPath">Mission template path.</param>
         /// <param name="person">Mission undertaker.</param>
+        /// <param name="campaignKey">Campaign key.</param>
         /// <returns>Generated model.</returns>
-        public MissionModel Mission(string missionPath, PersonModel person)
+        public MissionModel Mission(string missionPath, PersonModel person, Guid campaignKey)
         {
-            /*
-             TODO worldspawn MUST take this campaign key as a parameter, spread requirement to everything, use THIS as key.
-             Executed hackscripts also use this in program, make flexible LuaProgram with additional context properties .*/
             var mission = new MissionModel
             {
-                Key = Guid.NewGuid(), World = World, Person = person, Template = missionPath
+                Key = Guid.NewGuid(),
+                World = World,
+                Person = person,
+                Template = missionPath,
+                CampaignKey = campaignKey
             };
             person.Missions.Add(mission);
             World.ActiveMissions.Add(mission);
@@ -734,7 +736,7 @@ namespace HacknetSharp.Server
         /// Removes dependent entities of specified entity.
         /// </summary>
         /// <param name="key">Entity key.</param>
-        private void RemoveDependents(Guid key)
+        public void RemoveDependents(Guid key)
         {
             if (key == Guid.Empty) return;
             if (World.SpawnGroupSystems.TryGetValue(key, out var systems))

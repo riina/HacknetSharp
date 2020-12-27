@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using HacknetSharp.Server.Models;
+using HacknetSharp.Server.Templates;
 using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Serialization;
 
@@ -32,7 +33,9 @@ namespace HacknetSharp.Server.Lua
             typeof(Executable.ConfirmYieldToken), typeof(Executable.EditYieldToken),
             // HacknetSharp.Server.Models
             typeof(PersonModel), typeof(MissionModel), typeof(SystemModel), typeof(LoginModel), typeof(FileModel),
-            typeof(FileModel.FileKind)
+            typeof(FileModel.FileKind),
+            // HacknetSharp.Server.Templates
+            typeof(MissionTemplate),
         };
 
         /// <summary>

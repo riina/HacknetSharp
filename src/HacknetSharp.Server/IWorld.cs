@@ -159,8 +159,9 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="person">Target person.</param>
         /// <param name="missionPath">Mission template path.</param>
+        /// <param name="campaignKey">Campaign key.</param>
         /// <returns>Started mission</returns>
-        MissionModel? StartMission(PersonModel person, string missionPath);
+        MissionModel? StartMission(PersonModel person, string missionPath, Guid campaignKey);
 
         /// <summary>
         /// Tries to get a script file's function from the specified path.

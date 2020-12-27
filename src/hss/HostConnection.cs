@@ -129,6 +129,8 @@ namespace hss
                                     await FlushAsync(cancellationToken).Caf();
                                     return;
                                 }
+
+                                _user.Outputs.Add(this);
                             }
 
                             // Reset to existing world if necessary
@@ -254,6 +256,7 @@ namespace hss
             }
             finally
             {
+                _user?.Outputs.Remove(this);
                 if (!_cancellationTokenSource.IsCancellationRequested)
                     _server.SelfRemoveConnection(Id);
                 _server.DecrementCountdown();
@@ -373,7 +376,7 @@ namespace hss
             string? startingMission = world.Model.StartingMission;
             if (!string.IsNullOrWhiteSpace(startingMission) &&
                 world.Templates.MissionTemplates.ContainsKey(startingMission))
-                world.StartMission(person, startingMission);
+                world.StartMission(person, startingMission, Guid.NewGuid());
             return person;
         }
 

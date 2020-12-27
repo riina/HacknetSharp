@@ -24,9 +24,20 @@ The current person in the context.
 
 Only available to missions/programs.
 
-Note: this is what should generally be used as the spawn group key source (`me.Key`)
+~~Note: this is what should generally be used as the spawn group key source (`me.Key`)
 when spawning systems / running hack scripts. This ensures that applicable
-entity searches are properly scoped.
+entity searches are properly scoped.~~
+
+## key
+
+`Guid key`
+
+The current campaign key.
+
+Only available to missions/hackscripts.
+
+Note: this is what should generally be used as the key source when starting new missions
+in a continuing campaign or when running hackscripts / spawning systems as part of a campaign.
 
 ## self
 
@@ -150,17 +161,44 @@ Only available to programs.
 
 # Standard Members
 
+## Missions
+
+`MissionModel[]? Missions(PersonModel? person, Guid? campaignKey)`
+
+Gets current missions (filtered by campaign key if specified).
+
 ## StartMission
 
-`MissionModel? StartMission(PersonModel? person, string missionPath)`
+`MissionModel? StartMission(PersonModel? person, string missionPath, Guid? campaignKey)`
 
 Attempts to start the specified mission.
+
+If the campaign key is nil, generates a new campaign key.
 
 ## RemoveMission
 
 `void RemoveMission(MissionModel? mission)`
 
 Removes (ends) a mission.
+
+## DropSpawns
+
+`void DropSpawns(Guid? key)`
+
+Drops all entities relevant to the specified campaign / spawn group key.
+
+## DropCampaign
+
+`void DropCampaign(PersonModel? person, string campaignName)`
+
+Drops all active missions relevant to specified campaign. All campaign spawn group keys
+are also used to remove related entities.
+
+## DropCampaignK
+
+`void DropCampaignK(PersonModel? person, Guid? key)`
+
+Drops all active missions relevant to specified campaign (spawn group) key.
 
 ## PersonT
 
@@ -409,21 +447,12 @@ Success depends on several factors, including:
 
 Spawn group key is used to locate / generate the system and person used for execution.
 
+Key is also passed through to hackscript as `key` global.
+
 
 ## RunRandoHackScript
 
 `void RunHackScript(Guid key, string systemTag, string personTag, string script)`
 
-Sets up and runs the specified hack script (as a standard Lua program).
-
-Success depends on several factors, including:
-
-* System with tag/host key is found
-
-* Person with tag/host key is found
-
-* Person has a valid directly associated login on the system
-
-* Hackscript exists
-
-Spawn group key is used to locate / generate the system and person used for execution.
+Effectively [RunHackScript](#RunHackScript) with specific source person instead of
+running as system's owner.
