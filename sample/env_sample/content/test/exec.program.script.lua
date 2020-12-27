@@ -1,2 +1,2 @@
-local res = world.ScriptManager.EvaluateScript(args, true)
-if res then Write(world.ScriptManager.GetString(res) .. "\n") end
+local res = EvaluateScript(args, true)
+if res then Write(ToString(res) .. "\n") end

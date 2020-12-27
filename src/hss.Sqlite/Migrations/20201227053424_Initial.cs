@@ -19,7 +19,10 @@ namespace hss.Sqlite.Migrations
                     PasswordResetTokenExpiry = table.Column<long>(type: "INTEGER", nullable: false),
                     ActiveWorld = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WorldModel",
@@ -37,7 +40,10 @@ namespace hss.Sqlite.Migrations
                     SystemMemory = table.Column<long>(type: "INTEGER", nullable: false),
                     Now = table.Column<double>(type: "REAL", nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_WorldModel", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldModel", x => x.Key);
+                });
 
             migrationBuilder.CreateTable(
                 name: "RegistrationToken",
@@ -98,6 +104,7 @@ namespace hss.Sqlite.Migrations
                 columns: table => new
                 {
                     Key = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CampaignKey = table.Column<Guid>(type: "TEXT", nullable: false),
                     Flags = table.Column<long>(type: "INTEGER", nullable: false),
                     Template = table.Column<string>(type: "TEXT", nullable: false),
                     PersonKey = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -204,7 +211,7 @@ namespace hss.Sqlite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KnownSystemModel", x => new {x.FromKey, x.ToKey});
+                    table.PrimaryKey("PK_KnownSystemModel", x => new { x.FromKey, x.ToKey });
                     table.ForeignKey(
                         name: "FK_KnownSystemModel_SystemModel_FromKey",
                         column: x => x.FromKey,

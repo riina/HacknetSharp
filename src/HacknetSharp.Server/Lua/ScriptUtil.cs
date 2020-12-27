@@ -23,7 +23,7 @@ namespace HacknetSharp.Server.Lua
             // System
             typeof(Guid),
             // HacknetSharp.Server.Lua
-            typeof(ScriptManager),
+            /*typeof(ScriptManager),*/
             // HacknetSharp.Server
             typeof(IWorld), typeof(ShellProcess), typeof(ProgramProcess), typeof(ServiceProcess), typeof(Executable),
             typeof(Program), typeof(Service),

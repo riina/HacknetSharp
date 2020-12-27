@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
@@ -9,51 +10,68 @@ namespace HacknetSharp.Server
     [IgnoreRegistration]
     public class LuaProgram : Program
     {
+        private static readonly IReadOnlyDictionary<string, object> _defaultDict =
+            ImmutableDictionary.Create<string, object>();
+
         private readonly Coroutine _coroutine;
+        private readonly IReadOnlyDictionary<string, object> _additionalProps;
 
         /// <summary>
         /// Creates a lua program from the specified coroutine.
         /// </summary>
         /// <param name="coroutine">Coroutine to use.</param>
-        public LuaProgram(Coroutine coroutine)
+        /// <param name="additionalProps">Additional properties to initialize with.</param>
+        public LuaProgram(Coroutine coroutine, IReadOnlyDictionary<string, object>? additionalProps = null)
         {
             _coroutine = coroutine;
+            _additionalProps = additionalProps ?? _defaultDict;
         }
 
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
+            var manager = World.ScriptManager;
             while (_coroutine.State != CoroutineState.Dead)
             {
-                World.ScriptManager.SetGlobal("world", World);
-                World.ScriptManager.SetGlobal("system", System);
-                World.ScriptManager.SetGlobal("self", this);
-                World.ScriptManager.SetGlobal("login", Login);
-                World.ScriptManager.SetGlobal("argv", Argv);
-                World.ScriptManager.SetGlobal("argc", Argv.Length);
-                World.ScriptManager.SetGlobal("args", Context.Args);
-                World.ScriptManager.SetGlobal("shell", Shell);
-                World.ScriptManager.SetGlobal("pwd", Shell.WorkingDirectory);
-                World.ScriptManager.SetGlobal("me", Person);
+                manager.SetGlobal("world", World);
+                manager.SetGlobal("system", System);
+                manager.SetGlobal("self", this);
+                manager.SetGlobal("login", Login);
+                manager.SetGlobal("argv", Argv);
+                manager.SetGlobal("argc", Argv.Length);
+                manager.SetGlobal("args", Context.Args);
+                manager.SetGlobal("shell", Shell);
+                manager.SetGlobal("pwd", Shell.WorkingDirectory);
+                manager.SetGlobal("me", Person);
                 try
                 {
-                    DynValue? result;
-                    result = _coroutine.Resume();
+                    foreach (var (k, v) in _additionalProps)
+                        manager.SetGlobal(k, v);
+                    DynValue? result = _coroutine.Resume();
                     if (_coroutine.State == CoroutineState.Suspended)
                         yield return result?.ToObject() as YieldToken;
                 }
                 finally
                 {
-                    World.ScriptManager.ClearGlobal("world");
-                    World.ScriptManager.ClearGlobal("system");
-                    World.ScriptManager.ClearGlobal("self");
-                    World.ScriptManager.ClearGlobal("login");
-                    World.ScriptManager.ClearGlobal("argv");
-                    World.ScriptManager.ClearGlobal("argc");
-                    World.ScriptManager.ClearGlobal("args");
-                    World.ScriptManager.ClearGlobal("shell");
-                    World.ScriptManager.ClearGlobal("pwd");
-                    World.ScriptManager.ClearGlobal("me");
+                    manager.ClearGlobal("world");
+                    manager.ClearGlobal("system");
+                    manager.ClearGlobal("self");
+                    manager.ClearGlobal("login");
+                    manager.ClearGlobal("argv");
+                    manager.ClearGlobal("argc");
+                    manager.ClearGlobal("args");
+                    manager.ClearGlobal("shell");
+                    manager.ClearGlobal("pwd");
+                    manager.ClearGlobal("me");
+                    foreach (var (k, _) in _additionalProps)
+                        try
+                        {
+                            manager.ClearGlobal(k);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
                 }
             }
         }

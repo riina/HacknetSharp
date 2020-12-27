@@ -271,7 +271,7 @@ namespace HacknetSharp.Server
         /// <param name="action">One-off delegate.</param>
         /// <param name="token">Embedded delegate.</param>
         /// <returns>Yield token.</returns>
-        public static ActWaitYieldToken ActWait(Action action, YieldToken token) =>
+        public ActWaitYieldToken ActWait(Action action, YieldToken token) =>
             new(action, token);
 
         /// <summary>
@@ -279,35 +279,35 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
-        public static SequenceYieldToken Sequence(IEnumerable<YieldToken> tokens) => new(tokens);
+        public SequenceYieldToken Sequence(IEnumerable<YieldToken> tokens) => new(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified yield tokens. Once all yield tokens are done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
-        public static AggregateYieldToken Aggregate(IEnumerable<YieldToken> tokens) => new(tokens);
+        public AggregateYieldToken Aggregate(IEnumerable<YieldToken> tokens) => new(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified yield tokens. Once any yield token is done yielding, execution is resumed.
         /// </summary>
         /// <param name="tokens">Embedded yield tokens.</param>
         /// <returns>Yield token.</returns>
-        public static AnyYieldToken Any(IEnumerable<YieldToken> tokens) => new(tokens);
+        public AnyYieldToken Any(IEnumerable<YieldToken> tokens) => new(tokens);
 
         /// <summary>
         /// Creates a yield token with the specified delay. Once the delay has completed (<see cref="DelayYieldToken.Delay"/> &gt; 0), execution is resumed.
         /// </summary>
         /// <param name="delay">Delay in seconds.</param>
         /// <returns>Yield token.</returns>
-        public static DelayYieldToken Delay(double delay) => new(delay);
+        public DelayYieldToken Delay(double delay) => new(delay);
 
         /// <summary>
         /// Creates a yield token with the specified delegate. If the delegate returns true, execution is resumed.
         /// </summary>
         /// <param name="condition">Delegate, triggers execution once it returns true.</param>
         /// <returns>Yield token.</returns>
-        public static ConditionYieldToken Condition(Func<bool> condition) => new(condition);
+        public ConditionYieldToken Condition(Func<bool> condition) => new(condition);
 
         /// <summary>
         /// Sends an input request and creates a yield token with the specified context and operation. Once a message with the right operation ID is received, execution is resumed.
@@ -315,7 +315,7 @@ namespace HacknetSharp.Server
         /// <param name="context">Context to check for messages in.</param>
         /// <param name="hidden">Use hidden input (passwords).</param>
         /// <returns>Yield token.</returns>
-        public static InputYieldToken Input(IPersonContext context, bool hidden)
+        public InputYieldToken Input(IPersonContext context, bool hidden)
         {
             var opGuid = Guid.NewGuid();
             context.WriteEventSafe(new InputRequestEvent {Operation = opGuid, Hidden = hidden});
@@ -330,7 +330,7 @@ namespace HacknetSharp.Server
         /// <param name="hidden">Use hidden input (passwords).</param>
         /// <param name="confirmSet">Confirmation set.</param>
         /// <returns>Yield token.</returns>
-        public static ConfirmYieldToken Confirm(IPersonContext context, bool hidden,
+        public ConfirmYieldToken Confirm(IPersonContext context, bool hidden,
             IReadOnlyCollection<string>? confirmSet = null)
         {
             var opGuid = Guid.NewGuid();
@@ -347,7 +347,7 @@ namespace HacknetSharp.Server
         /// <param name="readOnly">True if only read access is allowed.</param>
         /// <param name="content">Content to edit.</param>
         /// <returns>Yield token.</returns>
-        public static EditYieldToken Edit(IPersonContext context, bool readOnly, string content)
+        public EditYieldToken Edit(IPersonContext context, bool readOnly, string content)
         {
             var opGuid = Guid.NewGuid();
             context.WriteEventSafe(new EditRequestEvent {Operation = opGuid, ReadOnly = readOnly, Content = content});

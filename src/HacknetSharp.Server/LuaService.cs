@@ -23,29 +23,32 @@ namespace HacknetSharp.Server
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            World.ScriptManager.SetGlobal("world", World);
-            World.ScriptManager.SetGlobal("system", System);
-            World.ScriptManager.SetGlobal("self", this);
-            World.ScriptManager.SetGlobal("login", Login);
-            World.ScriptManager.SetGlobal("argv", Argv);
-            World.ScriptManager.SetGlobal("argc", Argv.Length);
-            World.ScriptManager.SetGlobal("args", Context.Args);
-            try
+            var manager = World.ScriptManager;
+            while (_coroutine.State != CoroutineState.Dead)
             {
-                DynValue? result;
-                result = _coroutine.Resume();
-                if (_coroutine.State == CoroutineState.Suspended)
-                    yield return result?.ToObject() as YieldToken;
-            }
-            finally
-            {
-                World.ScriptManager.ClearGlobal("world");
-                World.ScriptManager.ClearGlobal("system");
-                World.ScriptManager.ClearGlobal("self");
-                World.ScriptManager.ClearGlobal("login");
-                World.ScriptManager.ClearGlobal("argv");
-                World.ScriptManager.ClearGlobal("argc");
-                World.ScriptManager.ClearGlobal("args");
+                manager.SetGlobal("world", World);
+                manager.SetGlobal("system", System);
+                manager.SetGlobal("self", this);
+                manager.SetGlobal("login", Login);
+                manager.SetGlobal("argv", Argv);
+                manager.SetGlobal("argc", Argv.Length);
+                manager.SetGlobal("args", Context.Args);
+                try
+                {
+                    DynValue? result = _coroutine.Resume();
+                    if (_coroutine.State == CoroutineState.Suspended)
+                        yield return result?.ToObject() as YieldToken;
+                }
+                finally
+                {
+                    manager.ClearGlobal("world");
+                    manager.ClearGlobal("system");
+                    manager.ClearGlobal("self");
+                    manager.ClearGlobal("login");
+                    manager.ClearGlobal("argv");
+                    manager.ClearGlobal("argc");
+                    manager.ClearGlobal("args");
+                }
             }
         }
     }

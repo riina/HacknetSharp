@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using HacknetSharp.Server.Models;
-using Microsoft.Extensions.Logging;
+using System.Reflection;
 using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server.Lua
@@ -20,497 +19,60 @@ namespace HacknetSharp.Server.Lua
     {
         static ScriptManager() => ScriptUtil.Init();
 
-        private readonly IWorld _world;
         private readonly Script _script;
         private readonly Dictionary<string, DynValue> _expressions;
+        private readonly HashSet<string> _globals;
 
         /// <summary>
         /// Creates a new instance of <see cref="ScriptManager"/>.
         /// </summary>
-        /// <param name="world">World context.</param>
-        public ScriptManager(IWorld world)
+        public ScriptManager()
         {
-            _world = world;
             _script = new Script(CoreModules.Preset_SoftSandbox);
-            _script.Globals["world"] = _world;
             _expressions = new Dictionary<string, DynValue>();
-
-            #region Function registration
-
-            // Manager
-
-            // Misc convenience
-
-            // Standard members
-
-            // Missions
-            RegisterFunction<PersonModel?, string, MissionModel?>(nameof(StartMission), StartMission);
-            RegisterFunction<PersonModel?, string, bool>(nameof(RemoveMission), RemoveMission);
-
-            // Persons
-            RegisterFunction<string, PersonModel[]?>(nameof(PersonT), PersonT);
-            RegisterFunction<Guid?, string?, PersonModel[]>(nameof(PersonGT), PersonGT);
-            RegisterFunction<Guid?, string?, PersonModel?>(nameof(PersonGTSingle), PersonGTSingle);
-            RegisterFunction<string, string, PersonModel>(nameof(SpawnPerson), SpawnPerson);
-            RegisterFunction<string, string, Guid, PersonModel>(nameof(SpawnPersonG), SpawnPersonG);
-            RegisterFunction<string, string, string, PersonModel>(nameof(SpawnPersonT), SpawnPersonT);
-            RegisterFunction<string, string, Guid, string, PersonModel>(nameof(SpawnPersonGT), SpawnPersonGT);
-            RegisterFunction<string, string, Guid, string, PersonModel>(nameof(EnsurePersonGT), EnsurePersonGT);
-            RegisterAction<PersonModel?>(nameof(RemovePerson), RemovePerson);
-
-            // Systems
-            RegisterFunction<string, SystemModel[]?>(nameof(SystemT), SystemT);
-            RegisterFunction<Guid?, string?, SystemModel[]>(nameof(SystemGT), SystemGT);
-            RegisterFunction<Guid?, string?, SystemModel?>(nameof(SystemGTSingle), SystemGTSingle);
-            RegisterFunction<string, SystemModel?>(nameof(SystemA), SystemA);
-            RegisterFunction<PersonModel?, SystemModel?>(nameof(Home), Home);
-            RegisterFunction<SystemModel?, bool>(nameof(SystemUp), SystemUp);
-            RegisterFunction<PersonModel?, string, string, string, SystemModel?>(nameof(SpawnSystem), SpawnSystem);
-            RegisterFunction<PersonModel?, string, string, string, Guid, SystemModel?>(nameof(SpawnSystemG),
-                SpawnSystemG);
-            RegisterFunction<PersonModel?, string, string, string, string, SystemModel?>(nameof(SpawnSystemT),
-                SpawnSystemT);
-            RegisterFunction<PersonModel?, string, string, string, Guid, string, SystemModel?>(nameof(SpawnSystemGT),
-                SpawnSystemGT);
-            RegisterFunction<PersonModel?, string, string, string, Guid, string, SystemModel?>(nameof(EnsureSystemGT),
-                EnsureSystemGT);
-            RegisterAction<SystemModel?>(nameof(RemoveSystem), RemoveSystem);
-            RegisterAction<SystemModel?>(nameof(ResetSystem), ResetSystem);
-
-            // Files
-            RegisterFunction<SystemModel?, string, bool>(nameof(FileExists), FileExists);
-            RegisterFunction<SystemModel?, string, string, bool, bool>(nameof(FileContains), FileContains);
-            RegisterFunction<SystemModel?, string, FileModel?>(nameof(File), File);
-            RegisterFunction<SystemModel?, string, DynValue?>(nameof(Folder), Folder);
-            RegisterFunction<SystemModel?, string, string, FileModel?>(nameof(SpawnFile), SpawnFile);
-            RegisterFunction<SystemModel?, string, string, FileModel?>(nameof(SpawnFolder), SpawnFolder);
-            RegisterAction<FileModel?>(nameof(RemoveFile), RemoveFile);
-
-            // Tasks
-            RegisterFunction<SystemModel?, string, float, float, float, CronModel?>(nameof(SpawnCron), SpawnCron);
-            RegisterAction<CronModel?>(nameof(RemoveCron), RemoveCron);
-
-            // Generals
-            RegisterAction<string>(nameof(Log), Log);
-            RegisterAction<string, int>(nameof(LogEx), LogEx);
-            RegisterFunction<PersonModel?, SystemModel?, (ShellProcess, LoginModel)?>(nameof(StartShell), StartShell);
-            RegisterAction<Process?>(nameof(KillProcess), KillProcess);
-            RegisterFunction<SystemModel?, DynValue?>(nameof(Ps), Ps);
-            RegisterFunction<LoginModel?, DynValue?>(nameof(PsLogin), PsLogin);
-            RegisterAction<Guid, string, string, string>(nameof(RunRandoHackScript), RunRandoHackScript);
-            RegisterAction<Guid, string, string>(nameof(RunHackScript), RunHackScript);
-
-            // Program and service members
-            RunVoidScript(@"function Delay(d) coroutine.yield(self.Delay(d)) end");
-
-            // Program-only members
-            RunVoidScript(@"function Write(obj) return self.Write(obj) end");
-            RunVoidScript(@"function Flush() return self.Flush() end");
-            RunVoidScript(@"function Unbind() return self.SignalUnbindProcess() end");
-            RunVoidScript(
-                @"function Confirm() local c = self.Confirm(false) coroutine.yield(c) return c.Confirmed end");
-            RegisterAction<ShellProcess?, string>(nameof(QueueInput), QueueInput);
-            RegisterAction<ShellProcess?, DynValue>(nameof(QueueEdit), QueueEdit);
-            RegisterAction<ShellProcess?, string>(nameof(QueueFixedEdit), QueueFixedEdit);
-
-            #endregion
+            _globals = new HashSet<string>();
+            //SetGlobal("ScriptManager", this);
+            var defaultGlobals = new Dictionary<string, object>();
+            LoadGlobalsFromObject(this, defaultGlobals);
+            AddGlobals(defaultGlobals);
         }
 
-        #region ScriptManager proxy functions
+        #region Script functions
 
-        #endregion
-
-        #region Miscellaneous convenience functions
-
-        /*private static Cell2 CvCell2(int x, int y) => new Cell2(x, y);*/
-
-        #endregion
-
-        #region Standard members
-
-        #region Missions
-
-        private MissionModel? StartMission(PersonModel? person, string missionPath)
+        /// <summary>
+        /// Add globals to a dictionary from an object.
+        /// </summary>
+        /// <param name="obj">Object to get globals from.</param>
+        /// <param name="globals">Globals dictionary.</param>
+        public static void LoadGlobalsFromObject(object obj, Dictionary<string, object> globals)
         {
-            if (person == null) return null;
-            if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return null;
-            return _world.StartMission(person, missionPath);
+            var type = obj.GetType();
+            foreach (var method in
+                type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+                try
+                {
+                    var attr = method.GetCustomAttributes(typeof(GlobalAttribute)).FirstOrDefault() as GlobalAttribute;
+                    if (attr == null) continue;
+                    string name = attr.Name ?? method.Name;
+                    globals[name] = method.CreateDelegate(attr.DelegateType, obj);
+                }
+                catch (Exception e)
+                {
+                    throw new AggregateException($"Error thrown while processing method {method.Name} on {type.Name}",
+                        e);
+                }
         }
 
-        private bool RemoveMission(PersonModel? person, string missionPath)
+        /// <summary>
+        /// Register globals.
+        /// </summary>
+        /// <param name="globals">Globals to register.</param>
+        public void AddGlobals(Dictionary<string, object> globals)
         {
-            if (person == null) return false;
-            if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return false;
-            var mission = person.Missions.FirstOrDefault(m => m.Template == missionPath);
-            if (mission == null) return false;
-            _world.Spawn.RemoveMission(mission);
-            return true;
-        }
-
-        #endregion
-
-        #region Persons
-
-        private PersonModel[] PersonT(string tag)
-        {
-            return _world.Model.TaggedPersons.TryGetValue(tag, out var person)
-                ? person.ToArray()
-                : Array.Empty<PersonModel>();
-        }
-
-        private PersonModel[] PersonGT(Guid? key, string? tag)
-        {
-            return _world.SearchPersons(key, tag).ToArray();
-        }
-
-        private PersonModel? PersonGTSingle(Guid? key, string? tag)
-        {
-            return _world.SearchPersons(key, tag).FirstOrDefault();
-        }
-
-        private PersonModel SpawnPerson(string name, string username)
-        {
-            return _world.Spawn.Person(name, username);
-        }
-
-        private PersonModel SpawnPersonG(string name, string username, Guid key)
-        {
-            return _world.Spawn.Person(name, username, null, key);
-        }
-
-        private PersonModel SpawnPersonT(string name, string username, string tag)
-        {
-            return _world.Spawn.Person(name, username, tag);
-        }
-
-        private PersonModel SpawnPersonGT(string name, string username, Guid key, string tag)
-        {
-            return _world.Spawn.Person(name, username, tag, key);
-        }
-
-        private PersonModel EnsurePersonGT(string name, string username, Guid key, string tag)
-        {
-            return _world.SearchPersons(key, tag).FirstOrDefault()
-                   ?? _world.Spawn.Person(name, username, tag, key);
-        }
-
-        private void RemovePerson(PersonModel? person)
-        {
-            if (person == null) return;
-            _world.Spawn.RemovePerson(person);
-        }
-
-        #endregion
-
-        #region Systems
-
-        private SystemModel[] SystemT(string tag)
-        {
-            return _world.Model.TaggedSystems.TryGetValue(tag, out var system)
-                ? system.ToArray()
-                : Array.Empty<SystemModel>();
-        }
-
-        private SystemModel[] SystemGT(Guid? key, string? tag)
-        {
-            return _world.SearchSystems(key, tag).ToArray();
-        }
-
-        private SystemModel? SystemGTSingle(Guid? key, string? tag)
-        {
-            return _world.SearchSystems(key, tag).FirstOrDefault();
-        }
-
-        private SystemModel? SystemA(string address)
-        {
-            if (!IPAddressRange.TryParse(address, false, out var addr) ||
-                !addr.TryGetIPv4HostAndSubnetMask(out uint host, out _))
-                return null;
-            return _world.Model.AddressedSystems.TryGetValue(host, out var system) ? system : null;
-        }
-
-
-        private SystemModel? Home(PersonModel? person)
-        {
-            if (person == null) return null;
-            var key = person.DefaultSystem;
-            return person.Systems.FirstOrDefault(s => s.Key == key);
-        }
-
-        private bool SystemUp(SystemModel? system)
-        {
-            if (system == null) return false;
-            return system.BootTime <= _world.Time;
-        }
-
-        private SystemModel? SpawnSystem(PersonModel? owner, string password, string template, string addressRange)
-        {
-            return SpawnSystemBase(owner, password, template, addressRange);
-        }
-
-
-        private SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressRange,
-            Guid key)
-        {
-            return SpawnSystemBase(owner, password, template, addressRange, null, key);
-        }
-
-        private SystemModel? SpawnSystemT(PersonModel? owner, string password, string template, string addressRange,
-            string tag)
-        {
-            return SpawnSystemBase(owner, password, template, addressRange, tag);
-        }
-
-        private SystemModel? SpawnSystemGT(PersonModel? owner, string password, string template, string addressRange,
-            Guid key, string tag)
-        {
-            return SpawnSystemBase(owner, password, template, addressRange, tag, key);
-        }
-
-        private SystemModel? EnsureSystemGT(PersonModel? owner, string password, string template, string addressRange,
-            Guid key, string tag)
-        {
-            return _world.SearchSystems(key, tag).FirstOrDefault()
-                   ?? SpawnSystemBase(owner, password, template, addressRange, tag, key);
-        }
-
-        private SystemModel? SpawnSystemBase(PersonModel? owner, string password, string template, string addressRange,
-            string? tag = null, Guid? key = null)
-        {
-            if (owner == null) return null;
-            if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
-            if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
-            var (hash, salt) = ServerUtil.HashPassword(password);
-            return _world.Spawn.System(sysTemplate, template, owner, hash, salt, range, tag, key);
-        }
-
-        private void RemoveSystem(SystemModel? system)
-        {
-            if (system == null) return;
-            _world.Spawn.RemoveSystem(system);
-        }
-
-        private void ResetSystem(SystemModel? system)
-        {
-            if (system == null) return;
-            if (!_world.Templates.SystemTemplates.TryGetValue(system.Template, out var template)) return;
-            template.ApplyTemplate(_world.Spawn, system);
-        }
-
-        #endregion
-
-        #region Files
-
-        private bool FileExists(SystemModel? system, string path)
-        {
-            if (system == null) return false;
-            path = Executable.GetNormalized(path);
-            return system.Files.Any(f => f.FullPath == path);
-        }
-
-        private bool FileContains(SystemModel? system, string path, string substring, bool ignoreCase)
-        {
-            path = Executable.GetNormalized(path);
-            var file = system?.Files.FirstOrDefault(f => f.FullPath == path);
-            return file?.Content != null && file.Content.Contains(substring,
-                ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture);
-        }
-
-        internal FileModel? File(SystemModel? system, string path)
-        {
-            return system?.GetFileSystemEntry(path);
-        }
-
-        internal DynValue? Folder(SystemModel? system, string path)
-        {
-            if (system == null) return null;
-            path = Executable.GetNormalized(path);
-            if (path != "/")
+            foreach (var (key, value) in globals)
             {
-                var file = system.GetFileSystemEntry(path);
-                if (file == null || file.Kind != FileModel.FileKind.Folder) return null;
-            }
-
-            return PopulateNewtable(system.EnumerateDirectory(path));
-        }
-
-        private DynValue PopulateNewtable<TElement>(IEnumerable<TElement> enumerable)
-        {
-            var table = DynValue.NewTable(_script);
-            var tb = table.Table;
-            using var iterator = enumerable.GetEnumerator();
-            for (int i = 0; iterator.MoveNext(); i++)
-                tb[i + 1] = iterator.Current;
-            return table;
-        }
-
-        private FileModel? SpawnFile(SystemModel? system, string path, string content)
-        {
-            if (system == null) return null;
-            var owner = system.Owner.Key;
-            var login = system.Logins.FirstOrDefault(l => l.Person == owner);
-            if (login == null) return null;
-            path = Executable.GetNormalized(path);
-            var existing = system.Files.FirstOrDefault(f => f.FullPath == path);
-            if (existing != null) return existing;
-            return _world.Spawn.TextFile(system, login, path, content);
-        }
-
-        private FileModel? SpawnFolder(SystemModel? system, string path, string content)
-        {
-            if (system == null) return null;
-            var owner = system.Owner.Key;
-            var login = system.Logins.FirstOrDefault(l => l.Person == owner);
-            if (login == null) return null;
-            path = Executable.GetNormalized(path);
-            var existing = system.Files.FirstOrDefault(f => f.FullPath == path);
-            if (existing != null) return existing;
-            return _world.Spawn.Folder(system, login, path, content);
-        }
-
-        private void RemoveFile(FileModel? file)
-        {
-            if (file == null) return;
-            _world.Spawn.RemoveFile(file);
-        }
-
-        #endregion
-
-        #region Tasks
-
-        private CronModel? SpawnCron(SystemModel? system, string script, float start, float delay, float end)
-        {
-            if (system == null) return null;
-            var cron = _world.Spawn.Cron(system, script, start, delay, end);
-            cron.Task = EvaluateScript(script);
-            return cron;
-        }
-
-        private void RemoveCron(CronModel? cron)
-        {
-            if (cron == null) return;
-            _world.Spawn.RemoveCron(cron);
-        }
-
-        #endregion
-
-        #region General
-
-        private void Log(string text)
-        {
-            _world.Logger.LogInformation(text);
-        }
-
-        private void LogEx(string text, int level)
-        {
-            var lv = level switch
-            {
-                0 => LogLevel.Information,
-                1 => LogLevel.Warning,
-                2 => LogLevel.Error,
-                _ => LogLevel.Critical
-            };
-            _world.Logger.Log(lv, text);
-        }
-
-        private (ShellProcess, LoginModel)? StartShell(PersonModel? person, SystemModel? system)
-        {
-            if (person == null || system == null) return null;
-            var login = system.Logins.FirstOrDefault(l => l.Person == person.Key);
-            if (login == null) return null;
-            var shell = _world.StartShell(new AIPersonContext(person), person, login,
-                new[] {ServerConstants.ShellName, "HIVE"},
-                false);
-            if (shell == null) return null;
-            return (shell, login);
-        }
-
-        private void KillProcess(Process? process)
-        {
-            if (process == null) return;
-            _world.CompleteRecurse(process, Process.CompletionKind.KillLocal);
-        }
-
-        private DynValue? Ps(SystemModel? system)
-        {
-            if (system == null) return null;
-            return PopulateNewtable(system.Ps(null, null, null));
-        }
-
-        private DynValue? PsLogin(LoginModel? login)
-        {
-            if (login == null) return null;
-            return PopulateNewtable(login.System.Ps(login, null, null));
-        }
-
-        private void RunRandoHackScript(Guid hostKey, string systemTag, string personTag, string script)
-        {
-            var system = SystemGTSingle(hostKey, systemTag);
-            if (system == null) return;
-            var person = PersonGTSingle(hostKey, personTag);
-            if (person == null) return;
-            RunHackScriptBase(system, person, script);
-        }
-
-        private void RunHackScript(Guid hostKey, string systemTag, string script)
-        {
-            var system = SystemGTSingle(hostKey, systemTag);
-            if (system == null) return;
-            RunHackScriptBase(system, system.Owner, script);
-        }
-
-        private void RunHackScriptBase(SystemModel system, PersonModel person, string script)
-        {
-            LuaProgram program;
-            try
-            {
-                if (!_world.TryGetScriptFile(script, out var scriptDyn)) return;
-                program = new LuaProgram(GetCoroutine(scriptDyn));
-            }
-            catch
-            {
-                return;
-            }
-
-            var shellRes = StartShell(person, system);
-            if (shellRes == null) return;
-            var (shell, login) = shellRes.Value;
-            var process = _world.StartProgram(shell, new[] {script}, null, program);
-            if (process == null)
-            {
-                _world.CompleteRecurse(shell, Process.CompletionKind.Normal);
-                return;
-            }
-
-            var service = new HackScriptHostService(shell, process);
-            var serviceProcess = _world.StartService(login, new[] {"HACKSCRIPT_HOST"}, null, service);
-            if (serviceProcess == null)
-            {
-                _world.CompleteRecurse(shell, Process.CompletionKind.Normal);
-            }
-        }
-
-        [IgnoreRegistration]
-        private class HackScriptHostService : Service
-        {
-            private readonly ShellProcess _shell;
-            private readonly Process _process;
-
-            public HackScriptHostService(ShellProcess shell, Process process)
-            {
-                _shell = shell;
-                _process = process;
-            }
-
-            public override IEnumerator<YieldToken?> Run()
-            {
-                // The shell should be a child of this host service, so change its parent PID here
-                _shell.ProgramContext.ParentPid = Pid;
-                // Hold until child program is done executing, then exit after
-                while (_process.Completed == null)
-                    yield return null;
-                // Gracefully kill shell process
-                World.CompleteRecurse(_shell, Process.CompletionKind.Normal);
+                _script.Globals[key] = value;
+                _globals.Add(key);
             }
         }
 
@@ -523,54 +85,36 @@ namespace HacknetSharp.Server.Lua
             => _script.Globals[key] = value;
 
         /// <summary>
+        /// Gets value from global table.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        /// <returns>Value.</returns>
+        public DynValue? GetGlobal(string key) => _script.Globals.Get(key);
+
+        /// <summary>
+        /// Gets value from global table.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        /// <returns>Value.</returns>
+        public TValue? GetGlobalAs<TValue>(string key)
+        {
+            var res = _script.Globals.Get(key).ToObject();
+            try
+            {
+                return res is TValue || res.GetType().IsValueType ? (TValue)res : default;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
         /// Clears value in global table.
         /// </summary>
         /// <param name="key">Key.</param>
         public void ClearGlobal(string key)
             => _script.Globals[key] = DynValue.Nil;
-
-        #endregion
-
-        #endregion
-
-        #region Program and service
-
-        #endregion
-
-        #region Program-only members
-
-        private void QueueInput(ShellProcess? shell, string input)
-        {
-            if (shell?.ProgramContext.User is not AIPersonContext apc) return;
-            apc.InputQueue.Enqueue(input);
-        }
-
-        private void QueueEdit(ShellProcess? shell, DynValue function)
-        {
-            if (function.Type != DataType.Function) return;
-            if (shell?.ProgramContext.User is not AIPersonContext apc) return;
-            apc.EditQueue.Enqueue(s =>
-            {
-                try
-                {
-                    return _script.Call(function, s).CastToString();
-                }
-                catch
-                {
-                    return "";
-                }
-            });
-        }
-
-        private void QueueFixedEdit(ShellProcess? shell, string content)
-        {
-            if (shell?.ProgramContext.User is not AIPersonContext apc) return;
-            apc.EditQueue.Enqueue(_ => content);
-        }
-
-        #endregion
-
-        #region Script functions
 
         /// <summary>
         /// Executes and returns the raw result of a raw lua script.
@@ -578,6 +122,7 @@ namespace HacknetSharp.Server.Lua
         /// <param name="script">Script.</param>
         /// <param name="errorToString">If true, returns error as string.</param>
         /// <returns>Result.</returns>
+        [Global(typeof(Func<string, bool, DynValue>))]
         public DynValue EvaluateScript(string script, bool errorToString = false)
         {
             try
@@ -607,6 +152,7 @@ namespace HacknetSharp.Server.Lua
         /// <param name="expression">Expression.</param>
         /// <param name="errorToString">If true, returns error as string.</param>
         /// <returns>Result.</returns>
+        [Global(typeof(Func<string, bool, DynValue>))]
         public DynValue EvaluateExpression(string expression, bool errorToString = false)
         {
             try
@@ -625,7 +171,8 @@ namespace HacknetSharp.Server.Lua
         /// </summary>
         /// <param name="value">Value.</param>
         /// <returns>String</returns>
-        public string GetString(DynValue value)
+        [Global(typeof(Func<DynValue, string>))]
+        public string ToString(DynValue value)
         {
             var obj = value.ToObject();
             return obj is string str ? str : obj.ToString() ?? "<object>";
@@ -1319,15 +866,7 @@ namespace HacknetSharp.Server.Lua
         /// <returns>Retrieved object.</returns>
         public TR? RunScript<TR>(string script)
         {
-            var res = _script.DoString(script).ToObject();
-            try
-            {
-                return res is TR || res.GetType().IsValueType ? (TR)res : default;
-            }
-            catch
-            {
-                return default;
-            }
+            return DynValueToTarget<TR>(_script.DoString(script));
         }
 
         /// <summary>
@@ -1338,15 +877,7 @@ namespace HacknetSharp.Server.Lua
         /// <returns>Retrieved object.</returns>
         public TR? RunScript<TR>(DynValue script)
         {
-            var res = _script.Call(script).ToObject();
-            try
-            {
-                return res is TR || res.GetType().IsValueType ? (TR)res : default;
-            }
-            catch
-            {
-                return default;
-            }
+            return DynValueToTarget<TR>(_script.Call(script));
         }
 
         /// <summary>
@@ -1358,7 +889,14 @@ namespace HacknetSharp.Server.Lua
         /// <returns>Retrieved object.</returns>
         public TR? RunScript<TR>(DynValue script, params object[] args)
         {
-            var res = _script.Call(script, args).ToObject();
+            return DynValueToTarget<TR>(_script.Call(script, args));
+        }
+
+        private TR? DynValueToTarget<TR>(DynValue value)
+        {
+            // TODO
+            if (typeof(TR) == typeof(DynValue)) return (TR)(object)value;
+            var res = value.ToObject();
             try
             {
                 return res is TR || res.GetType().IsValueType ? (TR)res : default;
@@ -1379,15 +917,7 @@ namespace HacknetSharp.Server.Lua
         {
             var fn = _script.Globals.Get(name);
             if (Equals(fn, DynValue.Nil)) return default;
-            var res = _script.Call(fn).ToObject();
-            try
-            {
-                return res is TR || res.GetType().IsValueType ? (TR)res : default;
-            }
-            catch
-            {
-                return default;
-            }
+            return DynValueToTarget<TR>(_script.Call(fn));
         }
 
         /// <summary>
@@ -1401,15 +931,7 @@ namespace HacknetSharp.Server.Lua
         {
             var fn = _script.Globals.Get(name);
             if (Equals(fn, DynValue.Nil)) return default;
-            var res = _script.Call(fn, args).ToObject();
-            try
-            {
-                return res is TR || res.GetType().IsValueType ? (TR)res : default;
-            }
-            catch
-            {
-                return default;
-            }
+            return DynValueToTarget<TR>(_script.Call(fn, args));
         }
 
         #endregion

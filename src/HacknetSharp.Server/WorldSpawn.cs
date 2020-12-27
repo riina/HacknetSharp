@@ -87,6 +87,9 @@ namespace HacknetSharp.Server
         /// <returns>Generated model.</returns>
         public MissionModel Mission(string missionPath, PersonModel person)
         {
+            /*
+             TODO worldspawn MUST take this campaign key as a parameter, spread requirement to everything, use THIS as key.
+             Executed hackscripts also use this in program, make flexible LuaProgram with additional context properties .*/
             var mission = new MissionModel
             {
                 Key = Guid.NewGuid(), World = World, Person = person, Template = missionPath

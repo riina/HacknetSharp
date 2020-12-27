@@ -42,7 +42,8 @@ namespace hss
 
         internal World(Server server, WorldModel model, IServerDatabase database)
         {
-            ScriptManager = new ScriptManager(this);
+            ScriptManager = new ScriptManager();
+            ScriptManager.AddGlobals(new BaseGlobals(ScriptManager, this).MyGlobals);
             Templates = server.Templates;
             Server = server;
             Model = model;
