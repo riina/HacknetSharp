@@ -159,7 +159,7 @@ Queues an edit that will just write the specified content.
 
 Only available to programs.
 
-# Standard Members
+# Mission functions
 
 ## Missions
 
@@ -199,6 +199,8 @@ are also used to remove related entities.
 `void DropCampaignK(PersonModel? person, Guid? key)`
 
 Drops all active missions relevant to specified campaign (spawn group) key.
+
+# Person functions
 
 ## PersonT
 
@@ -254,6 +256,8 @@ or is created.
 `void RemovePerson(PersonModel? person)`
 
 Removes a person (and all systems).
+
+# System functions
 
 ## SystemT
 
@@ -336,6 +340,8 @@ Removes a system.
 
 Resets a specified system to its template state.
 
+# File functions
+
 ## FileExists
 
 `bool FileExists(SystemModel? system, string path)`
@@ -373,6 +379,8 @@ Spawns a text file with the specified content. Returns an existing file if appli
 
 Removes a file (recursive).
 
+# Task functions
+
 ## SpawnCron
 
 `CronModel? SpawnCron(SystemModel? system, string content, float start, float delay, float end)`
@@ -384,6 +392,8 @@ Spawns a task with the specified content.
 `void RemoveCron(CronModel? cron)`
 
 Removes a task.
+
+# Log functions
 
 ## Log
 
@@ -401,6 +411,8 @@ Writes a message to the world's logger.
 * 1: LogLevel.Warning
 * 2: LogLevel.Error
 * default: LogLevel.Critical
+
+# Process functions
 
 ## StartShell
 
@@ -429,6 +441,8 @@ Lists all processes on system.
 
 Lists all processes for specified login.
 
+# Hackscript functions
+
 ## RunHackScript
 
 `void RunHackScript(Guid key, string systemTag, string script)`
@@ -448,7 +462,6 @@ Success depends on several factors, including:
 Spawn group key is used to locate / generate the system and person used for execution.
 
 Key is also passed through to hackscript as `key` global.
-
 
 ## RunRandoHackScript
 
