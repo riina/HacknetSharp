@@ -467,5 +467,5 @@ Key is also passed through to hackscript as `key` global.
 
 `void RunHackScript(Guid key, string systemTag, string personTag, string script)`
 
-Effectively [RunHackScript](#RunHackScript) with specific source person instead of
+Effectively [RunHackScript](#runhackscript) with specific source person instead of
 running as system's owner.
