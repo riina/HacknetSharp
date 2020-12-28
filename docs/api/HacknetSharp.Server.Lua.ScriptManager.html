@@ -95,19 +95,37 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager__ctor_HacknetSharp_Server_IWorld_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.%23ctor(HacknetSharp.Server.IWorld)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager__ctor.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L31">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L29">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager__ctor_" data-uid="HacknetSharp.Server.Lua.ScriptManager.#ctor*"></a>
-  <h4 id="HacknetSharp_Server_Lua_ScriptManager__ctor_HacknetSharp_Server_IWorld_" data-uid="HacknetSharp.Server.Lua.ScriptManager.#ctor(HacknetSharp.Server.IWorld)">ScriptManager(IWorld)</h4>
+  <h4 id="HacknetSharp_Server_Lua_ScriptManager__ctor" data-uid="HacknetSharp.Server.Lua.ScriptManager.#ctor">ScriptManager()</h4>
   <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.Lua.ScriptManager.html">ScriptManager</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ScriptManager(IWorld world)</code></pre>
+    <pre><code class="lang-csharp hljs">public ScriptManager()</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_AddGlobals_Dictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.AddGlobals(Dictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L70">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Lua_ScriptManager_AddGlobals_" data-uid="HacknetSharp.Server.Lua.ScriptManager.AddGlobals*"></a>
+  <h4 id="HacknetSharp_Server_Lua_ScriptManager_AddGlobals_Dictionary_System_String_System_Object__" data-uid="HacknetSharp.Server.Lua.ScriptManager.AddGlobals(Dictionary{System.String,System.Object})">AddGlobals(Dictionary&lt;String, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Register globals.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddGlobals(Dictionary&lt;string, object&gt; globals)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -120,21 +138,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="HacknetSharp.Server.IWorld.html">IWorld</a></td>
-        <td><span class="parametername">world</span></td>
-        <td><p>World context.</p>
+        <td><span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">globals</span></td>
+        <td><p>Globals to register.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_ClearGlobal_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.ClearGlobal(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L375">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L116">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_ClearGlobal_" data-uid="HacknetSharp.Server.Lua.ScriptManager.ClearGlobal*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_ClearGlobal_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.ClearGlobal(System.String)">ClearGlobal(String)</h4>
@@ -168,7 +184,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_CreateDynamicExpression_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.CreateDynamicExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L416">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L144">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_CreateDynamicExpression_" data-uid="HacknetSharp.Server.Lua.ScriptManager.CreateDynamicExpression*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_CreateDynamicExpression_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.CreateDynamicExpression(System.String)">CreateDynamicExpression(String)</h4>
@@ -218,7 +234,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_EvaluateExpression_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.EvaluateExpression(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L427">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L155">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_EvaluateExpression_" data-uid="HacknetSharp.Server.Lua.ScriptManager.EvaluateExpression*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_EvaluateExpression_System_String_System_Boolean_" data-uid="HacknetSharp.Server.Lua.ScriptManager.EvaluateExpression(System.String,System.Boolean)">EvaluateExpression(String, Boolean)</h4>
@@ -274,7 +290,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_EvaluateScript_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L398">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L125">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_EvaluateScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.EvaluateScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_EvaluateScript_System_String_System_Boolean_" data-uid="HacknetSharp.Server.Lua.ScriptManager.EvaluateScript(System.String,System.Boolean)">EvaluateScript(String, Boolean)</h4>
@@ -330,7 +346,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_GetCoroutine_DynValue_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.GetCoroutine(DynValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L493">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L223">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_GetCoroutine_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetCoroutine*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_GetCoroutine_DynValue_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetCoroutine(DynValue)">GetCoroutine(DynValue)</h4>
@@ -377,19 +393,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_GetString_DynValue_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.GetString(DynValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_GetGlobal_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.GetGlobal(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L445">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L92">View Source</a>
   </span>
-  <a id="HacknetSharp_Server_Lua_ScriptManager_GetString_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetString*"></a>
-  <h4 id="HacknetSharp_Server_Lua_ScriptManager_GetString_DynValue_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetString(DynValue)">GetString(DynValue)</h4>
-  <div class="markdown level1 summary"><p>Gets string from a dynvalue.</p>
+  <a id="HacknetSharp_Server_Lua_ScriptManager_GetGlobal_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetGlobal*"></a>
+  <h4 id="HacknetSharp_Server_Lua_ScriptManager_GetGlobal_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetGlobal(System.String)">GetGlobal(String)</h4>
+  <div class="markdown level1 summary"><p>Gets value from global table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetString(DynValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public DynValue? GetGlobal(string key)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -402,9 +418,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">DynValue</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value.</p>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>Key.</p>
 </td>
       </tr>
     </tbody>
@@ -419,8 +435,113 @@
     </thead>
     <tbody>
       <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">DynValue</span>&gt;</td>
+        <td><p>Value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_GetGlobalAs__1_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.GetGlobalAs%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L99">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Lua_ScriptManager_GetGlobalAs_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetGlobalAs*"></a>
+  <h4 id="HacknetSharp_Server_Lua_ScriptManager_GetGlobalAs__1_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.GetGlobalAs``1(System.String)">GetGlobalAs&lt;TValue&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Gets value from global table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TValue GetGlobalAs&lt;TValue&gt;(string key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>String</p>
+        <td><span class="parametername">key</span></td>
+        <td><p>Key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><p>Value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_LoadGlobalsFromObject_System_Object_Dictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.LoadGlobalsFromObject(System.Object%2CDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L47">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Lua_ScriptManager_LoadGlobalsFromObject_" data-uid="HacknetSharp.Server.Lua.ScriptManager.LoadGlobalsFromObject*"></a>
+  <h4 id="HacknetSharp_Server_Lua_ScriptManager_LoadGlobalsFromObject_System_Object_Dictionary_System_String_System_Object__" data-uid="HacknetSharp.Server.Lua.ScriptManager.LoadGlobalsFromObject(System.Object,Dictionary{System.String,System.Object})">LoadGlobalsFromObject(Object, Dictionary&lt;String, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Add globals to a dictionary from an object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LoadGlobalsFromObject(object obj, Dictionary&lt;string, object&gt; globals)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object to get globals from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">globals</span></td>
+        <td><p>Globals dictionary.</p>
 </td>
       </tr>
     </tbody>
@@ -430,7 +551,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction_System_String_Action_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction(System.String%2CAction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L503">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L233">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_System_String_Action_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction(System.String,Action)">RegisterAction(String, Action)</h4>
@@ -470,7 +591,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__1_System_String_Action___0__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%601(System.String%2CAction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L512">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L242">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__1_System_String_Action___0__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``1(System.String,Action{``0})">RegisterAction&lt;T1&gt;(String, Action&lt;T1&gt;)</h4>
@@ -526,7 +647,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__10_System_String_Action___0___1___2___3___4___5___6___7___8___9__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6010(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L641">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L371">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__10_System_String_Action___0___1___2___3___4___5___6___7___8___9__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``10(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;)</h4>
@@ -627,7 +748,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__11_System_String_Action___0___1___2___3___4___5___6___7___8___9___10__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6011(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L661">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L391">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__11_System_String_Action___0___1___2___3___4___5___6___7___8___9___10__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``11(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;)</h4>
@@ -733,7 +854,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__12_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6012(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L682">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L412">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__12_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``12(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;)</h4>
@@ -844,7 +965,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__13_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6013(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L704">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L434">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__13_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``13(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;)</h4>
@@ -960,7 +1081,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__14_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6014(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L727">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L457">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__14_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``14(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;)</h4>
@@ -1081,7 +1202,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__15_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6015(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L751">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L481">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__15_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``15(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;)</h4>
@@ -1207,7 +1328,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__16_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%6016(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%2C%60%6015%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L776">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L506">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__16_System_String_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``16(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;)</h4>
@@ -1338,7 +1459,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__2_System_String_Action___0___1__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%602(System.String%2CAction%7B%60%600%2C%60%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L522">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L252">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__2_System_String_Action___0___1__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``2(System.String,Action{``0,``1})">RegisterAction&lt;T1, T2&gt;(String, Action&lt;T1, T2&gt;)</h4>
@@ -1399,7 +1520,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__3_System_String_Action___0___1___2__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%603(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L533">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L263">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__3_System_String_Action___0___1___2__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``3(System.String,Action{``0,``1,``2})">RegisterAction&lt;T1, T2, T3&gt;(String, Action&lt;T1, T2, T3&gt;)</h4>
@@ -1465,7 +1586,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__4_System_String_Action___0___1___2___3__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%604(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L545">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L275">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__4_System_String_Action___0___1___2___3__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``4(System.String,Action{``0,``1,``2,``3})">RegisterAction&lt;T1, T2, T3, T4&gt;(String, Action&lt;T1, T2, T3, T4&gt;)</h4>
@@ -1536,7 +1657,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__5_System_String_Action___0___1___2___3___4__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%605(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L558">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L288">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__5_System_String_Action___0___1___2___3___4__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``5(System.String,Action{``0,``1,``2,``3,``4})">RegisterAction&lt;T1, T2, T3, T4, T5&gt;(String, Action&lt;T1, T2, T3, T4, T5&gt;)</h4>
@@ -1612,7 +1733,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__6_System_String_Action___0___1___2___3___4___5__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%606(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L572">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L302">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__6_System_String_Action___0___1___2___3___4___5__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``6(System.String,Action{``0,``1,``2,``3,``4,``5})">RegisterAction&lt;T1, T2, T3, T4, T5, T6&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6&gt;)</h4>
@@ -1693,7 +1814,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__7_System_String_Action___0___1___2___3___4___5___6__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%607(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L587">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L317">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__7_System_String_Action___0___1___2___3___4___5___6__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``7(System.String,Action{``0,``1,``2,``3,``4,``5,``6})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7&gt;)</h4>
@@ -1779,7 +1900,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__8_System_String_Action___0___1___2___3___4___5___6___7__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%608(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L604">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L334">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__8_System_String_Action___0___1___2___3___4___5___6___7__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``8(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;)</h4>
@@ -1870,7 +1991,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterAction__9_System_String_Action___0___1___2___3___4___5___6___7___8__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterAction%60%609(System.String%2CAction%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L622">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L352">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterAction__9_System_String_Action___0___1___2___3___4___5___6___7___8__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterAction``9(System.String,Action{``0,``1,``2,``3,``4,``5,``6,``7,``8})">RegisterAction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;(String, Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;)</h4>
@@ -1966,7 +2087,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_System_String_Stream_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String%2CStream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L470">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L200">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterExpression*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_System_String_Stream_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String,Stream)">RegisterExpression(String, Stream)</h4>
@@ -2022,7 +2143,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_System_String_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L457">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L187">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterExpression*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterExpression_System_String_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterExpression(System.String,System.String)">RegisterExpression(String, String)</h4>
@@ -2078,7 +2199,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__1_System_String_Func___0__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%601(System.String%2CFunc%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L786">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L516">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__1_System_String_Func___0__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``1(System.String,Func{``0})">RegisterFunction&lt;TR&gt;(String, Func&lt;TR&gt;)</h4>
@@ -2134,7 +2255,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__10_System_String_Func___0___1___2___3___4___5___6___7___8___9__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6010(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L915">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L645">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__10_System_String_Func___0___1___2___3___4___5___6___7___8___9__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``10(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, TR&gt;)</h4>
@@ -2235,7 +2356,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__11_System_String_Func___0___1___2___3___4___5___6___7___8___9___10__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6011(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L935">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L665">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__11_System_String_Func___0___1___2___3___4___5___6___7___8___9___10__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``11(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TR&gt;)</h4>
@@ -2341,7 +2462,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__12_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6012(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L956">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L686">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__12_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``12(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TR&gt;)</h4>
@@ -2452,7 +2573,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__13_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6013(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L978">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L708">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__13_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``13(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TR&gt;)</h4>
@@ -2568,7 +2689,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__14_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6014(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1001">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L731">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__14_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``14(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TR&gt;)</h4>
@@ -2689,7 +2810,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__15_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6015(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1025">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L755">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__15_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``15(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TR&gt;)</h4>
@@ -2815,7 +2936,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__16_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6016(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%2C%60%6015%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1050">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L780">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__16_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``16(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TR&gt;)</h4>
@@ -2946,7 +3067,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__17_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15___16__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%6017(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%2C%60%6015%2C%60%6016%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1076">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L806">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__17_System_String_Func___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15___16__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``17(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,``16})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TR&gt;)</h4>
@@ -3082,7 +3203,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__2_System_String_Func___0___1__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%602(System.String%2CFunc%7B%60%600%2C%60%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L796">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L526">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__2_System_String_Func___0___1__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``2(System.String,Func{``0,``1})">RegisterFunction&lt;T1, TR&gt;(String, Func&lt;T1, TR&gt;)</h4>
@@ -3143,7 +3264,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__3_System_String_Func___0___1___2__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%603(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L807">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L537">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__3_System_String_Func___0___1___2__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``3(System.String,Func{``0,``1,``2})">RegisterFunction&lt;T1, T2, TR&gt;(String, Func&lt;T1, T2, TR&gt;)</h4>
@@ -3209,7 +3330,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__4_System_String_Func___0___1___2___3__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%604(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L819">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L549">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__4_System_String_Func___0___1___2___3__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``4(System.String,Func{``0,``1,``2,``3})">RegisterFunction&lt;T1, T2, T3, TR&gt;(String, Func&lt;T1, T2, T3, TR&gt;)</h4>
@@ -3280,7 +3401,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__5_System_String_Func___0___1___2___3___4__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%605(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L832">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L562">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__5_System_String_Func___0___1___2___3___4__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``5(System.String,Func{``0,``1,``2,``3,``4})">RegisterFunction&lt;T1, T2, T3, T4, TR&gt;(String, Func&lt;T1, T2, T3, T4, TR&gt;)</h4>
@@ -3356,7 +3477,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__6_System_String_Func___0___1___2___3___4___5__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%606(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L846">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L576">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__6_System_String_Func___0___1___2___3___4___5__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``6(System.String,Func{``0,``1,``2,``3,``4,``5})">RegisterFunction&lt;T1, T2, T3, T4, T5, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, TR&gt;)</h4>
@@ -3437,7 +3558,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__7_System_String_Func___0___1___2___3___4___5___6__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%607(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L861">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L591">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__7_System_String_Func___0___1___2___3___4___5___6__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``7(System.String,Func{``0,``1,``2,``3,``4,``5,``6})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, TR&gt;)</h4>
@@ -3523,7 +3644,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__8_System_String_Func___0___1___2___3___4___5___6___7__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%608(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L878">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L608">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__8_System_String_Func___0___1___2___3___4___5___6___7__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``8(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, TR&gt;)</h4>
@@ -3614,7 +3735,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__9_System_String_Func___0___1___2___3___4___5___6___7___8__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RegisterFunction%60%609(System.String%2CFunc%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L896">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L626">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RegisterFunction__9_System_String_Func___0___1___2___3___4___5___6___7___8__" data-uid="HacknetSharp.Server.Lua.ScriptManager.RegisterFunction``9(System.String,Func{``0,``1,``2,``3,``4,``5,``6,``7,``8})">RegisterFunction&lt;T1, T2, T3, T4, T5, T6, T7, T8, TR&gt;(String, Func&lt;T1, T2, T3, T4, T5, T6, T7, T8, TR&gt;)</h4>
@@ -3710,7 +3831,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName__1_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1195">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L915">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName__1_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName``1(System.String)">RunFunctionByName&lt;TR&gt;(String)</h4>
@@ -3776,7 +3897,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName__1_System_String_System_Object___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName%60%601(System.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1217">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L929">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunFunctionByName__1_System_String_System_Object___" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunFunctionByName``1(System.String,System.Object[])">RunFunctionByName&lt;TR&gt;(String, Object[])</h4>
@@ -3848,7 +3969,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunScript__1_DynValue_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunScript%60%601(DynValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1156">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L878">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunScript__1_DynValue_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunScript``1(DynValue)">RunScript&lt;TR&gt;(DynValue)</h4>
@@ -3914,7 +4035,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunScript__1_DynValue_System_Object___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunScript%60%601(DynValue%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1176">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L890">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunScript__1_DynValue_System_Object___" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunScript``1(DynValue,System.Object[])">RunScript&lt;TR&gt;(DynValue, Object[])</h4>
@@ -3986,7 +4107,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunScript__1_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunScript%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1137">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L867">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunScript__1_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunScript``1(System.String)">RunScript&lt;TR&gt;(String)</h4>
@@ -4051,7 +4172,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1085">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L815">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String)">RunVoidFunctionByName(String)</h4>
@@ -4085,7 +4206,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_System_String_System_Object___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1115">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L845">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunVoidFunctionByName_System_String_System_Object___" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidFunctionByName(System.String,System.Object[])">RunVoidFunctionByName(String, Object[])</h4>
@@ -4125,7 +4246,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_DynValue_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1096">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L826">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_DynValue_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue)">RunVoidScript(DynValue)</h4>
@@ -4159,7 +4280,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_DynValue_System_Object___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1127">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L857">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_DynValue_System_Object___" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(DynValue,System.Object[])">RunVoidScript(DynValue, Object[])</h4>
@@ -4199,7 +4320,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L1105">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L835">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidScript*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_RunVoidScript_System_String_" data-uid="HacknetSharp.Server.Lua.ScriptManager.RunVoidScript(System.String)">RunVoidScript(String)</h4>
@@ -4233,7 +4354,7 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_SetGlobal_System_String_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.SetGlobal(System.String%2CSystem.Nullable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L368">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L84">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_SetGlobal_" data-uid="HacknetSharp.Server.Lua.ScriptManager.SetGlobal*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_SetGlobal_System_String_System_Nullable_System_Object__" data-uid="HacknetSharp.Server.Lua.ScriptManager.SetGlobal(System.String,System.Nullable{System.Object})">SetGlobal(String, Nullable&lt;Object&gt;)</h4>
@@ -4270,10 +4391,60 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_ToString_DynValue_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.ToString(DynValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L174">View Source</a>
+  </span>
+  <a id="HacknetSharp_Server_Lua_ScriptManager_ToString_" data-uid="HacknetSharp.Server.Lua.ScriptManager.ToString*"></a>
+  <h4 id="HacknetSharp_Server_Lua_ScriptManager_ToString_DynValue_" data-uid="HacknetSharp.Server.Lua.ScriptManager.ToString(DynValue)">ToString(DynValue)</h4>
+  <div class="markdown level1 summary"><p>Gets string from a dynvalue.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ToString(DynValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DynValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>String</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager_TryGetExpression_System_String_System_Nullable_DynValue___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager.TryGetExpression(System.String%2CSystem.Nullable%7BDynValue%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L483">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L213">View Source</a>
   </span>
   <a id="HacknetSharp_Server_Lua_ScriptManager_TryGetExpression_" data-uid="HacknetSharp.Server.Lua.ScriptManager.TryGetExpression*"></a>
   <h4 id="HacknetSharp_Server_Lua_ScriptManager_TryGetExpression_System_String_System_Nullable_DynValue___" data-uid="HacknetSharp.Server.Lua.ScriptManager.TryGetExpression(System.String,System.Nullable{DynValue}@)">TryGetExpression(String, out Nullable&lt;DynValue&gt;)</h4>
@@ -4335,7 +4506,7 @@
                     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_Lua_ScriptManager.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.Lua.ScriptManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/Lua/ScriptManager.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

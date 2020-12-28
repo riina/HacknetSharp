@@ -84,10 +84,22 @@ are required to end in <code>.service.script.yaml</code>.</p>
 <p><code>PersonModel me</code></p>
 <p>The current person in the context.</p>
 <p>Only available to missions/programs.</p>
+<p><del>Note: this is what should generally be used as the spawn group key source (<code>me.Key</code>)
+when spawning systems / running hack scripts. This ensures that applicable
+entity searches are properly scoped.</del></p>
+<h2 id="key">key</h2>
+<p><code>Guid key</code></p>
+<p>The current campaign key.</p>
+<p>Only available to missions/hackscripts.</p>
+<p>Note: this is what should generally be used as the key source when starting new missions
+in a continuing campaign or when running hackscripts / spawning systems as part of a campaign.</p>
 <h2 id="self">self</h2>
-<p><code>Executable self</code></p>
-<p>Current executable.</p>
-<p>Only available to programs/services.</p>
+<p><code>Program|Service|MissionModel|SystemModel self</code></p>
+<p>Current context.</p>
+<p>Programs: Program</p>
+<p>Services: Service</p>
+<p>Missions: MissionModel</p>
+<p>Tasks: SystemModel</p>
 <h2 id="login">login</h2>
 <p><code>LoginModel login</code></p>
 <p>Current login.</p>
@@ -129,16 +141,49 @@ are required to end in <code>.service.script.yaml</code>.</p>
 <p><code>void Unbind()</code></p>
 <p>Returns control to the user while still continuing execution.</p>
 <p>Only available to programs.</p>
-<h1 id="stanadard-members">Stanadard Members</h1>
+<h2 id="queueinput">QueueInput</h2>
+<p><code>void QueueInput(ShellProcess? shell, string input)</code></p>
+<p>Queues an input with the specified string.</p>
+<p>Only available to programs.</p>
+<h2 id="queueedit">QueueEdit</h2>
+<p><code>void QueueEdit(ShellProcess? shell, Func&lt;string, string&gt; edit)</code></p>
+<p>Queues an edit based on the specified lua function.</p>
+<p>Only available to programs.</p>
+<h2 id="queuefixededit">QueueFixedEdit</h2>
+<p><code>void QueueFixedEdit(ShellProcess? shell, string content)</code></p>
+<p>Queues an edit that will just write the specified content.</p>
+<p>Only available to programs.</p>
+<h1 id="mission-functions">Mission functions</h1>
+<h2 id="missions">Missions</h2>
+<p><code>MissionModel[]? Missions(PersonModel? person, Guid? campaignKey)</code></p>
+<p>Gets current missions (filtered by campaign key if specified).</p>
 <h2 id="startmission">StartMission</h2>
-<p><code>MissionModel? StartMission(PersonModel? person, string missionPath)</code></p>
+<p><code>MissionModel? StartMission(PersonModel? person, string missionPath, Guid? campaignKey)</code></p>
 <p>Attempts to start the specified mission.</p>
+<p>If the campaign key is nil, generates a new campaign key.</p>
 <h2 id="removemission">RemoveMission</h2>
 <p><code>void RemoveMission(MissionModel? mission)</code></p>
 <p>Removes (ends) a mission.</p>
+<h2 id="dropspawns">DropSpawns</h2>
+<p><code>void DropSpawns(Guid? key)</code></p>
+<p>Drops all entities relevant to the specified campaign / spawn group key.</p>
+<h2 id="dropcampaign">DropCampaign</h2>
+<p><code>void DropCampaign(PersonModel? person, string campaignName)</code></p>
+<p>Drops all active missions relevant to specified campaign. All campaign spawn group keys
+are also used to remove related entities.</p>
+<h2 id="dropcampaignk">DropCampaignK</h2>
+<p><code>void DropCampaignK(PersonModel? person, Guid? key)</code></p>
+<p>Drops all active missions relevant to specified campaign (spawn group) key.</p>
+<h1 id="person-functions">Person functions</h1>
 <h2 id="persont">PersonT</h2>
-<p><code>PersonModel[]? PersonT(string tag)</code></p>
-<p>Tries to get persons with the specified tag.</p>
+<p><code>PersonModel[] PersonT(string tag)</code></p>
+<p>Gets persons with the specified tag.</p>
+<h2 id="persongt">PersonGT</h2>
+<p><code>PersonModel[] PersonGT(Guid? key, string? tag)</code></p>
+<p>Gets persons with the specified group and tag.</p>
+<h2 id="persongtsingle">PersonGTSingle</h2>
+<p><code>PersonModel? PersonGTSingle(Guid? key, string? tag)</code></p>
+<p>Gets first existing person with the specified group and tag or nil.</p>
 <h2 id="spawnperson">SpawnPerson</h2>
 <p><code>PersonModel SpawnPerson(string name, string username)</code></p>
 <p>Spawns a person with the specified proper name and username.</p>
@@ -149,14 +194,25 @@ are required to end in <code>.service.script.yaml</code>.</p>
 <p><code>PersonModel SpawnPersonT(string name, string username, string tag)</code></p>
 <p>Spawns a person with the specified proper name, username, tag.</p>
 <h2 id="spawnpersongt">SpawnPersonGT</h2>
-<p><code>PersonModel SpawnPersonG(string name, string username, string tag, Guid key)</code></p>
+<p><code>PersonModel SpawnPersonGT(string name, string username, Guid key, string tag)</code></p>
 <p>Spawns a person with the specified proper name, username, tag, and group key.</p>
+<h2 id="ensurepersongt">EnsurePersonGT</h2>
+<p><code>PersonModel EnsurePersonGT(string name, string username, Guid key, string tag)</code></p>
+<p>Ensures a person with the specified proper name, username, tag, and group key exists
+or is created.</p>
 <h2 id="removeperson">RemovePerson</h2>
 <p><code>void RemovePerson(PersonModel? person)</code></p>
 <p>Removes a person (and all systems).</p>
+<h1 id="system-functions">System functions</h1>
 <h2 id="systemt">SystemT</h2>
-<p><code>SystemModel[]? SystemT(string tag)</code></p>
-<p>Tries to get system with the specified tag.</p>
+<p><code>SystemModel[] SystemT(string tag)</code></p>
+<p>Gets systems with the specified tag.</p>
+<h2 id="persongt-1">PersonGT</h2>
+<p><code>SystemModel[] SystemGT(Guid? key, string? tag)</code></p>
+<p>Gets systems with the specified group and tag.</p>
+<h2 id="persongtsingle-1">PersonGTSingle</h2>
+<p><code>SystemModel? SystemGTSingle(Guid? key, string? tag)</code></p>
+<p>Gets first existing system with the specified group and tag or nil.</p>
 <h2 id="systema">SystemA</h2>
 <p><code>SystemModel? SystemA(string tag)</code></p>
 <p>Tries to get a system with the specified IP address.</p>
@@ -176,14 +232,20 @@ are required to end in <code>.service.script.yaml</code>.</p>
 <p><code>SystemModel? SpawnSystemT(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag)</code></p>
 <p>Attempts to spawn a system with the specified tag.</p>
 <h2 id="spawnsystemgt">SpawnSystemGT</h2>
-<p><code>SystemModel? SpawnSystemG(PersonModel? owner, string password, string template, string addressOrAddressRange, string tag, Guid key)</code></p>
+<p><code>SystemModel? SpawnSystemGT(PersonModel? owner, string password, string template, string addressOrAddressRange, Guid key, string tag)</code></p>
 <p>Attempts to spawn a system with the specified tag and group key.</p>
+<h2 id="ensuresystemgt">EnsureSystemGT</h2>
+<p><code>SystemModel? EnsureSystemGT(PersonModel? owner, string password, string template, string addressOrAddressRange, Guid key, string tag)</code></p>
+<p>Ensures that a system with the specified tag and group key exists
+or is created.
+Still fails if invalid setup parameters are passed.</p>
 <h2 id="removesystem">RemoveSystem</h2>
 <p><code>void RemoveSystem(SystemModel? system)</code></p>
 <p>Removes a system.</p>
 <h2 id="reset">Reset</h2>
 <p><code>void ResetSystem(SystemModel? system)</code></p>
 <p>Resets a specified system to its template state.</p>
+<h1 id="file-functions">File functions</h1>
 <h2 id="fileexists">FileExists</h2>
 <p><code>bool FileExists(SystemModel? system, string path)</code></p>
 <p>Checks if the filesystem on the specified system contains
@@ -203,12 +265,14 @@ a file/folder with the provided path.</p>
 <h2 id="removefile">RemoveFile</h2>
 <p><code>void RemoveFile(FileModel? file)</code></p>
 <p>Removes a file (recursive).</p>
+<h1 id="task-functions">Task functions</h1>
 <h2 id="spawncron">SpawnCron</h2>
 <p><code>CronModel? SpawnCron(SystemModel? system, string content, float start, float delay, float end)</code></p>
 <p>Spawns a task with the specified content.</p>
 <h2 id="removecron">RemoveCron</h2>
 <p><code>void RemoveCron(CronModel? cron)</code></p>
 <p>Removes a task.</p>
+<h1 id="log-functions">Log functions</h1>
 <h2 id="log">Log</h2>
 <p><code>void Log(string message)</code></p>
 <p>Writes a <code>LogLevel.Information</code> message to the world's logger.</p>
@@ -221,6 +285,42 @@ a file/folder with the provided path.</p>
 <li>2: LogLevel.Error</li>
 <li>default: LogLevel.Critical</li>
 </ul>
+<h1 id="process-functions">Process functions</h1>
+<h2 id="startshell">StartShell</h2>
+<p><code>(ShellProcess, LoginModel)? StartShell(PersonModel? person, SystemModel? system)</code></p>
+<p>Starts a shell for the specified person/system.</p>
+<p>Fails if either arg is null or if person doesn't have a valid login directly
+associated with them on the target system.</p>
+<h2 id="killprocess">KillProcess</h2>
+<p><code>void KillProcess(Process? process)</code></p>
+<p>Kills a process.</p>
+<h2 id="ps">Ps</h2>
+<p><code>Process[]? Ps(SystemModel? system)</code></p>
+<p>Lists all processes on system.</p>
+<h2 id="pslogin">PsLogin</h2>
+<p><code>Process[]? PsLogin(LoginModel? login)</code></p>
+<p>Lists all processes for specified login.</p>
+<h1 id="hackscript-functions">Hackscript functions</h1>
+<h2 id="runhackscript">RunHackScript</h2>
+<p><code>void RunHackScript(Guid key, string systemTag, string script)</code></p>
+<p>Sets up and runs the specified hack script (as a standard Lua program).</p>
+<p>Success depends on several factors, including:</p>
+<ul>
+<li><p>System with tag/host key is found</p>
+</li>
+<li><p>Person with tag/host key is found</p>
+</li>
+<li><p>Person has a valid directly associated login on the system</p>
+</li>
+<li><p>Hackscript exists</p>
+</li>
+</ul>
+<p>Spawn group key is used to locate / generate the system and person used for execution.</p>
+<p>Key is also passed through to hackscript as <code>key</code> global.</p>
+<h2 id="runrandohackscript">RunRandoHackScript</h2>
+<p><code>void RunHackScript(Guid key, string systemTag, string personTag, string script)</code></p>
+<p>Effectively <a href="##RunHackScript">RunHackScript</a> with specific source person instead of
+running as system's owner.</p>
 </article>
           </div>
           

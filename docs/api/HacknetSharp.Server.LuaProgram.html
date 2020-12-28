@@ -306,19 +306,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_LuaProgram__ctor_Coroutine_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.LuaProgram.%23ctor(Coroutine)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_LuaProgram__ctor_Coroutine_System_Nullable_IReadOnlyDictionary_System_String_System_Object___.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.LuaProgram.%23ctor(Coroutine%2CSystem.Nullable%7BIReadOnlyDictionary%7BSystem.String%2CSystem.Object%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/LuaProgram.cs/#L18">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/LuaProgram.cs/#L24">View Source</a>
   </span>
   <a id="HacknetSharp_Server_LuaProgram__ctor_" data-uid="HacknetSharp.Server.LuaProgram.#ctor*"></a>
-  <h4 id="HacknetSharp_Server_LuaProgram__ctor_Coroutine_" data-uid="HacknetSharp.Server.LuaProgram.#ctor(Coroutine)">LuaProgram(Coroutine)</h4>
+  <h4 id="HacknetSharp_Server_LuaProgram__ctor_Coroutine_System_Nullable_IReadOnlyDictionary_System_String_System_Object___" data-uid="HacknetSharp.Server.LuaProgram.#ctor(Coroutine,System.Nullable{IReadOnlyDictionary{System.String,System.Object}})">LuaProgram(Coroutine, Nullable&lt;IReadOnlyDictionary&lt;String, Object&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a lua program from the specified coroutine.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LuaProgram(Coroutine coroutine)</code></pre>
+    <pre><code class="lang-csharp hljs">public LuaProgram(Coroutine coroutine, IReadOnlyDictionary&lt;string, object&gt;? additionalProps = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -336,6 +336,12 @@
         <td><p>Coroutine to use.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IReadOnlyDictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Object</span>&gt;&gt;</td>
+        <td><span class="parametername">additionalProps</span></td>
+        <td><p>Additional properties to initialize with.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
@@ -345,12 +351,11 @@
     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_LuaProgram_Run.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.LuaProgram.Run%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/LuaProgram.cs/#L24">View Source</a>
+    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/LuaProgram.cs/#L31">View Source</a>
   </span>
   <a id="HacknetSharp_Server_LuaProgram_Run_" data-uid="HacknetSharp.Server.LuaProgram.Run*"></a>
   <h4 id="HacknetSharp_Server_LuaProgram_Run" data-uid="HacknetSharp.Server.LuaProgram.Run">Run()</h4>
-  <div class="markdown level1 summary"><p>Runs this executable with the given context.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -367,8 +372,7 @@
     <tbody>
       <tr>
         <td><span class="xref">IEnumerator</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
-        <td><p>Enumerator that divides execution steps.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -385,7 +389,7 @@
                     <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_LuaProgram.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.LuaProgram%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/LuaProgram.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/LuaProgram.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

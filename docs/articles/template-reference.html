@@ -178,6 +178,9 @@ name, this is only for listing the worlds with <code>hss world list</code>).</li
 <h2 id="mission-templates">Mission templates</h2>
 <p><code>hss new mission [-n &lt;templateName&gt;]</code></p>
 <ul>
+<li>Campaign(<code>string</code>): Campaign name.</li>
+<li>Title(<code>string</code>): Friendly title of mission.</li>
+<li>Message(<code>string</code>): Text content of mission.</li>
 <li>Start(<code>string?</code>): Lua code to execute when mission starts.</li>
 <li>Goals(<code>List&lt;string&gt;?</code>): Mission goals as lua expressions that evaluate to a boolean.</li>
 <li>Outcomes(<code>List&lt;Outcome&gt;?</code>): Objective outcomes.
