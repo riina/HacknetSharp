@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Ns;
+using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -7,23 +7,19 @@ namespace HacknetSharp.Events.Server
     /// Event sent when server is disconnecting a client.
     /// </summary>
     [EventCommand(Command.SC_Disconnect)]
+    [Azura]
     public class ServerDisconnectEvent : ServerEvent
     {
         /// <summary>
         /// Reason for disconnection.
         /// </summary>
+        [Azura]
         public string Reason { get; set; } = null!;
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteUtf8String(Reason);
-        }
+        public override void Serialize(Stream stream) => ServerDisconnectEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Reason = stream.ReadUtf8String();
-        }
+        public override Event Deserialize(Stream stream) => ServerDisconnectEventSerialization.Deserialize(stream);
     }
 }

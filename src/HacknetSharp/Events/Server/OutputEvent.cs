@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Ns;
+using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -7,23 +7,19 @@ namespace HacknetSharp.Events.Server
     /// Represents text output intended for some form of console on the client.
     /// </summary>
     [EventCommand(Command.SC_Output)]
+    [Azura]
     public class OutputEvent : ServerEvent
     {
         /// <summary>
         /// Text meant to be written to client's associated console, if any.
         /// </summary>
+        [Azura]
         public string Text { get; set; } = null!;
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteUtf8String(Text);
-        }
+        public override void Serialize(Stream stream) => OutputEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Text = stream.ReadUtf8String();
-        }
+        public override Event Deserialize(Stream stream) => OutputEventSerialization.Deserialize(stream);
     }
 }

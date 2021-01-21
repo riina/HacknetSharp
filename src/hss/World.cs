@@ -275,13 +275,12 @@ namespace hss
 
                 if (!fail)
                 {
-
                     if (mission.Person.User is { } user)
                         foreach (var output in user.Outputs)
                         {
                             output.WriteEventSafe(new AlertEvent
                             {
-                                AlertKind = AlertEvent.Kind.System,
+                                Alert = AlertEvent.Kind.System,
                                 Header = "MISSION COMPLETE",
                                 Body =
                                     $"<< {m.Campaign} - {m.Title} >>"
@@ -805,7 +804,7 @@ namespace hss
                 {
                     output.WriteEventSafe(new AlertEvent
                     {
-                        AlertKind = AlertEvent.Kind.System,
+                        Alert = AlertEvent.Kind.System,
                         Header = "New Mission",
                         Body =
                             $"<< {template.Campaign} - {template.Title} >>\n\n{template.Message}"

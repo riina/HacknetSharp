@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using Azura;
 using HacknetSharp.Events.Client;
-using Ns;
 
 namespace HacknetSharp.Events.Server
 {
@@ -9,9 +9,11 @@ namespace HacknetSharp.Events.Server
     /// Event sent when successfully generated a token in response to <see cref="RegistrationTokenForgeRequestEvent"/>.
     /// </summary>
     [EventCommand(Command.SC_RegistrationTokenForgeResponse)]
+    [Azura]
     public class RegistrationTokenForgeResponseEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
+        [Azura]
         public Guid Operation { get; set; }
 
         /// <summary>
@@ -36,20 +38,15 @@ namespace HacknetSharp.Events.Server
         /// <summary>
         /// Generated registration token.
         /// </summary>
+        [Azura]
         public string RegistrationToken { get; set; }
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteUtf8String(RegistrationToken);
-        }
+        public override void Serialize(Stream stream) =>
+            RegistrationTokenForgeResponseEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            RegistrationToken = stream.ReadUtf8String();
-        }
+        public override Event Deserialize(Stream stream) =>
+            RegistrationTokenForgeResponseEventSerialization.Deserialize(stream);
     }
 }

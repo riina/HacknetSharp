@@ -11,14 +11,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
-using Ns;
 
 namespace HacknetSharp
 {
     /// <summary>
     /// Contains utility methods and extension methods.
     /// </summary>
-    public static class Util
+    public static partial class Util
     {
         /// <summary>
         /// Shorthand for ConfigureAwait(false).
@@ -60,7 +59,7 @@ namespace HacknetSharp
         /// <param name="command">Command to write.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteCommand(this Stream stream, Command command) =>
-            stream.WriteU32((uint)command);
+            uintSerialization.Serialize((uint)command, stream);
 
         /// <summary>
         /// Reads a command code from this stream.
@@ -69,7 +68,7 @@ namespace HacknetSharp
         /// <returns>Read command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Command ReadCommand(this Stream stream) =>
-            (Command)stream.ReadU32();
+            (Command)uintSerialization.Deserialize(stream);
 
         /// <summary>
         /// Asynchronously reads a command code from this stream.
@@ -78,32 +77,10 @@ namespace HacknetSharp
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Task that represents pending read command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async Task<Command> ReadCommandAsync(this Stream stream, CancellationToken cancellationToken) =>
-            (Command)await stream.ReadU32Async(cancellationToken).Caf();
-
-        /// <summary>
-        /// Writes a nullable UTF-8 string to this stream.
-        /// </summary>
-        /// <param name="stream">Stream to operate on.</param>
-        /// <param name="value">Value to write.</param>
-        /// <remarks>The string is formatted by the <see cref="NetSerializerExtensions.WriteUtf8String"/> method this method uses.</remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WriteUtf8StringNullable(this Stream stream, string? value)
+        public static async Task<Command> ReadCommandAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            stream.WriteU8(value != null ? (byte)1 : (byte)0);
-            if (value != null) stream.WriteUtf8String(value);
-        }
-
-        /// <summary>
-        /// Reads a nullable UTF-8 string from this stream.
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        /// <remarks>The string must be formatted to be compatible with the <see cref="NetSerializerExtensions.ReadUtf8String"/> method this method uses.</remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string? ReadUtf8StringNullable(this Stream stream)
-        {
-            return stream.ReadU8() != 0 ? stream.ReadUtf8String() : null;
+            await Task.Yield();
+            return (Command)uintSerialization.Deserialize(stream);
         }
 
         /// <summary>
@@ -211,38 +188,21 @@ namespace HacknetSharp
         static Util()
         {
             _commandT2C = new Dictionary<Type, Command>();
-            _commandC2T = new Dictionary<Command, Func<Event>>();
-            RegisterCommand<ClientDisconnectEvent>(Command.CS_Disconnect);
-            RegisterCommand<CommandEvent>(Command.CS_Command);
-            RegisterCommand<InitialCommandEvent>(Command.CS_InitialCommand);
-            RegisterCommand<InputResponseEvent>(Command.CS_InputResponse);
-            RegisterCommand<LoginEvent>(Command.CS_Login);
-            RegisterCommand<RegistrationTokenForgeRequestEvent>(Command.CS_RegistrationTokenForgeRequest);
-            RegisterCommand<EditResponseEvent>(Command.CS_EditResponse);
-
-            RegisterCommand<AccessFailEvent>(Command.SC_AccessFail);
-            RegisterCommand<FailBaseServerEvent>(Command.SC_FailBaseServer);
-            RegisterCommand<InputRequestEvent>(Command.SC_InputRequest);
-            RegisterCommand<LoginFailEvent>(Command.SC_LoginFail);
-            RegisterCommand<OperationCompleteEvent>(Command.SC_OperationComplete);
-            RegisterCommand<OutputEvent>(Command.SC_Output);
-            RegisterCommand<RegistrationTokenForgeResponseEvent>(Command.SC_RegistrationTokenForgeResponse);
-            RegisterCommand<ServerDisconnectEvent>(Command.SC_Disconnect);
-            RegisterCommand<UserInfoEvent>(Command.SC_UserInfo);
-            RegisterCommand<EditRequestEvent>(Command.SC_EditRequest);
-            RegisterCommand<ShellPromptEvent>(Command.SC_ShellPrompt);
-            RegisterCommand<AlertEvent>(Command.SC_Alert);
+            _commandC2T = new Dictionary<Command, Event>();
+            RegisterCommands();
         }
+
+        static partial void RegisterCommands();
 
         private static void RegisterCommand<TEvent>(Command key) where TEvent : Event, new()
         {
             var type = typeof(TEvent);
             _commandT2C[type] = key;
-            _commandC2T[key] = () => new TEvent();
+            _commandC2T[key] = new TEvent();
         }
 
         private static readonly Dictionary<Type, Command> _commandT2C;
-        private static readonly Dictionary<Command, Func<Event>> _commandC2T;
+        private static readonly Dictionary<Command, Event> _commandC2T;
 
         /// <summary>
         /// Reads an event from this stream.
@@ -265,20 +225,19 @@ namespace HacknetSharp
 
             if (!_commandC2T.TryGetValue(command, out var f))
                 throw new ProtocolException($"Unknown command type {(uint)command} received");
-            var obj = f();
-            var evt = obj as TEvent ??
-                      throw new Exception(
-                          $"Failed to cast event {obj.GetType().FullName} as {typeof(TEvent).FullName}");
+            Event evt;
             try
             {
-                evt.Deserialize(stream);
+                evt = f.Deserialize(stream);
             }
             catch (Exception e)
             {
                 throw new ProtocolException(e.Message);
             }
 
-            return evt;
+            return evt as TEvent ??
+                   throw new Exception(
+                       $"Failed to cast event {evt.GetType().FullName} as {typeof(TEvent).FullName}");
         }
 
         /// <summary>
@@ -305,12 +264,10 @@ namespace HacknetSharp
             if (!_commandC2T.TryGetValue(command, out var f))
                 throw new ProtocolException($"Unknown command type {(uint)command} received");
 
-            var obj = f();
-            var evt = obj as TEvent ??
+            var evt = f.Deserialize(stream);
+            return evt as TEvent ??
                       throw new Exception(
-                          $"Failed to cast event {obj.GetType().FullName} as {typeof(TEvent).FullName}");
-            evt.Deserialize(stream);
-            return evt;
+                          $"Failed to cast event {evt.GetType().FullName} as {typeof(TEvent).FullName}");
         }
 
         /// <summary>
@@ -408,8 +365,8 @@ namespace HacknetSharp
             return YesAnswers.Contains((Console.ReadLine() ?? "").ToLowerInvariant());
         }
 
-        private static readonly Regex _conStringRegex = new Regex(@"([A-Za-z0-9]+)@([\S]+)");
-        private static readonly Regex _serverPortRegex = new Regex(@"([^\s:]+):([\S\s]+)");
+        private static readonly Regex _conStringRegex = new(@"([A-Za-z0-9]+)@([\S]+)");
+        private static readonly Regex _serverPortRegex = new(@"([^\s:]+):([\S\s]+)");
 
         /// <summary>
         /// Attempts to parse a connection string (e.g. user@host[:port]).
@@ -574,8 +531,8 @@ namespace HacknetSharp
             return true;
         }
 
-        private static readonly Regex _replacementRegex = new Regex(@"((?:^|[^\\])(?:\\\\)*){((?:[^{}\\]|\\.)*)}");
-        private static readonly Regex _shellReplacementRegex = new Regex(@"\$([A-Za-z0-9]+)");
+        private static readonly Regex _replacementRegex = new(@"((?:^|[^\\])(?:\\\\)*){((?:[^{}\\]|\\.)*)}");
+        private static readonly Regex _shellReplacementRegex = new(@"\$([A-Za-z0-9]+)");
 
         /// <summary>
         /// Apply replacement splitting.

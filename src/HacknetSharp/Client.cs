@@ -133,9 +133,11 @@ namespace HacknetSharp
                     _cancellationTokenSource.Token).Caf();
                 var info = result switch
                 {
+                    null => throw new ProtocolException(
+                        "Server terminated the connection before a message was received."),
                     UserInfoEvent i => i,
-                    LoginFailEvent _ => throw new LoginException("Login failed."),
-                    _ => throw new ProtocolException($"Unexpected event type {result?.GetType().FullName} received.")
+                    LoginFailEvent => throw new LoginException("Login failed."),
+                    _ => throw new ProtocolException($"Unexpected event type {result.GetType().FullName} received.")
                 };
 
                 OnReceivedEvent += e =>
@@ -208,7 +210,7 @@ namespace HacknetSharp
         }
 
         private static readonly Dictionary<LifecycleState, LifecycleState> _disposeMap =
-            new Dictionary<LifecycleState, LifecycleState>
+            new()
             {
                 {LifecycleState.NotStarted, LifecycleState.Disposed},
                 {LifecycleState.Starting, LifecycleState.Dispose},
@@ -247,9 +249,9 @@ namespace HacknetSharp
         {
             if (sslPolicyErrors == SslPolicyErrors.None)
                 return true;
-            _logger.LogError($"Certificate error: {sslPolicyErrors}\n" +
-                             $"Certificate issuer: {certificate.Issuer}\n" +
-                             $"Certificate subject: {certificate.Subject}");
+            _logger.LogError(
+                "Certificate error: {PolicyErrors}\nCertificate issuer: {Issuer}\nCertificate subject: {Subject}",
+                sslPolicyErrors, certificate.Issuer, certificate.Subject);
 
             // Do not allow this client to communicate with unauthenticated servers.
             return false;

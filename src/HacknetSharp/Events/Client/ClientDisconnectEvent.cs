@@ -11,7 +11,7 @@ namespace HacknetSharp.Events.Client
         /// <summary>
         /// Singleton instance.
         /// </summary>
-        public static readonly ClientDisconnectEvent Singleton = new ClientDisconnectEvent();
+        public static readonly ClientDisconnectEvent Singleton = new();
 
         /// <inheritdoc />
         public override void Serialize(Stream stream)
@@ -19,8 +19,6 @@ namespace HacknetSharp.Events.Client
         }
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-        }
+        public override Event Deserialize(Stream stream) => Singleton;
     }
 }

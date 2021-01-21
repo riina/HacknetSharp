@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Ns;
+using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -8,28 +8,23 @@ namespace HacknetSharp.Events.Server
     /// Base type for events sent to indicate an error in response to a client-initiated operation.
     /// </summary>
     [EventCommand(Command.SC_FailBaseServer)]
+    [Azura]
     public class FailBaseServerEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
-        public Guid Operation { get; set; }
+        [Azura]
+        public virtual Guid Operation { get; set; }
 
         /// <summary>
         /// Message associated with the failure.
         /// </summary>
-        public string Message { get; set; } = "An unknown error occurred.";
+        [Azura]
+        public virtual string Message { get; set; } = "An unknown error occurred.";
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteUtf8String(Message);
-        }
+        public override void Serialize(Stream stream) => FailBaseServerEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            Message = stream.ReadUtf8String();
-        }
+        public override Event Deserialize(Stream stream) => FailBaseServerEventSerialization.Deserialize(stream);
     }
 }

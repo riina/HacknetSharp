@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Ns;
+using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -8,28 +8,23 @@ namespace HacknetSharp.Events.Server
     /// Event sent when requesting input from the user.
     /// </summary>
     [EventCommand(Command.SC_InputRequest)]
+    [Azura]
     public class InputRequestEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
+        [Azura]
         public Guid Operation { get; set; }
 
         /// <summary>
         /// If true, indicates a request that user input be hidden as it's entered (e.g. for password input).
         /// </summary>
+        [Azura]
         public bool Hidden { get; set; }
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteU8(Hidden ? 1 : 0);
-        }
+        public override void Serialize(Stream stream) => InputRequestEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            Hidden = stream.ReadU8() != 0;
-        }
+        public override Event Deserialize(Stream stream) => InputRequestEventSerialization.Deserialize(stream);
     }
 }

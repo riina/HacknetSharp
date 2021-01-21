@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using Azura;
 using HacknetSharp.Events.Server;
-using Ns;
 
 namespace HacknetSharp.Events.Client
 {
@@ -9,28 +9,23 @@ namespace HacknetSharp.Events.Client
     /// Event sent when user input text in response to <see cref="InputRequestEvent"/>.
     /// </summary>
     [EventCommand(Command.CS_InputResponse)]
+    [Azura]
     public class InputResponseEvent : ClientResponseEvent
     {
         /// <inheritdoc />
+        [Azura]
         public override Guid Operation { get; set; }
 
         /// <summary>
         /// Text to send to server.
         /// </summary>
+        [Azura]
         public string Input { get; set; } = null!;
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteUtf8String(Input);
-        }
+        public override void Serialize(Stream stream) => InputResponseEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            Input = stream.ReadUtf8String();
-        }
+        public override Event Deserialize(Stream stream) => InputResponseEventSerialization.Deserialize(stream);
     }
 }

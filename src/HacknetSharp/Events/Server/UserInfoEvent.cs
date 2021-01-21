@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using Azura;
 using HacknetSharp.Events.Client;
-using Ns;
 
 namespace HacknetSharp.Events.Server
 {
@@ -9,28 +9,23 @@ namespace HacknetSharp.Events.Server
     /// Event sent when successfully honored <see cref="LoginEvent"/>.
     /// </summary>
     [EventCommand(Command.SC_UserInfo)]
+    [Azura]
     public class UserInfoEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
+        [Azura]
         public Guid Operation { get; set; }
 
         /// <summary>
         /// True if user is an administrator.
         /// </summary>
+        [Azura]
         public bool Admin { get; set; }
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteU8(Admin ? (byte)1 : (byte)0);
-        }
+        public override void Serialize(Stream stream) => UserInfoEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            Admin = stream.ReadU8() == 1;
-        }
+        public override Event Deserialize(Stream stream) => UserInfoEventSerialization.Deserialize(stream);
     }
 }

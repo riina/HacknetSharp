@@ -189,7 +189,7 @@ namespace hss
                                 {
                                     WriteEvent(new AlertEvent
                                     {
-                                        AlertKind = AlertEvent.Kind.System,
+                                        Alert = AlertEvent.Kind.System,
                                         Body = _server.Motd,
                                         Header = "Message of the day"
                                     });

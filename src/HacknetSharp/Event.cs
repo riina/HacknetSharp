@@ -14,9 +14,9 @@ namespace HacknetSharp
         public abstract void Serialize(Stream stream);
 
         /// <summary>
-        /// Deserializes this event.
+        /// Deserializes an event.
         /// </summary>
         /// <param name="stream">Source stream.</param>
-        public abstract void Deserialize(Stream stream);
+        public abstract Event Deserialize(Stream stream);
     }
 }

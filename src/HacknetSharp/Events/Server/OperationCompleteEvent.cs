@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Ns;
+using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -8,21 +8,17 @@ namespace HacknetSharp.Events.Server
     /// Event sent when the server has successfully completed a user-initiated operation.
     /// </summary>
     [EventCommand(Command.SC_OperationComplete)]
+    [Azura]
     public class OperationCompleteEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
+        [Azura]
         public Guid Operation { get; set; }
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-        }
+        public override void Serialize(Stream stream) => OperationCompleteEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-        }
+        public override Event Deserialize(Stream stream) => OperationCompleteEventSerialization.Deserialize(stream);
     }
 }

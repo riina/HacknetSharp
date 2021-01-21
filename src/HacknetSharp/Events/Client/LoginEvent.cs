@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using Azura;
 using HacknetSharp.Events.Server;
-using Ns;
 
 namespace HacknetSharp.Events.Client
 {
@@ -10,42 +10,35 @@ namespace HacknetSharp.Events.Client
     /// triggers either <see cref="LoginFailEvent"/> or <see cref="UserInfoEvent"/> depending on success.
     /// </summary>
     [EventCommand(Command.CS_Login)]
+    [Azura]
     public class LoginEvent : ClientEvent, IOperation
     {
         /// <inheritdoc />
+        [Azura]
         public Guid Operation { get; set; }
 
         /// <summary>
         /// Username to send.
         /// </summary>
+        [Azura]
         public string User { get; set; } = null!;
 
         /// <summary>
         /// Password to send.
         /// </summary>
+        [Azura]
         public string Pass { get; set; } = null!;
 
         /// <summary>
         /// Registration token to send, if registering user.
         /// </summary>
+        [Azura]
         public string? RegistrationToken { get; set; }
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteUtf8String(User);
-            stream.WriteUtf8String(Pass);
-            stream.WriteUtf8StringNullable(RegistrationToken);
-        }
+        public override void Serialize(Stream stream) => LoginEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            User = stream.ReadUtf8String();
-            Pass = stream.ReadUtf8String();
-            RegistrationToken = stream.ReadUtf8StringNullable();
-        }
+        public override Event Deserialize(Stream stream) => LoginEventSerialization.Deserialize(stream);
     }
 }

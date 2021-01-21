@@ -103,7 +103,7 @@ namespace hsh
                 switch (e)
                 {
                     case AlertEvent alert:
-                        string alertKind = alert.AlertKind switch
+                        string alertKind = alert.Alert switch
                         {
                             AlertEvent.Kind.System => "SYSTEM ALERT",
                             AlertEvent.Kind.Intrusion => "INTRUSION DETECTED",
@@ -186,8 +186,8 @@ namespace hsh
 
         public static class LockIO
         {
-            private static readonly StringBuilder _sb = new StringBuilder();
-            private static readonly AutoResetEvent _are = new AutoResetEvent(true);
+            private static readonly StringBuilder _sb = new();
+            private static readonly AutoResetEvent _are = new(true);
 
             public static void ForceRewrite()
             {

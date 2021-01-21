@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using Azura;
 using HacknetSharp.Events.Server;
-using Ns;
 
 namespace HacknetSharp.Events.Client
 {
@@ -9,35 +9,29 @@ namespace HacknetSharp.Events.Client
     /// Event sent when client is done editing text in response to <see cref="EditRequestEvent"/>.
     /// </summary>
     [EventCommand(Command.CS_EditResponse)]
+    [Azura]
     public class EditResponseEvent : ClientResponseEvent
     {
         /// <inheritdoc />
+        [Azura]
         public override Guid Operation { get; set; }
 
         /// <summary>
         /// True if user requests the server use the sent <see cref="Content"/>.
         /// </summary>
+        [Azura]
         public bool Write { get; set; }
 
         /// <summary>
         /// Modified content.
         /// </summary>
+        [Azura]
         public string Content { get; set; } = null!;
 
         /// <inheritdoc />
-        public override void Serialize(Stream stream)
-        {
-            stream.WriteGuid(Operation);
-            stream.WriteByte(Write ? (byte)1 : (byte)0);
-            stream.WriteUtf8String(Content);
-        }
+        public override void Serialize(Stream stream) => EditResponseEventSerialization.Serialize(this, stream);
 
         /// <inheritdoc />
-        public override void Deserialize(Stream stream)
-        {
-            Operation = stream.ReadGuid();
-            Write = stream.ReadU8() != 0;
-            Content = stream.ReadUtf8String();
-        }
+        public override Event Deserialize(Stream stream) => EditResponseEventSerialization.Deserialize(stream);
     }
 }
