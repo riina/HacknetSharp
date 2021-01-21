@@ -9,7 +9,7 @@ namespace HacknetSharp.Events.Client
     /// </summary>
     [EventCommand(Command.CS_InitialCommand)]
     [Azura]
-    public class InitialCommandEvent : ClientEvent, IOperation
+    public partial class InitialCommandEvent : ClientEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -20,11 +20,5 @@ namespace HacknetSharp.Events.Client
         /// </summary>
         [Azura]
         public int ConWidth { get; set; } = -1;
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => InitialCommandEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => InitialCommandEventSerialization.Deserialize(stream);
     }
 }

@@ -8,7 +8,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_ShellPrompt)]
     [Azura]
-    public class ShellPromptEvent : ServerEvent
+    public partial class ShellPromptEvent : ServerEvent
     {
         /// <summary>
         /// Server IPv4 address (big-endian, highest-order octet = first byte).
@@ -33,11 +33,5 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public string WorkingDirectory { get; set; } = null!;
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => ShellPromptEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => ShellPromptEventSerialization.Deserialize(stream);
     }
 }

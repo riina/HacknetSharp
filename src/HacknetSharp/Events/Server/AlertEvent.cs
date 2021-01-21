@@ -8,7 +8,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_Alert)]
     [Azura]
-    public class AlertEvent : ServerEvent
+    public partial class AlertEvent : ServerEvent
     {
         /// <summary>
         /// Alert kind.
@@ -42,12 +42,6 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public string? Sender { get; set; }
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => AlertEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => AlertEventSerialization.Deserialize(stream);
 
         /// <summary>
         /// Alert kind.

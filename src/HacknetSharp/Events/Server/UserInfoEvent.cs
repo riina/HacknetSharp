@@ -10,7 +10,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_UserInfo)]
     [Azura]
-    public class UserInfoEvent : ServerEvent, IOperation
+    public partial class UserInfoEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -21,11 +21,5 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public bool Admin { get; set; }
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => UserInfoEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => UserInfoEventSerialization.Deserialize(stream);
     }
 }

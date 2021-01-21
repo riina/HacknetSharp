@@ -9,18 +9,10 @@ namespace HacknetSharp.Events.Client
     /// </summary>
     [EventCommand(Command.CS_RegistrationTokenForgeRequest)]
     [Azura]
-    public class RegistrationTokenForgeRequestEvent : ClientEvent, IOperation
+    public partial class RegistrationTokenForgeRequestEvent : ClientEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
         public Guid Operation { get; set; }
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) =>
-            RegistrationTokenForgeRequestEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) =>
-            RegistrationTokenForgeRequestEventSerialization.Deserialize(stream);
     }
 }

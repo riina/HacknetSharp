@@ -10,7 +10,7 @@ namespace HacknetSharp.Events.Client
     /// </summary>
     [EventCommand(Command.CS_InputResponse)]
     [Azura]
-    public class InputResponseEvent : ClientResponseEvent
+    public partial class InputResponseEvent : ClientResponseEvent
     {
         /// <inheritdoc />
         [Azura]
@@ -21,11 +21,5 @@ namespace HacknetSharp.Events.Client
         /// </summary>
         [Azura]
         public string Input { get; set; } = null!;
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => InputResponseEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => InputResponseEventSerialization.Deserialize(stream);
     }
 }

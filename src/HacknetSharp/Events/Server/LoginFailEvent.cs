@@ -9,7 +9,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_LoginFail)]
     [Azura]
-    public class LoginFailEvent : FailBaseServerEvent
+    public partial class LoginFailEvent : FailBaseServerEvent
     {
         /// <inheritdoc />
         [Azura]
@@ -18,11 +18,5 @@ namespace HacknetSharp.Events.Server
         /// <inheritdoc />
         [Azura]
         public override string Message { get; set; } = "Login failed. Invalid credentials.";
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => LoginFailEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => LoginFailEventSerialization.Deserialize(stream);
     }
 }

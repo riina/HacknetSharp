@@ -9,7 +9,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_FailBaseServer)]
     [Azura]
-    public class FailBaseServerEvent : ServerEvent, IOperation
+    public partial class FailBaseServerEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -20,11 +20,5 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public virtual string Message { get; set; } = "An unknown error occurred.";
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => FailBaseServerEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => FailBaseServerEventSerialization.Deserialize(stream);
     }
 }

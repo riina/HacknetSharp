@@ -9,7 +9,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_EditRequest)]
     [Azura]
-    public class EditRequestEvent : ServerEvent, IOperation
+    public partial class EditRequestEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -26,11 +26,5 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public string Content { get; set; } = null!;
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => EditRequestEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => EditRequestEventSerialization.Deserialize(stream);
     }
 }

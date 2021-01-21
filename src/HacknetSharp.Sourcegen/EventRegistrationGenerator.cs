@@ -34,6 +34,32 @@ namespace HacknetSharp
                 string name = item.Type.GetFullyQualifiedName();
                 sb.Append(@$"
             RegisterCommand<{name}>({item.Command});");
+                if (item.AzuraSerializing == null ||
+                    sem.GetSymbolInfo(item.AzuraSerializing).Symbol?.ContainingSymbol.ToString() !=
+                    "Azura.AzuraAttribute") continue;
+                string id = item.Type.Identifier.ToString();
+                string? namespaceName = item.Type.GetParentName();
+                var sb2 = new StringBuilder(@"
+#pragma warning disable 1591
+using System.IO;");
+                if (namespaceName != null)
+                    sb2.Append($@"
+namespace {namespaceName}
+{{");
+                sb2.Append($@"
+    public partial class {id}
+    {{
+
+        /// <inheritdoc />
+        public override void Serialize(Stream stream) => {name}Serialization.Serialize(this, stream);
+
+        /// <inheritdoc />
+        public override Event Deserialize(Stream stream) => {name}Serialization.Deserialize(stream);
+    }}");
+                if (namespaceName != null)
+                    sb2.Append(@"
+}");
+                context.AddSource($"{name}_Serialization.cs", sb2.ToString());
             }
 
             sb.Append(@"
@@ -45,19 +71,25 @@ namespace HacknetSharp
 
         private class EventSyntaxReceiver : ISyntaxReceiver
         {
-            public record EventItem(TypeDeclarationSyntax Type, AttributeSyntax Attribute, string Command);
+            public record EventItem(TypeDeclarationSyntax Type, AttributeSyntax Attribute, string Command,
+                AttributeSyntax? AzuraSerializing);
 
             public List<EventItem> Events { get; } = new();
 
             public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
             {
                 if (syntaxNode is TypeDeclarationSyntax tds)
-                    foreach (AttributeSyntax x in tds.AttributeLists.SelectMany(v => v.Attributes))
-                        if (x.Name.ToString() == "EventCommand" && x.ArgumentList?.Arguments[0].ToString() is { } command)
+                {
+                    var list = new List<AttributeSyntax>(tds.AttributeLists.SelectMany(v => v.Attributes));
+                    foreach (AttributeSyntax x in list)
+                        if (x.Name.ToString() == "EventCommand" && x.ArgumentList?.Arguments[0].ToString() is
+                            { } command)
                         {
-                            Events.Add(new EventItem(tds, x, command));
+                            Events.Add(new EventItem(tds, x, command,
+                                list.FirstOrDefault(a => a.Name.ToString() == "Azura")));
                             break;
                         }
+                }
             }
         }
     }

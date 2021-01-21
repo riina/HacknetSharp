@@ -9,7 +9,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_InputRequest)]
     [Azura]
-    public class InputRequestEvent : ServerEvent, IOperation
+    public partial class InputRequestEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -20,11 +20,5 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public bool Hidden { get; set; }
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => InputRequestEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => InputRequestEventSerialization.Deserialize(stream);
     }
 }

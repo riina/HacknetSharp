@@ -8,18 +8,12 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_Output)]
     [Azura]
-    public class OutputEvent : ServerEvent
+    public partial class OutputEvent : ServerEvent
     {
         /// <summary>
         /// Text meant to be written to client's associated console, if any.
         /// </summary>
         [Azura]
         public string Text { get; set; } = null!;
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => OutputEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => OutputEventSerialization.Deserialize(stream);
     }
 }

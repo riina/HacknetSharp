@@ -9,7 +9,7 @@ namespace HacknetSharp.Events.Client
     /// </summary>
     [EventCommand(Command.CS_Command)]
     [Azura]
-    public class CommandEvent : ClientEvent, IOperation
+    public partial class CommandEvent : ClientEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -26,11 +26,5 @@ namespace HacknetSharp.Events.Client
         /// </summary>
         [Azura]
         public string Text { get; set; } = null!;
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => CommandEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => CommandEventSerialization.Deserialize(stream);
     }
 }

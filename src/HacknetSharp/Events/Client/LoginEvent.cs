@@ -11,7 +11,7 @@ namespace HacknetSharp.Events.Client
     /// </summary>
     [EventCommand(Command.CS_Login)]
     [Azura]
-    public class LoginEvent : ClientEvent, IOperation
+    public partial class LoginEvent : ClientEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -34,11 +34,5 @@ namespace HacknetSharp.Events.Client
         /// </summary>
         [Azura]
         public string? RegistrationToken { get; set; }
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) => LoginEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) => LoginEventSerialization.Deserialize(stream);
     }
 }

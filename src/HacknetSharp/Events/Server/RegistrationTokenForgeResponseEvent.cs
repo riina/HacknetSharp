@@ -10,7 +10,7 @@ namespace HacknetSharp.Events.Server
     /// </summary>
     [EventCommand(Command.SC_RegistrationTokenForgeResponse)]
     [Azura]
-    public class RegistrationTokenForgeResponseEvent : ServerEvent, IOperation
+    public partial class RegistrationTokenForgeResponseEvent : ServerEvent, IOperation
     {
         /// <inheritdoc />
         [Azura]
@@ -40,13 +40,5 @@ namespace HacknetSharp.Events.Server
         /// </summary>
         [Azura]
         public string RegistrationToken { get; set; }
-
-        /// <inheritdoc />
-        public override void Serialize(Stream stream) =>
-            RegistrationTokenForgeResponseEventSerialization.Serialize(this, stream);
-
-        /// <inheritdoc />
-        public override Event Deserialize(Stream stream) =>
-            RegistrationTokenForgeResponseEventSerialization.Deserialize(stream);
     }
 }
