@@ -51,7 +51,7 @@ namespace hss.Runnables
             }
 
             Console.WriteLine(
-                $"Found cert in {cert.Value.Item1.Location}:{cert.Value.Item1.Name} - {cert.Value.Item2.Subject}");
+                $"Found cert in {cert.Value.Item1.Location}:{cert.Value.Item1.Name}");
 
             var templates = new TemplateGroup();
             HssUtil.LoadTemplates(templates, servConf.ContentFolders, ".");

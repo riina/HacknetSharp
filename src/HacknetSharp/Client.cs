@@ -39,12 +39,12 @@ namespace HacknetSharp
         /// <summary>
         /// Delegate for event responses.
         /// </summary>
-        public Action<ServerEvent> OnReceivedEvent { get; set; } = null!;
+        public Action<ServerEvent> OnReceivedEvent { get; set; }
 
         /// <summary>
         /// Delegate for disconnect event responses.
         /// </summary>
-        public Action<ServerDisconnectEvent> OnDisconnect { get; set; } = null!;
+        public Action<ServerDisconnectEvent> OnDisconnect { get; set; }
 
         private string? _pass;
         private string? _registrationToken;
@@ -88,6 +88,8 @@ namespace HacknetSharp
             _inEvents = new List<ServerEvent>();
             _writeEventQueue = new Queue<ClientEvent>();
             _writeQueue = new ConcurrentQueue<ArraySegment<byte>>();
+            OnReceivedEvent = _ => { };
+            OnDisconnect = _ => { };
         }
 
         /// <summary>
@@ -100,6 +102,7 @@ namespace HacknetSharp
         /// <exception cref="InvalidOperationException">Operation not valid for current state of object.</exception>
         public async Task<UserInfoEvent> ConnectAsync()
         {
+            await Task.Yield();
             Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.NotStarted, LifecycleState.Starting,
                 ref _state);
             try
