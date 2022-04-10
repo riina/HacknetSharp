@@ -52,23 +52,17 @@ namespace HacknetSharp.Server
                 case EditRequestEvent editRequest:
                     EditResponseEvent editResponse;
                     if (EditQueue.TryDequeue(out var edit))
-                        editResponse = new EditResponseEvent
-                        {
-                            Operation = editRequest.Operation, Content = edit(editRequest.Content), Write = true
-                        };
+                        editResponse = new EditResponseEvent { Operation = editRequest.Operation, Content = edit(editRequest.Content), Write = true };
                     else
-                        editResponse = new EditResponseEvent
-                        {
-                            Operation = editRequest.Operation, Content = editRequest.Content, Write = false
-                        };
+                        editResponse = new EditResponseEvent { Operation = editRequest.Operation, Content = editRequest.Content, Write = false };
                     Responses[editRequest.Operation] = editResponse;
                     break;
                 case InputRequestEvent inputRequest:
                     InputResponseEvent inputResponse;
                     if (InputQueue.TryDequeue(out var input))
-                        inputResponse = new InputResponseEvent {Operation = inputRequest.Operation, Input = input};
+                        inputResponse = new InputResponseEvent { Operation = inputRequest.Operation, Input = input };
                     else
-                        inputResponse = new InputResponseEvent {Operation = inputRequest.Operation, Input = ""};
+                        inputResponse = new InputResponseEvent { Operation = inputRequest.Operation, Input = "" };
                     Responses[inputRequest.Operation] = inputResponse;
                     break;
             }

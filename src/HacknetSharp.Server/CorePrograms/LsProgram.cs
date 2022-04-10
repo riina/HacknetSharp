@@ -46,7 +46,7 @@ namespace HacknetSharp.Server.CorePrograms
 
             List<string> fileList = readable == null || readable.Kind == FileModel.FileKind.Folder
                 ? new List<string>(System.EnumerateDirectory(path).Select(f => f.Name))
-                : new List<string> {readable.Name};
+                : new List<string> { readable.Name };
             if (fileList.Count == 0) yield break;
             int conWidth = Context.ConWidth;
             fileList.Sort(StringComparer.InvariantCulture);

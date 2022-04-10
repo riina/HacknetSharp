@@ -48,7 +48,7 @@ namespace HacknetSharp.Server.Lua
         {
             var type = obj.GetType();
             foreach (var method in
-                type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+                     type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
                 try
                 {
                     var attr = method.GetCustomAttributes(typeof(GlobalAttribute)).FirstOrDefault() as GlobalAttribute;

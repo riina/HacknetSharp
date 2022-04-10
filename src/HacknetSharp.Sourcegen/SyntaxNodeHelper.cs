@@ -22,7 +22,7 @@ namespace HacknetSharp.Sourcegen
                 BaseTypeDeclarationSyntax cds => cds.Identifier.ToString(),
                 _ => throw new IOException($"Unexpected parent type {p?.GetType()}")
             };
-            string? ppName = GetParentName(p!);
+            string? ppName = GetParentName(p);
             return ppName != null ? $"{ppName}.{pName}" : pName;
         }
 

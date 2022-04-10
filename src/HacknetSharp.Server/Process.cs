@@ -26,7 +26,7 @@
         /// <param name="executable">Source executable.</param>
         protected Process(Executable executable)
         {
-            ProcessContext = executable.ProcessContext!;
+            ProcessContext = executable.ProcessContext;
             Executable = executable;
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Azura;
 
 namespace HacknetSharp.Events.Client
@@ -11,6 +10,11 @@ namespace HacknetSharp.Events.Client
     [Azura]
     public partial class InitialCommandEvent : ClientEvent, IOperation
     {
+        /// <inheritdoc />
+        public InitialCommandEvent()
+        {
+        }
+
         /// <inheritdoc />
         [Azura]
         public Guid Operation { get; set; }

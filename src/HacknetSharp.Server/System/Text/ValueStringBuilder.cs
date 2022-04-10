@@ -192,7 +192,7 @@ namespace System.Text
 
             int pos = _pos;
             if (s.Length == 1 && (uint)pos < (uint)_chars.Length
-            ) // very common case, e.g. appending strings from NumberFormatInfo like separators, percent symbols, etc.
+               ) // very common case, e.g. appending strings from NumberFormatInfo like separators, percent symbols, etc.
             {
                 _chars[pos] = s[0];
                 _pos = pos + 1;

@@ -109,7 +109,7 @@ namespace hss
                         if (se.SocketErrorCode == SocketError.OperationAborted)
                             return;
                         else
-                            Logger.LogWarning("Connection listener threw a socket exception:\n{Exception} {se}", se);
+                            Logger.LogWarning("Connection listener threw a socket exception:\n{Exception}", se);
                     }
                     finally
                     {
@@ -383,7 +383,7 @@ namespace hss
             {
                 try
                 {
-                    connection.WriteEventSafe(new ServerDisconnectEvent {Reason = "Server shutting down."});
+                    connection.WriteEventSafe(new ServerDisconnectEvent { Reason = "Server shutting down." });
                     await connection.FlushSafeAsync();
                     connection.Dispose();
                 }

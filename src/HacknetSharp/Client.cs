@@ -116,18 +116,14 @@ namespace HacknetSharp
             }
             catch
             {
-                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Dispose,
-                    ref _state);
+                Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Dispose, ref _state);
                 throw;
             }
 
             try
             {
                 var loginOp = Guid.NewGuid();
-                var loginCommand = new LoginEvent
-                {
-                    Operation = loginOp, User = User, Pass = _pass!, RegistrationToken = _registrationToken
-                };
+                var loginCommand = new LoginEvent { Operation = loginOp, User = User, Pass = _pass!, RegistrationToken = _registrationToken };
                 WriteEvent(loginCommand);
                 await FlushAsync(_cancellationTokenSource.Token).Caf();
                 _pass = null;
@@ -215,11 +211,11 @@ namespace HacknetSharp
         private static readonly Dictionary<LifecycleState, LifecycleState> _disposeMap =
             new()
             {
-                {LifecycleState.NotStarted, LifecycleState.Disposed},
-                {LifecycleState.Starting, LifecycleState.Dispose},
-                {LifecycleState.Active, LifecycleState.Dispose},
-                {LifecycleState.Dispose, LifecycleState.Dispose},
-                {LifecycleState.Disposed, LifecycleState.Disposed}
+                { LifecycleState.NotStarted, LifecycleState.Disposed },
+                { LifecycleState.Starting, LifecycleState.Dispose },
+                { LifecycleState.Active, LifecycleState.Dispose },
+                { LifecycleState.Dispose, LifecycleState.Dispose },
+                { LifecycleState.Disposed, LifecycleState.Disposed }
             };
 
         private void Dispose()

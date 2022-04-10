@@ -358,7 +358,7 @@ namespace hss
                         fail = fail || !operation.ProcessContext.System.Logins.Contains(operation.ProcessContext.Login);
                         fail = fail ||
                                (operation is not ShellProcess ||
-                                operation is ShellProcess {RemoteParent: null}) &&
+                                operation is ShellProcess { RemoteParent: null }) &&
                                operation.ProcessContext is ProgramContext pc2 &&
                                !pc2.Person.ShellChain.Contains(pc2.Shell);
                         if (fail)
@@ -516,7 +516,7 @@ namespace hss
             programContext.Shell = shell;
             if (program != null)
             {
-                programContext.HArgv = hargv ?? new[] {argv[0]};
+                programContext.HArgv = hargv ?? new[] { argv[0] };
                 return StartProgram(programContext, program);
             }
 
@@ -543,8 +543,8 @@ namespace hss
                 }
 
             if (fse != null && fse.Kind == FileModel.FileKind.ProgFile && TryGetProgramWithHargs(
-                system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
-                out var res))
+                    system.GetFileSystemEntry(exe)?.Content ?? "heathcliff",
+                    out var res))
             {
                 programContext.HArgv = res.Item3;
                 return StartProgram(programContext, res.Item1);
@@ -558,10 +558,10 @@ namespace hss
         {
             if (argv.Length == 0 || string.IsNullOrWhiteSpace(argv[0])) return null;
             var system = loginModel.System;
-            var serviceContext = new ServiceContext {World = this, Argv = argv, System = system, Login = loginModel};
+            var serviceContext = new ServiceContext { World = this, Argv = argv, System = system, Login = loginModel };
             if (service != null)
             {
-                serviceContext.HArgv = hargv ?? new[] {argv[0]};
+                serviceContext.HArgv = hargv ?? new[] { argv[0] };
                 return StartService(serviceContext, service);
             }
 
@@ -661,7 +661,7 @@ namespace hss
 
             if (personModel.ShellChain.Count == 0)
             {
-                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+                programContext.User.WriteEventSafe(new OperationCompleteEvent { Operation = programContext.OperationId });
                 programContext.User.FlushSafeAsync();
                 return;
             }
@@ -697,7 +697,7 @@ namespace hss
                                 Program.Output("Process creation failed: out of memory\n"));
                         programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(programContext.Shell));
                         programContext.User.WriteEventSafe(
-                            new OperationCompleteEvent {Operation = programContext.OperationId});
+                            new OperationCompleteEvent { Operation = programContext.OperationId });
                         programContext.User.FlushSafeAsync();
                     }
 
@@ -726,7 +726,7 @@ namespace hss
                                     programContext.User.WriteEventSafe(
                                         ServerUtil.CreatePromptEvent(programContext.Shell));
                                     programContext.User.WriteEventSafe(
-                                        new OperationCompleteEvent {Operation = programContext.OperationId});
+                                        new OperationCompleteEvent { Operation = programContext.OperationId });
                                     programContext.User.FlushSafeAsync();
                                 }
 
@@ -747,7 +747,7 @@ namespace hss
                                 programContext.User.WriteEventSafe(
                                     ServerUtil.CreatePromptEvent(programContext.Shell));
                                 programContext.User.WriteEventSafe(
-                                    new OperationCompleteEvent {Operation = programContext.OperationId});
+                                    new OperationCompleteEvent { Operation = programContext.OperationId });
                                 programContext.User.FlushSafeAsync();
 
                                 return;
@@ -771,7 +771,7 @@ namespace hss
             }
 
             programContext.User.WriteEventSafe(ServerUtil.CreatePromptEvent(programContext.Shell));
-            programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+            programContext.User.WriteEventSafe(new OperationCompleteEvent { Operation = programContext.OperationId });
             programContext.User.FlushSafeAsync();
         }
 

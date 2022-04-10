@@ -167,7 +167,7 @@ namespace HacknetSharp.Server
                 return false;
             }
 
-            context.World.StartShell(user, context.Person, login, new[] {ServerConstants.ShellName}, true);
+            context.World.StartShell(user, context.Person, login, new[] { ServerConstants.ShellName }, true);
             if (context.System.KnownSystems.All(p => p.To != system))
                 context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)
@@ -187,7 +187,7 @@ namespace HacknetSharp.Server
         /// <param name="message">Message to use.</param>
         /// <returns>Event with provided message.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OutputEvent Output(string message) => new() {Text = message};
+        public static OutputEvent Output(string message) => new() { Text = message };
 
         /// <summary>
         /// Tries to find a system on the network with the specified address.
@@ -278,7 +278,7 @@ namespace HacknetSharp.Server
             }
             finally
             {
-                programContext.User.WriteEventSafe(new OperationCompleteEvent {Operation = programContext.OperationId});
+                programContext.User.WriteEventSafe(new OperationCompleteEvent { Operation = programContext.OperationId });
                 programContext.User.FlushSafeAsync();
             }
         }

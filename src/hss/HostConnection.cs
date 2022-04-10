@@ -61,12 +61,7 @@ namespace hss
                 cancellationToken.Register(Dispose);
                 // Authenticate the server but don't require the client to authenticate
                 SslServerAuthenticationOptions opts =
-                    new()
-                    {
-                        ServerCertificate = _server.Cert,
-                        ClientCertificateRequired = false,
-                        CertificateRevocationCheckMode = X509RevocationMode.Online
-                    };
+                    new() { ServerCertificate = _server.Cert, ClientCertificateRequired = false, CertificateRevocationCheckMode = X509RevocationMode.Online };
                 await _sslStream.AuthenticateAsServerAsync(opts, cancellationToken).Caf();
                 _connected = true;
                 _sslStream.ReadTimeout = 10 * 1000;
@@ -74,169 +69,164 @@ namespace hss
                 ClientEvent? evt;
                 _user = null;
                 while (!((evt = await _sslStream.ReadEventAsync<ClientEvent>(cancellationToken).Caf()) is
-                    ClientDisconnectEvent))
+                           ClientDisconnectEvent))
                 {
                     if (evt == null) return;
                     switch (evt)
                     {
                         case LoginEvent login:
-                        {
-                            var op = login.Operation;
-                            if (_user != null)
                             {
-                                WriteEvent(new LoginFailEvent {Operation = op});
-                                break;
-                            }
+                                var op = login.Operation;
+                                if (_user != null)
+                                {
+                                    WriteEvent(new LoginFailEvent { Operation = op });
+                                    break;
+                                }
 
-                            if (_server.HasConnection(login.User))
-                            {
+                                if (_server.HasConnection(login.User))
+                                {
+                                    if (login.RegistrationToken != null)
+                                    {
+                                        WriteEvent(new LoginFailEvent { Operation = op });
+                                        WriteEvent(new ServerDisconnectEvent { Reason = "Registration failed." });
+                                    }
+                                    else
+                                    {
+                                        WriteEvent(new LoginFailEvent { Operation = op });
+                                        WriteEvent(new ServerDisconnectEvent { Reason = "Invalid login." });
+                                    }
+
+                                    await FlushAsync(cancellationToken).Caf();
+                                    return;
+                                }
+
                                 if (login.RegistrationToken != null)
                                 {
-                                    WriteEvent(new LoginFailEvent {Operation = op});
-                                    WriteEvent(new ServerDisconnectEvent {Reason = "Registration failed."});
+                                    _user = await _server.AccessController
+                                        .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
+                                    if (_user != null)
+                                        RegisterNewPerson(_server.DefaultWorld, _user);
+                                    else
+                                    {
+                                        WriteEvent(new LoginFailEvent { Operation = op });
+                                        WriteEvent(new ServerDisconnectEvent { Reason = "Registration failed." });
+                                        await FlushAsync(cancellationToken).Caf();
+                                        return;
+                                    }
                                 }
                                 else
                                 {
-                                    WriteEvent(new LoginFailEvent {Operation = op});
-                                    WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
+                                    _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                                    if (_user == null)
+                                    {
+                                        WriteEvent(new LoginFailEvent { Operation = op });
+                                        WriteEvent(new ServerDisconnectEvent { Reason = "Invalid login." });
+                                        await FlushAsync(cancellationToken).Caf();
+                                        return;
+                                    }
+
+                                    _user.Outputs.Add(this);
                                 }
 
-                                await FlushAsync(cancellationToken).Caf();
-                                return;
-                            }
-
-                            if (login.RegistrationToken != null)
-                            {
-                                _user = await _server.AccessController
-                                    .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
-                                if (_user != null)
-                                    RegisterNewPerson(_server.DefaultWorld, _user);
-                                else
+                                // Reset to existing world if necessary
+                                if (!_server.Worlds.ContainsKey(_user.ActiveWorld))
                                 {
-                                    WriteEvent(new LoginFailEvent {Operation = op});
-                                    WriteEvent(new ServerDisconnectEvent {Reason = "Registration failed."});
-                                    await FlushAsync(cancellationToken).Caf();
-                                    return;
+                                    _user.ActiveWorld = _server.DefaultWorld.Model.Key;
+                                    var w3 = _server.DefaultWorld.Model.Key;
+                                    if (_user.Identities.All(p => p.World.Key != w3))
+                                        RegisterNewPerson(_server.DefaultWorld, _user);
                                 }
+
+                                _sslStream.ReadTimeout = 100 * 1000;
+                                _sslStream.WriteTimeout = 100 * 1000;
+
+                                WriteEvent(new UserInfoEvent { Operation = op, Admin = _user.Admin });
+                                WriteEvent(new OutputEvent { Text = "<< LOGGED IN >>\n" });
+                                break;
                             }
-                            else
+                        case RegistrationTokenForgeRequestEvent forgeRequest:
                             {
-                                _user = await _server.AccessController.AuthenticateAsync(login.User, login.Pass).Caf();
+                                var op = forgeRequest.Operation;
+                                var random = new Random();
+                                byte[] arr = new byte[32];
+                                if (_user == null) continue;
+                                if (!_user.Admin)
+                                {
+                                    WriteEvent(new AccessFailEvent { Operation = op });
+                                    break;
+                                }
+
+                                string token;
+                                do
+                                {
+                                    random.NextBytes(arr);
+                                    token = Convert.ToBase64String(arr);
+                                } while (await _server.Database.GetAsync<string, RegistrationToken>(token).Caf() != null);
+
+                                var tokenModel = new RegistrationToken { Forger = _user, Key = token };
+                                _server.Database.Add(tokenModel);
+                                await _server.Database.SyncAsync().Caf();
+                                WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
+                                break;
+                            }
+                        case InitialCommandEvent command:
+                            {
+                                var op = command.Operation;
                                 if (_user == null)
                                 {
-                                    WriteEvent(new LoginFailEvent {Operation = op});
-                                    WriteEvent(new ServerDisconnectEvent {Reason = "Invalid login."});
-                                    await FlushAsync(cancellationToken).Caf();
-                                    return;
+                                    WriteEvent(new OperationCompleteEvent { Operation = op });
+                                    break;
                                 }
 
-                                _user.Outputs.Add(this);
-                            }
-
-                            // Reset to existing world if necessary
-                            if (!_server.Worlds.ContainsKey(_user.ActiveWorld))
-                            {
-                                _user.ActiveWorld = _server.DefaultWorld.Model.Key;
-                                var w3 = _server.DefaultWorld.Model.Key;
-                                if (_user.Identities.All(p => p.World.Key != w3))
-                                    RegisterNewPerson(_server.DefaultWorld, _user);
-                            }
-
-                            _sslStream.ReadTimeout = 100 * 1000;
-                            _sslStream.WriteTimeout = 100 * 1000;
-
-                            WriteEvent(new UserInfoEvent {Operation = op, Admin = _user.Admin});
-                            WriteEvent(new OutputEvent {Text = "<< LOGGED IN >>\n"});
-                            break;
-                        }
-                        case RegistrationTokenForgeRequestEvent forgeRequest:
-                        {
-                            var op = forgeRequest.Operation;
-                            var random = new Random();
-                            byte[] arr = new byte[32];
-                            if (_user == null) continue;
-                            if (!_user.Admin)
-                            {
-                                WriteEvent(new AccessFailEvent {Operation = op});
-                                break;
-                            }
-
-                            string token;
-                            do
-                            {
-                                random.NextBytes(arr);
-                                token = Convert.ToBase64String(arr);
-                            } while (await _server.Database.GetAsync<string, RegistrationToken>(token).Caf() != null);
-
-                            var tokenModel = new RegistrationToken {Forger = _user, Key = token};
-                            _server.Database.Add(tokenModel);
-                            await _server.Database.SyncAsync().Caf();
-                            WriteEvent(new RegistrationTokenForgeResponseEvent(op, token));
-                            break;
-                        }
-                        case InitialCommandEvent command:
-                        {
-                            var op = command.Operation;
-                            if (_user == null)
-                            {
-                                WriteEvent(new OperationCompleteEvent {Operation = op});
-                                break;
-                            }
-
-                            if (!_ranInit)
-                            {
-                                if (_server.Motd != null)
+                                if (!_ranInit)
                                 {
-                                    WriteEvent(new AlertEvent
+                                    if (_server.Motd != null)
                                     {
-                                        Alert = AlertEvent.Kind.System,
-                                        Body = _server.Motd,
-                                        Header = "Message of the day"
-                                    });
+                                        WriteEvent(new AlertEvent { Alert = AlertEvent.Kind.System, Body = _server.Motd, Header = "Message of the day" });
+                                    }
+
+                                    if (!_server.QueueConnectCommand(this, _user, op, command.ConWidth))
+                                    {
+                                        WriteEvent(new ServerDisconnectEvent { Reason = "Default system unavailable." });
+                                        await FlushAsync(cancellationToken).Caf();
+                                        return;
+                                    }
+
+                                    _ranInit = true;
                                 }
 
-                                if (!_server.QueueConnectCommand(this, _user, op, command.ConWidth))
-                                {
-                                    WriteEvent(new ServerDisconnectEvent {Reason = "Default system unavailable."});
-                                    await FlushAsync(cancellationToken).Caf();
-                                    return;
-                                }
-
-                                _ranInit = true;
-                            }
-
-                            break;
-                        }
-                        case CommandEvent command:
-                        {
-                            var op = command.Operation;
-                            if (_user == null)
-                            {
-                                WriteEvent(new OperationCompleteEvent {Operation = op});
                                 break;
                             }
-
-                            if (!_ranInit)
+                        case CommandEvent command:
                             {
-                                if (!_server.QueueConnectCommand(this, _user, op, command.ConWidth))
+                                var op = command.Operation;
+                                if (_user == null)
                                 {
-                                    WriteEvent(new ServerDisconnectEvent {Reason = "Default system unavailable."});
-                                    await FlushAsync(cancellationToken).Caf();
-                                    return;
+                                    WriteEvent(new OperationCompleteEvent { Operation = op });
+                                    break;
                                 }
 
-                                _ranInit = true;
-                            }
-                            else
-                                _server.QueueCommand(this, _user, op, command.ConWidth, command.Text);
+                                if (!_ranInit)
+                                {
+                                    if (!_server.QueueConnectCommand(this, _user, op, command.ConWidth))
+                                    {
+                                        WriteEvent(new ServerDisconnectEvent { Reason = "Default system unavailable." });
+                                        await FlushAsync(cancellationToken).Caf();
+                                        return;
+                                    }
 
-                            break;
-                        }
+                                    _ranInit = true;
+                                }
+                                else
+                                    _server.QueueCommand(this, _user, op, command.ConWidth, command.Text);
+
+                                break;
+                            }
                         case ClientResponseEvent response:
-                        {
-                            Responses.AddOrUpdate(response.Operation, response, (_, e) => e);
-                            break;
-                        }
+                            {
+                                Responses.AddOrUpdate(response.Operation, response, (_, e) => e);
+                                break;
+                            }
                     }
 
                     await FlushAsync(cancellationToken).Caf();
@@ -363,7 +353,7 @@ namespace hss
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
                             ?? world.Spawn.Login(system, person.UserName,
                                 _user.Hash, _user.Salt, true, person);
-                world.StartShell(this, person, login, new[] {ServerConstants.ShellName}, true);
+                world.StartShell(this, person, login, new[] { ServerConstants.ShellName }, true);
             }
 
             return person;

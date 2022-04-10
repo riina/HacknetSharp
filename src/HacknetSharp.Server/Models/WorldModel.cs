@@ -107,8 +107,8 @@ namespace HacknetSharp.Server.Models
             builder.Entity<WorldModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasMany(y => y.Persons).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(y => y.Systems).WithOne(z => z.World!).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Persons).WithOne(z => z.World).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(y => y.Systems).WithOne(z => z.World).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(y => y.AddressedSystems);
                 x.Ignore(y => y.TaggedSystems);
                 x.Ignore(y => y.TaggedPersons);

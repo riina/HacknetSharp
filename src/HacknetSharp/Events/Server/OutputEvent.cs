@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Azura;
+﻿using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -10,6 +9,11 @@ namespace HacknetSharp.Events.Server
     [Azura]
     public partial class OutputEvent : ServerEvent
     {
+        /// <inheritdoc />
+        public OutputEvent()
+        {
+        }
+
         /// <summary>
         /// Text meant to be written to client's associated console, if any.
         /// </summary>

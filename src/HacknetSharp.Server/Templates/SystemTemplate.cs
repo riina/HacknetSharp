@@ -261,7 +261,7 @@ namespace HacknetSharp.Server.Templates
             model.SystemMemory = SystemMemory > 0 ? SystemMemory :
                 owner.SystemMemory > 0 ? owner.SystemMemory :
                 model.World.SystemMemory > 0 ? model.World.SystemMemory : ServerConstants.DefaultSystemMemory;
-            var unameToLoginDict = new Dictionary<string, LoginModel> {[ownerLogin.User] = ownerLogin};
+            var unameToLoginDict = new Dictionary<string, LoginModel> { [ownerLogin.User] = ownerLogin };
             foreach (var login in model.Logins.Where(l => l != ownerLogin).ToList()) spawn.RemoveLogin(login);
             if (Users != null)
                 foreach (var userKvp in Users)

@@ -63,7 +63,7 @@ namespace HacknetSharp.Server.CorePrograms
                         if (directory != "/")
                         {
                             if (!System.TryGetFile(directory, Login, out var result2,
-                                out string closest2Str, out var closest2))
+                                    out string closest2Str, out var closest2))
                             {
                                 switch (result2)
                                 {

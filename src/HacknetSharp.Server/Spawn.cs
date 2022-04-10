@@ -55,13 +55,7 @@ namespace HacknetSharp.Server
         /// <returns>Generated model.</returns>
         public WorldModel World(string name, TemplateGroup templates, WorldTemplate template)
         {
-            var world = new WorldModel
-            {
-                Key = Guid.NewGuid(),
-                Name = name,
-                Persons = new HashSet<PersonModel>(),
-                Systems = new HashSet<SystemModel>()
-            };
+            var world = new WorldModel { Key = Guid.NewGuid(), Name = name, Persons = new HashSet<PersonModel>(), Systems = new HashSet<SystemModel>() };
             template.ApplyTemplate(Database, templates, world);
             Database.Add(world);
             return world;

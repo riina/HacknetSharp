@@ -176,10 +176,7 @@ namespace HacknetSharp.Server
         public ShellProcess(ProgramContext context) : base(context)
         {
             ProgramContext = context;
-            _builtinVariables = new Dictionary<string, Func<string>>
-            {
-                ["PWD"] = () => WorkingDirectory, ["USER"] = () => ProcessContext.Login.User
-            };
+            _builtinVariables = new Dictionary<string, Func<string>> { ["PWD"] = () => WorkingDirectory, ["USER"] = () => ProcessContext.Login.User };
         }
 
         /// <inheritdoc />
@@ -262,7 +259,7 @@ namespace HacknetSharp.Server
 
             if (ProgramContext.Person.ShellChain.Count == 0)
             {
-                ProgramContext.User.WriteEventSafe(new ServerDisconnectEvent {Reason = "Disconnected by server."});
+                ProgramContext.User.WriteEventSafe(new ServerDisconnectEvent { Reason = "Disconnected by server." });
                 ProgramContext.User.FlushSafeAsync();
             }
 

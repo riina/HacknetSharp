@@ -21,7 +21,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             if (!ServerUtil.TryParseConString(pargs[1], 22, out string? room,
-                out string? host, out _, out string? error))
+                    out string? host, out _, out string? error))
             {
                 Write($"{error}\n");
                 yield break;

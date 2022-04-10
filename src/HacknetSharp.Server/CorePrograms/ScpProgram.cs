@@ -25,8 +25,8 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             if (!ServerUtil.TryParseScpConString(Argv[1], out string? name, out string? host, out string? path,
-                out string? error, Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
-                AutoLoginHost))
+                    out string? error, Shell.TryGetVariable("NAME", out string? shellUser) ? shellUser : null,
+                    AutoLoginHost))
             {
                 Write($"scp: {error}\n");
                 yield break;

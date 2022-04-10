@@ -19,10 +19,7 @@ namespace hss.Sqlite
         public static SqliteContextFactory CreateFactory(string[] args, ServerSettings? serverYaml)
         {
             _fromMain = true;
-            return new SqliteContextFactory
-            {
-                ServerYaml = serverYaml, LogToConsole = serverYaml?.EnableLogging ?? false
-            };
+            return new SqliteContextFactory { ServerYaml = serverYaml, LogToConsole = serverYaml?.EnableLogging ?? false };
         }
 
         public override IEnumerable<Type> Programs =>
@@ -34,9 +31,9 @@ namespace hss.Sqlite
         public override IEnumerable<Type> Models =>
             ServerUtil.DefaultModels.Concat(CustomModels.SelectMany(e => e));
 
-        protected override IEnumerable<IEnumerable<Type>> CustomPrograms => new[] {ServerUtil.CustomPrograms};
+        protected override IEnumerable<IEnumerable<Type>> CustomPrograms => new[] { ServerUtil.CustomPrograms };
 
-        protected override IEnumerable<IEnumerable<Type>> CustomServices => new[] {ServerUtil.CustomServices};
+        protected override IEnumerable<IEnumerable<Type>> CustomServices => new[] { ServerUtil.CustomServices };
 
         protected override IEnumerable<IEnumerable<Type>> CustomModels => Enumerable.Empty<IEnumerable<Type>>();
 

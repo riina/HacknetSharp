@@ -119,7 +119,7 @@ namespace HacknetSharp.Server.Templates
                 if (!templates.PersonTemplates.TryGetValue(generator.Template ??
                                                            throw new InvalidOperationException(
                                                                $"Null {nameof(PersonGroup.Template)}"),
-                    out var template))
+                        out var template))
                     throw new KeyNotFoundException($"Unknown template {generator.Template}");
                 else
                 {

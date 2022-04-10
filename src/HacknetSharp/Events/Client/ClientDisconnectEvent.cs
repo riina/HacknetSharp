@@ -8,6 +8,11 @@ namespace HacknetSharp.Events.Client
     [EventCommand(Command.CS_Disconnect)]
     public class ClientDisconnectEvent : ClientEvent
     {
+        /// <inheritdoc />
+        public ClientDisconnectEvent()
+        {
+        }
+
         /// <summary>
         /// Singleton instance.
         /// </summary>

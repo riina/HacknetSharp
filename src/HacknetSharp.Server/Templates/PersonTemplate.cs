@@ -200,7 +200,7 @@ namespace HacknetSharp.Server.Templates
                     if (!templates.SystemTemplates.TryGetValue(template, out var netTemplate))
                         throw new KeyNotFoundException($"Unknown template {template}");
                     var netTemplateShim =
-                        new SystemTemplateShim(netTemplate) {Configuration = networkEntry.Configuration};
+                        new SystemTemplateShim(netTemplate) { Configuration = networkEntry.Configuration };
                     var netSystem = spawn.System(netTemplateShim, template, person, hash, salt, addr);
                     networkDict.Add(address, netSystem);
                     if (networkEntry.Links != null)
@@ -222,7 +222,7 @@ namespace HacknetSharp.Server.Templates
 
             if (FleetTemplates != null)
             {
-                var systems = new List<SystemModel> {system};
+                var systems = new List<SystemModel> { system };
                 int count = Random.Next(FleetMin, FleetMax + 1);
                 bool fixedRange = addressRange != null || AddressRange != null;
                 for (int i = 0; i < count; i++)

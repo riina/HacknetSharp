@@ -318,7 +318,7 @@ namespace HacknetSharp.Server
         public InputYieldToken Input(IPersonContext context, bool hidden)
         {
             var opGuid = Guid.NewGuid();
-            context.WriteEventSafe(new InputRequestEvent {Operation = opGuid, Hidden = hidden});
+            context.WriteEventSafe(new InputRequestEvent { Operation = opGuid, Hidden = hidden });
             context.FlushSafeAsync();
             return new InputYieldToken(context, opGuid);
         }
@@ -334,7 +334,7 @@ namespace HacknetSharp.Server
             IReadOnlyCollection<string>? confirmSet = null)
         {
             var opGuid = Guid.NewGuid();
-            context.WriteEventSafe(new InputRequestEvent {Operation = opGuid, Hidden = hidden});
+            context.WriteEventSafe(new InputRequestEvent { Operation = opGuid, Hidden = hidden });
             context.FlushSafeAsync();
             confirmSet ??= Util.YesAnswers;
             return new ConfirmYieldToken(context, opGuid, confirmSet);
@@ -350,7 +350,7 @@ namespace HacknetSharp.Server
         public EditYieldToken Edit(IPersonContext context, bool readOnly, string content)
         {
             var opGuid = Guid.NewGuid();
-            context.WriteEventSafe(new EditRequestEvent {Operation = opGuid, ReadOnly = readOnly, Content = content});
+            context.WriteEventSafe(new EditRequestEvent { Operation = opGuid, ReadOnly = readOnly, Content = content });
             context.FlushSafeAsync();
             return new EditYieldToken(context, opGuid);
         }
@@ -566,7 +566,7 @@ namespace HacknetSharp.Server
             {
                 if (Input != null) return true;
                 if (!Context.Responses.TryRemove(Operation, out var response)) return false;
-                Input = response as InputResponseEvent ?? new InputResponseEvent {Operation = Operation, Input = ""};
+                Input = response as InputResponseEvent ?? new InputResponseEvent { Operation = Operation, Input = "" };
                 return true;
             }
         }
@@ -647,7 +647,7 @@ namespace HacknetSharp.Server
                 if (Edit != null) return true;
                 if (!Context.Responses.TryRemove(Operation, out var response)) return false;
                 Edit = response as EditResponseEvent ??
-                       new EditResponseEvent {Operation = Operation, Content = "", Write = false};
+                       new EditResponseEvent { Operation = Operation, Content = "", Write = false };
                 return true;
             }
         }

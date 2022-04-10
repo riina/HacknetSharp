@@ -63,6 +63,6 @@ namespace hss
 
         public async Task<int> Execute(string[] args) => await Parser.Default
             .ParseArguments<RunCert, RunDatabase, RunUser, RunWorld, RunToken, RunNew, RunServe>(args.Take(1))
-            .MapResult<IRunnable, Task<int>>(x => x.Run(this, args.Skip(1)), x => Task.FromResult(1)).Caf();
+            .MapResult<IRunnable, Task<int>>(x => x.Run(this, args.Skip(1)), _ => Task.FromResult(1)).Caf();
     }
 }

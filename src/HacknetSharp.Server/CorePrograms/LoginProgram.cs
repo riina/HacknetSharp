@@ -27,7 +27,7 @@ namespace HacknetSharp.Server.CorePrograms
         {
             var (flags, _, pargs) = IsolateArgvFlags(Argv);
             if (!ServerUtil.TryParseConString(pargs.Count == 0 ? null : pargs[0], 22, out string? name,
-                out string? host, out _, out string? error, AutoLoginName, AutoLoginHost))
+                    out string? host, out _, out string? error, AutoLoginName, AutoLoginHost))
             {
                 if (pargs.Count == 1)
                     Write("Needs connection target\n");

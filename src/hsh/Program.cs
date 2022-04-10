@@ -17,7 +17,7 @@ namespace hsh
         private static async Task Main(string[] args)
             => await Parser.Default
                 .ParseArguments<Options>(args)
-                .MapResult(Run, _ => Task.FromResult(1)).Caf();
+                .MapResult(RunAsync, _ => Task.FromResult(1)).Caf();
 
         private class Options
         {
@@ -35,7 +35,7 @@ namespace hsh
             public string ConString { get; set; } = null!;
         }
 
-        private static async Task<int> Run(Options options)
+        private static async Task<int> RunAsync(Options options)
         {
             AlertLogger.Config config;
             if (options.Verbose)
@@ -51,16 +51,16 @@ namespace hsh
             ILogger logger = new AlertLogger(config);
             var connection = GetConnection(options.ConString, options.Register, logger, out (int, string)? failReason);
             if (connection != null)
-                return options.ForgeToken ? await ForgeToken(connection).Caf() : await ExecuteClient(connection).Caf();
+                return options.ForgeToken ? await ForgeTokenAsync(connection).Caf() : await ExecuteClientAsync(connection).Caf();
 
             if (!failReason.HasValue) return 0;
             Console.WriteLine(failReason.Value.Item2);
             return failReason.Value.Item1;
         }
 
-        private static async Task<int> ForgeToken(Client connection)
+        private static async Task<int> ForgeTokenAsync(Client connection)
         {
-            (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
+            (UserInfoEvent? user, int resCode) = await ConnectAsync(connection).Caf();
             if (user == null) return resCode;
 
             Console.WriteLine($"Logged in as {connection.User} ({(user.Admin ? "admin" : "normal user")})");
@@ -71,7 +71,7 @@ namespace hsh
             }
 
             var operation = Guid.NewGuid();
-            connection.WriteEvent(new RegistrationTokenForgeRequestEvent {Operation = operation});
+            connection.WriteEvent(new RegistrationTokenForgeRequestEvent { Operation = operation });
             await connection.FlushAsync().Caf();
             var response = await connection.WaitForAsync(
                 e => e is IOperation op && op.Operation == operation,
@@ -96,7 +96,7 @@ namespace hsh
             }
         }
 
-        private static async Task<int> ExecuteClient(Client connection)
+        private static async Task<int> ExecuteClientAsync(Client connection)
         {
             connection.OnReceivedEvent += e =>
             {
@@ -126,27 +126,23 @@ namespace hsh
                         Console.Write(output.Text);
                         break;
                     case InputRequestEvent inputRequest:
-                        connection.WriteEvent(new InputResponseEvent
-                        {
-                            Operation = inputRequest.Operation,
-                            Input = (inputRequest.Hidden ? Util.ReadPassword() : LockIO.GetLine()) ?? ""
-                        });
+                        connection.WriteEvent(new InputResponseEvent { Operation = inputRequest.Operation, Input = (inputRequest.Hidden ? Util.ReadPassword() : LockIO.GetLine()) ?? "" });
                         connection.FlushAsync();
                         break;
                     case EditRequestEvent editRequest:
-                    {
-                        var result = HsEditor.Open(editRequest.Content, editRequest.ReadOnly);
-                        connection.WriteEvent(new EditResponseEvent
                         {
-                            Operation = editRequest.Operation,
-                            Content = result.Write
-                                ? new StringBuilder().AppendJoin('\n', result.Lines).ToString()
-                                : editRequest.Content,
-                            Write = result.Write
-                        });
-                        connection.FlushAsync();
-                        break;
-                    }
+                            var result = HsEditor.Open(editRequest.Content, editRequest.ReadOnly);
+                            connection.WriteEvent(new EditResponseEvent
+                            {
+                                Operation = editRequest.Operation,
+                                Content = result.Write
+                                    ? new StringBuilder().AppendJoin('\n', result.Lines).ToString()
+                                    : editRequest.Content,
+                                Write = result.Write
+                            });
+                            connection.FlushAsync();
+                            break;
+                        }
                 }
             };
             connection.OnDisconnect += e =>
@@ -155,10 +151,10 @@ namespace hsh
                 connection.DisposeAsync().Wait();
                 Environment.Exit(0);
             };
-            (UserInfoEvent? user, int resCode) = await Connect(connection).Caf();
+            (UserInfoEvent? user, int resCode) = await ConnectAsync(connection).Caf();
             if (user == null) return resCode;
             var operation = Guid.NewGuid();
-            connection.WriteEvent(new InitialCommandEvent {Operation = operation, ConWidth = Console.WindowWidth});
+            connection.WriteEvent(new InitialCommandEvent { Operation = operation, ConWidth = Console.WindowWidth });
             await connection.FlushAsync().Caf();
             do
             {
@@ -172,10 +168,7 @@ namespace hsh
                 operation = Guid.NewGuid();
                 string? line = LockIO.GetLine();
                 if (line == null) break;
-                connection.WriteEvent(new CommandEvent
-                {
-                    Operation = operation, ConWidth = Console.WindowWidth, Text = line
-                });
+                connection.WriteEvent(new CommandEvent { Operation = operation, ConWidth = Console.WindowWidth, Text = line });
 
                 await connection.FlushAsync().Caf();
             } while (true);
@@ -250,7 +243,7 @@ namespace hsh
             }
         }
 
-        private static async Task<(UserInfoEvent?, int)> Connect(Client connection)
+        private static async Task<(UserInfoEvent?, int)> ConnectAsync(Client connection)
         {
             UserInfoEvent userInfoEvent;
             try
@@ -282,7 +275,7 @@ namespace hsh
         {
             failReason = null;
             if (!Util.TryParseConString(conString, Constants.DefaultPort, out string? user, out string? server,
-                out ushort port, out string? error))
+                    out ushort port, out string? error))
             {
                 failReason = (101, error ?? "");
                 return null;

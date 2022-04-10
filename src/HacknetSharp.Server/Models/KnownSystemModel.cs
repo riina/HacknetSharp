@@ -40,7 +40,7 @@ namespace HacknetSharp.Server.Models
         public static void ConfigureModel(ModelBuilder builder) =>
             builder.Entity<KnownSystemModel>(x =>
             {
-                x.HasKey(v => new {v.FromKey, v.ToKey});
+                x.HasKey(v => new { v.FromKey, v.ToKey });
                 x.HasOne(e => e.From)
                     .WithMany(e => e.KnownSystems)
                     .HasForeignKey(e => e.FromKey);

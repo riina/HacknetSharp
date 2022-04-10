@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Azura;
 using HacknetSharp.Events.Server;
 
@@ -12,6 +11,11 @@ namespace HacknetSharp.Events.Client
     [Azura]
     public partial class EditResponseEvent : ClientResponseEvent
     {
+        /// <inheritdoc />
+        public EditResponseEvent()
+        {
+        }
+
         /// <inheritdoc />
         [Azura]
         public override Guid Operation { get; set; }

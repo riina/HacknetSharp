@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Azura;
 
 namespace HacknetSharp.Events.Server
@@ -11,6 +10,11 @@ namespace HacknetSharp.Events.Server
     [Azura]
     public partial class AccessFailEvent : FailBaseServerEvent
     {
+        /// <inheritdoc />
+        public AccessFailEvent()
+        {
+        }
+
         /// <inheritdoc />
         [Azura]
         public override Guid Operation { get; set; }

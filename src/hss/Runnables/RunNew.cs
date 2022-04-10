@@ -38,95 +38,63 @@ namespace hss.Runnables
                     {
                         "system", (true, options => (
                             Path.Combine(HssConstants.ContentFolder, $"{options.Name}.system.yaml"),
-                            (object)(options.Example
+                            options.Example
                                 ? new SystemTemplate
                                 {
                                     Name = "{Owner.UserName}_HOMEBASE",
                                     OsName = "EncomOS",
                                     Users =
-                                        new Dictionary<string, string> {{"daphne", "legacy"}, {"seiteki", "genshin"}},
-                                    Filesystem = new Dictionary<string, List<string>>
-                                    {
-                                        {
-                                            "{Owner.UserName}",
-                                            new List<string>(new[]
-                                            {
-                                                "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt",
-                                                "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib",
-                                                "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool",
-                                                "text:\"/home/seiteki/read me.txt\" mr. frodo, sir!",
-                                                "file:/home/seiteki/image.png misc/image.png", "prog:/bin/cat core:cat",
-                                                "prog:/bin/cd core:cd", "prog:/bin/ls core:ls",
-                                                "prog:/bin/echo core:echo"
-                                            })
-                                        }
-                                    }
+                                        new Dictionary<string, string> { { "daphne", "legacy" }, { "seiteki", "genshin" } },
+                                    Filesystem = new Dictionary<string, List<string>> { { "{Owner.UserName}", new List<string>(new[] { "fold*+*:/bin", "fold:/etc", "fold:/home", "fold*+*:/lib", "fold:/mnt", "fold+++:/root", "fold:/usr", "fold:/usr/bin", "fold:/usr/lib", "fold:/usr/local", "fold:/usr/share", "fold:/var", "fold:/var/spool", "text:\"/home/seiteki/read me.txt\" mr. frodo, sir!", "file:/home/seiteki/image.png misc/image.png", "prog:/bin/cat core:cat", "prog:/bin/cd core:cd", "prog:/bin/ls core:ls", "prog:/bin/echo core:echo" }) } }
                                 }
-                                : new SystemTemplate()))
+                                : new SystemTemplate())
                         )
                     },
                     {
                         "person", (true, options => (
                             Path.Combine(HssConstants.ContentFolder, $"{options.Name}.person.yaml"),
-                            (object)(options.Example
+                            options.Example
                                 ? new PersonTemplate
                                 {
                                     Usernames =
-                                        new Dictionary<string, float> {{"locke", 1}, {"bacon", 1}, {"hayleyk653", 1}},
-                                    Passwords = new Dictionary<string, float>
-                                    {
-                                        {"misterchef", 1}, {"baconbacon", 1}, {"isucklol", 1}
-                                    },
+                                        new Dictionary<string, float> { { "locke", 1 }, { "bacon", 1 }, { "hayleyk653", 1 } },
+                                    Passwords = new Dictionary<string, float> { { "misterchef", 1 }, { "baconbacon", 1 }, { "isucklol", 1 } },
                                     EmailProviders =
-                                        new Dictionary<string, float>
-                                        {
-                                            {"hentaimail.net", 1}, {"thisisnotaproblem.org", 1}, {"fbiopenup.gov", 1}
-                                        },
-                                    PrimaryTemplates = new Dictionary<string, float> {{"systemTemplate2", 1}}
+                                        new Dictionary<string, float> { { "hentaimail.net", 1 }, { "thisisnotaproblem.org", 1 }, { "fbiopenup.gov", 1 } },
+                                    PrimaryTemplates = new Dictionary<string, float> { { "systemTemplate2", 1 } }
                                 }
-                                : new PersonTemplate()))
+                                : new PersonTemplate())
                         )
                     },
                     {
                         "world", (true, options => (
                             Path.Combine(HssConstants.ContentFolder, $"{options.Name}.world.yaml"),
-                            (object)(options.Example
+                            options.Example
                                 ? new WorldTemplate
                                 {
                                     Label = "Liyue kinda sux",
                                     PlayerSystemTemplate = "playerTemplate",
                                     StartupCommandLine = "echo \"Starting shell...\"",
                                     PlayerAddressRange = Constants.DefaultAddressRange,
-                                    People = new List<WorldTemplate.PersonGroup>
-                                    {
-                                        new() {Count = 3, Template = "personTemplate2"}
-                                    }
+                                    People = new List<WorldTemplate.PersonGroup> { new() { Count = 3, Template = "personTemplate2" } }
                                 }
-                                : new WorldTemplate()))
+                                : new WorldTemplate())
                         )
                     },
                     {
                         "mission", (true, options => (
                             Path.Combine(HssConstants.ContentFolder, $"{options.Name}.mission.yaml"),
-                            (object)(options.Example
-                                ? new MissionTemplate {Start = "log(\"this is a test\", 0)"}
-                                : new WorldTemplate()))
+                            options.Example
+                                ? new MissionTemplate { Start = "log(\"this is a test\", 0)" }
+                                : new WorldTemplate())
                         )
                     },
                     {
                         "server", (false, options => (
                             $"{options.Name ?? "server"}.yaml",
-                            (object)(options.Example
-                                ? new ServerSettings
-                                {
-                                    Host = "127.0.0.1",
-                                    Database = new Dictionary<string, string>
-                                    {
-                                        {"Kind", "sqlite"}, {"SqliteFile", "hakase.db"}
-                                    },
-                                    DefaultWorld = "main"
-                                }
-                                : new ServerSettings()))
+                            options.Example
+                                ? new ServerSettings { Host = "127.0.0.1", Database = new Dictionary<string, string> { { "Kind", "sqlite" }, { "SqliteFile", "hakase.db" } }, DefaultWorld = "main" }
+                                : new ServerSettings())
                         )
                     }
                 };

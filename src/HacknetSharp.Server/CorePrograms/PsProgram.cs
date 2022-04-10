@@ -16,7 +16,7 @@ namespace HacknetSharp.Server.CorePrograms
             var (flags, _, _) = IsolateArgvFlags(Argv);
             Write(new StringBuilder()
                 .Append("     ACC    PID   PPID LINE\n").AppendJoin("\n",
-                    System.Ps(Login.Admin ? null : Login, null, flags.Contains("e") ? (uint?)null : ParentPid)
+                    System.Ps(Login.Admin ? null : Login, null, flags.Contains("e") ? null : ParentPid)
                         .Select(proc =>
                         {
                             var c = proc.ProcessContext;

@@ -9,8 +9,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using HacknetSharp.Events.Client;
-using HacknetSharp.Events.Server;
 
 namespace HacknetSharp
 {
@@ -266,8 +264,8 @@ namespace HacknetSharp
 
             var evt = f.Deserialize(stream);
             return evt as TEvent ??
-                      throw new Exception(
-                          $"Failed to cast event {evt.GetType().FullName} as {typeof(TEvent).FullName}");
+                   throw new Exception(
+                       $"Failed to cast event {evt.GetType().FullName} as {typeof(TEvent).FullName}");
         }
 
         /// <summary>
@@ -348,11 +346,7 @@ namespace HacknetSharp
         /// <summary>
         /// Answers perceived as an affirmative statement for <see cref="Confirm"/>.
         /// </summary>
-        public static readonly IReadOnlyCollection<string> YesAnswers = new HashSet<string>(new[]
-        {
-            "yes", "y", "sure", "absolutely", "sin duda", "do it", "yes please", "yes, please", "bingo", "come on",
-            "such"
-        });
+        public static readonly IReadOnlyCollection<string> YesAnswers = new HashSet<string>(new[] { "yes", "y", "sure", "absolutely", "sin duda", "do it", "yes please", "yes, please", "bingo", "come on", "such" });
 
         /// <summary>
         /// Asks for confirmation on an action and validates response.

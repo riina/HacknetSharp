@@ -83,7 +83,7 @@ namespace {namespaceName}
                     var list = new List<AttributeSyntax>(tds.AttributeLists.SelectMany(v => v.Attributes));
                     foreach (AttributeSyntax x in list)
                         if (x.Name.ToString() == "EventCommand" && x.ArgumentList?.Arguments[0].ToString() is
-                            { } command)
+                                { } command)
                         {
                             Events.Add(new EventItem(tds, x, command,
                                 list.FirstOrDefault(a => a.Name.ToString() == "Azura")));

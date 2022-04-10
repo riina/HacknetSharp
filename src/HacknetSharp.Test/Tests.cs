@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -92,26 +91,26 @@ namespace HacknetSharp.Test
             var splits = sourceStr.SplitReplacements()
                 .Select(v => (v.replacement, sourceStr[v.start..(v.start + v.count)])).ToList();
             Assert.AreEqual(3, splits.Count);
-            Assert.AreEqual(new[] {(true, "theta"), (false, "redvs"), (true, "blue")}, splits
+            Assert.AreEqual(new[] { (true, "theta"), (false, "redvs"), (true, "blue") }, splits
             );
             const string sourceStr2 = "sigma\\\\{theta}redvs";
             var splits2 = sourceStr2.SplitReplacements()
                 .Select(v => (v.replacement, sourceStr2[v.start..(v.start + v.count)])).ToList();
             Assert.AreEqual(3, splits2.Count);
-            Assert.AreEqual(new[] {(false, "sigma\\\\"), (true, "theta"), (false, "redvs")}, splits2
+            Assert.AreEqual(new[] { (false, "sigma\\\\"), (true, "theta"), (false, "redvs") }, splits2
             );
             const string sourceStr3 = "\\\\{theta}redvs";
             var splits3 = sourceStr3.SplitReplacements()
                 .Select(v => (v.replacement, sourceStr3[v.start..(v.start + v.count)])).ToList();
             Assert.AreEqual(3, splits3.Count);
-            Assert.AreEqual(new[] {(false, "\\\\"), (true, "theta"), (false, "redvs")}, splits3
+            Assert.AreEqual(new[] { (false, "\\\\"), (true, "theta"), (false, "redvs") }, splits3
             );
         }
 
         [Test]
         public void Test_Filter()
         {
-            var filter = PathFilter.GenerateFilter(new[] {"*.69", "*.78.*"}, true);
+            var filter = PathFilter.GenerateFilter(new[] { "*.69", "*.78.*" }, true);
             Assert.IsTrue(filter.Test("69.69.69.69"));
             Assert.IsTrue(filter.Test("12.34.78.99"));
             Assert.IsFalse(filter.Test("12.34.77.99"));
@@ -121,7 +120,7 @@ namespace HacknetSharp.Test
         public void Test_Args()
         {
             const string src = "li\\\"yue \"\\\"ki \\nda\\\" \" \\\"sucks bro\\\" \\\"lm\\\"ao\\\"";
-            string[] expected = new[] {"li\"yue", "\"ki \\nda\" ", "\"sucks", "bro\"", "\"lm\"ao\""};
+            string[] expected = new[] { "li\"yue", "\"ki \\nda\" ", "\"sucks", "bro\"", "\"lm\"ao\"" };
             Assert.AreEqual(expected, src.SplitCommandLine());
             Assert.AreEqual(expected,
                 src.DivideCommandLineElements().Select(sp => src.SliceCommandLineElement(sp)));
@@ -147,13 +146,13 @@ namespace HacknetSharp.Test
             ws.Folder(sys, li, "/etc");
             ws.Folder(sys, li, "/bin");
             ws.ProgFile(sys, li, "/bin/porthack", "core:porthack");
-            Assert.AreEqual(Basic(sys), Basic(new[] {"/bin", "/bin/porthack", "/etc"}));
+            Assert.AreEqual(Basic(sys), Basic(new[] { "/bin", "/bin/porthack", "/etc" }));
             Assert.IsTrue(sys.TryGetFile("/bin", li, out _, out _, out var bin1));
             ws.CopyFile(bin1!, sys, li, "/etc/bin");
             Assert.AreEqual(Basic(sys),
-                Basic(new[] {"/bin", "/bin/porthack", "/etc", "/etc/bin", "/etc/bin/porthack"}));
+                Basic(new[] { "/bin", "/bin/porthack", "/etc", "/etc/bin", "/etc/bin/porthack" }));
             ws.RemoveFile(bin1!, li);
-            Assert.AreEqual(Basic(sys), Basic(new[] {"/etc", "/etc/bin", "/etc/bin/porthack"}));
+            Assert.AreEqual(Basic(sys), Basic(new[] { "/etc", "/etc/bin", "/etc/bin/porthack" }));
         }
 
         private static IList<string> Basic(SystemModel system) =>

@@ -29,10 +29,7 @@ namespace hss
             return null;
         }
 
-        internal static readonly (StoreName name, StoreLocation location)[] CertificateStores =
-        {
-            (StoreName.Root, StoreLocation.CurrentUser), (StoreName.My, StoreLocation.CurrentUser)
-        };
+        internal static readonly (StoreName name, StoreLocation location)[] CertificateStores = { (StoreName.Root, StoreLocation.CurrentUser), (StoreName.My, StoreLocation.CurrentUser) };
 
         public static void LoadTemplates(TemplateGroup templates, IEnumerable<string>? contentFolders, string dir)
         {
@@ -46,23 +43,11 @@ namespace hss
         {
             Dictionary<string, Action<string, string>> templateLoadDict = new()
             {
-                {
-                    ".world.yaml",
-                    (file, path) => templates.WorldTemplates.Add(file, ReadFromFile<WorldTemplate>(path).Item2)
-                },
-                {
-                    ".person.yaml",
-                    (file, path) => templates.PersonTemplates.Add(file, ReadFromFile<PersonTemplate>(path).Item2)
-                },
-                {
-                    ".system.yaml",
-                    (file, path) => templates.SystemTemplates.Add(file, ReadFromFile<SystemTemplate>(path).Item2)
-                },
-                {
-                    ".mission.yaml",
-                    (file, path) => templates.MissionTemplates.Add(file, ReadFromFile<MissionTemplate>(path).Item2)
-                },
-                {".script.lua", (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path))}
+                { ".world.yaml", (file, path) => templates.WorldTemplates.Add(file, ReadFromFile<WorldTemplate>(path).Item2) },
+                { ".person.yaml", (file, path) => templates.PersonTemplates.Add(file, ReadFromFile<PersonTemplate>(path).Item2) },
+                { ".system.yaml", (file, path) => templates.SystemTemplates.Add(file, ReadFromFile<SystemTemplate>(path).Item2) },
+                { ".mission.yaml", (file, path) => templates.MissionTemplates.Add(file, ReadFromFile<MissionTemplate>(path).Item2) },
+                { ".script.lua", (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path)) }
             };
             LoadTree(dir, templateLoadDict);
         }

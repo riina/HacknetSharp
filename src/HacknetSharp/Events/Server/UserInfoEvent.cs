@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Azura;
 using HacknetSharp.Events.Client;
 
@@ -12,6 +11,11 @@ namespace HacknetSharp.Events.Server
     [Azura]
     public partial class UserInfoEvent : ServerEvent, IOperation
     {
+        /// <inheritdoc />
+        public UserInfoEvent()
+        {
+        }
+
         /// <inheritdoc />
         [Azura]
         public Guid Operation { get; set; }

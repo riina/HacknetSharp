@@ -36,27 +36,27 @@ namespace HacknetSharp.Server
                     switch (xAddSplit[i])
                     {
                         case "**":
-                        {
-                            // Make sure any sequential * / ** are handled together
-                            int j = i - 1;
-                            while (j >= 0 && (xAddSplit[j] == "**" || xAddSplit[j] == "*"))
-                                j--;
-                            // Any if at top of chain, otherwise existing
-                            func = F_DeepAny(i == xAddSplit.Length - 1 ? F_Any : func);
-                            i = j + 1;
-                            break;
-                        }
+                            {
+                                // Make sure any sequential * / ** are handled together
+                                int j = i - 1;
+                                while (j >= 0 && (xAddSplit[j] == "**" || xAddSplit[j] == "*"))
+                                    j--;
+                                // Any if at top of chain, otherwise existing
+                                func = F_DeepAny(i == xAddSplit.Length - 1 ? F_Any : func);
+                                i = j + 1;
+                                break;
+                            }
                         case "*":
-                        {
-                            // Make sure any sequential * / ** are handled together
-                            int j = i - 1;
-                            while (j >= 0 && (xAddSplit[j] == "**" || xAddSplit[j] == "*"))
-                                j--;
-                            // If only one *, single any, otherwise [any if at top of chain, otherwise existing]
-                            func = j == i - 1 ? F_Any(func) : F_DeepAny(i == xAddSplit.Length - 1 ? F_Any : func);
-                            i = j + 1;
-                            break;
-                        }
+                            {
+                                // Make sure any sequential * / ** are handled together
+                                int j = i - 1;
+                                while (j >= 0 && (xAddSplit[j] == "**" || xAddSplit[j] == "*"))
+                                    j--;
+                                // If only one *, single any, otherwise [any if at top of chain, otherwise existing]
+                                func = j == i - 1 ? F_Any(func) : F_DeepAny(i == xAddSplit.Length - 1 ? F_Any : func);
+                                i = j + 1;
+                                break;
+                            }
                         default:
                             if (xAddSplit[i] == string.Empty)
                             {

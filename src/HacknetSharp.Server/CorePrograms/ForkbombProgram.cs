@@ -26,6 +26,7 @@ namespace HacknetSharp.Server.CorePrograms
 
                 yield return null;
             }
+            // ReSharper disable once IteratorNeverReturns
         }
     }
 }

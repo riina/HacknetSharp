@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Azura;
 using HacknetSharp.Events.Server;
 
@@ -13,6 +12,11 @@ namespace HacknetSharp.Events.Client
     [Azura]
     public partial class LoginEvent : ClientEvent, IOperation
     {
+        /// <inheritdoc />
+        public LoginEvent()
+        {
+        }
+
         /// <inheritdoc />
         [Azura]
         public Guid Operation { get; set; }

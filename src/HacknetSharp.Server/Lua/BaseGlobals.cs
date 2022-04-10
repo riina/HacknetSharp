@@ -405,7 +405,7 @@ namespace HacknetSharp.Server.Lua
             var login = system.Logins.FirstOrDefault(l => l.Person == person.Key);
             if (login == null) return null;
             var shell = _world.StartShell(new AIPersonContext(person), person, login,
-                new[] {ServerConstants.ShellName, "HIVE"},
+                new[] { ServerConstants.ShellName, "HIVE" },
                 false);
             if (shell == null) return null;
             return (shell, login);
@@ -457,7 +457,7 @@ namespace HacknetSharp.Server.Lua
             {
                 if (!_world.TryGetScriptFile(script, out var scriptDyn)) return;
                 program = new LuaProgram(_scriptManager.GetCoroutine(scriptDyn),
-                    new Dictionary<string, object> {{"key", key}});
+                    new Dictionary<string, object> { { "key", key } });
             }
             catch
             {
@@ -467,7 +467,7 @@ namespace HacknetSharp.Server.Lua
             var shellRes = StartShell(person, system);
             if (shellRes == null) return;
             var (shell, login) = shellRes.Value;
-            var process = _world.StartProgram(shell, new[] {script}, null, program);
+            var process = _world.StartProgram(shell, new[] { script }, null, program);
             if (process == null)
             {
                 _world.CompleteRecurse(shell, Process.CompletionKind.Normal);
@@ -475,7 +475,7 @@ namespace HacknetSharp.Server.Lua
             }
 
             var service = new HackScriptHostService(shell, process);
-            var serviceProcess = _world.StartService(login, new[] {"HACKSCRIPT_HOST"}, null, service);
+            var serviceProcess = _world.StartService(login, new[] { "HACKSCRIPT_HOST" }, null, service);
             if (serviceProcess == null)
             {
                 _world.CompleteRecurse(shell, Process.CompletionKind.Normal);

@@ -391,7 +391,7 @@ namespace HacknetSharp.Server
                                      || PathInternal.IsDirectorySeparator(third[0]);
 
             fixed (char* f = &MemoryMarshal.GetReference(first), s = &MemoryMarshal.GetReference(second), t =
-                &MemoryMarshal.GetReference(third))
+                       &MemoryMarshal.GetReference(third))
             {
 #if MS_IO_REDIST
                 return StringExtensions.Create(
@@ -433,7 +433,7 @@ namespace HacknetSharp.Server
                                       || PathInternal.IsDirectorySeparator(fourth[0]);
 
             fixed (char* f = &MemoryMarshal.GetReference(first), s = &MemoryMarshal.GetReference(second), t =
-                &MemoryMarshal.GetReference(third), u = &MemoryMarshal.GetReference(fourth))
+                       &MemoryMarshal.GetReference(third), u = &MemoryMarshal.GetReference(fourth))
             {
 #if MS_IO_REDIST
                 return StringExtensions.Create(

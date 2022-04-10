@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Azura;
+﻿using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -10,6 +9,11 @@ namespace HacknetSharp.Events.Server
     [Azura]
     public partial class ShellPromptEvent : ServerEvent
     {
+        /// <inheritdoc />
+        public ShellPromptEvent()
+        {
+        }
+
         /// <summary>
         /// Server IPv4 address (big-endian, highest-order octet = first byte).
         /// </summary>

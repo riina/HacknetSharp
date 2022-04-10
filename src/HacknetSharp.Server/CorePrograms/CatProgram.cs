@@ -11,7 +11,7 @@ namespace HacknetSharp.Server.CorePrograms
         "[files...]", false)]
     public class CatProgram : Program
     {
-        private static readonly OutputEvent _newlineOutput = new() {Text = "\n"};
+        private static readonly OutputEvent _newlineOutput = new() { Text = "\n" };
 
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()

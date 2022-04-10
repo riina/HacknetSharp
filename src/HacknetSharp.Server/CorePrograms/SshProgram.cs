@@ -12,7 +12,7 @@ namespace HacknetSharp.Server.CorePrograms
         public override IEnumerator<YieldToken?> Run()
         {
             if (!ServerUtil.TryParseConString(Argv.Length == 1 ? "" : Argv[1], 22, out string? name, out string? host,
-                out _, out string? error))
+                    out _, out string? error))
             {
                 Write($"{error}\n");
                 yield break;

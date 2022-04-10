@@ -22,7 +22,7 @@ namespace HacknetSharp.Server
         static ServerUtil()
         {
             var types = LoadTypesFromFolder(ServerConstants.ExtensionsFolder,
-                new[] {typeof(Program), typeof(Service)});
+                new[] { typeof(Program), typeof(Service) });
             _customPrograms = new HashSet<Type>(types[1]);
             _customServices = new HashSet<Type>(types[0]);
         }
@@ -85,7 +85,7 @@ namespace HacknetSharp.Server
             for (int i = 0; i < types.Count; i++)
                 ret.Add(new List<Type>());
             if (!Directory.Exists(folder)) return ret;
-            var opts = new EnumerationOptions {MatchCasing = MatchCasing.CaseInsensitive};
+            var opts = new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive };
             try
             {
                 foreach (string d in Directory.GetDirectories(folder))
@@ -171,13 +171,7 @@ namespace HacknetSharp.Server
         /// <param name="shell">Shell to use.</param>
         /// <returns>Output event with formatted address and CWD.</returns>
         public static ShellPromptEvent CreatePromptEvent(ShellProcess shell) =>
-            new()
-            {
-                Address = shell.ProgramContext.System.Address,
-                TargetConnected = shell.Target != null,
-                TargetAddress = shell.Target?.Address ?? 0,
-                WorkingDirectory = shell.WorkingDirectory
-            };
+            new() { Address = shell.ProgramContext.System.Address, TargetConnected = shell.Target != null, TargetAddress = shell.Target?.Address ?? 0, WorkingDirectory = shell.WorkingDirectory };
 
         /// <summary>
         /// Attempts to parse a connection string (e.g. user@host[:port]).
@@ -268,15 +262,15 @@ namespace HacknetSharp.Server
         }
 
         private static readonly char[] _passChars =
-            new int[] {'!', '#', '%', '&', '*'}
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
-                .Concat(new int[] {'!', '#', '%', '&', '*'})
+            new int[] { '!', '#', '%', '&', '*' }
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
+                .Concat(new int[] { '!', '#', '%', '&', '*' })
                 .Concat(Enumerable.Range('0', '9' - '0' + 1))
                 .Concat(Enumerable.Range('0', '9' - '0' + 1))
                 .Concat(Enumerable.Range('0', '9' - '0' + 1))
@@ -443,7 +437,7 @@ namespace HacknetSharp.Server
             bool argTime = false;
             for (int i = 0; i < arguments.Count; i++)
             {
-                string? str = arguments[i];
+                string str = arguments[i];
                 if (argTime)
                 {
                     flags.Add(str);
@@ -648,7 +642,7 @@ namespace HacknetSharp.Server
                 char c = segment[i];
                 switch (state)
                 {
-                    case State.Void:
+                    /*case State.Void:
                         if (c == '"')
                             state = State.Quoted;
                         else if (c == '\\')
@@ -659,7 +653,7 @@ namespace HacknetSharp.Server
                             sb.Append(c);
                         }
 
-                        break;
+                        break;*/
                     case State.NonQuoted:
                         if (c == '\\')
                             state = State.EscapeNonQuoted;

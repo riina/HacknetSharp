@@ -43,65 +43,65 @@ namespace hsh
                     switch (key.Key)
                     {
                         case ConsoleKey.Escape:
-                        {
-                            menu = true;
-                            PrintStatusBar("", true);
-                            break;
-                        }
+                            {
+                                menu = true;
+                                PrintStatusBar("", true);
+                                break;
+                            }
                         case ConsoleKey.Backspace:
-                        {
-                            int r = editorView.Row, c = editorView.Column;
-                            string str = editorView.Lines[r];
-                            if (c == 0)
                             {
-                                if (r != 0)
+                                int r = editorView.Row, c = editorView.Column;
+                                string str = editorView.Lines[r];
+                                if (c == 0)
                                 {
-                                    string prevStr = editorView.Lines[r - 1];
-                                    changes.Add(editorView.ModifyLine(prevStr + str, r - 1));
-                                    changes.Add(editorView.RemoveLine(r));
-                                    changes.Add(editorView.SetCursor(r - 1, prevStr.Length));
+                                    if (r != 0)
+                                    {
+                                        string prevStr = editorView.Lines[r - 1];
+                                        changes.Add(editorView.ModifyLine(prevStr + str, r - 1));
+                                        changes.Add(editorView.RemoveLine(r));
+                                        changes.Add(editorView.SetCursor(r - 1, prevStr.Length));
+                                    }
                                 }
-                            }
-                            else if (str.Length != 0)
-                            {
-                                str = str.Remove(c - 1, 1);
-                                changes.Add(editorView.ModifyCurrentLine(str));
-                                if (c != str.Length + 1)
-                                    editorView.MoveLeft();
-                            }
+                                else if (str.Length != 0)
+                                {
+                                    str = str.Remove(c - 1, 1);
+                                    changes.Add(editorView.ModifyCurrentLine(str));
+                                    if (c != str.Length + 1)
+                                        editorView.MoveLeft();
+                                }
 
-                            break;
-                        }
+                                break;
+                            }
                         case ConsoleKey.Enter:
-                        {
-                            int r = editorView.Row, c = editorView.Column;
-                            string line = editorView.Lines[r];
-                            string before = line[..c], after = line[c..];
-                            changes.Add(editorView.ModifyLine(before, r));
-                            changes.Add(editorView.AddLine(after, r + 1));
-                            changes.Add(editorView.SetCursor(r + 1, 0));
-                            break;
-                        }
+                            {
+                                int r = editorView.Row, c = editorView.Column;
+                                string line = editorView.Lines[r];
+                                string before = line[..c], after = line[c..];
+                                changes.Add(editorView.ModifyLine(before, r));
+                                changes.Add(editorView.AddLine(after, r + 1));
+                                changes.Add(editorView.SetCursor(r + 1, 0));
+                                break;
+                            }
                         case ConsoleKey.LeftArrow:
-                        {
-                            editorView.MoveLeft();
-                            break;
-                        }
+                            {
+                                editorView.MoveLeft();
+                                break;
+                            }
                         case ConsoleKey.RightArrow:
-                        {
-                            editorView.MoveRight();
-                            break;
-                        }
+                            {
+                                editorView.MoveRight();
+                                break;
+                            }
                         case ConsoleKey.UpArrow:
-                        {
-                            changes.Add(editorView.MoveUp());
-                            break;
-                        }
+                            {
+                                changes.Add(editorView.MoveUp());
+                                break;
+                            }
                         case ConsoleKey.DownArrow:
-                        {
-                            changes.Add(editorView.MoveDown());
-                            break;
-                        }
+                            {
+                                changes.Add(editorView.MoveDown());
+                                break;
+                            }
                         default:
                             if (key.KeyChar != '\0')
                             {
@@ -125,59 +125,59 @@ namespace hsh
                     switch (key.Key)
                     {
                         case ConsoleKey.Escape:
-                        {
-                            menuSb.Clear();
-                            PrintStatusBar("", false);
-                            menu = false;
-                            editorView.Redraw();
-                            editorView.PlaceCursor();
-                            break;
-                        }
-                        case ConsoleKey.Backspace:
-                        {
-                            if (menuSb.Length != 0)
                             {
-                                menuSb.Remove(menuSb.Length - 1, 1);
-                                PrintStatusBar(menuSb.ToString(), true);
+                                menuSb.Clear();
+                                PrintStatusBar("", false);
+                                menu = false;
+                                editorView.Redraw();
+                                editorView.PlaceCursor();
+                                break;
                             }
-
-                            break;
-                        }
-                        case ConsoleKey.Enter:
-                        {
-                            string cmd = menuSb.ToString();
-                            if (cmd.Contains('q', StringComparison.InvariantCultureIgnoreCase))
+                        case ConsoleKey.Backspace:
                             {
-                                bool write = cmd.Contains('w', StringComparison.InvariantCultureIgnoreCase);
-                                if (readOnly && write)
+                                if (menuSb.Length != 0)
                                 {
-                                    PrintStatusBar("Cannot write a read-only buffer", true);
-                                    menuSb.Clear();
+                                    menuSb.Remove(menuSb.Length - 1, 1);
+                                    PrintStatusBar(menuSb.ToString(), true);
+                                }
+
+                                break;
+                            }
+                        case ConsoleKey.Enter:
+                            {
+                                string cmd = menuSb.ToString();
+                                if (cmd.Contains('q', StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    bool write = cmd.Contains('w', StringComparison.InvariantCultureIgnoreCase);
+                                    if (readOnly && write)
+                                    {
+                                        PrintStatusBar("Cannot write a read-only buffer", true);
+                                        menuSb.Clear();
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        return new EditorResult(editorView._lines, cmd.Contains('w'));
+                                    }
                                 }
                                 else
                                 {
-                                    Console.Clear();
-                                    return new EditorResult(editorView._lines, cmd.Contains('w'));
+                                    PrintStatusBar("Not a command/flag. w=write, q=quit", true);
+                                    menuSb.Clear();
                                 }
-                            }
-                            else
-                            {
-                                PrintStatusBar("Not a command/flag. w=write, q=quit", true);
-                                menuSb.Clear();
-                            }
 
-                            break;
-                        }
+                                break;
+                            }
                         default:
-                        {
-                            if (key.KeyChar != '\0')
                             {
-                                menuSb.Append(key.KeyChar);
-                                PrintStatusBar(menuSb.ToString(), true);
-                            }
+                                if (key.KeyChar != '\0')
+                                {
+                                    menuSb.Append(key.KeyChar);
+                                    PrintStatusBar(menuSb.ToString(), true);
+                                }
 
-                            break;
-                        }
+                                break;
+                            }
                     }
                 }
             }

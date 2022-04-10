@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Azura;
+﻿using Azura;
 
 namespace HacknetSharp.Events.Server
 {
@@ -10,6 +9,11 @@ namespace HacknetSharp.Events.Server
     [Azura]
     public partial class AlertEvent : ServerEvent
     {
+        /// <inheritdoc />
+        public AlertEvent()
+        {
+        }
+
         /// <summary>
         /// Alert kind.
         /// </summary>

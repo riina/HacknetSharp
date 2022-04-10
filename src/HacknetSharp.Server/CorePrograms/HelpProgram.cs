@@ -25,7 +25,7 @@ namespace HacknetSharp.Server.CorePrograms
                         sb.Append($"{intrinsic.Item2.Name,-12} {intrinsic.Item2.Description}\n");
                     sb.Append("\n««  Programs  »»\n\n");
                     foreach (var program in System.Files.Where(f => f.Path == "/bin" && !f.Hidden && f.CanRead(Login))
-                        .OrderBy(f => f.Name))
+                                 .OrderBy(f => f.Name))
                     {
                         var info = World.GetProgramInfo(program.Content);
                         GenReplacements(replacements, program.Content!);

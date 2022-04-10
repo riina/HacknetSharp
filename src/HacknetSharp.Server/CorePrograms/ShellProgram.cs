@@ -21,7 +21,7 @@ namespace HacknetSharp.Server.CorePrograms
             if (shell != null)
             {
                 var proxy = World.StartProgram(hostShell,
-                    new[] {ServerConstants.ShellName, Util.UintToAddress(System.Address)}, null,
+                    new[] { ServerConstants.ShellName, Util.UintToAddress(System.Address) }, null,
                     ShellProxyProgram.Singleton);
                 if (proxy != null)
                 {
