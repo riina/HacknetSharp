@@ -4,47 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HacknetSharp.Server.Models;
+using MoonSharp.StaticGlue.Core;
 
 namespace HacknetSharp.Server.Templates
 {
     /// <summary>
     /// Represents a template for a system.
     /// </summary>
+    [Scriptable("system_t")]
     public class SystemTemplate
     {
         /// <summary>
         /// System name (with replacement support).
         /// </summary>
+        [Scriptable]
         public string? Name { get; set; }
 
         /// <summary>
         /// Operating system name.
         /// </summary>
+        [Scriptable]
         public string? OsName { get; set; }
 
         /// <summary>
         /// Address range. Overridden by person template's <see cref="PersonTemplate.AddressRange"/> if present.
         /// </summary>
+        [Scriptable]
         public string? AddressRange { get; set; }
 
         /// <summary>
         /// Command to execute on connect.
         /// </summary>
+        [Scriptable]
         public string? ConnectCommandLine { get; set; }
 
         /// <summary>
         /// Vulnerabilities on this system.
         /// </summary>
+        // TODO scripting layer
         public List<Vulnerability>? Vulnerabilities { get; set; }
 
         /// <summary>
         /// Minimum number of exploits required to gain entry to the system.
         /// </summary>
+        [Scriptable]
         public int RequiredExploits { get; set; }
 
         /// <summary>
         /// Additional username-to-password pairs (with + postfix on username to indicate admin).
         /// </summary>
+        // TODO scripting layer
         public Dictionary<string, string>? Users { get; set; }
 
         /// <summary>
@@ -69,118 +78,77 @@ namespace HacknetSharp.Server.Templates
         /// <br/>
         /// - blob: Blob file, arg[0] determines file path. Not yet implemented.
         /// </remarks>
+        // TODO scripting layer
         public Dictionary<string, List<string>>? Filesystem { get; set; }
 
         /// <summary>
         /// Timed tasks.
         /// </summary>
+        // TODO scripting layer
         public List<Cron>? Tasks { get; set; }
 
         /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
+        [Scriptable]
         public double RebootDuration { get; set; }
 
         /// <summary>
         /// System disk capacity.
         /// </summary>
+        [Scriptable]
         public int DiskCapacity { get; set; }
 
         /// <summary>
         /// CPU cycles required to crack proxy.
         /// </summary>
+        [Scriptable]
         public double ProxyClocks { get; set; }
 
         /// <summary>
         /// Proxy cracking speed.
         /// </summary>
+        [Scriptable]
         public double ClockSpeed { get; set; }
 
         /// <summary>
         /// System memory (bytes).
         /// </summary>
+        [Scriptable]
         public long SystemMemory { get; set; }
 
         /// <summary>
         /// Number of firewall iterations required for full decode.
         /// </summary>
+        [Scriptable]
         public int FirewallIterations { get; set; }
 
         /// <summary>
         /// Length of firewall analysis string.
         /// </summary>
+        [Scriptable]
         public int FirewallLength { get; set; }
 
         /// <summary>
         /// Additional delay per firewall step.
         /// </summary>
+        [Scriptable]
         public double FirewallDelay { get; set; }
 
         /// <summary>
         /// Fixed firewall string.
         /// </summary>
+        [Scriptable]
         public string? FixedFirewall { get; set; }
 
         /// <summary>
         /// Tag for lookup.
         /// </summary>
+        [Scriptable]
         public string? Tag { get; set; }
 
-        /// <summary>
-        /// Represents a vulnerability on the system.
-        /// </summary>
-        public class Vulnerability
-        {
-            /// <summary>
-            /// Entrypoint / port (e.g. "22").
-            /// </summary>
-            public string? EntryPoint { get; set; }
-
-            /// <summary>
-            /// Protocol this vulnerability is for (e.g. "ssh").
-            /// </summary>
-            public string? Protocol { get; set; }
-
-            /// <summary>
-            /// Number of exploits this vulnerability represents.
-            /// </summary>
-            public int Exploits { get; set; }
-
-            /// <summary>
-            /// Optional CVE string (trivia).
-            /// </summary>
-            public string? Cve { get; set; }
-        }
-
-        /// <summary>
-        /// Represents a timed task.
-        /// </summary>
-        public class Cron
-        {
-            /// <summary>
-            /// Task content.
-            /// </summary>
-            public string? Content { get; set; }
-
-            /// <summary>
-            /// Initial start time.
-            /// </summary>
-            public double Start { get; set; }
-
-            /// <summary>
-            /// Task delay.
-            /// </summary>
-            public double Delay { get; set; }
-
-            /// <summary>
-            /// End time.
-            /// </summary>
-            public double End { get; set; }
-        }
-
-        private static readonly Regex _userRegex = new(@"([A-Za-z]+)(\+)?");
-        private static readonly Regex _fileRegex = new(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
-
+        private static readonly Regex s_userRegex = new(@"([A-Za-z]+)(\+)?");
+        private static readonly Regex s_fileRegex = new(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
         /// <summary>
         /// efault constructor for deserialization only.
@@ -188,7 +156,6 @@ namespace HacknetSharp.Server.Templates
         public SystemTemplate()
         {
         }
-
 
         /// <summary>
         /// efault constructor for deserialization only.
@@ -266,7 +233,7 @@ namespace HacknetSharp.Server.Templates
             if (Users != null)
                 foreach (var userKvp in Users)
                 {
-                    var match = _userRegex.Match(userKvp.Key);
+                    var match = s_userRegex.Match(userKvp.Key);
                     if (!match.Success) throw new ApplicationException($"Failed to parse user for {userKvp.Key}");
                     var (hashSub, saltSub) = ServerUtil.HashPassword(userKvp.Value);
                     string uname = match.Groups[1].Value;
@@ -306,7 +273,7 @@ namespace HacknetSharp.Server.Templates
                     repDict["UserName"] = uname;
                     foreach (var file in kvp.Value)
                     {
-                        var match = _fileRegex.Match(file);
+                        var match = s_fileRegex.Match(file);
                         if (!match.Success) throw new ApplicationException($"Failed to parse file entry for {match}");
                         var args = match.Groups[3].Value.SplitCommandLine();
                         if (args.Length == 0)
@@ -365,5 +332,65 @@ namespace HacknetSharp.Server.Templates
             '+' => FileModel.AccessLevel.Admin,
             _ => throw new ApplicationException($"Unknown access level character {c}")
         };
+    }
+
+    /// <summary>
+    /// Represents a vulnerability on the system.
+    /// </summary>
+    public class Vulnerability
+    {
+        /// <summary>
+        /// Entrypoint / port (e.g. "22").
+        /// </summary>
+        [Scriptable]
+        public string? EntryPoint { get; set; }
+
+        /// <summary>
+        /// Protocol this vulnerability is for (e.g. "ssh").
+        /// </summary>
+        [Scriptable]
+        public string? Protocol { get; set; }
+
+        /// <summary>
+        /// Number of exploits this vulnerability represents.
+        /// </summary>
+        [Scriptable]
+        public int Exploits { get; set; }
+
+        /// <summary>
+        /// Optional CVE string (trivia).
+        /// </summary>
+        [Scriptable]
+        public string? Cve { get; set; }
+    }
+
+    /// <summary>
+    /// Represents a timed task.
+    /// </summary>
+    public class Cron
+    {
+        /// <summary>
+        /// Task content.
+        /// </summary>
+        [Scriptable]
+        public string? Content { get; set; }
+
+        /// <summary>
+        /// Initial start time.
+        /// </summary>
+        [Scriptable]
+        public double Start { get; set; }
+
+        /// <summary>
+        /// Task delay.
+        /// </summary>
+        [Scriptable]
+        public double Delay { get; set; }
+
+        /// <summary>
+        /// End time.
+        /// </summary>
+        [Scriptable]
+        public double End { get; set; }
     }
 }

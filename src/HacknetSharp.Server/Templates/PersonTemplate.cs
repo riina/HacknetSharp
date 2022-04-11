@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using HacknetSharp.Server.Models;
+using MoonSharp.StaticGlue.Core;
 
 namespace HacknetSharp.Server.Templates
 {
@@ -10,137 +11,132 @@ namespace HacknetSharp.Server.Templates
     /// </summary>
     [SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+    [Scriptable("person_t")]
     public class PersonTemplate
     {
         /// <summary>
         /// Fixed username to use.
         /// </summary>
+        [Scriptable]
         public string? Username { get; set; }
 
         /// <summary>
         /// Fixed password to use.
         /// </summary>
+        [Scriptable]
         public string? Password { get; set; }
 
         /// <summary>
         /// Fixed email provider to use.
         /// </summary>
+        [Scriptable]
         public string? EmailProvider { get; set; }
 
         /// <summary>
         /// Fixed primary system template to use.
         /// </summary>
+        [Scriptable]
         public string? PrimaryTemplate { get; set; }
 
         /// <summary>
         /// Fixed primary address to use.
         /// </summary>
+        [Scriptable]
         public string? PrimaryAddress { get; set; }
 
         /// <summary>
         /// Username pool (weighted).
         /// </summary>
+        // TODO scripting layer
         public Dictionary<string, float>? Usernames { get; set; }
 
         /// <summary>
         /// Password pool (weighted).
         /// </summary>
+        // TODO scripting layer
         public Dictionary<string, float>? Passwords { get; set; }
 
         /// <summary>
         /// CIDR range string for address pool.
         /// </summary>
+        [Scriptable]
         public string? AddressRange { get; set; }
 
         /// <summary>
         /// Email provider pool (weighted).
         /// </summary>
+        // TODO scripting layer
         public Dictionary<string, float>? EmailProviders { get; set; }
 
         /// <summary>
         /// Primary template pool (weighted).
         /// </summary>
+        // TODO scripting layer
         public Dictionary<string, float>? PrimaryTemplates { get; set; }
 
         /// <summary>
         /// Minimum # in generated fleet.
         /// </summary>
+        [Scriptable]
         public int FleetMin { get; set; }
 
         /// <summary>
         /// Maximum # in generated fleet.
         /// </summary>
+        [Scriptable]
         public int FleetMax { get; set; }
 
         /// <summary>
         /// Fleet template pool (weighted).
         /// </summary>
+        // TODO scripting layer
         public Dictionary<string, float>? FleetTemplates { get; set; }
 
         /// <summary>
         /// Fixed-system network to generate.
         /// </summary>
+        // TODO scripting layer
         public List<NetworkEntry>? Network { get; set; }
 
         /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
+        [Scriptable]
         public double RebootDuration { get; set; }
 
         /// <summary>
         /// System disk capacity.
         /// </summary>
+        [Scriptable]
         public int DiskCapacity { get; set; }
 
         /// <summary>
         /// CPU cycles required to crack proxy.
         /// </summary>
+        [Scriptable]
         public double ProxyClocks { get; set; }
 
         /// <summary>
         /// Proxy cracking speed.
         /// </summary>
+        [Scriptable]
         public double ClockSpeed { get; set; }
 
         /// <summary>
         /// System memory (bytes).
         /// </summary>
+        [Scriptable]
         public long SystemMemory { get; set; }
 
         /// <summary>
         /// Tag for lookup.
         /// </summary>
+        [Scriptable]
         public string? Tag { get; set; }
 
         [ThreadStatic] private static Random? _random;
 
         private static Random Random => _random ??= new Random();
-
-        /// <summary>
-        /// Represents an entry in a person template's fixed-node network.
-        /// </summary>
-        public class NetworkEntry
-        {
-            /// <summary>
-            /// Template to use.
-            /// </summary>
-            public string? Template { get; set; } = null!;
-
-            /// <summary>
-            /// Specific address for system.
-            /// </summary>
-            public string? Address { get; set; } = null!;
-
-            /// <summary>
-            /// Additional replacements to pass to system template.
-            /// </summary>
-            public Dictionary<string, string>? Configuration { get; set; }
-
-            /// <summary>
-            /// Other <see cref="NetworkEntry.Address"/>es to create local links to.
-            /// </summary>
-            public List<string>? Links { get; set; }
-        }
 
         /// <summary>
         /// Default constructor for deserialization only.
@@ -274,5 +270,35 @@ namespace HacknetSharp.Server.Templates
                 _baseTemplate.ApplyTemplate(spawn, model, configuration);
             }
         }
+    }
+
+    /// <summary>
+    /// Represents an entry in a person template's fixed-node network.
+    /// </summary>
+    public class NetworkEntry
+    {
+        /// <summary>
+        /// Template to use.
+        /// </summary>
+        [Scriptable]
+        public string? Template { get; set; } = null!;
+
+        /// <summary>
+        /// Specific address for system.
+        /// </summary>
+        [Scriptable]
+        public string? Address { get; set; } = null!;
+
+        /// <summary>
+        /// Additional replacements to pass to system template.
+        /// </summary>
+        // TODO scripting layer
+        public Dictionary<string, string>? Configuration { get; set; }
+
+        /// <summary>
+        /// Other <see cref="NetworkEntry.Address"/>es to create local links to.
+        /// </summary>
+        // TODO scripting layer
+        public List<string>? Links { get; set; }
     }
 }
