@@ -44,8 +44,19 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// NPC spawners.
         /// </summary>
-        // TODO scripting layer
         public List<PersonGroup>? People { get; set; }
+
+        /// <summary>
+        /// Creates and adds a <see cref="PersonGroup"/>.
+        /// </summary>
+        /// <returns>Object.</returns>
+        [Scriptable]
+        public PersonGroup CreatePersonGroup()
+        {
+            PersonGroup group = new();
+            (People ??= new List<PersonGroup>()).Add(group);
+            return group;
+        }
 
         /// <summary>
         /// Reboot duration in seconds.
@@ -68,6 +79,7 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Default constructor for deserialization only.
         /// </summary>
+        [Scriptable]
         public WorldTemplate()
         {
         }

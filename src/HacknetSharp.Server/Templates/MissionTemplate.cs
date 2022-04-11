@@ -36,14 +36,39 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Mission goals as lua expressions that evaluate to a boolean.
         /// </summary>
-        // TODO scripting layer
         public List<string>? Goals { get; set; }
+
+        /// <summary>
+        /// Adds a goal as a lua expression that evaluates to a boolean.
+        /// </summary>
+        /// <param name="goal">Goal expression.</param>
+        [Scriptable]
+        public void AddGoal(string goal) => (Goals ??= new List<string>()).Add(goal);
 
         /// <summary>
         /// Objective outcomes.
         /// </summary>
-        // TODO scripting layer
         public List<Outcome>? Outcomes { get; set; }
+
+        /// <summary>
+        /// Creates and adds an <see cref="Outcome"/>.
+        /// </summary>
+        /// <returns>Object.</returns>
+        [Scriptable]
+        public Outcome CreateOutcome()
+        {
+            Outcome outcome = new();
+            (Outcomes ??= new List<Outcome>()).Add(outcome);
+            return outcome;
+        }
+
+        /// <summary>
+        /// Default constructor for deserialization only.
+        /// </summary>
+        [Scriptable]
+        public MissionTemplate()
+        {
+        }
     }
 
     /// <summary>
@@ -54,8 +79,14 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Indices of required goals (if null/empty, all goals are considered).
         /// </summary>
-        // TODO scripting layer
         public List<int>? Goals { get; set; }
+
+        /// <summary>
+        /// Adds a goal index.
+        /// </summary>
+        /// <param name="goal">Goal index.</param>
+        [Scriptable]
+        public void AddGoal(int goal) => (Goals ??= new List<int>()).Add(goal);
 
         /// <summary>
         /// Output of mission as lua code.

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
@@ -125,6 +127,22 @@ namespace HacknetSharp.Test
             Assert.AreEqual(expected,
                 src.DivideCommandLineElements().Select(sp => src.SliceCommandLineElement(sp)));
             Assert.AreEqual(src, expected.UnsplitCommandLine());
+        }
+
+        [Test]
+        public void Test_Ms_Template_System()
+        {
+            const string src = @"
+local x = system_t.__new()
+x.Name = ""rock""
+x.AddFiles(""grind"", {""/path1"", ""/path2""})
+return x";
+            var loader = new LuaContentImporter();
+            var template = loader.Import<SystemTemplate>(new MemoryStream(Encoding.UTF8.GetBytes(src)));
+            Assert.That(template.Name, Is.EqualTo("rock"));
+            var files = template.Filesystem;
+            Assert.That(files, Contains.Key("grind"));
+            Assert.That(files["grind"], Is.EquivalentTo(new[] { "/path1", "/path2" }));
         }
 
         [Test]

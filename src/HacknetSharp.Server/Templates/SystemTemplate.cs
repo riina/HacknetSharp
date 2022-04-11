@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,8 +42,19 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Vulnerabilities on this system.
         /// </summary>
-        // TODO scripting layer
         public List<Vulnerability>? Vulnerabilities { get; set; }
+
+        /// <summary>
+        /// Creates and adds a <see cref="Vulnerability"/>.
+        /// </summary>
+        /// <returns>Object.</returns>
+        [Scriptable]
+        public Vulnerability CreateVulnerability()
+        {
+            Vulnerability vulnerability = new();
+            (Vulnerabilities ??= new List<Vulnerability>()).Add(vulnerability);
+            return vulnerability;
+        }
 
         /// <summary>
         /// Minimum number of exploits required to gain entry to the system.
@@ -53,8 +65,18 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Additional username-to-password pairs (with + postfix on username to indicate admin).
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, string>? Users { get; set; }
+
+        /// <summary>
+        /// Adds a user.
+        /// </summary>
+        /// <param name="username">Username.</param>
+        /// <param name="password">Password.</param>
+        [Scriptable]
+        public void AddUser(string username, string password)
+        {
+            (Users ??= new Dictionary<string, string>())[username] = password;
+        }
 
         /// <summary>
         /// Base filesystem structure.
@@ -78,14 +100,37 @@ namespace HacknetSharp.Server.Templates
         /// <br/>
         /// - blob: Blob file, arg[0] determines file path. Not yet implemented.
         /// </remarks>
-        // TODO scripting layer
         public Dictionary<string, List<string>>? Filesystem { get; set; }
+
+        /// <summary>
+        /// Adds files.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        /// <param name="files">Files.</param>
+        [Scriptable]
+        public void AddFiles(string key, IList files)
+        {
+            Filesystem ??= new Dictionary<string, List<string>>();
+            if (!Filesystem.TryGetValue(key, out var list)) Filesystem[key] = list = new List<string>();
+            list.AddRange(files.OfType<string>());
+        }
 
         /// <summary>
         /// Timed tasks.
         /// </summary>
-        // TODO scripting layer
         public List<Cron>? Tasks { get; set; }
+
+        /// <summary>
+        /// Creates and adds a <see cref="Cron"/>.
+        /// </summary>
+        /// <returns>Object.</returns>
+        [Scriptable]
+        public Cron CreateCron()
+        {
+            Cron cron = new();
+            (Tasks ??= new List<Cron>()).Add(cron);
+            return cron;
+        }
 
         /// <summary>
         /// Reboot duration in seconds.
@@ -151,8 +196,9 @@ namespace HacknetSharp.Server.Templates
         private static readonly Regex s_fileRegex = new(@"([A-Za-z0-9]+)([*^+]{3})?:([\S\s]+)");
 
         /// <summary>
-        /// efault constructor for deserialization only.
+        /// Default constructor for deserialization only.
         /// </summary>
+        [Scriptable]
         public SystemTemplate()
         {
         }

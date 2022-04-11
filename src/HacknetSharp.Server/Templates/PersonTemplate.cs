@@ -141,6 +141,7 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Default constructor for deserialization only.
         /// </summary>
+        [Scriptable]
         public PersonTemplate()
         {
         }
