@@ -142,7 +142,7 @@ return x";
             Assert.That(template.Name, Is.EqualTo("rock"));
             var files = template.Filesystem;
             Assert.That(files, Contains.Key("grind"));
-            Assert.That(files["grind"], Is.EquivalentTo(new[] { "/path1", "/path2" }));
+            Assert.That(files!["grind"], Is.EquivalentTo(new[] { "/path1", "/path2" }));
         }
 
         [Test]

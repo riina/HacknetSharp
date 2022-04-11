@@ -52,8 +52,7 @@ namespace HacknetSharp.Server.CorePrograms
             var crackState = Shell.GetCrackState(system);
 
             if (system.ProxyClocks > 0)
-                sb.Append(
-                    $"Proxy: {Math.Clamp(100.0 * crackState.ProxyClocks / system.ProxyClocks, 0, 100):F1}% bypassed\n");
+                sb.Append(IC, $"Proxy: {Math.Clamp(100.0 * crackState.ProxyClocks / system.ProxyClocks, 0, 100):F1}% bypassed\n");
 
             if (system.FirewallIterations > 0)
                 sb.Append(crackState.FirewallSolved ? "\nFirewall: BYPASSED\n" : "\nFirewall: ACTIVE\n");
@@ -64,14 +63,12 @@ namespace HacknetSharp.Server.CorePrograms
                 foreach (var vuln in system.Vulnerabilities)
                 {
                     string openStr = crackState.OpenVulnerabilities.ContainsKey(vuln) ? "OPEN" : "CLOSED";
-                    sb.Append(
-                        $"{vuln.EntryPoint,-8}: {vuln.Protocol} ({openStr}, {vuln.Exploits} exploit(s), {vuln.Cve ?? "unknown CVEs"})\n");
+                    sb.Append(IC, $"{vuln.EntryPoint,-8}: {vuln.Protocol} ({openStr}, {vuln.Exploits} exploit(s), {vuln.Cve ?? "unknown CVEs"})\n");
                 }
             }
 
-            sb.Append($"\nRequired exploits: {system.RequiredExploits}\n");
-            sb.Append(
-                $"Current exploits: {crackState.OpenVulnerabilities.Aggregate(0, (n, v) => n + v.Key.Exploits)}\n");
+            sb.Append(IC, $"\nRequired exploits: {system.RequiredExploits}\n");
+            sb.Append(IC, $"Current exploits: {crackState.OpenVulnerabilities.Aggregate(0, (n, v) => n + v.Key.Exploits)}\n");
             Write(sb.ToString());
         }
     }

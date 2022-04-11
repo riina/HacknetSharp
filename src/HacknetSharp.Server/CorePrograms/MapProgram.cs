@@ -33,7 +33,7 @@ namespace HacknetSharp.Server.CorePrograms
             var sb = new StringBuilder();
             foreach (var s in systems)
             {
-                sb.Append($"{Util.UintToAddress(s.Address),16}")
+                sb.Append(IC, $"{Util.UintToAddress(s.Address),16}")
                     .Append(' ')
                     .Append(s.Name)
                     .Append('\n');

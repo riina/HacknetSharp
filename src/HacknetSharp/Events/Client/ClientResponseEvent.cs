@@ -8,11 +8,6 @@ namespace HacknetSharp.Events.Client
     public abstract class ClientResponseEvent : ClientEvent, IOperation
     {
         /// <inheritdoc />
-        public ClientResponseEvent()
-        {
-        }
-
-        /// <inheritdoc />
         public abstract Guid Operation { get; set; }
     }
 }

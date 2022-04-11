@@ -57,7 +57,7 @@ namespace HacknetSharp.Server.Models
             builder.Entity<UserModel>(x =>
             {
                 x.HasKey(v => v.Key);
-                x.HasMany(p => p!.Identities).WithOne(p => p.User!).OnDelete(DeleteBehavior.Cascade);
+                x.HasMany(p => p.Identities).WithOne(p => p.User!).OnDelete(DeleteBehavior.Cascade);
                 x.Ignore(v => v.Outputs);
             });
 #pragma warning restore 1591

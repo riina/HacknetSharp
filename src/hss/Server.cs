@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,6 +23,8 @@ namespace hss
 {
     public class Server
     {
+        private static readonly CultureInfo s_ic = CultureInfo.InvariantCulture;
+
         private readonly HashSet<Type> _programTypes;
         private readonly HashSet<Type> _serviceTypes;
         private readonly CountdownEvent _countdown;
@@ -243,20 +246,17 @@ namespace hss
                     var sb = new StringBuilder();
                     foreach (var x in e.Entries)
                     {
-                        sb.AppendLine($"{x.Entity}");
+                        sb.AppendLine(s_ic, $"{x.Entity}");
                         switch (x.Entity)
                         {
                             case FileModel y:
-                                sb.AppendLine($"[{y.Path}] [{y.Name}]");
+                                sb.AppendLine(s_ic, $"[{y.Path}] [{y.Name}]");
                                 sb.AppendLine("Current:");
                                 foreach (var z in x.CurrentValues.Properties)
-                                    sb.AppendLine(
-                                        $"{z.Name} // {z} // [{x.CurrentValues[z]}] vs [{x.OriginalValues[z]}]");
-
+                                    sb.AppendLine(s_ic, $"{z.Name} // {z} // [{x.CurrentValues[z]}] vs [{x.OriginalValues[z]}]");
                                 break;
                         }
                     }
-
                     Logger.LogError(
                         $"{nameof(DbUpdateConcurrencyException)} thrown in server loop:\n{{Exception}}\nDetails:\n{{Information}}",
                         e, sb.ToString());
