@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AnalyzeProgram
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,7 +73,8 @@
   
   <h1 id="HacknetSharp_Server_CorePrograms_AnalyzeProgram" data-uid="HacknetSharp.Server.CorePrograms.AnalyzeProgram" class="text-break">Class AnalyzeProgram
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents an executable that depends on a shell and related state.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -127,7 +128,7 @@
       <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Input_System_Boolean_">Program.Input(Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Confirm_System_Boolean_System_Nullable_IReadOnlyCollection_System_String___">Program.Confirm(Boolean, Nullable&lt;IReadOnlyCollection&lt;String&gt;&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Confirm_System_Boolean_System_Collections_Generic_IReadOnlyCollection_System_String__">Program.Confirm(Boolean, IReadOnlyCollection&lt;String&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Edit_System_Boolean_System_String_">Program.Edit(Boolean, String)</a>
@@ -142,16 +143,16 @@
       <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_Output_System_String_">Program.Output(String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystem_System_String_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___">Program.TryGetSystem(String, SystemModel, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystem_System_String_HacknetSharp_Server_Models_SystemModel__System_String__">Program.TryGetSystem(String, SystemModel, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystem_System_UInt32_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___">Program.TryGetSystem(UInt32, SystemModel, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetSystem_System_UInt32_HacknetSharp_Server_Models_SystemModel__System_String__">Program.TryGetSystem(UInt32, SystemModel, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetVariable_System_Nullable_System_String__System_String_System_Nullable_System_String___">Program.TryGetVariable(Nullable&lt;String&gt;, String, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetVariable_System_String_System_String_System_String__">Program.TryGetVariable(String, String, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetVariable_HacknetSharp_Server_ProgramContext_System_Nullable_System_String__System_String_System_Nullable_System_String___">Program.TryGetVariable(ProgramContext, Nullable&lt;String&gt;, String, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_TryGetVariable_HacknetSharp_Server_ProgramContext_System_String_System_String_System_String__">Program.TryGetVariable(ProgramContext, String, String, String)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_SignalUnbindProcess">Program.SignalUnbindProcess()</a>
@@ -160,7 +161,7 @@
       <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_SignalUnbindProcess_HacknetSharp_Server_ProgramContext_HacknetSharp_Server_Process_">Program.SignalUnbindProcess(ProgramContext, Process)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_IsolateArgvFlags_System_String___System_Nullable_IReadOnlySet_System_String___">Program.IsolateArgvFlags(String[], Nullable&lt;IReadOnlySet&lt;String&gt;&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Program.html#HacknetSharp_Server_Program_IsolateArgvFlags_System_String___System_Collections_Generic_IReadOnlySet_System_String__">Program.IsolateArgvFlags(String[], IReadOnlySet&lt;String&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_ProcessContext">Executable.ProcessContext</a>
@@ -211,46 +212,46 @@
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryWriteLog_HacknetSharp_Server_IWorld_System_Double_HacknetSharp_Server_Models_SystemModel_HacknetSharp_Server_Models_LoginModel_System_String_System_String_HacknetSharp_Server_Models_FileModel__">Executable.TryWriteLog(IWorld, Double, SystemModel, LoginModel, String, String, FileModel)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_String_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___">Executable.TryGetSystem(WorldModel, String, SystemModel, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_String_HacknetSharp_Server_Models_SystemModel__System_String__">Executable.TryGetSystem(WorldModel, String, SystemModel, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_UInt32_HacknetSharp_Server_Models_SystemModel__System_Nullable_System_String___">Executable.TryGetSystem(WorldModel, UInt32, SystemModel, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_TryGetSystem_HacknetSharp_Server_Models_WorldModel_System_UInt32_HacknetSharp_Server_Models_SystemModel__System_String__">Executable.TryGetSystem(WorldModel, UInt32, SystemModel, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_ActWait_Action_HacknetSharp_Server_YieldToken_">Executable.ActWait(Action, YieldToken)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_ActWait_System_Action_HacknetSharp_Server_YieldToken_">Executable.ActWait(Action, YieldToken)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Sequence_IEnumerable_HacknetSharp_Server_YieldToken__">Executable.Sequence(IEnumerable&lt;YieldToken&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Sequence_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__">Executable.Sequence(IEnumerable&lt;YieldToken&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Aggregate_IEnumerable_HacknetSharp_Server_YieldToken__">Executable.Aggregate(IEnumerable&lt;YieldToken&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Aggregate_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__">Executable.Aggregate(IEnumerable&lt;YieldToken&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Any_IEnumerable_HacknetSharp_Server_YieldToken__">Executable.Any(IEnumerable&lt;YieldToken&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Any_System_Collections_Generic_IEnumerable_HacknetSharp_Server_YieldToken__">Executable.Any(IEnumerable&lt;YieldToken&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Delay_System_Double_">Executable.Delay(Double)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Condition_Func_System_Boolean__">Executable.Condition(Func&lt;Boolean&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Condition_System_Func_System_Boolean__">Executable.Condition(Func&lt;Boolean&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Input_HacknetSharp_Server_IPersonContext_System_Boolean_">Executable.Input(IPersonContext, Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Confirm_HacknetSharp_Server_IPersonContext_System_Boolean_System_Nullable_IReadOnlyCollection_System_String___">Executable.Confirm(IPersonContext, Boolean, Nullable&lt;IReadOnlyCollection&lt;String&gt;&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Confirm_HacknetSharp_Server_IPersonContext_System_Boolean_System_Collections_Generic_IReadOnlyCollection_System_String__">Executable.Confirm(IPersonContext, Boolean, IReadOnlyCollection&lt;String&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Edit_HacknetSharp_Server_IPersonContext_System_Boolean_System_String_">Executable.Edit(IPersonContext, Boolean, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_GetDirectoryName_System_Nullable_System_String__">Executable.GetDirectoryName(Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_GetDirectoryName_System_String_">Executable.GetDirectoryName(String)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_IsPathFullyQualified_System_String_">Executable.IsPathFullyQualified(String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_IsPathFullyQualified_ReadOnlySpan_System_Char__">Executable.IsPathFullyQualified(ReadOnlySpan&lt;Char&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_IsPathFullyQualified_System_ReadOnlySpan_System_Char__">Executable.IsPathFullyQualified(ReadOnlySpan&lt;Char&gt;)</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Combine_System_String_System_String_">Executable.Combine(String, String)</a>
@@ -265,25 +266,25 @@
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Combine_System_String___">Executable.Combine(String[])</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__">Executable.Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__">Executable.Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__">Executable.Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__">Executable.Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__ReadOnlySpan_System_Char__">Executable.Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__System_ReadOnlySpan_System_Char__">Executable.Join(ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;, ReadOnlySpan&lt;Char&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__">Executable.Join(Nullable&lt;String&gt;, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_String_System_String_">Executable.Join(String, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__">Executable.Join(Nullable&lt;String&gt;, Nullable&lt;String&gt;, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_String_System_String_System_String_">Executable.Join(String, String, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__System_Nullable_System_String__">Executable.Join(Nullable&lt;String&gt;, Nullable&lt;String&gt;, Nullable&lt;String&gt;, Nullable&lt;String&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_String_System_String_System_String_System_String_">Executable.Join(String, String, String, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_Nullable_System_String____">Executable.Join(Nullable&lt;String&gt;[])</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_Join_System_String___">Executable.Join(String[])</a>
     </div>
     <div>
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_GetFullPath_System_String_">Executable.GetFullPath(String)</a>
@@ -292,27 +293,50 @@
       <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_GetFullPath_System_String_System_String_">Executable.GetFullPath(String, String)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_IsPathRooted_ReadOnlySpan_System_Char__">Executable.IsPathRooted(ReadOnlySpan&lt;Char&gt;)</a>
+      <a class="xref" href="HacknetSharp.Server.Executable.html#HacknetSharp_Server_Executable_IsPathRooted_System_ReadOnlySpan_System_Char__">Executable.IsPathRooted(ReadOnlySpan&lt;Char&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.CorePrograms.html">HacknetSharp.Server.CorePrograms</a></h6>
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
   <h5 id="HacknetSharp_Server_CorePrograms_AnalyzeProgram_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AnalyzeProgram : Program</code></pre>
+    <pre><code class="lang-csharp hljs">[ProgramInfo(&quot;core:analyze&quot;, &quot;analyze&quot;, &quot;analyze firewall&quot;, &quot;Analyzes firewall to progressively get solution.&quot;, &quot;&quot;, false)]
+public class AnalyzeProgram : Program</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_CorePrograms_AnalyzeProgram_Run.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.CorePrograms.AnalyzeProgram.Run%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_CorePrograms_AnalyzeProgram_Run.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.CorePrograms.AnalyzeProgram.Run%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/CorePrograms/AnalyzeProgram.cs/#L14">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/CorePrograms/AnalyzeProgram.cs/#L14">View Source</a>
   </span>
   <a id="HacknetSharp_Server_CorePrograms_AnalyzeProgram_Run_" data-uid="HacknetSharp.Server.CorePrograms.AnalyzeProgram.Run*"></a>
   <h4 id="HacknetSharp_Server_CorePrograms_AnalyzeProgram_Run" data-uid="HacknetSharp.Server.CorePrograms.AnalyzeProgram.Run">Run()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Runs this executable with the given context.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -328,8 +352,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerator</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
-        <td></td>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="HacknetSharp.Server.YieldToken.html">YieldToken</a>&gt;</td>
+        <td><p>Enumerator that divides execution steps.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -343,10 +368,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_CorePrograms_AnalyzeProgram.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.CorePrograms.AnalyzeProgram%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_CorePrograms_AnalyzeProgram.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.CorePrograms.AnalyzeProgram%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/CorePrograms/AnalyzeProgram.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/CorePrograms/AnalyzeProgram.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

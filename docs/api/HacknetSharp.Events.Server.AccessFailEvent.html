@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AccessFailEvent
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -91,16 +91,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="HacknetSharp.Events.Server.FailBaseServerEvent.html#HacknetSharp_Events_Server_FailBaseServerEvent_Operation">FailBaseServerEvent.Operation</a>
+      <a class="xref" href="HacknetSharp.Event.html#HacknetSharp_Event_Serialize_System_IO_Stream_">Event.Serialize(Stream)</a>
     </div>
     <div>
-      <a class="xref" href="HacknetSharp.Events.Server.FailBaseServerEvent.html#HacknetSharp_Events_Server_FailBaseServerEvent_Message">FailBaseServerEvent.Message</a>
-    </div>
-    <div>
-      <a class="xref" href="HacknetSharp.Events.Server.FailBaseServerEvent.html#HacknetSharp_Events_Server_FailBaseServerEvent_Serialize_System_IO_Stream_">FailBaseServerEvent.Serialize(Stream)</a>
-    </div>
-    <div>
-      <a class="xref" href="HacknetSharp.Events.Server.FailBaseServerEvent.html#HacknetSharp_Events_Server_FailBaseServerEvent_Deserialize_System_IO_Stream_">FailBaseServerEvent.Deserialize(Stream)</a>
+      <a class="xref" href="HacknetSharp.Event.html#HacknetSharp_Event_Deserialize_System_IO_Stream_">Event.Deserialize(Stream)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -129,26 +123,96 @@
   <h5 id="HacknetSharp_Events_Server_AccessFailEvent_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[EventCommand(Command.SC_AccessFail)]
+[Azura]
 public class AccessFailEvent : FailBaseServerEvent, IOperation</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Server_AccessFailEvent__ctor.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Server.AccessFailEvent.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Server_AccessFailEvent__ctor.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Server.AccessFailEvent.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Server/AccessFailEvent.cs/#L12">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Server/AccessFailEvent.cs/#L14">View Source</a>
   </span>
   <a id="HacknetSharp_Events_Server_AccessFailEvent__ctor_" data-uid="HacknetSharp.Events.Server.AccessFailEvent.#ctor*"></a>
   <h4 id="HacknetSharp_Events_Server_AccessFailEvent__ctor" data-uid="HacknetSharp.Events.Server.AccessFailEvent.#ctor">AccessFailEvent()</h4>
-  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Events.Server.AccessFailEvent.html">AccessFailEvent</a> with default message.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public AccessFailEvent()</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Server_AccessFailEvent_Message.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Server.AccessFailEvent.Message%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Server/AccessFailEvent.cs/#L23">View Source</a>
+  </span>
+  <a id="HacknetSharp_Events_Server_AccessFailEvent_Message_" data-uid="HacknetSharp.Events.Server.AccessFailEvent.Message*"></a>
+  <h4 id="HacknetSharp_Events_Server_AccessFailEvent_Message" data-uid="HacknetSharp.Events.Server.AccessFailEvent.Message">Message</h4>
+  <div class="markdown level1 summary"><p>Message associated with the failure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Azura]
+public override string Message { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="HacknetSharp.Events.Server.FailBaseServerEvent.html#HacknetSharp_Events_Server_FailBaseServerEvent_Message">FailBaseServerEvent.Message</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Server_AccessFailEvent_Operation.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Server.AccessFailEvent.Operation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Server/AccessFailEvent.cs/#L19">View Source</a>
+  </span>
+  <a id="HacknetSharp_Events_Server_AccessFailEvent_Operation_" data-uid="HacknetSharp.Events.Server.AccessFailEvent.Operation*"></a>
+  <h4 id="HacknetSharp_Events_Server_AccessFailEvent_Operation" data-uid="HacknetSharp.Events.Server.AccessFailEvent.Operation">Operation</h4>
+  <div class="markdown level1 summary"><p>Identifier for this operation object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Azura]
+public override Guid Operation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Guid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="HacknetSharp.Events.Server.FailBaseServerEvent.html#HacknetSharp_Events_Server_FailBaseServerEvent_Operation">FailBaseServerEvent.Operation</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="HacknetSharp.IOperation.html">IOperation</a>
@@ -161,10 +225,10 @@ public class AccessFailEvent : FailBaseServerEvent, IOperation</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Server_AccessFailEvent.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Server.AccessFailEvent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Server_AccessFailEvent.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Server.AccessFailEvent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Server/AccessFailEvent.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Server/AccessFailEvent.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

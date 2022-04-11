@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class InputResponseEvent
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -91,6 +91,12 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="HacknetSharp.Event.html#HacknetSharp_Event_Serialize_System_IO_Stream_">Event.Serialize(Stream)</a>
+    </div>
+    <div>
+      <a class="xref" href="HacknetSharp.Event.html#HacknetSharp_Event_Deserialize_System_IO_Stream_">Event.Deserialize(Stream)</a>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -117,16 +123,34 @@
   <h5 id="HacknetSharp_Events_Client_InputResponseEvent_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[EventCommand(Command.CS_InputResponse)]
+[Azura]
 public class InputResponseEvent : ClientResponseEvent, IOperation</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent__ctor.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L15">View Source</a>
+  </span>
+  <a id="HacknetSharp_Events_Client_InputResponseEvent__ctor_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.#ctor*"></a>
+  <h4 id="HacknetSharp_Events_Client_InputResponseEvent__ctor" data-uid="HacknetSharp.Events.Client.InputResponseEvent.#ctor">InputResponseEvent()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InputResponseEvent()</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent_Input.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.Input%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent_Input.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.Input%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L20">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L26">View Source</a>
   </span>
   <a id="HacknetSharp_Events_Client_InputResponseEvent_Input_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Input*"></a>
   <h4 id="HacknetSharp_Events_Client_InputResponseEvent_Input" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Input">Input</h4>
@@ -135,7 +159,8 @@ public class InputResponseEvent : ClientResponseEvent, IOperation</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Input { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Azura]
+public string Input { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,18 +179,20 @@ public class InputResponseEvent : ClientResponseEvent, IOperation</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent_Operation.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.Operation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent_Operation.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.Operation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L15">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L20">View Source</a>
   </span>
   <a id="HacknetSharp_Events_Client_InputResponseEvent_Operation_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Operation*"></a>
   <h4 id="HacknetSharp_Events_Client_InputResponseEvent_Operation" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Operation">Operation</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Identifier for this operation object.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Guid Operation { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Azura]
+public override Guid Operation { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -184,76 +211,6 @@ public class InputResponseEvent : ClientResponseEvent, IOperation</code></pre>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="HacknetSharp.Events.Client.ClientResponseEvent.html#HacknetSharp_Events_Client_ClientResponseEvent_Operation">ClientResponseEvent.Operation</a></div>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent_Deserialize_System_IO_Stream_.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.Deserialize(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L30">View Source</a>
-  </span>
-  <a id="HacknetSharp_Events_Client_InputResponseEvent_Deserialize_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Deserialize*"></a>
-  <h4 id="HacknetSharp_Events_Client_InputResponseEvent_Deserialize_System_IO_Stream_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Deserialize(System.IO.Stream)">Deserialize(Stream)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Deserialize(Stream stream)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="HacknetSharp.Event.html#HacknetSharp_Event_Deserialize_System_IO_Stream_">Event.Deserialize(Stream)</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent_Serialize_System_IO_Stream_.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent.Serialize(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L23">View Source</a>
-  </span>
-  <a id="HacknetSharp_Events_Client_InputResponseEvent_Serialize_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Serialize*"></a>
-  <h4 id="HacknetSharp_Events_Client_InputResponseEvent_Serialize_System_IO_Stream_" data-uid="HacknetSharp.Events.Client.InputResponseEvent.Serialize(System.IO.Stream)">Serialize(Stream)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Serialize(Stream stream)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
-        <td><span class="parametername">stream</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="HacknetSharp.Event.html#HacknetSharp_Event_Serialize_System_IO_Stream_">Event.Serialize(Stream)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="HacknetSharp.IOperation.html">IOperation</a>
@@ -266,10 +223,10 @@ public class InputResponseEvent : ClientResponseEvent, IOperation</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Events_Client_InputResponseEvent.md&amp;value=---%0Auid%3A%20HacknetSharp.Events.Client.InputResponseEvent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp/Events/Client/InputResponseEvent.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

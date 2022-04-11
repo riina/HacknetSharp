@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct IPAddressRange
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -78,7 +78,19 @@
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="HacknetSharp.Server.html">HacknetSharp.Server</a></h6>
   <h6><strong>Assembly</strong>: HacknetSharp.Server.dll</h6>
@@ -93,14 +105,14 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange__ctor_IPAddress_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.%23ctor(IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange__ctor_System_Net_IPAddress_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.%23ctor(System.Net.IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L109">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L109">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange__ctor_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor*"></a>
-  <h4 id="HacknetSharp_Server_IPAddressRange__ctor_IPAddress_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor(IPAddress)">IPAddressRange(IPAddress)</h4>
-  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a> from the specified <see cref="!:IPAddress"></see>.</p>
+  <h4 id="HacknetSharp_Server_IPAddressRange__ctor_System_Net_IPAddress_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor(System.Net.IPAddress)">IPAddressRange(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="HacknetSharp.Server.IPAddressRange.html">IPAddressRange</a> from the specified <span class="xref">System.Net.IPAddress</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -118,19 +130,35 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IPAddress</span></td>
+        <td><span class="xref">System.Net.IPAddress</span></td>
         <td><span class="parametername">address</span></td>
         <td><p>Address to convert.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when failed to convert address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange__ctor_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange__ctor_System_String_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L55">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L55">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange__ctor_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange__ctor_System_String_" data-uid="HacknetSharp.Server.IPAddressRange.#ctor(System.String)">IPAddressRange(String)</h4>
@@ -159,14 +187,30 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Throws on failure to parse address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_AddressFamily.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.AddressFamily%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_AddressFamily.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.AddressFamily%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L43">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L43">View Source</a>
   </span>
   <h4 id="HacknetSharp_Server_IPAddressRange_AddressFamily" data-uid="HacknetSharp.Server.IPAddressRange.AddressFamily">AddressFamily</h4>
   <div class="markdown level1 summary"><p>Address family of this range.</p>
@@ -186,17 +230,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">AddressFamily</span></td>
+        <td><span class="xref">System.Net.Sockets.AddressFamily</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_PrefixBits.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.PrefixBits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_PrefixBits.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.PrefixBits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L48">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L48">View Source</a>
   </span>
   <h4 id="HacknetSharp_Server_IPAddressRange_PrefixBits" data-uid="HacknetSharp.Server.IPAddressRange.PrefixBits">PrefixBits</h4>
   <div class="markdown level1 summary"><p>Number of prefix bits for this range.</p>
@@ -225,13 +269,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Contains_IPAddress_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Contains(IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Contains_System_Net_IPAddress_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L221">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L221">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_Contains_" data-uid="HacknetSharp.Server.IPAddressRange.Contains*"></a>
-  <h4 id="HacknetSharp_Server_IPAddressRange_Contains_IPAddress_" data-uid="HacknetSharp.Server.IPAddressRange.Contains(IPAddress)">Contains(IPAddress)</h4>
+  <h4 id="HacknetSharp_Server_IPAddressRange_Contains_System_Net_IPAddress_" data-uid="HacknetSharp.Server.IPAddressRange.Contains(System.Net.IPAddress)">Contains(IPAddress)</h4>
   <div class="markdown level1 summary"><p>Checks if address is contained in range.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -250,7 +294,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IPAddress</span></td>
+        <td><span class="xref">System.Net.IPAddress</span></td>
         <td><span class="parametername">address</span></td>
         <td><p>Address to check.</p>
 </td>
@@ -273,12 +317,28 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when failed to parse address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Equals_HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Equals_HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L274">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L274">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_Equals_" data-uid="HacknetSharp.Server.IPAddressRange.Equals*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange_Equals_HacknetSharp_Server_IPAddressRange_" data-uid="HacknetSharp.Server.IPAddressRange.Equals(HacknetSharp.Server.IPAddressRange)">Equals(IPAddressRange)</h4>
@@ -322,18 +382,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_Equals_System_Object_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L282">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L282">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_Equals_" data-uid="HacknetSharp.Server.IPAddressRange.Equals*"></a>
-  <h4 id="HacknetSharp_Server_IPAddressRange_Equals_System_Nullable_System_Object__" data-uid="HacknetSharp.Server.IPAddressRange.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <h4 id="HacknetSharp_Server_IPAddressRange_Equals_System_Object_" data-uid="HacknetSharp.Server.IPAddressRange.Equals(System.Object)">Equals(Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -346,7 +406,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -367,12 +427,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_GetHashCode.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_GetHashCode.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L285">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L285">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_GetHashCode_" data-uid="HacknetSharp.Server.IPAddressRange.GetHashCode*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange_GetHashCode" data-uid="HacknetSharp.Server.IPAddressRange.GetHashCode">GetHashCode()</h4>
@@ -397,12 +459,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_OnHost_HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.OnHost(HacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_OnHost_HacknetSharp_Server_IPAddressRange_.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.OnHost(HacknetSharp.Server.IPAddressRange)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L259">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L259">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_OnHost_" data-uid="HacknetSharp.Server.IPAddressRange.OnHost*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange_OnHost_HacknetSharp_Server_IPAddressRange_" data-uid="HacknetSharp.Server.IPAddressRange.OnHost(HacknetSharp.Server.IPAddressRange)">OnHost(IPAddressRange)</h4>
@@ -447,12 +511,28 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown if this instance isn't a full 32-bit address or if <code data-dev-comment-type="paramref" class="paramref">host</code> isn't an IPv4 address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_ToString.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_ToString.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L300">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L300">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_ToString_" data-uid="HacknetSharp.Server.IPAddressRange.ToString*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange_ToString" data-uid="HacknetSharp.Server.IPAddressRange.ToString">ToString()</h4>
@@ -477,12 +557,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.ValueType.ToString()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_System_UInt32__System_UInt32__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask(System.UInt32%40%2CSystem.UInt32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_System_UInt32__System_UInt32__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask(System.UInt32%40%2CSystem.UInt32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L242">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L242">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_" data-uid="HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange_TryGetIPv4HostAndSubnetMask_System_UInt32__System_UInt32__" data-uid="HacknetSharp.Server.IPAddressRange.TryGetIPv4HostAndSubnetMask(System.UInt32@,System.UInt32@)">TryGetIPv4HostAndSubnetMask(out UInt32, out UInt32)</h4>
@@ -535,10 +617,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_TryParse_System_String_System_Boolean_HacknetSharp_Server_IPAddressRange__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.TryParse(System.String%2CSystem.Boolean%2CHacknetSharp.Server.IPAddressRange%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange_TryParse_System_String_System_Boolean_HacknetSharp_Server_IPAddressRange__.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange.TryParse(System.String%2CSystem.Boolean%2CHacknetSharp.Server.IPAddressRange%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L146">View Source</a>
+    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L146">View Source</a>
   </span>
   <a id="HacknetSharp_Server_IPAddressRange_TryParse_" data-uid="HacknetSharp.Server.IPAddressRange.TryParse*"></a>
   <h4 id="HacknetSharp_Server_IPAddressRange_TryParse_System_String_System_Boolean_HacknetSharp_Server_IPAddressRange__" data-uid="HacknetSharp.Server.IPAddressRange.TryParse(System.String,System.Boolean,HacknetSharp.Server.IPAddressRange@)">TryParse(String, Boolean, out IPAddressRange)</h4>
@@ -597,7 +679,7 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">IEquatable&lt;&gt;</span>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
 </article>
           </div>
@@ -607,10 +689,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/riina/HacknetSharp/new/waifu/apiSpec/new?filename=HacknetSharp_Server_IPAddressRange.md&amp;value=---%0Auid%3A%20HacknetSharp.Server.IPAddressRange%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L35" class="contribution-link">View Source</a>
+                    <a href="https://github.com/riina/HacknetSharp/blob/waifu/src/HacknetSharp.Server/IPAddressRange.cs/#L35" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -1,12 +1,12 @@
-[![.NET Build](https://github.com/The-Council-of-Wills/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/The-Council-of-Wills/HacknetSharp/actions?workflow=.NET+Build)
+[![.NET Build](https://github.com/riina/HacknetSharp/workflows/.NET%20Build/badge.svg)](https://github.com/riina/HacknetSharp/actions?workflow=.NET+Build)
 [![Nuget](https://img.shields.io/nuget/v/HacknetSharp?label=HacknetSharp&logo=Nuget)](https://www.nuget.org/packages/HacknetSharp/)
 [![Nuget](https://img.shields.io/nuget/v/HacknetSharp.Server?label=HacknetSharp.Server&logo=Nuget)](https://www.nuget.org/packages/HacknetSharp.Server/)
 
 # Multiplayer hacknet-like game-like thing
 
-[Documentation](https://the-council-of-wills.github.io/HacknetSharp/articles/intro.html)
+[Documentation](https://riina.github.io/HacknetSharp/articles/intro.html)
 
-[Lua API reference](https://the-council-of-wills.github.io/HacknetSharp/articles/lua-api-reference.html)
+[Lua API reference](https://riina.github.io/HacknetSharp/articles/lua-api-reference.html)
 
 ## Current Status
 
@@ -24,7 +24,7 @@ Most significant programs are implemented:
 * Chatting (chatd/chat/c)
 
 There are still some features missing, listed on the
-[MVP project board](https://github.com/The-Council-of-Wills/HacknetSharp/projects/1).
+[MVP project board](https://github.com/riina/HacknetSharp/projects/1).
 
 ## Client
 [Usage](docfx_project/articles/usage-client.md)
