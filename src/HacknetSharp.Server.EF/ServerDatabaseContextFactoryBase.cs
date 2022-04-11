@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.EF
 {
     /// <inheritdoc />
     public abstract class ServerDatabaseContextFactoryBase : IDesignTimeDbContextFactory<ServerDatabaseContext>

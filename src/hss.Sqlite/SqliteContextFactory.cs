@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -29,7 +30,7 @@ namespace hss.Sqlite
             ServerUtil.DefaultServices.Concat(CustomServices.SelectMany(e => e));
 
         public override IEnumerable<Type> Models =>
-            ServerUtil.DefaultModels.Concat(CustomModels.SelectMany(e => e));
+            EFUtil.DefaultModels.Concat(CustomModels.SelectMany(e => e));
 
         protected override IEnumerable<IEnumerable<Type>> CustomPrograms => new[] { ServerUtil.CustomPrograms };
 

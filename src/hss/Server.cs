@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using HacknetSharp;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using HacknetSharp.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

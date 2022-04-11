@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Description>HacknetSharp server core library</Description>
+    <Description>HacknetSharp server EF support library</Description>
     <Copyright>Copyright ©2020 teamRokuro</Copyright>
     <PackageProjectUrl>https://github.com/Lucina/HacknetSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Lucina/HacknetSharp</RepositoryUrl>
@@ -20,11 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.3" />
-    <PackageReference Include="MoonSharp.StaticGlue" Version="0.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HacknetSharp\HacknetSharp.csproj" />
+    <ProjectReference Include="..\HacknetSharp.Server\HacknetSharp.Server.csproj" />
   </ItemGroup>
+
 </Project>

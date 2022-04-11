@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server.Models
@@ -39,15 +37,5 @@ namespace HacknetSharp.Server.Models
         /// Task object.
         /// </summary>
         public DynValue? Task { get; set; } = null!;
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) => builder.Entity<CronModel>(x =>
-        {
-            x.HasKey(v => v.Key);
-            x.Ignore(v => v.Task);
-        });
-#pragma warning restore 1591
     }
 }

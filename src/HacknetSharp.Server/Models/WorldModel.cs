@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
@@ -99,23 +97,5 @@ namespace HacknetSharp.Server.Models
         /// Systems with non-<see cref="Guid.Empty"/> spawn groups.
         /// </summary>
         public Dictionary<Guid, List<PersonModel>> SpawnGroupPersons { get; set; } = new();
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) =>
-            builder.Entity<WorldModel>(x =>
-            {
-                x.HasKey(v => v.Key);
-                x.HasMany(y => y.Persons).WithOne(z => z.World).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(y => y.Systems).WithOne(z => z.World).OnDelete(DeleteBehavior.Cascade);
-                x.Ignore(y => y.AddressedSystems);
-                x.Ignore(y => y.TaggedSystems);
-                x.Ignore(y => y.TaggedPersons);
-                x.Ignore(y => y.ActiveMissions);
-                x.Ignore(y => y.SpawnGroupPersons);
-                x.Ignore(y => y.SpawnGroupSystems);
-            });
-#pragma warning restore 1591
     }
 }

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using HacknetSharp;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using HacknetSharp.Server.Models;
 
 namespace hss

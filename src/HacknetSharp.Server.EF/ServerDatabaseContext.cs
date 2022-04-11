@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.EF
 {
     /// <summary>
     /// Represents a database session.

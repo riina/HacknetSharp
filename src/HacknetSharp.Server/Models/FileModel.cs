@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
@@ -148,11 +147,5 @@ namespace HacknetSharp.Server.Models
             /// </summary>
             Admin
         }
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) => builder.Entity<FileModel>(x => x.HasKey(v => v.Key));
-#pragma warning restore 1591
     }
 }

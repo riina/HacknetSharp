@@ -48,20 +48,11 @@ namespace HacknetSharp.Server
         public static IEnumerable<Type> GetTypes(Type t, Assembly assembly) =>
             assembly.GetTypes().Where(type => IsSubclass(t, type) && !type.IsAbstract);
 
-        private static readonly HashSet<Type> _defaultModels =
-            new(GetTypes(typeof(Model<>), typeof(Model<>).Assembly));
-
         private static readonly HashSet<Type> _defaultPrograms =
             new(GetTypes(typeof(Program), typeof(Program).Assembly));
 
         private static readonly HashSet<Type> _defaultServices =
             new(GetTypes(typeof(Service), typeof(Service).Assembly));
-
-        /// <summary>
-        /// Standard model types.
-        /// </summary>
-        public static IEnumerable<Type> DefaultModels => _defaultModels;
-
         /// <summary>
         /// Standard programs.
         /// </summary>

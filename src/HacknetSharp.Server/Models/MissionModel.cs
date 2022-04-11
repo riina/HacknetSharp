@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using HacknetSharp.Server.Templates;
-using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
@@ -34,16 +32,5 @@ namespace HacknetSharp.Server.Models
         /// Mission data.
         /// </summary>
         public MissionTemplate Data { get; set; } = null!;
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) =>
-            builder.Entity<MissionModel>(x =>
-            {
-                x.HasKey(v => v.Key);
-                x.Ignore(v => v.Data);
-            });
-#pragma warning restore 1591
     }
 }

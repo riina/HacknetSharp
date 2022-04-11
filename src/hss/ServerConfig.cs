@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using Microsoft.Extensions.Logging;
 
 namespace hss

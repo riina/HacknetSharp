@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
@@ -85,19 +84,6 @@ namespace HacknetSharp.Server.Models
         /// Logical group this entity was spawned in.
         /// </summary>
         public virtual Guid SpawnGroup { get; set; }
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) =>
-            builder.Entity<PersonModel>(x =>
-            {
-                x.HasKey(v => v.Key);
-                x.HasMany(y => y.Systems).WithOne(z => z.Owner).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(y => y.Missions).WithOne(z => z.Person).OnDelete(DeleteBehavior.Cascade);
-                x.Ignore(v => v.ShellChain);
-            });
-#pragma warning restore 1591
 
         /// <inheritdoc />
         public override string ToString()

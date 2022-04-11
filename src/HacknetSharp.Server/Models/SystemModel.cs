@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
@@ -234,27 +233,6 @@ namespace HacknetSharp.Server.Models
             /// </summary>
             public static readonly TrapSignal Singleton = new();
         }
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) =>
-            builder.Entity<SystemModel>(x =>
-            {
-                x.HasKey(v => v.Key);
-                x.HasMany(y => y.Files).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(y => y.Tasks).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(y => y.Logins).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
-                x.HasMany(y => y.Vulnerabilities).WithOne(z => z.System).OnDelete(DeleteBehavior.Cascade);
-                x.Ignore(y => y.Processes);
-                x.Ignore(y => y.Pulse);
-                x.Ignore(y => y.PublicServices);
-                x.Ignore(y => y.TargetingShells);
-                x.Ignore(y => y.VulnerabilityVersions);
-                x.Ignore(y => y.FirewallVersion);
-                x.Ignore(y => y.ProxyVersion);
-            });
-#pragma warning restore 1591
 
         /// <summary>
         /// Resets a vulnerability.

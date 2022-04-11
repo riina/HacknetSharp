@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using hss.Postgres;
 using hss.Runnables;
 using hss.Sqlite;

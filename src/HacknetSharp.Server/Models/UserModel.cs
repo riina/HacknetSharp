@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 
 namespace HacknetSharp.Server.Models
 {
@@ -49,17 +47,5 @@ namespace HacknetSharp.Server.Models
         /// Currently available outputs for server events.
         /// </summary>
         public HashSet<IPersonContext> Outputs { get; set; } = new();
-
-        [ModelBuilderCallback]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-#pragma warning disable 1591
-        public static void ConfigureModel(ModelBuilder builder) =>
-            builder.Entity<UserModel>(x =>
-            {
-                x.HasKey(v => v.Key);
-                x.HasMany(p => p.Identities).WithOne(p => p.User!).OnDelete(DeleteBehavior.Cascade);
-                x.Ignore(v => v.Outputs);
-            });
-#pragma warning restore 1591
     }
 }

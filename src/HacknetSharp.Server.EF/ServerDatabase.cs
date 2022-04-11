@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.EF
 {
     /// <summary>
     /// Represents a default backing database for a server instance.

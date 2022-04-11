@@ -2,6 +2,7 @@
 
 using System;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

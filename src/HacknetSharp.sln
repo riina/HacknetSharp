@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss", "hss\hss.csproj", "{D6C77A3F-B65D-4FCC-B8AB-4EA44E0026CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hss.Postgres", "hss.Postgres\hss.Postgres.csproj", "{BE44BAE8-E0A2-4C28-9CBC-BE1F7F14BD4A}"
@@ -15,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server", "HacknetSharp.Server\HacknetSharp.Server.csproj", "{C8C17A42-B058-4480-952C-F4431DC67D25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Sourcegen", "HacknetSharp.Sourcegen\HacknetSharp.Sourcegen.csproj", "{1F29553D-83FA-48CE-B928-480F063E7D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.EF", "HacknetSharp.Server.EF\HacknetSharp.Server.EF.csproj", "{502F4DFD-E115-478A-A8D0-9B432EA116AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,5 +57,9 @@ Global
 		{1F29553D-83FA-48CE-B928-480F063E7D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F29553D-83FA-48CE-B928-480F063E7D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F29553D-83FA-48CE-B928-480F063E7D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
