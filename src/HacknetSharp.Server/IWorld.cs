@@ -164,6 +164,14 @@ namespace HacknetSharp.Server
         MissionModel? StartMission(PersonModel person, string missionPath, Guid campaignKey);
 
         /// <summary>
+        /// Queues a mission for the specified person.
+        /// </summary>
+        /// <param name="person">Target person.</param>
+        /// <param name="missionPath">Mission template path.</param>
+        /// <param name="campaignKey">Campaign key.</param>
+        void QueueMission(PersonModel person, string missionPath, Guid campaignKey);
+
+        /// <summary>
         /// Tries to get a script file's function from the specified path.
         /// </summary>
         /// <param name="name">Path to search.</param>

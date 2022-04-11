@@ -366,7 +366,7 @@ namespace hss
             string? startingMission = world.Model.StartingMission;
             if (!string.IsNullOrWhiteSpace(startingMission) &&
                 world.Templates.MissionTemplates.ContainsKey(startingMission))
-                world.StartMission(person, startingMission, Guid.NewGuid());
+                world.QueueMission(person, startingMission, Guid.NewGuid());
             return person;
         }
 

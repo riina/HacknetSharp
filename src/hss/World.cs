@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers.Binary;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -39,6 +40,7 @@ namespace hss
         private readonly Dictionary<string, DynValue> _scriptMissionStart;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionGoal;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionNext;
+        private readonly ConcurrentQueue<QueuedMission> _missionQueue;
 
         internal World(Server server, WorldModel model, IServerDatabase database)
         {
@@ -57,6 +59,7 @@ namespace hss
             _scriptMissionGoal = new Dictionary<string, Dictionary<int, DynValue>>();
             _scriptMissionNext = new Dictionary<string, Dictionary<int, DynValue>>();
             _tmpMissions = new HashSet<MissionModel>();
+            _missionQueue = new ConcurrentQueue<QueuedMission>();
             foreach (var person in Model.Persons)
             {
                 _tmpMissions.Clear();
@@ -205,6 +208,17 @@ namespace hss
 
         private void TickMissions(HashSet<MissionModel> tmpMissions)
         {
+            while (_missionQueue.TryDequeue(out var dequeued))
+            {
+                try
+                {
+                    StartMission(dequeued.Person, dequeued.MissionPath, dequeued.CampaignKey);
+                }
+                catch (Exception e)
+                {
+                    Logger.LogWarning("Exception thrown while starting queued mission: {Exception}", e);
+                }
+            }
             tmpMissions.Clear();
             tmpMissions.UnionWith(Model.ActiveMissions);
             foreach (var mission in tmpMissions)
@@ -815,6 +829,11 @@ namespace hss
             Logger.LogInformation("Successfully started mission {Path} for person {Id}", mission.Template,
                 mission.Person.Key);
             return mission;
+        }
+
+        public void QueueMission(PersonModel person, string missionPath, Guid campaignKey)
+        {
+            _missionQueue.Enqueue(new QueuedMission(person, missionPath, campaignKey));
         }
 
         private void RegisterScriptFile(string name, Stream stream)
