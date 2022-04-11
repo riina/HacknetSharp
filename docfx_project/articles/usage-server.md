@@ -39,11 +39,12 @@ Now the certificate needs to be installed.
 
 * Windows
   - Go to `Manage User Certificates` in Control Panel.
+  - Select `Trusted Root Certification Authorities`.
   - Click `Action > All Tasks > Import...`.
   - Select the pfx file you created.
   - Enter the export password.
   - Select "Place all certificates in the following store" and press `Browse...`
-  - Select show physical stores, then select `Trusted Root Certificate Authorities > Local Computer`.
+  - Select show physical stores, then select `Trusted Root Certification Authorities > Local Computer`.
   - Finish the procedure.
 * macOS
   - Double-click your .pfx and enter the export password to import it

@@ -89,9 +89,6 @@ namespace hss.Runnables
             [Value(0, MetaName = "names", HelpText = "User names.")]
             public IEnumerable<string> Names { get; set; } = null!;
 
-            [Option('a', "all", HelpText = "List all users.")]
-            public bool All { get; set; }
-
             public async Task<int> Run(Executor executor)
             {
                 var factory = executor.ServerDatabaseContextFactory;
@@ -99,7 +96,7 @@ namespace hss.Runnables
                 var names = new HashSet<string>(Names);
 
                 Console.Write("Retrieving from database... ");
-                var users = await (All
+                var users = await (names.Count == 0
                     ? ctx.Set<UserModel>()
                     : ctx.Set<UserModel>().Where(u => names.Contains(u.Key))).ToListAsync().Caf();
                 Console.WriteLine("Done.");

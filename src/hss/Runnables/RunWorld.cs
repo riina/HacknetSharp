@@ -107,9 +107,6 @@ namespace hss.Runnables
             [Value(0, MetaName = "names", HelpText = "World names.")]
             public IEnumerable<string> Names { get; set; } = null!;
 
-            [Option('a', "all", HelpText = "List all worlds.")]
-            public bool All { get; set; }
-
             public async Task<int> Run(Executor executor)
             {
                 var factory = executor.ServerDatabaseContextFactory;
@@ -117,7 +114,7 @@ namespace hss.Runnables
                 var names = new HashSet<string>(Names);
 
                 Console.Write("Retrieving from database... ");
-                var worlds = await (All
+                var worlds = await (names.Count == 0
                     ? ctx.Set<WorldModel>()
                     : ctx.Set<WorldModel>().Where(u => names.Contains(u.Name))).ToListAsync().Caf();
                 Console.WriteLine("Done.");
