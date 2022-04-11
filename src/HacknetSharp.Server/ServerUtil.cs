@@ -845,5 +845,29 @@ namespace HacknetSharp.Server
         /// Standard fixed YAML serializer.
         /// </summary>
         public static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
+
+        /// <summary>
+        /// Reads a base64-encoded object via a stream transform.
+        /// </summary>
+        /// <param name="content">Encoded object.</param>
+        /// <param name="func">Transform.</param>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <returns>Object or null.</returns>
+        public static T ReadBase64Azura<T>(string content, Func<Stream, T> func)
+        {
+            return func(new MemoryStream(Convert.FromBase64String(content)));
+        }
+
+        /// <summary>
+        /// Writes a base64-encoded object via a stream transform.
+        /// </summary>
+        /// <param name="action">Transform.</param>
+        /// <returns>Base64.</returns>
+        public static string WriteBase64Azura(Action<Stream> action)
+        {
+            MemoryStream memoryStream = new();
+            action(memoryStream);
+            return Convert.ToBase64String(memoryStream.GetBuffer(), 0, (int)memoryStream.Length);
+        }
     }
 }

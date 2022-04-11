@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Azura;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
-using YamlDotNet.Serialization;
 
 namespace HacknetSharp.Server.CoreServices
 {
@@ -11,9 +11,9 @@ namespace HacknetSharp.Server.CoreServices
     public class ChatService : Service
     {
         /// <summary>
-        /// Configuration file with <see cref="ChatInfo"/> in YAML.
+        /// Configuration file with <see cref="ChatInfo"/>.
         /// </summary>
-        public const string ConfigFile = "chatd.cfg";
+        public const string ConfigFile = "chatd.cfg.bin";
 
         /// <summary>
         /// Message handler delegate.
@@ -44,27 +44,6 @@ namespace HacknetSharp.Server.CoreServices
         /// </summary>
         public ChatInfo Info { get; set; } = new();
 
-        /// <summary>
-        /// Stores information about chat service, e.g. available channels and bans.
-        /// </summary>
-        public class ChatInfo
-        {
-            /// <summary>
-            /// Available chat rooms, as name-password pairs.
-            /// </summary>
-            public Dictionary<string, string> Rooms { get; set; } = new();
-
-            /// <summary>
-            /// Banned IP ranges.
-            /// </summary>
-            public List<string> Banned { get; set; } = new();
-
-            /// <summary>
-            /// Banned IP ranges.
-            /// </summary>
-            [YamlIgnore]
-            public List<IPAddressRange> BannedRanges { get; set; } = new();
-        }
 
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
@@ -73,23 +52,36 @@ namespace HacknetSharp.Server.CoreServices
             // Try to load chat config
             try
             {
-                ChatInfo info;
+                ChatInfo? info = null;
                 if (System.TryGetFile(ConfigFile, Login, out var result, out _, out var file) &&
                     file.Kind == FileModel.FileKind.TextFile)
                 {
-                    info = ServerUtil.YamlDeserializer.Deserialize<ChatInfo>(file.Content ?? "");
+                    try
+                    {
+                        info = ServerUtil.ReadBase64Azura(file.Content ?? "", ChatInfoSerialization.Deserialize);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                    if (info == null)
+                    {
+                        info = new ChatInfo();
+                        file.Content = ServerUtil.WriteBase64Azura(info.Serialize);
+                        World.Database.Update(file);
+                        Info = info;
+                    }
                 }
                 else
                 {
                     info = new ChatInfo();
                     if (result == ReadAccessResult.NoExist)
                     {
-                        string text = ServerUtil.YamlSerializer.Serialize(info);
+                        string text = ServerUtil.WriteBase64Azura(info.Serialize);
                         World.Spawn.TextFile(System, Login, ConfigFile, text);
                     }
+                    Info = info;
                 }
-
-                Info = info;
             }
             catch
             {
@@ -109,5 +101,29 @@ namespace HacknetSharp.Server.CoreServices
             MessageReceivers = null;
             return true;
         }
+    }
+
+    /// <summary>
+    /// Stores information about chat service, e.g. available channels and bans.
+    /// </summary>
+    [Azura]
+    public class ChatInfo
+    {
+        /// <summary>
+        /// Available chat rooms, as name-password pairs.
+        /// </summary>
+        [Azura]
+        public Dictionary<string, string> Rooms { get; set; } = new();
+
+        /// <summary>
+        /// Banned IP ranges.
+        /// </summary>
+        [Azura]
+        public List<string> Banned { get; set; } = new();
+
+        /// <summary>
+        /// Banned IP ranges.
+        /// </summary>
+        public List<IPAddressRange> BannedRanges { get; set; } = new();
     }
 }
