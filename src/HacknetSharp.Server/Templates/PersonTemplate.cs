@@ -47,14 +47,28 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Username pool (weighted).
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, float>? Usernames { get; set; }
+
+        /// <summary>
+        /// Adds a username with the specified value and weight.
+        /// </summary>
+        /// <param name="username">Value.</param>
+        /// <param name="weight">Weight.</param>
+        [Scriptable]
+        public void AddUsername(string username, float weight) => (Usernames ??= new Dictionary<string, float>())[username] = weight;
 
         /// <summary>
         /// Password pool (weighted).
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, float>? Passwords { get; set; }
+
+        /// <summary>
+        /// Adds a password with the specified value and weight.
+        /// </summary>
+        /// <param name="password">Value.</param>
+        /// <param name="weight">Weight.</param>
+        [Scriptable]
+        public void AddPassword(string password, float weight) => (Passwords ??= new Dictionary<string, float>())[password] = weight;
 
         /// <summary>
         /// CIDR range string for address pool.
@@ -65,14 +79,28 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Email provider pool (weighted).
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, float>? EmailProviders { get; set; }
+
+        /// <summary>
+        /// Adds an email provider with the specified value and weight.
+        /// </summary>
+        /// <param name="emailProvider">Value.</param>
+        /// <param name="weight">Weight.</param>
+        [Scriptable]
+        public void AddEmailProvider(string emailProvider, float weight) => (EmailProviders ??= new Dictionary<string, float>())[emailProvider] = weight;
 
         /// <summary>
         /// Primary template pool (weighted).
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, float>? PrimaryTemplates { get; set; }
+
+        /// <summary>
+        /// Adds a primary template with the specified value and weight.
+        /// </summary>
+        /// <param name="primaryTemplate">Value.</param>
+        /// <param name="weight">Weight.</param>
+        [Scriptable]
+        public void AddPrimaryTemplate(string primaryTemplate, float weight) => (PrimaryTemplates ??= new Dictionary<string, float>())[primaryTemplate] = weight;
 
         /// <summary>
         /// Minimum # in generated fleet.
@@ -89,14 +117,32 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Fleet template pool (weighted).
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, float>? FleetTemplates { get; set; }
+
+        /// <summary>
+        /// Adds a fleet template with the specified value and weight.
+        /// </summary>
+        /// <param name="fleetTemplate">Value.</param>
+        /// <param name="weight">Weight.</param>
+        [Scriptable]
+        public void AddFleetTemplate(string fleetTemplate, float weight) => (FleetTemplates ??= new Dictionary<string, float>())[fleetTemplate] = weight;
 
         /// <summary>
         /// Fixed-system network to generate.
         /// </summary>
-        // TODO scripting layer
         public List<NetworkEntry>? Network { get; set; }
+
+        /// <summary>
+        /// Creates and adds a <see cref="NetworkEntry"/>.
+        /// </summary>
+        /// <returns>Object.</returns>
+        [Scriptable]
+        public NetworkEntry CreateNetworkEntry()
+        {
+            NetworkEntry networkEntry = new();
+            (Network ??= new List<NetworkEntry>()).Add(networkEntry);
+            return networkEntry;
+        }
 
         /// <summary>
         /// Reboot duration in seconds.
@@ -282,24 +328,37 @@ namespace HacknetSharp.Server.Templates
         /// Template to use.
         /// </summary>
         [Scriptable]
-        public string? Template { get; set; } = null!;
+        public string? Template { get; set; }
 
         /// <summary>
         /// Specific address for system.
         /// </summary>
         [Scriptable]
-        public string? Address { get; set; } = null!;
+        public string? Address { get; set; }
 
         /// <summary>
         /// Additional replacements to pass to system template.
         /// </summary>
-        // TODO scripting layer
         public Dictionary<string, string>? Configuration { get; set; }
+
+        /// <summary>
+        /// Adds a replacement with the specified value and weight.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        /// <param name="value">Value.</param>
+        [Scriptable]
+        public void AddReplacement(string key, string value) => (Configuration ??= new Dictionary<string, string>())[key] = value;
 
         /// <summary>
         /// Other <see cref="NetworkEntry.Address"/>es to create local links to.
         /// </summary>
-        // TODO scripting layer
         public List<string>? Links { get; set; }
+
+        /// <summary>
+        /// Adds a link.
+        /// </summary>
+        /// <param name="link">Value.</param>
+        [Scriptable]
+        public void AddPassword(string link) => (Links ??= new List<string>()).Add(link);
     }
 }
