@@ -103,7 +103,7 @@ namespace HacknetSharp.Server.CorePrograms
                 case "list":
                     {
                         var sb = new StringBuilder();
-                        foreach (var l in logins) sb.Append(IC, $"{l.User} ({(l.Admin ? "admin" : "standard")})\n");
+                        foreach (var l in logins) sb.Append(string.Format(IC, "{0} ({1})\n", l.User, l.Admin ? "admin" : "standard"));
                         if (sb.Length == 0) sb.Append('\n');
                         Write(sb.ToString());
                         break;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -112,7 +111,7 @@ namespace HacknetSharp.Server
         public static bool IsSubclass(Type @base, Type? toCheck) =>
             @base != toCheck && (@base.IsGenericType
                 ? IsSubclassOfRawGeneric(@base, toCheck)
-                : toCheck?.IsAssignableTo(@base) ?? false);
+                : toCheck != null && @base.IsAssignableFrom(toCheck));
 
         // https://stackoverflow.com/a/457708
         private static bool IsSubclassOfRawGeneric(Type generic, Type? toCheck)
@@ -418,9 +417,9 @@ namespace HacknetSharp.Server
         /// <param name="optKeys">Option keys.</param>
         /// <returns>Flags, options, and arguments.</returns>
         public static (HashSet<string> flags, Dictionary<string, string> opts, List<string> args) IsolateFlags(
-            IReadOnlyList<string> arguments, IReadOnlySet<string>? optKeys = null)
+            IReadOnlyList<string> arguments, IReadOnlyCollection<string>? optKeys = null)
         {
-            optKeys ??= ImmutableHashSet<string>.Empty;
+            optKeys ??= Array.Empty<string>();
             HashSet<string> flags = new();
             Dictionary<string, string> opts = new();
             List<string> args = new();

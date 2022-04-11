@@ -91,7 +91,7 @@ namespace HacknetSharp.Server.CorePrograms
                     foreach (var entry in LoginManager.GetLogins(Login, hostUint).Values)
                     {
                         if (name == AutoLoginName || name == entry.Name)
-                            sb.Append(IC, $"{entry.Name}: {entry.Pass}\n");
+                            sb.Append(string.Format(IC, "{0}: {1}\n", entry.Name, entry.Pass));
                     }
 
                     if (sb.Length == 0) sb.Append('\n');

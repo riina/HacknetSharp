@@ -22,7 +22,7 @@ namespace HacknetSharp.Server.CorePrograms
                 {
                     sb.Append("\n««  Intrinsic commands  »»\n\n");
                     foreach (var intrinsic in World.IntrinsicPrograms)
-                        sb.Append(IC, $"{intrinsic.Item2.Name,-12} {intrinsic.Item2.Description}\n");
+                        sb.Append(string.Format(IC, "{0,-12} {1}\n", intrinsic.Item2.Name, intrinsic.Item2.Description));
                     sb.Append("\n««  Programs  »»\n\n");
                     foreach (var program in System.Files.Where(f => f.Path == "/bin" && !f.Hidden && f.CanRead(Login))
                                  .OrderBy(f => f.Name))
@@ -30,7 +30,7 @@ namespace HacknetSharp.Server.CorePrograms
                         var info = World.GetProgramInfo(program.Content);
                         GenReplacements(replacements, program.Content!);
                         if (info == null) continue;
-                        sb.Append(IC, $"{program.Name,-12} {info.Description.ApplyReplacements(replacements)}\n");
+                        sb.Append(string.Format(IC, "{0,-12} {1}\n", program.Name, info.Description.ApplyReplacements(replacements)));
                     }
                 }
                 else

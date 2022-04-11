@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
@@ -10,8 +9,7 @@ namespace HacknetSharp.Server
     [IgnoreRegistration]
     public class LuaProgram : Program
     {
-        private static readonly IReadOnlyDictionary<string, object> _defaultDict =
-            ImmutableDictionary.Create<string, object>();
+        private static readonly IReadOnlyDictionary<string, object> _defaultDict = new Dictionary<string, object>();
 
         private readonly Coroutine _coroutine;
         private readonly IReadOnlyDictionary<string, object> _additionalProps;

@@ -105,7 +105,7 @@ namespace HacknetSharp.Server
         /// <param name="path">Input path.</param>
         /// <returns>Normalized path.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetNormalized(string path) => Path.TrimEndingDirectorySeparator(GetFullPath(path, "/"));
+        public static string GetNormalized(string path) => PathInternal.TrimEndingDirectorySeparator(GetFullPath(path, "/"));
 
         /// <summary>
         /// Gets filename from path.
