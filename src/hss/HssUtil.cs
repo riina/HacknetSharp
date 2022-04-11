@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Templates;
+using YamlDotNet.Serialization;
 
 namespace hss
 {
@@ -82,6 +83,16 @@ namespace hss
                 }
             }
         }
+
+        /// <summary>
+        /// Standard fixed YAML deserializer.
+        /// </summary>
+        public static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
+
+        /// <summary>
+        /// Standard fixed YAML serializer.
+        /// </summary>
+        public static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
 
         private static readonly YamlContentImporter s_yamlContentImporter = new();
         private static readonly LuaContentImporter s_luaContentImporter = new();

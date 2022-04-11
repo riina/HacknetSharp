@@ -10,7 +10,6 @@ using System.Text;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using YamlDotNet.Serialization;
 
 namespace HacknetSharp.Server
 {
@@ -835,16 +834,6 @@ namespace HacknetSharp.Server
             EscapeNonQuoted,
             EscapeQuoted
         }
-
-        /// <summary>
-        /// Standard fixed YAML deserializer.
-        /// </summary>
-        public static readonly IDeserializer YamlDeserializer = new DeserializerBuilder().Build();
-
-        /// <summary>
-        /// Standard fixed YAML serializer.
-        /// </summary>
-        public static readonly ISerializer YamlSerializer = new SerializerBuilder().Build();
 
         /// <summary>
         /// Reads a base64-encoded object via a stream transform.

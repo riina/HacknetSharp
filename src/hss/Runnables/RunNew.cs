@@ -131,7 +131,7 @@ namespace hss.Runnables
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)) ??
                                       throw new ApplicationException());
             using var tw = new StreamWriter(File.OpenWrite(path));
-            ServerUtil.YamlSerializer.Serialize(tw, result);
+            HssUtil.YamlSerializer.Serialize(tw, result);
             Console.WriteLine($"Template saved to:\n{path}");
             return Task.FromResult(0);
         }
