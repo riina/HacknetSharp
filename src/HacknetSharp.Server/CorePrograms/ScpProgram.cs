@@ -22,6 +22,7 @@ namespace HacknetSharp.Server.CorePrograms
             {
                 Write(
                     "scp: 1 or 2 operands are required by this command:\n\t<username>@<server>:<source> [<dest>]\n");
+                yield break;
             }
 
             if (!ServerUtil.TryParseScpConString(Argv[1], out string? name, out string? host, out string? path,
