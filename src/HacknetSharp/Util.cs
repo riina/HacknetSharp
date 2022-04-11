@@ -33,22 +33,6 @@ namespace HacknetSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConfiguredTaskAwaitable<T> Caf<T>(this Task<T> task) => task.ConfigureAwait(false);
 
-        /// <summary>
-        /// Shorthand for ConfigureAwait(false).
-        /// </summary>
-        /// <param name="task">Task to wrap.</param>
-        /// <returns>Wrapped task.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ConfiguredValueTaskAwaitable Caf(this ValueTask task) => task.ConfigureAwait(false);
-
-        /// <summary>
-        /// Shorthand for ConfigureAwait(false).
-        /// </summary>
-        /// <param name="task">Task to wrap.</param>
-        /// <returns>Wrapped task.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ConfiguredValueTaskAwaitable<T> Caf<T>(this ValueTask<T> task) => task.ConfigureAwait(false);
-
 
         /// <summary>
         /// Writes a command code to this stream.

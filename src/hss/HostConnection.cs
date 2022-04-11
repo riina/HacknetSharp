@@ -12,6 +12,7 @@ using HacknetSharp;
 using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
+using HacknetSharp.Server.EF;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
 
