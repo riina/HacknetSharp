@@ -102,6 +102,7 @@ namespace hss
 
                                 if (login.RegistrationToken != null)
                                 {
+                                    // TODO login via forge token misses initial mission prompt
                                     _user = await _server.AccessController
                                         .RegisterAsync(login.User, login.Pass, login.RegistrationToken).Caf();
                                     if (_user != null)

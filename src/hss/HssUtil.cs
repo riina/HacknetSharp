@@ -43,10 +43,10 @@ namespace hss
         {
             Dictionary<string, Action<string, string>> templateLoadDict = new()
             {
-                { ".world.yaml", (file, path) => templates.WorldTemplates.Add(file, ReadFromFile<WorldTemplate>(path).Item2) },
-                { ".person.yaml", (file, path) => templates.PersonTemplates.Add(file, ReadFromFile<PersonTemplate>(path).Item2) },
-                { ".system.yaml", (file, path) => templates.SystemTemplates.Add(file, ReadFromFile<SystemTemplate>(path).Item2) },
-                { ".mission.yaml", (file, path) => templates.MissionTemplates.Add(file, ReadFromFile<MissionTemplate>(path).Item2) },
+                { ".world.yaml", (file, path) => templates.WorldTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<WorldTemplate>(path)) },
+                { ".person.yaml", (file, path) => templates.PersonTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<PersonTemplate>(path)) },
+                { ".system.yaml", (file, path) => templates.SystemTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<SystemTemplate>(path)) },
+                { ".mission.yaml", (file, path) => templates.MissionTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<MissionTemplate>(path)) },
                 { ".script.lua", (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path)) }
             };
             LoadTree(dir, templateLoadDict);
@@ -79,8 +79,8 @@ namespace hss
             }
         }
 
-        public static (string, T) ReadFromFile<T>(string file) => (
-            Path.GetFileNameWithoutExtension(file).ToLowerInvariant(),
-            ServerUtil.YamlDeserializer.Deserialize<T>(File.ReadAllText(file)));
+        private static readonly YamlContentImporter s_yamlContentImporter = new();
+
+        public static ContentImporterGroup DefaultContentImporterGroup = new((".yml", s_yamlContentImporter), (".yaml", s_yamlContentImporter));
     }
 }

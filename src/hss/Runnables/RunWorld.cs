@@ -33,7 +33,7 @@ namespace hss.Runnables
                     return 8;
                 }
 
-                var (_, servConf) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
+                var servConf = HssUtil.DefaultContentImporterGroup.ImportNotNull<ServerSettings>(HssConstants.ServerYamlFile);
 
                 var factory = executor.ServerDatabaseContextFactory;
                 await using var ctx = factory.CreateDbContext(Array.Empty<string>());

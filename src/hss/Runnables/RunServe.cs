@@ -29,7 +29,7 @@ namespace hss.Runnables
                 return 8;
             }
 
-            var (_, servConf) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
+            var servConf = HssUtil.DefaultContentImporterGroup.ImportNotNull<ServerSettings>(HssConstants.ServerYamlFile);
             if (servConf.Host == null)
             {
                 Console.WriteLine($"Config has null {nameof(ServerSettings.Host)}");

@@ -25,7 +25,7 @@ namespace hss
         {
             ServerSettings? serverYaml = null;
             if (File.Exists(HssConstants.ServerYamlFile))
-                (_, serverYaml) = HssUtil.ReadFromFile<ServerSettings>(HssConstants.ServerYamlFile);
+                serverYaml = HssUtil.DefaultContentImporterGroup.ImportNotNull<ServerSettings>(HssConstants.ServerYamlFile);
             string? kind = Environment.GetEnvironmentVariable(EnvStorageKind);
             if (kind == null && serverYaml?.Database != null &&
                 serverYaml.Database.TryGetValue("Kind", out var databaseKind))
