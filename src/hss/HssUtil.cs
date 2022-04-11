@@ -47,6 +47,10 @@ namespace hss
                 { ".person.yaml", (file, path) => templates.PersonTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<PersonTemplate>(path)) },
                 { ".system.yaml", (file, path) => templates.SystemTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<SystemTemplate>(path)) },
                 { ".mission.yaml", (file, path) => templates.MissionTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<MissionTemplate>(path)) },
+                { ".world.lua", (file, path) => templates.WorldTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<WorldTemplate>(path)) },
+                { ".person.lua", (file, path) => templates.PersonTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<PersonTemplate>(path)) },
+                { ".system.lua", (file, path) => templates.SystemTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<SystemTemplate>(path)) },
+                { ".mission.lua", (file, path) => templates.MissionTemplates.Add(file, DefaultContentImporterGroup.ImportNotNull<MissionTemplate>(path)) },
                 { ".script.lua", (file, path) => templates.LuaSources.Add(file, () => File.OpenRead(path)) }
             };
             LoadTree(dir, templateLoadDict);
@@ -80,7 +84,8 @@ namespace hss
         }
 
         private static readonly YamlContentImporter s_yamlContentImporter = new();
+        private static readonly LuaContentImporter s_luaContentImporter = new();
 
-        public static ContentImporterGroup DefaultContentImporterGroup = new((".yml", s_yamlContentImporter), (".yaml", s_yamlContentImporter));
+        public static ContentImporterGroup DefaultContentImporterGroup = new((".yml", s_yamlContentImporter), (".yaml", s_yamlContentImporter), (".lua", s_luaContentImporter));
     }
 }

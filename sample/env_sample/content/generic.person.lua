@@ -1,0 +1,12 @@
+local x = person_t.__new()
+x.AddUsername("locke", 1)
+x.AddUsername("bacon", 1)
+x.AddUsername("haydentenno", 1)
+x.AddPassword("misterchef", 1)
+x.AddPassword("rogerroger", 1)
+x.AddPassword("but... why?", 1)
+x.AddEmailProvider("jmail.com", 1)
+x.AddEmailProvider("confirmedplagiarismfilipmiucin.com", 1)
+x.AddEmailProvider("hentaihero.com", 1)
+x.AddPrimaryTemplate("generic.system.lua", 1)
+return x

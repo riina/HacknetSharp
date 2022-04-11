@@ -359,6 +359,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="link">Value.</param>
         [Scriptable]
-        public void AddPassword(string link) => (Links ??= new List<string>()).Add(link);
+        public void AddLink(string link) => (Links ??= new List<string>()).Add(link);
     }
 }
