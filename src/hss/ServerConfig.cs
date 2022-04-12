@@ -11,32 +11,12 @@ namespace hss
     /// <summary>
     /// Stores configuration information.
     /// </summary>
-    public class ServerConfig
+    public class ServerConfig : ServerConfigBase
     {
         /// <summary>
         /// Storage context factory.
         /// </summary>
         public ServerDatabaseContextFactoryBase? StorageContextFactory { get; set; }
-
-        /// <summary>
-        /// Program types.
-        /// </summary>
-        public HashSet<Type> Programs { get; set; }
-
-        /// <summary>
-        /// Service types.
-        /// </summary>
-        public HashSet<Type> Services { get; set; }
-
-        /// <summary>
-        /// Default world.
-        /// </summary>
-        public string? DefaultWorld { get; set; }
-
-        /// <summary>
-        /// World templates.
-        /// </summary>
-        public TemplateGroup Templates { get; set; }
 
         /// <summary>
         /// Server certificate.
@@ -47,16 +27,6 @@ namespace hss
         /// TCP port.
         /// </summary>
         public ushort Port { get; set; }
-
-        /// <summary>
-        /// Message of the day.
-        /// </summary>
-        public string? Motd { get; set; }
-
-        /// <summary>
-        /// Log receiver.
-        /// </summary>
-        public ILogger? Logger { get; set; }
 
         /// <summary>
         /// Creates new instance of <see cref="ServerConfig"/>
@@ -84,7 +54,7 @@ namespace hss
         /// </summary>
         /// <param name="programs">Program types.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithPrograms(IEnumerable<Type> programs)
+        public new ServerConfig WithPrograms(IEnumerable<Type> programs)
         {
             Programs.UnionWith(programs);
             return this;
@@ -95,7 +65,7 @@ namespace hss
         /// </summary>
         /// <param name="services">Service types.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithServices(IEnumerable<Type> services)
+        public new ServerConfig WithServices(IEnumerable<Type> services)
         {
             Services.UnionWith(services);
             return this;
@@ -106,7 +76,7 @@ namespace hss
         /// </summary>
         /// <param name="programs">Program types.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithPrograms(IEnumerable<IEnumerable<Type>> programs)
+        public new ServerConfig WithPrograms(IEnumerable<IEnumerable<Type>> programs)
         {
             Programs.UnionWith(programs.SelectMany(x => x));
             return this;
@@ -117,7 +87,7 @@ namespace hss
         /// </summary>
         /// <param name="defaultWorld">Default world.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithDefaultWorld(string defaultWorld)
+        public new ServerConfig WithDefaultWorld(string defaultWorld)
         {
             DefaultWorld = defaultWorld;
             return this;
@@ -128,7 +98,7 @@ namespace hss
         /// </summary>
         /// <param name="templates">Templates.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithTemplates(TemplateGroup templates)
+        public new ServerConfig WithTemplates(TemplateGroup templates)
         {
             Templates = templates;
             return this;
@@ -161,7 +131,7 @@ namespace hss
         /// </summary>
         /// <param name="motd">Message of the day.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithMotd(string? motd)
+        public new ServerConfig WithMotd(string? motd)
         {
             Motd = motd;
             return this;
@@ -172,7 +142,7 @@ namespace hss
         /// </summary>
         /// <param name="logger">Log receiver.</param>
         /// <returns>This config.</returns>
-        public ServerConfig WithLogger(ILogger? logger)
+        public new ServerConfig WithLogger(ILogger? logger)
         {
             Logger = logger;
             return this;

@@ -5,30 +5,60 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using HacknetSharp;
 using HacknetSharp.Events.Server;
-using HacknetSharp.Server;
 using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
 using MoonSharp.Interpreter;
 
-namespace hss
+namespace HacknetSharp.Server
 {
+    /// <summary>
+    /// Main world implementation.
+    /// </summary>
     public class World : IWorld
     {
+        /// <inheritdoc />
         public ScriptManager ScriptManager { get; }
-        public TemplateGroup Templates { get; }
-        public Server Server { get; }
-        public ILogger Logger { get; }
-        public WorldModel Model { get; }
-        public WorldSpawn Spawn { get; }
-        public IServerDatabase Database { get; }
-        public SystemTemplate PlayerSystemTemplate { get; }
-        public double Time { get; set; }
-        public double PreviousTime { get; set; }
 
+        /// <inheritdoc />
+        public TemplateGroup Templates { get; }
+
+        /// <inheritdoc />
+        public ILogger Logger { get; }
+
+        /// <inheritdoc />
+        public WorldModel Model { get; }
+
+        /// <inheritdoc />
+        public WorldSpawn Spawn { get; }
+
+        /// <inheritdoc />
+        public IServerDatabase Database { get; }
+
+        /// <inheritdoc />
+        public SystemTemplate PlayerSystemTemplate { get; }
+
+        private double _time;
+
+        /// <inheritdoc />
+        double IWorld.Time
+        {
+            get => _time;
+            set => _time = value;
+        }
+
+        private double _previousTime;
+
+        /// <inheritdoc />
+        double IWorld.PreviousTime
+        {
+            get => _previousTime;
+            set => _previousTime = value;
+        }
+
+        private readonly ServerBase _server;
         private readonly HashSet<Process> _processes;
         private readonly HashSet<Process> _tmpProcesses;
         private readonly HashSet<ShellProcess> _shellProcesses;
@@ -42,16 +72,21 @@ namespace hss
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionNext;
         private readonly ConcurrentQueue<QueuedMission> _missionQueue;
 
-        internal World(Server server, WorldModel model, IServerDatabase database)
+        /// <summary>
+        /// Initializes a new instance of <see cref="World"/>.
+        /// </summary>
+        /// <param name="server">Server.</param>
+        /// <param name="model">World model.</param>
+        public World(ServerBase server, WorldModel model)
         {
             ScriptManager = new ScriptManager();
             ScriptManager.SetGlobal("world", this);
             ScriptManager.AddGlobals(new BaseGlobals(ScriptManager, this).MyGlobals);
             Templates = server.Templates;
-            Server = server;
+            _server = server;
             Model = model;
-            Spawn = new WorldSpawn(database, Model);
-            Database = database;
+            Database = server.Database;
+            Spawn = new WorldSpawn(Database, Model);
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Logger = server.Logger;
             _scriptFile = new Dictionary<string, DynValue>();
@@ -153,6 +188,7 @@ namespace hss
             return GetWrappedLua(sr.ReadToEnd(), isVoid);
         }
 
+        /// <inheritdoc />
         public void Tick()
         {
             TickSet(_processes, _tmpProcesses);
@@ -169,14 +205,14 @@ namespace hss
             tmpSystems.UnionWith(Model.Systems);
             foreach (var system in Model.Systems)
             {
-                if (system.BootTime > Time) continue;
+                if (system.BootTime > _time) continue;
                 tmpTasks.Clear();
                 tmpTasks.UnionWith(system.Tasks);
                 foreach (var task in tmpTasks)
                 {
-                    if (task.End > Time)
+                    if (task.End > _time)
                         Spawn.RemoveCron(task);
-                    if (task.LastRunAt + task.Delay < Time)
+                    if (task.LastRunAt + task.Delay < _time)
                     {
                         ScriptManager.SetGlobal("self", task.System);
                         ScriptManager.SetGlobal("system", task.System);
@@ -351,7 +387,7 @@ namespace hss
                 foreach (var p in tmpProcesses)
                     CompleteRecurse(p, Process.CompletionKind.KillRemote);
                 tmpProcesses.Clear();
-                system.BootTime = Time + system.RebootDuration;
+                system.BootTime = _time + system.RebootDuration;
             }
         }
 
@@ -393,7 +429,7 @@ namespace hss
                 }
                 catch (Exception e)
                 {
-                    Server.Logger.LogWarning(
+                    _server.Logger.LogWarning(
                         "Unhandled exception occurred during a process update, killing process.\nException:\n{Exception}",
                         e);
                     processes.Remove(operation);
@@ -403,7 +439,7 @@ namespace hss
                     }
                     catch (Exception e2)
                     {
-                        Server.Logger.LogWarning(
+                        _server.Logger.LogWarning(
                             "Unhandled exception occurred while killing process.\nException:\n{Exception}",
                             e2);
                     }
@@ -411,6 +447,7 @@ namespace hss
             }
         }
 
+        /// <inheritdoc />
         public bool TryGetSystem(Guid id, [NotNullWhen(true)] out SystemModel? system)
         {
             //system = Database.GetAsync<Guid, SystemModel>(id).Result;
@@ -418,6 +455,7 @@ namespace hss
             return system != null;
         }
 
+        /// <inheritdoc />
         public IEnumerable<SystemModel> SearchSystems(Guid? key, string? tag)
         {
             if (tag != null)
@@ -438,6 +476,7 @@ namespace hss
             return Model.Systems;
         }
 
+        /// <inheritdoc />
         public IEnumerable<PersonModel> SearchPersons(Guid? key, string? tag)
         {
             if (tag != null)
@@ -458,6 +497,7 @@ namespace hss
             return Model.Persons;
         }
 
+        /// <inheritdoc />
         public bool CompleteRecurse(Process process, Process.CompletionKind completionKind)
         {
             if (process.Completed != null) return true;
@@ -507,14 +547,16 @@ namespace hss
             return true;
         }
 
+        /// <inheritdoc />
         public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel,
             LoginModel loginModel, string[] argv, bool attach)
         {
             var programContext =
                 ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
-            return StartShell(programContext, Server.IntrinsicPrograms[ServerConstants.ShellName].Item1(), attach);
+            return StartShell(programContext, _server.IntrinsicPrograms[ServerConstants.ShellName].Item1(), attach);
         }
 
+        /// <inheritdoc />
         public ProgramProcess? StartProgram(ShellProcess shell, string[] argv, string[]? hargv = null,
             Program? program = null)
         {
@@ -567,6 +609,7 @@ namespace hss
             return null;
         }
 
+        /// <inheritdoc />
         public ServiceProcess? StartService(LoginModel loginModel, string[] argv, string[]? hargv = null,
             Service? service = null)
         {
@@ -612,7 +655,7 @@ namespace hss
 
             var chain = person.ShellChain;
             string src = chain.Count != 0 ? Util.UintToAddress(chain[^1].ProgramContext.System.Address) : "<external>";
-            double time = Time;
+            double time = _time;
             string logBody = $"User={login.User}\nOrigin={src}\nTime={time}\n";
             if (attach) chain.Add(process);
             Executable.TryWriteLog(this, time, system, login, ServerConstants.LogKind_Login, logBody, out _);
@@ -655,20 +698,23 @@ namespace hss
             return process;
         }
 
+        /// <inheritdoc />
         public ProgramInfoAttribute? GetProgramInfo(string? argv)
         {
             if (argv == null) return null;
             string[] line = argv.SplitCommandLine();
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
-            if (Server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
+            if (_server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
                 return prog.Item2;
-            if (Server.Programs.TryGetValue(line[0], out prog))
+            if (_server.Programs.TryGetValue(line[0], out prog))
                 return prog.Item2;
             return null;
         }
 
-        public IEnumerable<(Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms => Server.IntrinsicPrograms.Values;
+        /// <inheritdoc />
+        public IEnumerable<(Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms => _server.IntrinsicPrograms.Values;
 
+        /// <inheritdoc />
         public void ExecuteCommand(ProgramContext programContext)
         {
             var personModel = programContext.Person;
@@ -789,6 +835,7 @@ namespace hss
             programContext.User.FlushSafeAsync();
         }
 
+        /// <inheritdoc />
         public MissionModel? StartMission(PersonModel person, string missionPath, Guid campaignKey)
         {
             if (!Templates.MissionTemplates.TryGetValue(missionPath, out var template))
@@ -831,6 +878,7 @@ namespace hss
             return mission;
         }
 
+        /// <inheritdoc />
         public void QueueMission(PersonModel person, string missionPath, Guid campaignKey)
         {
             _missionQueue.Enqueue(new QueuedMission(person, missionPath, campaignKey));
@@ -841,6 +889,7 @@ namespace hss
             _scriptFile[name] = ScriptManager.EvaluateScript(GetWrappedLua(stream, true));
         }
 
+        /// <inheritdoc />
         public bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
         {
             if (_scriptFile.TryGetValue(name, out script)) return true;
@@ -902,7 +951,7 @@ namespace hss
                 return false;
             }
 
-            bool success = Server.IntrinsicPrograms.TryGetValue(line[0], out var res);
+            bool success = _server.IntrinsicPrograms.TryGetValue(line[0], out var res);
             result = success ? (res.Item1(), res.Item2, line) : default;
             return success;
         }
@@ -918,7 +967,7 @@ namespace hss
 
             string id = line[0];
 
-            if (Server.Programs.TryGetValue(id, out var res))
+            if (_server.Programs.TryGetValue(id, out var res))
             {
                 result = (res.Item1(), res.Item2, line);
                 return true;
@@ -945,7 +994,7 @@ namespace hss
 
             string id = line[0];
 
-            if (Server.Services.TryGetValue(id, out var res))
+            if (_server.Services.TryGetValue(id, out var res))
             {
                 result = (res.Item1(), res.Item2, line);
                 return true;

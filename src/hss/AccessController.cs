@@ -13,7 +13,7 @@ namespace hss
 
         public AccessController(Server server)
         {
-            _db = server.Database;
+            _db = server.EfDatabase;
             _spawn = new Spawn(_db);
         }
 

@@ -57,12 +57,12 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Current world time.
         /// </summary>
-        double Time { get; }
+        double Time { get; internal set; }
 
         /// <summary>
         /// Previous update's world time.
         /// </summary>
-        double PreviousTime { get; }
+        double PreviousTime { get; internal set; }
 
         /// <summary>
         /// Attempts to find a system with the specified ID.
@@ -178,5 +178,10 @@ namespace HacknetSharp.Server
         /// <param name="script">Function object.</param>
         /// <returns>True if successful.</returns>
         bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script);
+
+        /// <summary>
+        /// Ticks world.
+        /// </summary>
+        void Tick();
     }
 }

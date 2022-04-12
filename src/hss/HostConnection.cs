@@ -53,7 +53,7 @@ namespace hss
 
         private async Task Execute(CancellationToken cancellationToken)
         {
-            if (!_server.TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active)) return;
+            if (!_server.TryIncrementCountdownForHostConnection(LifecycleState.Active, LifecycleState.Active)) return;
             try
             {
                 _sslStream = new SslStream(_client.GetStream(), false, default, default,
@@ -251,7 +251,7 @@ namespace hss
                 _user?.Outputs.Remove(this);
                 if (!_cancellationTokenSource.IsCancellationRequested)
                     _server.SelfRemoveConnection(Id);
-                _server.DecrementCountdown();
+                _server.DecrementCountdownForHostConnection();
                 Dispose();
             }
         }
