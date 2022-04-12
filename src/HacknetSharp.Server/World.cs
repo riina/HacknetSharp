@@ -40,23 +40,11 @@ namespace HacknetSharp.Server
         /// <inheritdoc />
         public SystemTemplate PlayerSystemTemplate { get; }
 
-        private double _time;
+        /// <inheritdoc />
+        public double Time { get; internal set; }
 
         /// <inheritdoc />
-        double IWorld.Time
-        {
-            get => _time;
-            set => _time = value;
-        }
-
-        private double _previousTime;
-
-        /// <inheritdoc />
-        double IWorld.PreviousTime
-        {
-            get => _previousTime;
-            set => _previousTime = value;
-        }
+        public double PreviousTime { get; internal set; }
 
         private readonly ServerBase _server;
         private readonly HashSet<Process> _processes;
@@ -205,14 +193,14 @@ namespace HacknetSharp.Server
             tmpSystems.UnionWith(Model.Systems);
             foreach (var system in Model.Systems)
             {
-                if (system.BootTime > _time) continue;
+                if (system.BootTime > Time) continue;
                 tmpTasks.Clear();
                 tmpTasks.UnionWith(system.Tasks);
                 foreach (var task in tmpTasks)
                 {
-                    if (task.End > _time)
+                    if (task.End > Time)
                         Spawn.RemoveCron(task);
-                    if (task.LastRunAt + task.Delay < _time)
+                    if (task.LastRunAt + task.Delay < Time)
                     {
                         ScriptManager.SetGlobal("self", task.System);
                         ScriptManager.SetGlobal("system", task.System);
@@ -387,7 +375,7 @@ namespace HacknetSharp.Server
                 foreach (var p in tmpProcesses)
                     CompleteRecurse(p, Process.CompletionKind.KillRemote);
                 tmpProcesses.Clear();
-                system.BootTime = _time + system.RebootDuration;
+                system.BootTime = Time + system.RebootDuration;
             }
         }
 
@@ -655,7 +643,7 @@ namespace HacknetSharp.Server
 
             var chain = person.ShellChain;
             string src = chain.Count != 0 ? Util.UintToAddress(chain[^1].ProgramContext.System.Address) : "<external>";
-            double time = _time;
+            double time = Time;
             string logBody = $"User={login.User}\nOrigin={src}\nTime={time}\n";
             if (attach) chain.Add(process);
             Executable.TryWriteLog(this, time, system, login, ServerConstants.LogKind_Login, logBody, out _);

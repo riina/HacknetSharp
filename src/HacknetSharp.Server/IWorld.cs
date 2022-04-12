@@ -57,12 +57,12 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Current world time.
         /// </summary>
-        double Time { get; internal set; }
+        double Time { get; }
 
         /// <summary>
         /// Previous update's world time.
         /// </summary>
-        double PreviousTime { get; internal set; }
+        double PreviousTime { get; }
 
         /// <summary>
         /// Attempts to find a system with the specified ID.

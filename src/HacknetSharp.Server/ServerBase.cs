@@ -36,12 +36,12 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Worlds.
         /// </summary>
-        public Dictionary<Guid, IWorld> Worlds { get; }
+        public Dictionary<Guid, World> Worlds { get; }
 
         /// <summary>
         /// Default world.
         /// </summary>
-        public IWorld DefaultWorld { get; private set; } = null!;
+        public World DefaultWorld { get; private set; } = null!;
 
         /// <summary>
         /// Programs.
@@ -89,7 +89,7 @@ namespace HacknetSharp.Server
         /// <param name="config">Configuration.</param>
         protected ServerBase(ServerConfigBase config)
         {
-            Worlds = new Dictionary<Guid, IWorld>();
+            Worlds = new Dictionary<Guid, World>();
             Templates = config.Templates;
             Logger = config.Logger ?? NullLogger.Instance;
             Motd = config.Motd;
@@ -123,7 +123,7 @@ namespace HacknetSharp.Server
         /// Configures default world.
         /// </summary>
         /// <param name="defaultWorld">Default world.</param>
-        protected void ConfigureDefaultWorld(IWorld defaultWorld)
+        protected void ConfigureDefaultWorld(World defaultWorld)
         {
             DefaultWorld = defaultWorld;
             _defaultWorldConfigured = true;
