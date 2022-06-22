@@ -364,7 +364,7 @@ namespace HacknetSharp.Server.Lua
         {
             if (system == null) return null;
             var cron = _world.Spawn.Cron(system, script, start, delay, end);
-            cron.Task = _scriptManager.EvaluateScript(script);
+            _scriptManager.AssignCronTask(cron, _scriptManager.EvaluateScript(script));
             return cron;
         }
 

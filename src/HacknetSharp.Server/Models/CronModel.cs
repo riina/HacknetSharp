@@ -1,5 +1,4 @@
 using System;
-using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server.Models
 {
@@ -32,10 +31,5 @@ namespace HacknetSharp.Server.Models
         /// Task end time.
         /// </summary>
         public virtual double End { get; set; }
-
-        /// <summary>
-        /// Task object.
-        /// </summary>
-        public DynValue? Task { get; set; } = null!;
     }
 }

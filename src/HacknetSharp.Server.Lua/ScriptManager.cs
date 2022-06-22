@@ -33,6 +33,7 @@ namespace HacknetSharp.Server.Lua
         private readonly Dictionary<string, DynValue> _scriptMissionStart;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionGoal;
         private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionNext;
+        private readonly Dictionary<CronModel, DynValue> _cronTasks;
         private IWorld? _world;
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace HacknetSharp.Server.Lua
             _scriptMissionStart = new Dictionary<string, DynValue>();
             _scriptMissionGoal = new Dictionary<string, Dictionary<int, DynValue>>();
             _scriptMissionNext = new Dictionary<string, Dictionary<int, DynValue>>();
+            _cronTasks = new Dictionary<CronModel, DynValue>();
             //SetGlobal("ScriptManager", this);
             var defaultGlobals = new Dictionary<string, object>();
             LoadGlobalsFromObject(this, defaultGlobals);
@@ -64,8 +66,7 @@ namespace HacknetSharp.Server.Lua
             AddGlobals(new BaseGlobals(this, world).MyGlobals);
             foreach (var system in _world.Model.Systems)
             {
-                foreach (var cron in system.Tasks)
-                    cron.Task = EvaluateScript(GetWrappedLua(cron.Content, true));
+                foreach (var cron in system.Tasks) AssignCronTask(cron, EvaluateScript(GetWrappedLua(cron.Content, true)));
             }
             foreach (var (missionPath, mission) in _world.Templates.MissionTemplates)
             {
@@ -147,7 +148,7 @@ namespace HacknetSharp.Server.Lua
                 foreach (var task in _tmpTasks)
                 {
                     if (task.End > _world.Time)
-                        _world.Spawn.RemoveCron(task);
+                        RemoveCron(task);
                     if (task.LastRunAt + task.Delay < _world.Time)
                     {
                         SetGlobal("self", task.System);
@@ -155,15 +156,19 @@ namespace HacknetSharp.Server.Lua
 
                         try
                         {
-                            task.Task ??= EvaluateScript(GetWrappedLua(task.Content, true));
-                            RunVoidScript(task.Task);
+                            if (!TryGetCronTask(task, out var cronTask))
+                            {
+                                cronTask = EvaluateScript(GetWrappedLua(task.Content, true));
+                                AssignCronTask(task, cronTask);
+                            }
+                            RunVoidScript(cronTask);
                         }
                         catch (Exception e)
                         {
                             _world.Logger.LogWarning(
                                 "Exception thrown while processing task on system {Id} with contents:\n{Content}\n{Exception}",
                                 task.System.Key, task.Content, e);
-                            _world.Spawn.RemoveCron(task);
+                            RemoveCron(task);
                         }
                         finally
                         {
@@ -188,6 +193,27 @@ namespace HacknetSharp.Server.Lua
             }
             result = default;
             return false;
+        }
+
+        internal void AssignCronTask(CronModel model, DynValue task)
+        {
+            _cronTasks[model] = task;
+        }
+
+        internal bool TryGetCronTask(CronModel model, [NotNullWhen(true)] out DynValue? task)
+        {
+            return _cronTasks.TryGetValue(model, out task);
+        }
+
+        internal void RemoveCronTask(CronModel model)
+        {
+            _cronTasks.Remove(model);
+        }
+
+        private void RemoveCron(CronModel model)
+        {
+            _world!.Spawn.RemoveCron(model);
+            RemoveCronTask(model);
         }
 
         /// <inheritdoc />

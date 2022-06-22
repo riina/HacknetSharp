@@ -14,7 +14,6 @@ namespace HacknetSharp.Server.EF.Models
         public static void ConfigureModel(ModelBuilder builder) => builder.Entity<HacknetSharp.Server.Models.CronModel>(x =>
         {
             x.HasKey(v => v.Key);
-            x.Ignore(v => v.Task);
         });
 #pragma warning restore 1591
     }
