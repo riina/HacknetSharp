@@ -13,6 +13,7 @@ using HacknetSharp.Events.Client;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.EF;
+using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
 
@@ -367,8 +368,9 @@ namespace hss
             RegisterNewSystem(world, user, person);
             string? startingMission = world.Model.StartingMission;
             if (!string.IsNullOrWhiteSpace(startingMission) &&
-                world.Templates.MissionTemplates.ContainsKey(startingMission))
-                world.QueueMission(person, startingMission, Guid.NewGuid());
+                world.Templates.MissionTemplates.ContainsKey(startingMission) &&
+                world.GetPluginOfType<ScriptManager>() is { } scriptManager)
+                scriptManager.QueueMission(person, startingMission, Guid.NewGuid());
             return person;
         }
 

@@ -15,11 +15,11 @@ namespace HacknetSharp.Server.Lua
     /// Based on<br/>
     /// https://github.com/teamRokuro/NetBattle/blob/e273fa58117bcdb6383255ecdebd4a95f1c46d93/NetBattle/ScriptUtil.cs
     /// </remarks>
-    public class ScriptUtil
+    public static class ScriptUtil
     {
-        private static bool _init;
+        private static bool s_init;
 
-        private static readonly Type[] _defaultTypes =
+        private static readonly Type[] s_defaultTypes =
         {
             // System
             typeof(Guid),
@@ -58,9 +58,9 @@ namespace HacknetSharp.Server.Lua
 
         internal static void Init()
         {
-            if (_init) return;
-            MsRegisterTypes(_defaultTypes);
-            _init = true;
+            if (s_init) return;
+            MsRegisterTypes(s_defaultTypes);
+            s_init = true;
         }
     }
 }

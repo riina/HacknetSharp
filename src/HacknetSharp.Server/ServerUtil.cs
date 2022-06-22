@@ -21,22 +21,22 @@ namespace HacknetSharp.Server
         {
             var types = LoadTypesFromFolder(ServerConstants.ExtensionsFolder,
                 new[] { typeof(Program), typeof(Service) });
-            _customPrograms = new HashSet<Type>(types[1]);
-            _customServices = new HashSet<Type>(types[0]);
+            s_customPrograms = new HashSet<Type>(types[1]);
+            s_customServices = new HashSet<Type>(types[0]);
         }
 
-        private static readonly HashSet<Type> _customPrograms;
-        private static readonly HashSet<Type> _customServices;
+        private static readonly HashSet<Type> s_customPrograms;
+        private static readonly HashSet<Type> s_customServices;
 
         /// <summary>
         /// Custom programs, as detected by default search.
         /// </summary>
-        public static IEnumerable<Type> CustomPrograms => _customPrograms;
+        public static IEnumerable<Type> CustomPrograms => s_customPrograms;
 
         /// <summary>
         /// Custom services, as detected by default search.
         /// </summary>
-        public static IEnumerable<Type> CustomServices => _customServices;
+        public static IEnumerable<Type> CustomServices => s_customServices;
 
         /// <summary>
         /// Searches for concrete subclasses of a given type.
@@ -47,20 +47,19 @@ namespace HacknetSharp.Server
         public static IEnumerable<Type> GetTypes(Type t, Assembly assembly) =>
             assembly.GetTypes().Where(type => IsSubclass(t, type) && !type.IsAbstract);
 
-        private static readonly HashSet<Type> _defaultPrograms =
-            new(GetTypes(typeof(Program), typeof(Program).Assembly));
+        private static readonly HashSet<Type> s_defaultPrograms = new(GetTypes(typeof(Program), typeof(Program).Assembly));
 
-        private static readonly HashSet<Type> _defaultServices =
-            new(GetTypes(typeof(Service), typeof(Service).Assembly));
+        private static readonly HashSet<Type> s_defaultServices = new(GetTypes(typeof(Service), typeof(Service).Assembly));
+
         /// <summary>
         /// Standard programs.
         /// </summary>
-        public static IEnumerable<Type> DefaultPrograms => _defaultPrograms;
+        public static IEnumerable<Type> DefaultPrograms => s_defaultPrograms;
 
         /// <summary>
         /// Standard services.
         /// </summary>
-        public static IEnumerable<Type> DefaultServices => _defaultServices;
+        public static IEnumerable<Type> DefaultServices => s_defaultServices;
 
         /// <summary>
         /// Load types from a folder
@@ -211,9 +210,9 @@ namespace HacknetSharp.Server
             return genHash.AsSpan().SequenceEqual(hash);
         }
 
-        [ThreadStatic] private static Random? _random;
+        [ThreadStatic] private static Random? s_random;
 
-        private static Random Random => _random ??= new Random();
+        private static Random Random => s_random ??= new Random();
 
         /// <summary>
         /// Randomly selects a value given a mapping of values to weights.
@@ -230,7 +229,7 @@ namespace HacknetSharp.Server
             return source.First().Key;
         }
 
-        private static readonly char[] _userChars =
+        private static readonly char[] s_userChars =
             Enumerable.Range('0', '9' - '0' + 1)
                 .Concat(Enumerable.Range('a', 'z' - 'a' + 1))
                 .Select(i => (char)i).ToArray();
@@ -242,15 +241,15 @@ namespace HacknetSharp.Server
         /// <returns>Generated username.</returns>
         public static string GenerateUser(int preferredLength = 16)
         {
-            int top = _userChars.Length;
+            int top = s_userChars.Length;
             preferredLength = Math.Min(32, preferredLength);
             Span<char> chars = stackalloc char[preferredLength];
             for (int i = 0; i < preferredLength; i++)
-                chars[i] = _userChars[Random.Next(0, top)];
+                chars[i] = s_userChars[Random.Next(0, top)];
             return new string(chars);
         }
 
-        private static readonly char[] _passChars =
+        private static readonly char[] s_passChars =
             new int[] { '!', '#', '%', '&', '*' }
                 .Concat(new int[] { '!', '#', '%', '&', '*' })
                 .Concat(new int[] { '!', '#', '%', '&', '*' })
@@ -277,15 +276,15 @@ namespace HacknetSharp.Server
         /// <returns>Generated password.</returns>
         public static string GeneratePassword(int preferredLength = 16)
         {
-            int top = _passChars.Length;
+            int top = s_passChars.Length;
             preferredLength = Math.Min(32, preferredLength);
             Span<char> chars = stackalloc char[preferredLength];
             for (int i = 0; i < preferredLength; i++)
-                chars[i] = _passChars[Random.Next(0, top)];
+                chars[i] = s_passChars[Random.Next(0, top)];
             return new string(chars);
         }
 
-        private static readonly char[] _firewallChars =
+        private static readonly char[] s_firewallChars =
             Enumerable.Range('1', '9' - '1' + 1)
                 .Concat(Enumerable.Range('1', '9' - '1' + 1))
                 .Concat(Enumerable.Range('1', '9' - '1' + 1))
@@ -299,11 +298,11 @@ namespace HacknetSharp.Server
         /// <returns>Generated solution.</returns>
         public static string GenerateFirewallSolution(int length)
         {
-            int top = _firewallChars.Length;
+            int top = s_firewallChars.Length;
             length = Math.Min(32, length);
             Span<char> chars = stackalloc char[length];
             for (int i = 0; i < length; i++)
-                chars[i] = _firewallChars[Random.Next(0, top)];
+                chars[i] = s_firewallChars[Random.Next(0, top)];
             return new string(chars);
         }
 
@@ -317,7 +316,7 @@ namespace HacknetSharp.Server
         /// <returns>Generated analysis strings.</returns>
         public static string[] GenerateFirewallAnalysis(string solution, int iterations, int length)
         {
-            int top = _firewallChars.Length;
+            int top = s_firewallChars.Length;
             int count = solution.Length;
             iterations = Math.Clamp(iterations, 0, count);
             string[] res = new string[solution.Length];
@@ -327,7 +326,7 @@ namespace HacknetSharp.Server
             for (int i = 0; i < count; i++)
             {
                 for (int j = 0; j < obfuscatedLength; j++)
-                    chars[j] = _firewallChars[Random.Next(0, top)];
+                    chars[j] = s_firewallChars[Random.Next(0, top)];
                 chars.Slice(obfuscatedLength).Fill('0');
                 if (count - iterations <= i)
                     chars[Random.Next(0, length)] = solution[i];

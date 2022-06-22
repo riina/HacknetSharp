@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Sourcegen", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.EF", "HacknetSharp.Server.EF\HacknetSharp.Server.EF.csproj", "{502F4DFD-E115-478A-A8D0-9B432EA116AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HacknetSharp.Server.Lua", "HacknetSharp.Server.Lua\HacknetSharp.Server.Lua.csproj", "{ECCB1A49-54BA-4F55-BD76-9DD3809095FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,5 +63,9 @@ Global
 		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{502F4DFD-E115-478A-A8D0-9B432EA116AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECCB1A49-54BA-4F55-BD76-9DD3809095FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECCB1A49-54BA-4F55-BD76-9DD3809095FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECCB1A49-54BA-4F55-BD76-9DD3809095FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECCB1A49-54BA-4F55-BD76-9DD3809095FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

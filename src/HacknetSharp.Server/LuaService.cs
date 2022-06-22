@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HacknetSharp.Server.Lua;
 using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
@@ -23,7 +24,8 @@ namespace HacknetSharp.Server
         /// <inheritdoc />
         public override IEnumerator<YieldToken?> Run()
         {
-            var manager = World.ScriptManager;
+            var manager = World.GetPluginOfType<ScriptManager>();
+            if (manager == null) yield break;
             while (_coroutine.State != CoroutineState.Dead)
             {
                 manager.SetGlobal("system", System);

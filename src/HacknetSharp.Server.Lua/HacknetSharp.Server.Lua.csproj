@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Description>HacknetSharp server lua library</Description>
+    <Copyright>Copyright ©2020 teamRokuro</Copyright>
+    <PackageProjectUrl>https://github.com/Lucina/HacknetSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Lucina/HacknetSharp</RepositoryUrl>
+    <Company>teamRokuro</Company>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <PackOnBuild>true</PackOnBuild>
+    <Owners>riina,Lucina</Owners>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageVersion>0.0.5</PackageVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MoonSharp.StaticGlue" Version="0.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HacknetSharp.Server\HacknetSharp.Server.csproj" />
+  </ItemGroup>
+</Project>

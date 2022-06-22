@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HacknetSharp.Server.EF\HacknetSharp.Server.EF.csproj" />
+    <ProjectReference Include="..\HacknetSharp.Server.Lua\HacknetSharp.Server.Lua.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Buffers.Binary;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using HacknetSharp.Events.Server;
 using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
-using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
 {
@@ -20,7 +16,7 @@ namespace HacknetSharp.Server
     public class World : IWorld
     {
         /// <inheritdoc />
-        public ScriptManager ScriptManager { get; }
+        public IReadOnlyCollection<IWorldPlugin> Plugins => _plugins;
 
         /// <inheritdoc />
         public TemplateGroup Templates { get; }
@@ -52,13 +48,7 @@ namespace HacknetSharp.Server
         private readonly HashSet<ShellProcess> _shellProcesses;
         private readonly HashSet<ShellProcess> _tmpShellProcesses;
         private readonly HashSet<SystemModel> _tmpSystems;
-        private readonly HashSet<MissionModel> _tmpMissions;
-        private readonly HashSet<CronModel> _tmpTasks;
-        private readonly Dictionary<string, DynValue> _scriptFile;
-        private readonly Dictionary<string, DynValue> _scriptMissionStart;
-        private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionGoal;
-        private readonly Dictionary<string, Dictionary<int, DynValue>> _scriptMissionNext;
-        private readonly ConcurrentQueue<QueuedMission> _missionQueue;
+        private readonly HashSet<IWorldPlugin> _plugins;
 
         /// <summary>
         /// Initializes a new instance of <see cref="World"/>.
@@ -67,9 +57,9 @@ namespace HacknetSharp.Server
         /// <param name="model">World model.</param>
         public World(ServerBase server, WorldModel model)
         {
-            ScriptManager = new ScriptManager();
-            ScriptManager.SetGlobal("world", this);
-            ScriptManager.AddGlobals(new BaseGlobals(ScriptManager, this).MyGlobals);
+            _plugins = new HashSet<IWorldPlugin>();
+            // TODO need path to automatically derive and instantiate plugins
+            CreateAndRegisterPlugin(typeof(ScriptManager));
             Templates = server.Templates;
             _server = server;
             Model = model;
@@ -77,17 +67,12 @@ namespace HacknetSharp.Server
             Spawn = new WorldSpawn(Database, Model);
             PlayerSystemTemplate = server.Templates.SystemTemplates[model.PlayerSystemTemplate];
             Logger = server.Logger;
-            _scriptFile = new Dictionary<string, DynValue>();
-            _scriptMissionStart = new Dictionary<string, DynValue>();
-            _scriptMissionGoal = new Dictionary<string, Dictionary<int, DynValue>>();
-            _scriptMissionNext = new Dictionary<string, Dictionary<int, DynValue>>();
-            _tmpMissions = new HashSet<MissionModel>();
-            _missionQueue = new ConcurrentQueue<QueuedMission>();
+            var tmpMissions = new HashSet<MissionModel>();
             foreach (var person in Model.Persons)
             {
-                _tmpMissions.Clear();
-                _tmpMissions.UnionWith(person.Missions);
-                foreach (var mission in _tmpMissions)
+                tmpMissions.Clear();
+                tmpMissions.UnionWith(person.Missions);
+                foreach (var mission in tmpMissions)
                     if (person.Missions.Contains(mission))
                         if (!Templates.MissionTemplates.TryGetValue(mission.Template, out var m))
                             Spawn.RemoveMission(mission);
@@ -125,36 +110,6 @@ namespace HacknetSharp.Server
                         Model.SpawnGroupSystems[system.SpawnGroup] = list = new List<SystemModel>();
                     list.Add(system);
                 }
-
-                foreach (var cron in system.Tasks)
-                    cron.Task = ScriptManager.EvaluateScript(GetWrappedLua(cron.Content, true));
-            }
-
-            foreach (var (missionPath, mission) in Templates.MissionTemplates)
-            {
-                if (!string.IsNullOrWhiteSpace(mission.Start))
-                    RegisterScriptMissionStart(missionPath, mission.Start);
-                if (mission.Goals != null)
-                    for (int i = 0; i < mission.Goals.Count; i++)
-                    {
-                        string goal = mission.Goals[i];
-                        if (!string.IsNullOrWhiteSpace(goal))
-                            RegisterScriptMissionGoal(missionPath, i, goal);
-                    }
-
-                if (mission.Outcomes != null)
-                    for (int i = 0; i < mission.Outcomes.Count; i++)
-                    {
-                        var outcome = mission.Outcomes[i];
-                        if (!string.IsNullOrWhiteSpace(outcome.Next))
-                            RegisterScriptMissionNext(missionPath, i, outcome.Next);
-                    }
-            }
-
-            foreach (var (name, fun) in Templates.LuaSources)
-            {
-                using var fs = fun();
-                RegisterScriptFile(name, fs);
             }
 
             _processes = new HashSet<Process>();
@@ -162,18 +117,14 @@ namespace HacknetSharp.Server
             _shellProcesses = new HashSet<ShellProcess>();
             _tmpShellProcesses = new HashSet<ShellProcess>();
             _tmpSystems = new HashSet<SystemModel>();
-            _tmpTasks = new HashSet<CronModel>();
         }
 
-        private static string GetWrappedLua(string body, bool isVoid) =>
-            isVoid
-                ? $"return function() {body} end"
-                : $"return function() return {body} end";
-
-        private static string GetWrappedLua(Stream body, bool isVoid)
+        private void CreateAndRegisterPlugin(Type t)
         {
-            using var sr = new StreamReader(body);
-            return GetWrappedLua(sr.ReadToEnd(), isVoid);
+            if (_plugins.Any(v => v.GetType() == t)) throw new ArgumentException("Plugin of specified type is already registered");
+            if (Activator.CreateInstance(t) is not IWorldPlugin instance) throw new ArgumentException("Type could not be resolved as plugin");
+            instance.Initialize(this);
+            _plugins.Add(instance);
         }
 
         /// <inheritdoc />
@@ -183,183 +134,7 @@ namespace HacknetSharp.Server
             TickSet(_shellProcesses, _tmpShellProcesses);
             // Check processes for memory overflow (shells are static and therefore don't matter)
             TickOverflows(_processes, _tmpProcesses, _tmpSystems);
-            TickMissions(_tmpMissions);
-            TickTasks(_tmpSystems, _tmpTasks);
-        }
-
-        private void TickTasks(HashSet<SystemModel> tmpSystems, HashSet<CronModel> tmpTasks)
-        {
-            tmpSystems.Clear();
-            tmpSystems.UnionWith(Model.Systems);
-            foreach (var system in Model.Systems)
-            {
-                if (system.BootTime > Time) continue;
-                tmpTasks.Clear();
-                tmpTasks.UnionWith(system.Tasks);
-                foreach (var task in tmpTasks)
-                {
-                    if (task.End > Time)
-                        Spawn.RemoveCron(task);
-                    if (task.LastRunAt + task.Delay < Time)
-                    {
-                        ScriptManager.SetGlobal("self", task.System);
-                        ScriptManager.SetGlobal("system", task.System);
-
-                        try
-                        {
-                            task.Task ??= ScriptManager.EvaluateScript(GetWrappedLua(task.Content, true));
-                            ScriptManager.RunVoidScript(task.Task);
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.LogWarning(
-                                "Exception thrown while processing task on system {Id} with contents:\n{Content}\n{Exception}",
-                                task.System.Key, task.Content, e);
-                            Spawn.RemoveCron(task);
-                        }
-                        finally
-                        {
-                            ScriptManager.ClearGlobal("self");
-                            ScriptManager.ClearGlobal("system");
-                        }
-
-                        task.LastRunAt += task.Delay;
-                        Database.Update(task);
-                    }
-                }
-            }
-        }
-
-        private void TickMissions(HashSet<MissionModel> tmpMissions)
-        {
-            while (_missionQueue.TryDequeue(out var dequeued))
-            {
-                try
-                {
-                    StartMission(dequeued.Person, dequeued.MissionPath, dequeued.CampaignKey);
-                }
-                catch (Exception e)
-                {
-                    Logger.LogWarning("Exception thrown while starting queued mission: {Exception}", e);
-                }
-            }
-            tmpMissions.Clear();
-            tmpMissions.UnionWith(Model.ActiveMissions);
-            foreach (var mission in tmpMissions)
-            {
-                ScriptManager.SetGlobal("self", mission);
-                ScriptManager.SetGlobal("me", mission.Person);
-                ScriptManager.SetGlobal("key", mission.CampaignKey);
-                try
-                {
-                    if (!ProcessMission(mission))
-                        Spawn.RemoveMission(mission);
-                }
-                catch (Exception e)
-                {
-                    Logger.LogWarning("Exception thrown while processing mission {Mission}:\n{Exception}",
-                        mission.Template, e);
-                    Spawn.RemoveMission(mission);
-                }
-                finally
-                {
-                    ScriptManager.ClearGlobal("self");
-                    ScriptManager.ClearGlobal("me");
-                    ScriptManager.ClearGlobal("key");
-                }
-            }
-        }
-
-        private bool ProcessMission(MissionModel mission)
-        {
-            Span<byte> flags = stackalloc byte[8];
-            if (!Templates.MissionTemplates.TryGetValue(mission.Template, out var m)) return false;
-            if (m.Goals is not { } goals || m.Outcomes is not { } outcomes) return false;
-            long original = mission.Flags;
-            BinaryPrimitives.WriteInt64BigEndian(flags, original);
-            for (int i = 0; i < goals.Count; i++)
-            {
-                if (GetFlag(flags, i)) continue;
-                if (TryGetScriptMissionGoal(mission.Template, i, out var script))
-                {
-                    bool? res = ScriptManager.RunScript<bool?>(script);
-                    if (res != null && res.Value) SetFlag(flags, i, true);
-                }
-            }
-
-            bool end = false;
-            for (int i = 0; i < outcomes.Count; i++)
-            {
-                var outcome = outcomes[i];
-                bool fail = false;
-                if (outcome.Goals == null || outcome.Goals.Count == 0)
-                {
-                    for (int j = 0; j < goals.Count; j++)
-                        if (!GetFlag(flags, j))
-                        {
-                            fail = true;
-                            break;
-                        }
-                }
-                else
-                {
-                    foreach (int j in outcome.Goals)
-                        if (!GetFlag(flags, j))
-                        {
-                            fail = true;
-                            break;
-                        }
-                }
-
-                if (!fail)
-                {
-                    if (mission.Person.User is { } user)
-                        foreach (var output in user.Outputs)
-                        {
-                            output.WriteEventSafe(new AlertEvent
-                            {
-                                Alert = AlertEvent.Kind.System,
-                                Header = "MISSION COMPLETE",
-                                Body =
-                                    $"<< {m.Campaign} - {m.Title} >>"
-                            });
-                            output.FlushSafeAsync();
-                        }
-
-                    Logger.LogInformation("Successfully finished mission {Path} for person {Id}", mission.Template,
-                        mission.Person.Key);
-                    if (TryGetScriptMissionNext(mission.Template, i, out var script))
-                        ScriptManager.RunVoidScript(script);
-                    Spawn.RemoveMission(mission);
-                    end = true;
-                    break;
-                }
-            }
-
-            if (!end)
-            {
-                long changed = BinaryPrimitives.ReadInt64BigEndian(flags);
-                if (changed != original)
-                {
-                    mission.Flags = changed;
-                    Database.Update(mission);
-                }
-            }
-
-            return true;
-        }
-
-        private static bool GetFlag(Span<byte> flags, int i)
-        {
-            return ((flags[i / 8] >> (i % 8)) & 1) != 0;
-        }
-
-        private static void SetFlag(Span<byte> flags, int i, bool value)
-        {
-            if (value)
-                flags[i / 8] |= (byte)(1 << (i % 8));
-            else
-                flags[i / 8] &= (byte)~(1 << (i % 8));
+            foreach(var plugin in _plugins) plugin.Tick();
         }
 
         private void TickOverflows<T>(HashSet<T> processes, HashSet<Process> tmpProcesses,
@@ -434,6 +209,9 @@ namespace HacknetSharp.Server
                 }
             }
         }
+
+        /// <inheritdoc />
+        public T? GetPluginOfType<T>() where T : IWorldPlugin => _plugins.OfType<T>().FirstOrDefault();
 
         /// <inheritdoc />
         public bool TryGetSystem(Guid id, [NotNullWhen(true)] out SystemModel? system)
@@ -823,112 +601,6 @@ namespace HacknetSharp.Server
             programContext.User.FlushSafeAsync();
         }
 
-        /// <inheritdoc />
-        public MissionModel? StartMission(PersonModel person, string missionPath, Guid campaignKey)
-        {
-            if (!Templates.MissionTemplates.TryGetValue(missionPath, out var template))
-                return null;
-            var mission = Spawn.Mission(missionPath, person, campaignKey);
-            mission.Data = template;
-            if (!string.IsNullOrWhiteSpace(template.Start))
-            {
-                ScriptManager.SetGlobal("self", mission);
-                ScriptManager.SetGlobal("me", person);
-                ScriptManager.SetGlobal("key", campaignKey);
-                try
-                {
-                    if (TryGetScriptMissionStart(missionPath, out var script))
-                        ScriptManager.RunVoidScript(script);
-                }
-                finally
-                {
-                    ScriptManager.ClearGlobal("self");
-                    ScriptManager.ClearGlobal("me");
-                    ScriptManager.ClearGlobal("key");
-                }
-            }
-
-            if (person.User is { } user)
-                foreach (var output in user.Outputs)
-                {
-                    output.WriteEventSafe(new AlertEvent
-                    {
-                        Alert = AlertEvent.Kind.System,
-                        Header = "New Mission",
-                        Body =
-                            $"<< {template.Campaign} - {template.Title} >>\n\n{template.Message}"
-                    });
-                    output.FlushSafeAsync();
-                }
-
-            Logger.LogInformation("Successfully started mission {Path} for person {Id}", mission.Template,
-                mission.Person.Key);
-            return mission;
-        }
-
-        /// <inheritdoc />
-        public void QueueMission(PersonModel person, string missionPath, Guid campaignKey)
-        {
-            _missionQueue.Enqueue(new QueuedMission(person, missionPath, campaignKey));
-        }
-
-        private void RegisterScriptFile(string name, Stream stream)
-        {
-            _scriptFile[name] = ScriptManager.EvaluateScript(GetWrappedLua(stream, true));
-        }
-
-        /// <inheritdoc />
-        public bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script)
-        {
-            if (_scriptFile.TryGetValue(name, out script)) return true;
-            script = null;
-            return false;
-        }
-
-        private void RegisterScriptMissionStart(string missionPath, string content)
-        {
-            _scriptMissionStart[missionPath] = ScriptManager.EvaluateScript(GetWrappedLua(content, true));
-        }
-
-        private bool TryGetScriptMissionStart(string missionPath, [NotNullWhen(true)] out DynValue? script)
-        {
-            if (_scriptMissionStart.TryGetValue(missionPath, out script)) return true;
-            script = null;
-            return false;
-        }
-
-        private void RegisterScriptMissionGoal(string missionPath, int index, string content)
-        {
-            if (!_scriptMissionGoal.TryGetValue(missionPath, out var dict))
-                _scriptMissionGoal[missionPath] = dict = new Dictionary<int, DynValue>();
-            dict[index] = ScriptManager.EvaluateScript(GetWrappedLua(content, false));
-        }
-
-        private bool TryGetScriptMissionGoal(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
-        {
-            if (_scriptMissionGoal.TryGetValue(missionPath, out var dict) && dict.TryGetValue(index, out script))
-                return true;
-
-            script = null;
-            return false;
-        }
-
-        private void RegisterScriptMissionNext(string missionPath, int index, string content)
-        {
-            if (!_scriptMissionNext.TryGetValue(missionPath, out var dict))
-                _scriptMissionNext[missionPath] = dict = new Dictionary<int, DynValue>();
-            dict[index] = ScriptManager.EvaluateScript(GetWrappedLua(content, true));
-        }
-
-        private bool TryGetScriptMissionNext(string missionPath, int index, [NotNullWhen(true)] out DynValue? script)
-        {
-            if (_scriptMissionNext.TryGetValue(missionPath, out var dict) && dict.TryGetValue(index, out script))
-                return true;
-
-            script = null;
-            return false;
-        }
-
         private bool TryGetIntrinsicProgramWithHargs(string command,
             out (Program, ProgramInfoAttribute, string[]) result)
         {
@@ -961,10 +633,9 @@ namespace HacknetSharp.Server
                 return true;
             }
 
-            if (id.EndsWith(".program.script.lua") && TryGetScriptFile(id, out var script))
+            foreach (var plugin in _plugins)
             {
-                result = (new LuaProgram(ScriptManager.GetCoroutine(script)), null, line);
-                return true;
+                if (plugin.TryProvideProgram(command, line, out result)) return true;
             }
 
             result = default;
@@ -988,11 +659,9 @@ namespace HacknetSharp.Server
                 return true;
             }
 
-
-            if (id.EndsWith(".service.script.lua") && TryGetScriptFile(id, out var script))
+            foreach (var plugin in _plugins)
             {
-                result = (new LuaService(ScriptManager.GetCoroutine(script)), null, line);
-                return true;
+                if (plugin.TryProvideService(command, line, out result)) return true;
             }
 
             result = default;

@@ -70,7 +70,7 @@ namespace HacknetSharp.Server.Lua
             campaignKey ??= Guid.NewGuid();
             if (person == null) return null;
             if (!_world.Templates.MissionTemplates.ContainsKey(missionPath)) return null;
-            return _world.StartMission(person, missionPath, campaignKey.Value);
+            return _scriptManager.StartMission(person, missionPath, campaignKey.Value);
         }
 
         [Global(typeof(Func<PersonModel?, string, bool>))]
@@ -455,7 +455,7 @@ namespace HacknetSharp.Server.Lua
             LuaProgram program;
             try
             {
-                if (!_world.TryGetScriptFile(script, out var scriptDyn)) return;
+                if (!_scriptManager.TryGetScriptFile(script, out var scriptDyn)) return;
                 program = new LuaProgram(_scriptManager.GetCoroutine(scriptDyn),
                     new Dictionary<string, object> { { "key", key } });
             }

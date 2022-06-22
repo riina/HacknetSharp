@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
-using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
 {
@@ -15,9 +13,9 @@ namespace HacknetSharp.Server
     public interface IWorld
     {
         /// <summary>
-        /// Script manager for this world.
+        /// Plugins associated with world.
         /// </summary>
-        ScriptManager ScriptManager { get; }
+        IReadOnlyCollection<IWorldPlugin> Plugins { get; }
 
         /// <summary>
         /// Templates available to world.
@@ -63,6 +61,13 @@ namespace HacknetSharp.Server
         /// Previous update's world time.
         /// </summary>
         double PreviousTime { get; }
+
+        /// <summary>
+        /// Gets plugin of specified type.
+        /// </summary>
+        /// <typeparam name="T">Plugin type.</typeparam>
+        /// <returns>Plugin or null.</returns>
+        T? GetPluginOfType<T>() where T : IWorldPlugin;
 
         /// <summary>
         /// Attempts to find a system with the specified ID.
@@ -153,31 +158,6 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="programContext">Program context to execute.</param>
         void ExecuteCommand(ProgramContext programContext);
-
-        /// <summary>
-        /// Starts a mission for the specified person.
-        /// </summary>
-        /// <param name="person">Target person.</param>
-        /// <param name="missionPath">Mission template path.</param>
-        /// <param name="campaignKey">Campaign key.</param>
-        /// <returns>Started mission</returns>
-        MissionModel? StartMission(PersonModel person, string missionPath, Guid campaignKey);
-
-        /// <summary>
-        /// Queues a mission for the specified person.
-        /// </summary>
-        /// <param name="person">Target person.</param>
-        /// <param name="missionPath">Mission template path.</param>
-        /// <param name="campaignKey">Campaign key.</param>
-        void QueueMission(PersonModel person, string missionPath, Guid campaignKey);
-
-        /// <summary>
-        /// Tries to get a script file's function from the specified path.
-        /// </summary>
-        /// <param name="name">Path to search.</param>
-        /// <param name="script">Function object.</param>
-        /// <returns>True if successful.</returns>
-        bool TryGetScriptFile(string name, [NotNullWhen(true)] out DynValue? script);
 
         /// <summary>
         /// Ticks world.
