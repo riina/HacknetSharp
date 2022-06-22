@@ -1,8 +1,6 @@
 using System.IO;
-using HacknetSharp.Server.Lua;
-using MoonSharp.Interpreter;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.Lua
 {
     /// <summary>
     /// Represents a content importer for lua definitions.
@@ -10,10 +8,12 @@ namespace HacknetSharp.Server
     public class LuaContentImporter : IContentImporter
     {
         /// <inheritdoc />
-        public T Import<T>(Stream stream)
-        {
-            Script script = LuaModule.CreateScript();
-            return script.DoStream(stream).ToObject<T>();
-        }
+        public T? Import<T>(Stream stream) where T : class =>
+            LuaModule.CreateScript().DoStream(stream).ToObject() switch
+            {
+                T t1 => t1,
+                IProxyConversion<T> t2 => t2.Generate(),
+                _ => null
+            };
     }
 }

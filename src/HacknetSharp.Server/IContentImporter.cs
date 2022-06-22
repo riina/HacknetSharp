@@ -13,6 +13,6 @@ namespace HacknetSharp.Server
         /// <param name="stream">Stream.</param>
         /// <typeparam name="T">Type.</typeparam>
         /// <returns>Object or null.</returns>
-        T Import<T>(Stream stream);
+        T? Import<T>(Stream stream) where T : class;
     }
 }

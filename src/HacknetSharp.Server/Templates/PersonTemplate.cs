@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using HacknetSharp.Server.Models;
-using MoonSharp.StaticGlue.Core;
 
 namespace HacknetSharp.Server.Templates
 {
@@ -11,37 +10,31 @@ namespace HacknetSharp.Server.Templates
     /// </summary>
     [SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    [Scriptable("person_t")]
     public class PersonTemplate
     {
         /// <summary>
         /// Fixed username to use.
         /// </summary>
-        [Scriptable]
         public string? Username { get; set; }
 
         /// <summary>
         /// Fixed password to use.
         /// </summary>
-        [Scriptable]
         public string? Password { get; set; }
 
         /// <summary>
         /// Fixed email provider to use.
         /// </summary>
-        [Scriptable]
         public string? EmailProvider { get; set; }
 
         /// <summary>
         /// Fixed primary system template to use.
         /// </summary>
-        [Scriptable]
         public string? PrimaryTemplate { get; set; }
 
         /// <summary>
         /// Fixed primary address to use.
         /// </summary>
-        [Scriptable]
         public string? PrimaryAddress { get; set; }
 
         /// <summary>
@@ -54,7 +47,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="username">Value.</param>
         /// <param name="weight">Weight.</param>
-        [Scriptable]
         public void AddUsername(string username, float weight) => (Usernames ??= new Dictionary<string, float>())[username] = weight;
 
         /// <summary>
@@ -67,13 +59,11 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="password">Value.</param>
         /// <param name="weight">Weight.</param>
-        [Scriptable]
         public void AddPassword(string password, float weight) => (Passwords ??= new Dictionary<string, float>())[password] = weight;
 
         /// <summary>
         /// CIDR range string for address pool.
         /// </summary>
-        [Scriptable]
         public string? AddressRange { get; set; }
 
         /// <summary>
@@ -86,7 +76,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="emailProvider">Value.</param>
         /// <param name="weight">Weight.</param>
-        [Scriptable]
         public void AddEmailProvider(string emailProvider, float weight) => (EmailProviders ??= new Dictionary<string, float>())[emailProvider] = weight;
 
         /// <summary>
@@ -99,19 +88,16 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="primaryTemplate">Value.</param>
         /// <param name="weight">Weight.</param>
-        [Scriptable]
         public void AddPrimaryTemplate(string primaryTemplate, float weight) => (PrimaryTemplates ??= new Dictionary<string, float>())[primaryTemplate] = weight;
 
         /// <summary>
         /// Minimum # in generated fleet.
         /// </summary>
-        [Scriptable]
         public int FleetMin { get; set; }
 
         /// <summary>
         /// Maximum # in generated fleet.
         /// </summary>
-        [Scriptable]
         public int FleetMax { get; set; }
 
         /// <summary>
@@ -124,7 +110,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="fleetTemplate">Value.</param>
         /// <param name="weight">Weight.</param>
-        [Scriptable]
         public void AddFleetTemplate(string fleetTemplate, float weight) => (FleetTemplates ??= new Dictionary<string, float>())[fleetTemplate] = weight;
 
         /// <summary>
@@ -136,7 +121,6 @@ namespace HacknetSharp.Server.Templates
         /// Creates and adds a <see cref="NetworkEntry"/>.
         /// </summary>
         /// <returns>Object.</returns>
-        [Scriptable]
         public NetworkEntry CreateNetworkEntry()
         {
             NetworkEntry networkEntry = new();
@@ -147,37 +131,31 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
-        [Scriptable]
         public double RebootDuration { get; set; }
 
         /// <summary>
         /// System disk capacity.
         /// </summary>
-        [Scriptable]
         public int DiskCapacity { get; set; }
 
         /// <summary>
         /// CPU cycles required to crack proxy.
         /// </summary>
-        [Scriptable]
         public double ProxyClocks { get; set; }
 
         /// <summary>
         /// Proxy cracking speed.
         /// </summary>
-        [Scriptable]
         public double ClockSpeed { get; set; }
 
         /// <summary>
         /// System memory (bytes).
         /// </summary>
-        [Scriptable]
         public long SystemMemory { get; set; }
 
         /// <summary>
         /// Tag for lookup.
         /// </summary>
-        [Scriptable]
         public string? Tag { get; set; }
 
         [ThreadStatic] private static Random? _random;
@@ -187,7 +165,6 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Default constructor for deserialization only.
         /// </summary>
-        [Scriptable]
         public PersonTemplate()
         {
         }
@@ -327,13 +304,11 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Template to use.
         /// </summary>
-        [Scriptable]
         public string? Template { get; set; }
 
         /// <summary>
         /// Specific address for system.
         /// </summary>
-        [Scriptable]
         public string? Address { get; set; }
 
         /// <summary>
@@ -346,7 +321,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
-        [Scriptable]
         public void AddReplacement(string key, string value) => (Configuration ??= new Dictionary<string, string>())[key] = value;
 
         /// <summary>
@@ -358,7 +332,6 @@ namespace HacknetSharp.Server.Templates
         /// Adds a link.
         /// </summary>
         /// <param name="link">Value.</param>
-        [Scriptable]
         public void AddLink(string link) => (Links ??= new List<string>()).Add(link);
     }
 }

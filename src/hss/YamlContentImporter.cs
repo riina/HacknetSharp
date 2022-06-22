@@ -9,6 +9,6 @@ namespace hss
     public class YamlContentImporter : IContentImporter
     {
         /// <inheritdoc />
-        public T Import<T>(Stream stream) => HssUtil.YamlDeserializer.Deserialize<T>(new StreamReader(stream));
+        public T Import<T>(Stream stream) where T : class => HssUtil.YamlDeserializer.Deserialize<T>(new StreamReader(stream));
     }
 }

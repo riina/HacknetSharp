@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.3" />
-    <PackageReference Include="MoonSharp.StaticGlue" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>

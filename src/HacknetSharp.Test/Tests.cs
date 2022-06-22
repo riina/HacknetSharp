@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using HacknetSharp.Server;
+using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using NUnit.Framework;
@@ -139,7 +140,8 @@ x.AddFiles(""grind"", {""/path1"", ""/path2""})
 return x";
             var loader = new LuaContentImporter();
             var template = loader.Import<SystemTemplate>(new MemoryStream(Encoding.UTF8.GetBytes(src)));
-            Assert.That(template.Name, Is.EqualTo("rock"));
+            Assert.That(template, Is.Not.Null);
+            Assert.That(template!.Name, Is.EqualTo("rock"));
             var files = template.Filesystem;
             Assert.That(files, Contains.Key("grind"));
             Assert.That(files!["grind"], Is.EquivalentTo(new[] { "/path1", "/path2" }));

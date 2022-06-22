@@ -1,44 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using HacknetSharp.Server.Models;
-using MoonSharp.StaticGlue.Core;
 
 namespace HacknetSharp.Server.Templates
 {
     /// <summary>
     /// Represents a template for a world.
     /// </summary>
-    [Scriptable("world_t")]
     public class WorldTemplate
     {
         /// <summary>
         /// Label to indicate what template was used.
         /// </summary>
-        [Scriptable]
         public string? Label { get; set; }
 
         /// <summary>
         /// Template for new players.
         /// </summary>
-        [Scriptable]
         public string? PlayerSystemTemplate { get; set; }
 
         /// <summary>
         /// Address range for new players.
         /// </summary>
-        [Scriptable]
         public string? PlayerAddressRange { get; set; }
 
         /// <summary>
         /// Starting mission for new players.
         /// </summary>
-        [Scriptable]
         public string? StartingMission { get; set; }
 
         /// <summary>
         /// Command line for new players.
         /// </summary>
-        [Scriptable]
         public string? StartupCommandLine { get; set; }
 
         /// <summary>
@@ -50,7 +43,6 @@ namespace HacknetSharp.Server.Templates
         /// Creates and adds a <see cref="PersonGroup"/>.
         /// </summary>
         /// <returns>Object.</returns>
-        [Scriptable]
         public PersonGroup CreatePersonGroup()
         {
             PersonGroup group = new();
@@ -61,25 +53,21 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
-        [Scriptable]
         public double RebootDuration { get; set; }
 
         /// <summary>
         /// System disk capacity.
         /// </summary>
-        [Scriptable]
         public int DiskCapacity { get; set; }
 
         /// <summary>
         /// System memory (bytes).
         /// </summary>
-        [Scriptable]
         public long SystemMemory { get; set; }
 
         /// <summary>
         /// Default constructor for deserialization only.
         /// </summary>
-        [Scriptable]
         public WorldTemplate()
         {
         }
@@ -139,19 +127,16 @@ namespace HacknetSharp.Server.Templates
             /// <summary>
             /// Number of people to generate with this configuration.
             /// </summary>
-            [Scriptable]
             public int Count { get; set; }
 
             /// <summary>
             /// Template for this group.
             /// </summary>
-            [Scriptable]
             public string? Template { get; set; }
 
             /// <summary>
             /// Address range for this group.
             /// </summary>
-            [Scriptable]
             public string? AddressRange { get; set; }
         }
     }

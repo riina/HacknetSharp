@@ -39,12 +39,12 @@ namespace HacknetSharp.Server
         /// <param name="result">Result (may be null even if considered successful).</param>
         /// <typeparam name="T">Type.</typeparam>
         /// <returns>True if successfully imported.</returns>
-        public bool TryImport<T>(Stream stream, string path, out T? result)
+        public bool TryImport<T>(Stream stream, string path, out T? result) where T : class
         {
             if (Importers.TryGetValue(Path.GetExtension(path), out var importer))
             {
                 result = importer.Import<T>(stream);
-                return true;
+                return result != null;
             }
             result = default;
             return false;
@@ -57,7 +57,7 @@ namespace HacknetSharp.Server
         /// <param name="result">Result (may be null even if considered successful).</param>
         /// <typeparam name="T">Type.</typeparam>
         /// <returns>True if successfully imported.</returns>
-        public bool TryImport<T>(string path, out T? result)
+        public bool TryImport<T>(string path, out T? result) where T : class
         {
             using var stream = File.OpenRead(path);
             return TryImport(stream, path, out result);
@@ -71,7 +71,7 @@ namespace HacknetSharp.Server
         /// <typeparam name="T">Type.</typeparam>
         /// <returns>Imported object or null.</returns>
         /// <exception cref="NotSupportedException">Thrown for unsupported extension.</exception>
-        public T? Import<T>(Stream stream, string path)
+        public T? Import<T>(Stream stream, string path) where T : class
         {
             return TryImport<T>(stream, path, out var result) ? result : throw new NotSupportedException();
         }
@@ -83,7 +83,7 @@ namespace HacknetSharp.Server
         /// <typeparam name="T">Type.</typeparam>
         /// <returns>Imported object or null.</returns>
         /// <exception cref="NotSupportedException">Thrown for unsupported extension.</exception>
-        public T? Import<T>(string path)
+        public T? Import<T>(string path) where T : class
         {
             using var stream = File.OpenRead(path);
             return Import<T>(stream, path);
@@ -98,7 +98,7 @@ namespace HacknetSharp.Server
         /// <returns>Imported object.</returns>
         /// <exception cref="NotSupportedException">Thrown for unsupported extension.</exception>
         /// <exception cref="IOException">Thrown for null data.</exception>
-        public T ImportNotNull<T>(Stream stream, string path)
+        public T ImportNotNull<T>(Stream stream, string path) where T : class
         {
             return Import<T>(stream, path) ?? throw new IOException();
         }
@@ -111,7 +111,7 @@ namespace HacknetSharp.Server
         /// <returns>Imported object.</returns>
         /// <exception cref="NotSupportedException">Thrown for unsupported extension.</exception>
         /// <exception cref="IOException">Thrown for null data.</exception>
-        public T ImportNotNull<T>(string path)
+        public T ImportNotNull<T>(string path) where T : class
         {
             using var stream = File.OpenRead(path);
             return ImportNotNull<T>(stream, path);

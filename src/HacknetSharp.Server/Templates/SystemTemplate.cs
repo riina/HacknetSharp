@@ -5,38 +5,32 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HacknetSharp.Server.Models;
-using MoonSharp.StaticGlue.Core;
 
 namespace HacknetSharp.Server.Templates
 {
     /// <summary>
     /// Represents a template for a system.
     /// </summary>
-    [Scriptable("system_t")]
     public class SystemTemplate
     {
         /// <summary>
         /// System name (with replacement support).
         /// </summary>
-        [Scriptable]
         public string? Name { get; set; }
 
         /// <summary>
         /// Operating system name.
         /// </summary>
-        [Scriptable]
         public string? OsName { get; set; }
 
         /// <summary>
         /// Address range. Overridden by person template's <see cref="PersonTemplate.AddressRange"/> if present.
         /// </summary>
-        [Scriptable]
         public string? AddressRange { get; set; }
 
         /// <summary>
         /// Command to execute on connect.
         /// </summary>
-        [Scriptable]
         public string? ConnectCommandLine { get; set; }
 
         /// <summary>
@@ -48,7 +42,6 @@ namespace HacknetSharp.Server.Templates
         /// Creates and adds a <see cref="Vulnerability"/>.
         /// </summary>
         /// <returns>Object.</returns>
-        [Scriptable]
         public Vulnerability CreateVulnerability()
         {
             Vulnerability vulnerability = new();
@@ -59,7 +52,6 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Minimum number of exploits required to gain entry to the system.
         /// </summary>
-        [Scriptable]
         public int RequiredExploits { get; set; }
 
         /// <summary>
@@ -72,7 +64,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="username">Username.</param>
         /// <param name="password">Password.</param>
-        [Scriptable]
         public void AddUser(string username, string password)
         {
             (Users ??= new Dictionary<string, string>())[username] = password;
@@ -107,7 +98,6 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="files">Files.</param>
-        [Scriptable]
         public void AddFiles(string key, IList files)
         {
             Filesystem ??= new Dictionary<string, List<string>>();
@@ -124,7 +114,6 @@ namespace HacknetSharp.Server.Templates
         /// Creates and adds a <see cref="Cron"/>.
         /// </summary>
         /// <returns>Object.</returns>
-        [Scriptable]
         public Cron CreateCron()
         {
             Cron cron = new();
@@ -135,61 +124,51 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Reboot duration in seconds.
         /// </summary>
-        [Scriptable]
         public double RebootDuration { get; set; }
 
         /// <summary>
         /// System disk capacity.
         /// </summary>
-        [Scriptable]
         public int DiskCapacity { get; set; }
 
         /// <summary>
         /// CPU cycles required to crack proxy.
         /// </summary>
-        [Scriptable]
         public double ProxyClocks { get; set; }
 
         /// <summary>
         /// Proxy cracking speed.
         /// </summary>
-        [Scriptable]
         public double ClockSpeed { get; set; }
 
         /// <summary>
         /// System memory (bytes).
         /// </summary>
-        [Scriptable]
         public long SystemMemory { get; set; }
 
         /// <summary>
         /// Number of firewall iterations required for full decode.
         /// </summary>
-        [Scriptable]
         public int FirewallIterations { get; set; }
 
         /// <summary>
         /// Length of firewall analysis string.
         /// </summary>
-        [Scriptable]
         public int FirewallLength { get; set; }
 
         /// <summary>
         /// Additional delay per firewall step.
         /// </summary>
-        [Scriptable]
         public double FirewallDelay { get; set; }
 
         /// <summary>
         /// Fixed firewall string.
         /// </summary>
-        [Scriptable]
         public string? FixedFirewall { get; set; }
 
         /// <summary>
         /// Tag for lookup.
         /// </summary>
-        [Scriptable]
         public string? Tag { get; set; }
 
         private static readonly Regex s_userRegex = new(@"([A-Za-z]+)(\+)?");
@@ -198,13 +177,12 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Default constructor for deserialization only.
         /// </summary>
-        [Scriptable]
         public SystemTemplate()
         {
         }
 
         /// <summary>
-        /// efault constructor for deserialization only.
+        /// Creates a new instance of <see cref="SystemTemplate"/>.
         /// </summary>
         /// <param name="name">Format-able system name.</param>
         /// <param name="osName">OS name.</param>
@@ -388,25 +366,21 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Entrypoint / port (e.g. "22").
         /// </summary>
-        [Scriptable]
         public string? EntryPoint { get; set; }
 
         /// <summary>
         /// Protocol this vulnerability is for (e.g. "ssh").
         /// </summary>
-        [Scriptable]
         public string? Protocol { get; set; }
 
         /// <summary>
         /// Number of exploits this vulnerability represents.
         /// </summary>
-        [Scriptable]
         public int Exploits { get; set; }
 
         /// <summary>
         /// Optional CVE string (trivia).
         /// </summary>
-        [Scriptable]
         public string? Cve { get; set; }
     }
 
@@ -418,25 +392,21 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// Task content.
         /// </summary>
-        [Scriptable]
         public string? Content { get; set; }
 
         /// <summary>
         /// Initial start time.
         /// </summary>
-        [Scriptable]
         public double Start { get; set; }
 
         /// <summary>
         /// Task delay.
         /// </summary>
-        [Scriptable]
         public double Delay { get; set; }
 
         /// <summary>
         /// End time.
         /// </summary>
-        [Scriptable]
         public double End { get; set; }
     }
 }
