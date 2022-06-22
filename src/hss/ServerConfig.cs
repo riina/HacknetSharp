@@ -83,6 +83,17 @@ namespace hss
         }
 
         /// <summary>
+        /// Adds plugins.
+        /// </summary>
+        /// <param name="plugins">Plugin types.</param>
+        /// <returns>This config.</returns>
+        public new ServerConfig WithPlugins(IEnumerable<IEnumerable<Type>> plugins)
+        {
+            Plugins.UnionWith(plugins.SelectMany(x => x));
+            return this;
+        }
+
+        /// <summary>
         /// Sets default world.
         /// </summary>
         /// <param name="defaultWorld">Default world.</param>

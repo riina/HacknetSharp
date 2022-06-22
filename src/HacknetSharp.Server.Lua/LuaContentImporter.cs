@@ -1,4 +1,5 @@
 using System.IO;
+using HacknetSharp.Server.Lua;
 using MoonSharp.Interpreter;
 
 namespace HacknetSharp.Server
@@ -11,7 +12,7 @@ namespace HacknetSharp.Server
         /// <inheritdoc />
         public T Import<T>(Stream stream)
         {
-            Script script = ServerModule.CreateScript();
+            Script script = LuaModule.CreateScript();
             return script.DoStream(stream).ToObject<T>();
         }
     }

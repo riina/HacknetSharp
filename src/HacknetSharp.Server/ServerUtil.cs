@@ -51,6 +51,8 @@ namespace HacknetSharp.Server
 
         private static readonly HashSet<Type> s_defaultServices = new(GetTypes(typeof(Service), typeof(Service).Assembly));
 
+        private static readonly HashSet<Type> s_defaultPlugins = new(GetTypes(typeof(IWorldPlugin), typeof(IWorldPlugin).Assembly));
+
         /// <summary>
         /// Standard programs.
         /// </summary>
@@ -60,6 +62,11 @@ namespace HacknetSharp.Server
         /// Standard services.
         /// </summary>
         public static IEnumerable<Type> DefaultServices => s_defaultServices;
+
+        /// <summary>
+        /// Standard plugins.
+        /// </summary>
+        public static IEnumerable<Type> DefaultPlugins => s_defaultPlugins;
 
         /// <summary>
         /// Load types from a folder

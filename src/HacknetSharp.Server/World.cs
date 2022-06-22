@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HacknetSharp.Events.Server;
-using HacknetSharp.Server.Lua;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using Microsoft.Extensions.Logging;
@@ -58,8 +57,17 @@ namespace HacknetSharp.Server
         public World(ServerBase server, WorldModel model)
         {
             _plugins = new HashSet<IWorldPlugin>();
-            // TODO need path to automatically derive and instantiate plugins
-            CreateAndRegisterPlugin(typeof(ScriptManager));
+            foreach (var pluginType in server.PluginTypes)
+            {
+                try
+                {
+                    CreateAndRegisterPlugin(pluginType);
+                }
+                catch (Exception e)
+                {
+                    server.Logger.LogError(e, null);
+                }
+            }
             Templates = server.Templates;
             _server = server;
             Model = model;
@@ -134,7 +142,7 @@ namespace HacknetSharp.Server
             TickSet(_shellProcesses, _tmpShellProcesses);
             // Check processes for memory overflow (shells are static and therefore don't matter)
             TickOverflows(_processes, _tmpProcesses, _tmpSystems);
-            foreach(var plugin in _plugins) plugin.Tick();
+            foreach (var plugin in _plugins) plugin.Tick();
         }
 
         private void TickOverflows<T>(HashSet<T> processes, HashSet<Process> tmpProcesses,

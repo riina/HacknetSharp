@@ -15,8 +15,11 @@ namespace HacknetSharp.Server
     /// </summary>
     public class ServerBase
     {
+        internal IEnumerable<Type> PluginTypes => _pluginTypes;
+
         private readonly HashSet<Type> _programTypes;
         private readonly HashSet<Type> _serviceTypes;
+        private readonly HashSet<Type> _pluginTypes;
         private readonly CountdownEvent _countdown;
         private readonly AutoResetEvent _op;
         private readonly Queue<ProgramContext> _inputQueue;
@@ -97,6 +100,8 @@ namespace HacknetSharp.Server
             _programTypes.UnionWith(config.Programs);
             _serviceTypes = new HashSet<Type>(ServerUtil.DefaultServices);
             _serviceTypes.UnionWith(config.Services);
+            _pluginTypes = new HashSet<Type>(ServerUtil.DefaultPlugins);
+            _pluginTypes.UnionWith(config.Plugins);
             Programs = new Dictionary<string, (Func<Program>, ProgramInfoAttribute)>();
             IntrinsicPrograms = new Dictionary<string, (Func<Program>, ProgramInfoAttribute)>();
             Services = new Dictionary<string, (Func<Service>, ServiceInfoAttribute)>();

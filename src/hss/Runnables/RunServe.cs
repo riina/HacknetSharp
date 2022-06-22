@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using HacknetSharp;
 using HacknetSharp.Server;
+using HacknetSharp.Server.Lua;
 using Microsoft.Extensions.Logging;
 
 namespace hss.Runnables
@@ -71,6 +72,7 @@ namespace hss.Runnables
             var conf = new ServerConfig()
                 .WithPrograms(executor.ServerDatabaseContextFactory.Programs.Concat(executor.CustomPrograms))
                 .WithServices(executor.ServerDatabaseContextFactory.Services.Concat(executor.CustomServices))
+                .WithPlugins(new[] { new[] { typeof(ScriptManager) } })
                 .WithStorageContextFactory(executor.ServerDatabaseContextFactory)
                 .WithDefaultWorld(servConf.DefaultWorld)
                 .WithPort(servConf.Port)

@@ -1,24 +1,28 @@
 using System.Collections.Generic;
-using HacknetSharp.Server.Lua;
 using MoonSharp.Interpreter;
 
-namespace HacknetSharp.Server
+namespace HacknetSharp.Server.Lua
 {
     /// <summary>
-    /// Represents a lua-function-backed service.
+    /// Represents a lua-function-backed program.
     /// </summary>
     [IgnoreRegistration]
-    public class LuaService : Service
+    public class LuaProgram : Program
     {
+        private static readonly IReadOnlyDictionary<string, object> _defaultDict = new Dictionary<string, object>();
+
         private readonly Coroutine _coroutine;
+        private readonly IReadOnlyDictionary<string, object> _additionalProps;
 
         /// <summary>
-        /// Creates a lua service from the specified coroutine.
+        /// Creates a lua program from the specified coroutine.
         /// </summary>
         /// <param name="coroutine">Coroutine to use.</param>
-        public LuaService(Coroutine coroutine)
+        /// <param name="additionalProps">Additional properties to initialize with.</param>
+        public LuaProgram(Coroutine coroutine, IReadOnlyDictionary<string, object>? additionalProps = null)
         {
             _coroutine = coroutine;
+            _additionalProps = additionalProps ?? _defaultDict;
         }
 
         /// <inheritdoc />
@@ -34,8 +38,13 @@ namespace HacknetSharp.Server
                 manager.SetGlobal("argv", Argv);
                 manager.SetGlobal("argc", Argv.Length);
                 manager.SetGlobal("args", Context.Args);
+                manager.SetGlobal("shell", Shell);
+                manager.SetGlobal("pwd", Shell.WorkingDirectory);
+                manager.SetGlobal("me", Person);
                 try
                 {
+                    foreach (var (k, v) in _additionalProps)
+                        manager.SetGlobal(k, v);
                     DynValue? result = _coroutine.Resume();
                     if (_coroutine.State == CoroutineState.Suspended)
                         yield return result?.ToObject() as YieldToken;
@@ -48,6 +57,18 @@ namespace HacknetSharp.Server
                     manager.ClearGlobal("argv");
                     manager.ClearGlobal("argc");
                     manager.ClearGlobal("args");
+                    manager.ClearGlobal("shell");
+                    manager.ClearGlobal("pwd");
+                    manager.ClearGlobal("me");
+                    foreach (var (k, _) in _additionalProps)
+                        try
+                        {
+                            manager.ClearGlobal(k);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
                 }
             }
         }

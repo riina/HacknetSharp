@@ -21,6 +21,11 @@ namespace HacknetSharp.Server
         public HashSet<Type> Services { get; set; }
 
         /// <summary>
+        /// Plugin types.
+        /// </summary>
+        public HashSet<Type> Plugins { get; set; }
+
+        /// <summary>
         /// Default world.
         /// </summary>
         public string? DefaultWorld { get; set; }
@@ -47,6 +52,7 @@ namespace HacknetSharp.Server
         {
             Programs = new HashSet<Type>();
             Services = new HashSet<Type>();
+            Plugins = new HashSet<Type>();
             Templates = new TemplateGroup();
         }
 
@@ -80,6 +86,17 @@ namespace HacknetSharp.Server
         public ServerConfigBase WithPrograms(IEnumerable<IEnumerable<Type>> programs)
         {
             Programs.UnionWith(programs.SelectMany(x => x));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds plugins.
+        /// </summary>
+        /// <param name="plugins">Plugin types.</param>
+        /// <returns>This config.</returns>
+        public ServerConfigBase WithPlugins(IEnumerable<IEnumerable<Type>> plugins)
+        {
+            Plugins.UnionWith(plugins.SelectMany(x => x));
             return this;
         }
 
