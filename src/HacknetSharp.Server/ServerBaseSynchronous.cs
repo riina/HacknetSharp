@@ -6,7 +6,7 @@ namespace HacknetSharp.Server
     /// <summary>
     /// Base class for synchronous server.
     /// </summary>
-    public abstract class ServerBaseSynchronous : ServerBase
+    public abstract class ServerBaseSynchronous : ServerBase, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of <see cref="ServerBaseSynchronous"/>.
@@ -82,22 +82,27 @@ namespace HacknetSharp.Server
         public virtual void Dispose()
         {
             if (State == LifecycleState.Disposed) return;
-            Util.RequireState(State, LifecycleState.Active, LifecycleState.Active);
-            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref State);
+            Util.RequireState(State, LifecycleState.NotStarted, LifecycleState.Active);
+            bool wasActive = State != LifecycleState.NotStarted;
+            Util.TriggerState(_op, LifecycleState.NotStarted, LifecycleState.Active, LifecycleState.Dispose, ref State);
             DisconnectConnections();
             _op.WaitOne();
             _countdown.Signal();
             _op.Set();
             _countdown.Wait();
             WaitForStopListening();
-            Logger.LogInformation("Committing database on close");
             try
             {
-                Database.Sync();
-            }
-            catch (Exception e)
-            {
-                Logger.LogWarning("Database commit failed with an exception:\n{Exception}", e);
+                if (wasActive)
+                    try
+                    {
+                        Logger.LogInformation("Committing database on close");
+                        Database.Sync();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogWarning("Database commit failed with an exception:\n{Exception}", e);
+                    }
             }
             finally
             {

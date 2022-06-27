@@ -31,7 +31,7 @@ namespace HacknetSharp.Server.Models
         /// <summary>
         /// Command line for new players.
         /// </summary>
-        public virtual string? StartupCommandLine { get; set; } = null!;
+        public virtual string? StartupCommandLine { get; set; }
 
         /// <summary>
         /// Address range for new players.
@@ -97,5 +97,22 @@ namespace HacknetSharp.Server.Models
         /// Systems with non-<see cref="Guid.Empty"/> spawn groups.
         /// </summary>
         public Dictionary<Guid, List<PersonModel>> SpawnGroupPersons { get; set; } = new();
+
+        /// <summary>
+        /// Creates an empty world model.
+        /// </summary>
+        /// <returns>World model.</returns>
+        public static WorldModel CreateEmpty(string name, string label, string playerSystemTemplate, string playerAddressRange = "192.168.0.0/16")
+        {
+            return new WorldModel
+            {
+                Name = name,
+                Label = label,
+                PlayerSystemTemplate = playerSystemTemplate,
+                PlayerAddressRange = playerAddressRange,
+                Persons = new HashSet<PersonModel>(),
+                Systems = new HashSet<SystemModel>()
+            };
+        }
     }
 }
