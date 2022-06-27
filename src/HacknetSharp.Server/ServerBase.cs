@@ -18,17 +18,22 @@ namespace HacknetSharp.Server
 
         internal IEnumerable<Type> PluginTypes => _pluginTypes;
 
+        /// <summary>
+        /// Countdown.
+        /// </summary>
+        protected readonly CountdownEvent _countdown;
+
+        /// <summary>
+        /// Reset operation.
+        /// </summary>
+        protected readonly AutoResetEvent _op;
         private readonly HashSet<Type> _programTypes;
         private readonly HashSet<Type> _serviceTypes;
         private readonly HashSet<Type> _pluginTypes;
-        private readonly CountdownEvent _countdown;
-        private readonly AutoResetEvent _op;
         private readonly Queue<ProgramContext> _inputQueue;
         private readonly List<ProgramContext> _inputProcessing;
         private readonly AutoResetEvent _queueOp;
-        private long _ms;
         private float _saveElapsed;
-        private long _lastMs;
         private bool _databaseConfigured;
         private bool _defaultWorldConfigured;
 
@@ -139,7 +144,7 @@ namespace HacknetSharp.Server
             typeof(ServerBase).GetMethod(nameof(GetConstructorDelegate),
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)!;
 
-        private void StartInternal()
+        internal void StartInternal()
         {
             if (!_databaseConfigured) throw new InvalidOperationException("Database not configured prior to start call");
             if (!_defaultWorldConfigured) throw new InvalidOperationException("Default world not configured prior to start call");
@@ -203,7 +208,11 @@ namespace HacknetSharp.Server
 
         private static Func<TBase> GetConstructorDelegate<T, TBase>() where T : TBase, new() => () => new T();
 
-        private void UpdateMain(float deltaTime)
+        /// <summary>
+        /// Performs main world update.
+        /// </summary>
+        /// <param name="deltaTime">Delta time.</param>
+        protected void UpdateMain(float deltaTime)
         {
             _queueOp.WaitOne();
             _inputProcessing.AddRange(_inputQueue);
@@ -229,7 +238,12 @@ namespace HacknetSharp.Server
             }
         }
 
-        private bool CheckSave(float deltaTime)
+        /// <summary>
+        /// Checks if save should be triggered since last call to this method.
+        /// </summary>
+        /// <param name="deltaTime">Delta time.</param>
+        /// <returns>True if save should be triggered.</returns>
+        protected bool CheckSave(float deltaTime)
         {
             float saveTime = _saveElapsed + deltaTime;
             if (saveTime >= SaveDelaySeconds)

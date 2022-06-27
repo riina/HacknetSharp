@@ -4,8 +4,22 @@ using Microsoft.Extensions.Logging;
 
 namespace HacknetSharp.Server
 {
-    public partial class ServerBase
+    /// <summary>
+    /// Base class for asynchronous server.
+    /// </summary>
+    public class ServerBaseAsync : ServerBase
     {
+        private long _ms;
+        private long _lastMs;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServerBaseAsync"/>.
+        /// </summary>
+        /// <param name="config">Configuration.</param>
+        protected ServerBaseAsync(ServerConfigBase config) : base(config)
+        {
+        }
+
         /// <summary>
         /// Starts instance.
         /// </summary>
@@ -22,7 +36,6 @@ namespace HacknetSharp.Server
         {
             long ms = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             _ms = ms;
-            _saveElapsed = 0;
             _lastMs = ms;
             while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
             {
@@ -69,6 +82,9 @@ namespace HacknetSharp.Server
         /// <returns>Task.</returns>
         protected virtual Task WaitForStopListeningAsync() => Task.CompletedTask;
 
+        /// <inheritdoc />
+        public override void Dispose() => DisposeAsync().Wait();
+
         /// <summary>
         /// Disposes instance.
         /// </summary>
@@ -79,7 +95,6 @@ namespace HacknetSharp.Server
             while (State != LifecycleState.Active) await Task.Delay(100).Caf();
             Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref State);
             await DisconnectConnectionsAsync();
-
             await Task.Run(() =>
             {
                 _op.WaitOne();

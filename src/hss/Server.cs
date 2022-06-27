@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 
 namespace hss
 {
-    public class Server : ServerBase
+    public class Server : ServerBaseAsync
     {
         private static readonly CultureInfo s_ic = CultureInfo.InvariantCulture;
 
@@ -123,6 +123,17 @@ namespace hss
             _connectTask = RunConnectListener();
         }
 
+        protected override void DisconnectConnections()
+        {
+            var connectionIds = _connections.Keys;
+            _connectListener.Stop();
+            foreach (var id in connectionIds)
+            {
+                Logger.LogInformation("Disconnecting connection {Id} for server dispose", id);
+                DisconnectConnectionAsync(id).Wait();
+            }
+        }
+
         protected override async Task DisconnectConnectionsAsync()
         {
             var connectionIds = _connections.Keys;
@@ -132,6 +143,11 @@ namespace hss
                 Logger.LogInformation("Disconnecting connection {Id} for server dispose", id);
                 await DisconnectConnectionAsync(id);
             }
+        }
+
+        protected override void WaitForStopListening()
+        {
+            _connectTask?.Wait();
         }
 
         protected override async Task WaitForStopListeningAsync() => await (_connectTask ?? Task.CompletedTask);
