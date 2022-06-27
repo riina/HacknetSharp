@@ -3,8 +3,19 @@ using Microsoft.Extensions.Logging;
 
 namespace HacknetSharp.Server
 {
-    public partial class ServerBase
+    /// <summary>
+    /// Base class for synchronous server.
+    /// </summary>
+    public abstract class ServerBaseSynchronous : ServerBase
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServerBaseSynchronous"/>.
+        /// </summary>
+        /// <param name="config">Configuration.</param>
+        protected ServerBaseSynchronous(ServerConfigBase config) : base(config)
+        {
+        }
+
         /// <summary>
         /// Starts instance.
         /// </summary>

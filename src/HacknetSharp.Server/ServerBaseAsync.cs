@@ -7,7 +7,7 @@ namespace HacknetSharp.Server
     /// <summary>
     /// Base class for asynchronous server.
     /// </summary>
-    public class ServerBaseAsync : ServerBase
+    public abstract class ServerBaseAsync : ServerBase
     {
         private long _ms;
         private long _lastMs;
@@ -81,9 +81,6 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <returns>Task.</returns>
         protected virtual Task WaitForStopListeningAsync() => Task.CompletedTask;
-
-        /// <inheritdoc />
-        public override void Dispose() => DisposeAsync().Wait();
 
         /// <summary>
         /// Disposes instance.
