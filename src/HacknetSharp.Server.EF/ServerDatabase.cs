@@ -195,6 +195,26 @@ namespace HacknetSharp.Server.EF
         }
 
         /// <inheritdoc/>
+        public void Sync()
+        {
+            _waitHandle.WaitOne();
+            try
+            {
+                _context.AddRange(_added.Except(_removed));
+                _context.UpdateRange(_updated.Except(_added).Except(_removed));
+                _context.RemoveRange(_removed.Except(_added));
+                _context.SaveChanges();
+                _added.Clear();
+                _updated.Clear();
+                _removed.Clear();
+            }
+            finally
+            {
+                _waitHandle.Set();
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task SyncAsync()
         {
             _waitHandle.WaitOne();

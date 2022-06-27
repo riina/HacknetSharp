@@ -83,6 +83,11 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Synchronizes local state with database.
         /// </summary>
+        void Sync();
+
+        /// <summary>
+        /// Synchronizes local state with database.
+        /// </summary>
         /// <returns>Task representing this operation.</returns>
         Task SyncAsync();
     }

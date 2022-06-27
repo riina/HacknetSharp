@@ -81,7 +81,7 @@ namespace hss.Runnables
                 .WithMotd(servConf.Motd)
                 .WithLogger(logger);
             var instance = conf.CreateInstance();
-            _ = instance.Start();
+            _ = instance.StartAsync();
 
             // Block the program until it is closed.
             Console.WriteLine("Press Ctrl-C to terminate.");

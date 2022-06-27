@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace HacknetSharp.Test
 {
-    public class Tests
+    public class MiscTests
     {
         [SetUp]
         public void Setup()

@@ -89,11 +89,11 @@ namespace hss
             }
         }
 
-        protected override async Task UpdateCoreAsync()
+        protected override async Task UpdateCoreAsync(float deltaTime)
         {
             try
             {
-                await base.UpdateCoreAsync();
+                await base.UpdateCoreAsync(deltaTime);
             }
             catch (DbUpdateConcurrencyException e)
             {
@@ -134,7 +134,7 @@ namespace hss
             }
         }
 
-        protected override async Task WaitForStopListening() => await (_connectTask ?? Task.CompletedTask);
+        protected override async Task WaitForStopListeningAsync() => await (_connectTask ?? Task.CompletedTask);
 
         public bool HasConnection(string userName) => _connections.Any(c => c.Value.UserName == userName);
 

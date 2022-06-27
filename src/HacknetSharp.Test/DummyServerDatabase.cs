@@ -41,6 +41,10 @@ namespace HacknetSharp.Test
         {
         }
 
+        public void Sync()
+        {
+        }
+
         public Task SyncAsync() => Task.CompletedTask;
     }
 }

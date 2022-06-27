@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -13,8 +12,10 @@ namespace HacknetSharp.Server
     /// <summary>
     /// Base server implementation.
     /// </summary>
-    public class ServerBase
+    public partial class ServerBase
     {
+        private const float SaveDelaySeconds = 10;
+
         internal IEnumerable<Type> PluginTypes => _pluginTypes;
 
         private readonly HashSet<Type> _programTypes;
@@ -26,7 +27,7 @@ namespace HacknetSharp.Server
         private readonly List<ProgramContext> _inputProcessing;
         private readonly AutoResetEvent _queueOp;
         private long _ms;
-        private long _lastSave;
+        private float _saveElapsed;
         private long _lastMs;
         private bool _databaseConfigured;
         private bool _defaultWorldConfigured;
@@ -134,17 +135,11 @@ namespace HacknetSharp.Server
             _defaultWorldConfigured = true;
         }
 
-        private static readonly MethodInfo _getConstructorDelegate =
+        private static readonly MethodInfo s_getConstructorDelegate =
             typeof(ServerBase).GetMethod(nameof(GetConstructorDelegate),
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)!;
 
-        /// <summary>
-        /// Starts instance.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException">Thrown when improperly configured.</exception>
-        /// <exception cref="ApplicationException">Thrown for problem in startup.</exception>
-        public Task Start()
+        private void StartInternal()
         {
             if (!_databaseConfigured) throw new InvalidOperationException("Database not configured prior to start call");
             if (!_defaultWorldConfigured) throw new InvalidOperationException("Default world not configured prior to start call");
@@ -162,7 +157,7 @@ namespace HacknetSharp.Server
                         continue;
                     }
 
-                    var func = (Func<Program>)(_getConstructorDelegate.MakeGenericMethod(type, typeof(Program))
+                    var func = (Func<Program>)(s_getConstructorDelegate.MakeGenericMethod(type, typeof(Program))
                                                    .Invoke(null, Array.Empty<object>()) ??
                                                throw new ApplicationException(
                                                    $"{type.FullName} supplied as program but failed to get delegate"));
@@ -181,7 +176,7 @@ namespace HacknetSharp.Server
                         continue;
                     }
 
-                    var func = (Func<Service>)(_getConstructorDelegate.MakeGenericMethod(type, typeof(Service))
+                    var func = (Func<Service>)(s_getConstructorDelegate.MakeGenericMethod(type, typeof(Service))
                                                    .Invoke(null, Array.Empty<object>()) ??
                                                throw new ApplicationException(
                                                    $"{type.FullName} supplied as service but failed to get delegate"));
@@ -197,7 +192,6 @@ namespace HacknetSharp.Server
 
             Util.TriggerState(_op, LifecycleState.Starting, LifecycleState.Starting, LifecycleState.Active, ref State);
             StartListening();
-            return UpdateAsync();
         }
 
         /// <summary>
@@ -209,32 +203,8 @@ namespace HacknetSharp.Server
 
         private static Func<TBase> GetConstructorDelegate<T, TBase>() where T : TBase, new() => () => new T();
 
-        private async Task UpdateAsync()
+        private void UpdateMain(float deltaTime)
         {
-            long ms = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            _ms = ms;
-            _lastSave = ms;
-            _lastMs = ms;
-            while (TryIncrementCountdown(LifecycleState.Active, LifecycleState.Active))
-            {
-                try
-                {
-                    await UpdateCoreAsync();
-                }
-                finally
-                {
-                    DecrementCountdown();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Core update.
-        /// </summary>
-        protected virtual async Task UpdateCoreAsync()
-        {
-            const int tickMs = 10;
-            const int saveDelayMs = 10 * 1000;
             _queueOp.WaitOne();
             _inputProcessing.AddRange(_inputQueue);
             _inputQueue.Clear();
@@ -245,7 +215,7 @@ namespace HacknetSharp.Server
             foreach (var world in Worlds.Values)
             {
                 world.PreviousTime = world.Model.Now;
-                world.Time = world.PreviousTime + (_ms - _lastMs) / 1000.0;
+                world.Time = world.PreviousTime + deltaTime;
                 world.Model.Now = world.Time;
                 try
                 {
@@ -257,22 +227,18 @@ namespace HacknetSharp.Server
                         world.Model.Key, e);
                 }
             }
+        }
 
-            long ms2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            long ms3;
-            if (_lastSave + saveDelayMs < ms2)
+        private bool CheckSave(float deltaTime)
+        {
+            float saveTime = _saveElapsed + deltaTime;
+            if (saveTime >= SaveDelaySeconds)
             {
-                Logger.LogInformation("Database saving {Time}", DateTime.Now);
-                _lastSave = ms2;
-                await Database.SyncAsync().Caf();
-                ms3 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                Logger.LogInformation("Database save {Time}", DateTime.Now);
+                _saveElapsed = (saveTime - SaveDelaySeconds) % SaveDelaySeconds;
+                return true;
             }
-            else
-                ms3 = ms2;
-
-            await Task.Delay((int)Math.Min(tickMs, Math.Max(0, tickMs - (ms3 - _ms)))).Caf();
-            _lastMs = _ms;
-            _ms = ms3;
+            return false;
         }
 
         /// <summary>
@@ -356,53 +322,6 @@ namespace HacknetSharp.Server
             finally
             {
                 _queueOp.Set();
-            }
-        }
-
-        /// <summary>
-        /// Disconnects active connections.
-        /// </summary>
-        /// <returns>Task.</returns>
-        protected virtual Task DisconnectConnectionsAsync() => Task.CompletedTask;
-
-        /// <summary>
-        /// Waits for connection task to end.
-        /// </summary>
-        /// <returns>Task.</returns>
-        protected virtual Task WaitForStopListening() => Task.CompletedTask;
-
-        /// <summary>
-        /// Disposes instance.
-        /// </summary>
-        public async Task DisposeAsync()
-        {
-            if (State == LifecycleState.Disposed) return;
-            Util.RequireState(State, LifecycleState.Starting, LifecycleState.Active);
-            while (State != LifecycleState.Active) await Task.Delay(100).Caf();
-            Util.TriggerState(_op, LifecycleState.Active, LifecycleState.Active, LifecycleState.Dispose, ref State);
-            await DisconnectConnectionsAsync();
-
-            await Task.Run(() =>
-            {
-                _op.WaitOne();
-                _countdown.Signal();
-                _op.Set();
-                _countdown.Wait();
-            }).Caf();
-            await WaitForStopListening();
-            Logger.LogInformation("Committing database on close");
-            try
-            {
-                await Database.SyncAsync();
-            }
-            catch (Exception e)
-            {
-                Logger.LogWarning("Database commit failed with an exception:\n{Exception}", e);
-            }
-            finally
-            {
-                Util.TriggerState(_op, LifecycleState.Dispose, LifecycleState.Dispose, LifecycleState.Disposed,
-                    ref State);
             }
         }
 
