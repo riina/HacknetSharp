@@ -9,7 +9,7 @@ using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using NUnit.Framework;
 
-namespace HacknetSharp.Test
+namespace HacknetSharp.Test.Misc
 {
     public class MiscTests
     {

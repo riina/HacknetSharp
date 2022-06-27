@@ -16,12 +16,12 @@ namespace HacknetSharp.Server.Templates
         /// <summary>
         /// System name (with replacement support).
         /// </summary>
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// Operating system name.
         /// </summary>
-        public string? OsName { get; set; }
+        public string OsName { get; set; } = null!;
 
         /// <summary>
         /// Address range. Overridden by person template's <see cref="PersonTemplate.AddressRange"/> if present.
