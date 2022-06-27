@@ -145,7 +145,7 @@ namespace HacknetSharp.Server
         /// <param name="salt">Existing salt (optional)</param>
         /// <param name="saltLength">Salt length (ignored if salt provided)</param>
         /// <returns>Salt and hashed password</returns>
-        public static (byte[] hash, byte[] salt) HashPassword(string password, int iterations = 10000,
+        public static Password HashPassword(string password, int iterations = 10000,
             int hashLength = 256 / 8, byte[]? salt = null, int saltLength = 128 / 8)
         {
             if (salt == null)
@@ -157,7 +157,7 @@ namespace HacknetSharp.Server
 
             byte[] hash = KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA256, iterations, hashLength);
 
-            return (hash, salt);
+            return new Password(salt, hash);
         }
 
         /// <summary>
@@ -208,13 +208,12 @@ namespace HacknetSharp.Server
         /// Validates a password against a known hash and salt.
         /// </summary>
         /// <param name="pass">Password to validate.</param>
-        /// <param name="hash">Existing hash.</param>
-        /// <param name="salt">Existing salt.</param>
+        /// <param name="password">Existing password.</param>
         /// <returns>True if password matches hash with specified salt.</returns>
-        public static bool ValidatePassword(string pass, byte[] hash, byte[] salt)
+        public static bool ValidatePassword(string pass, Password password)
         {
-            var (genHash, _) = HashPassword(pass, salt: salt);
-            return genHash.AsSpan().SequenceEqual(hash);
+            var genPassword = HashPassword(pass, salt: password.Salt);
+            return genPassword.Hash.AsSpan().SequenceEqual(password.Hash);
         }
 
         [ThreadStatic] private static Random? s_random;

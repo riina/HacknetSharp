@@ -28,17 +28,16 @@ namespace HacknetSharp.Server
         /// Creates a new user.
         /// </summary>
         /// <param name="name">Username.</param>
-        /// <param name="hash">Password hash.</param>
-        /// <param name="salt">Password salt.</param>
+        /// <param name="password">Password.</param>
         /// <param name="admin">If true, register as admin.</param>
         /// <returns>Generated model.</returns>
-        public UserModel User(string name, byte[] hash, byte[] salt, bool admin)
+        public UserModel User(string name, Password password, bool admin)
         {
             var user = new UserModel
             {
                 Key = name,
-                Hash = hash,
-                Salt = salt,
+                Hash = password.Hash,
+                Salt = password.Salt,
                 Admin = admin,
                 Identities = new HashSet<PersonModel>()
             };

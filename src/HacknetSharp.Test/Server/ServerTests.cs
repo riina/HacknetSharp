@@ -34,10 +34,10 @@ public class ServerTests
         using var server = CreateServer(CreateConfig(worldModel, templateGroup));
         server.Start();
         var world = server.DefaultWorld;
-        var (hash, salt) = ServerUtil.HashPassword("rosebud");
-        var user = server.Spawn.User("user1", hash, salt, false);
+        var password = ServerUtil.HashPassword("rosebud");
+        var user = server.Spawn.User("user1", password, false);
         var person = world.Spawn.Person("person1", "person1username", user: user);
-        var system = world.Spawn.System(systemTemplate, "systemtemplate1", person, user.Hash, user.Salt, new IPAddressRange("192.168.0.32"));
+        var system = world.Spawn.System(systemTemplate, "systemtemplate1", person, user.Password, new IPAddressRange("192.168.0.32"));
         var ctx = new SynchronousTestServerPersonContext(person);
         world.StartShell(ctx, person, system.Logins.Single(), new[] { ServerConstants.ShellName }, true);
         person.DefaultSystem = system.Key;

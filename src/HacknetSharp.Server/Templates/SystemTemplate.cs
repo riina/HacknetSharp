@@ -198,14 +198,12 @@ namespace HacknetSharp.Server.Templates
         /// <param name="spawn">World spawner instance.</param>
         /// <param name="model">System model to apply to.</param>
         /// <param name="owner">Owner model.</param>
-        /// <param name="hash">Owner's password hash.</param>
-        /// <param name="salt">Owner's password salt.</param>
+        /// <param name="password">Owner's password.</param>
         /// <exception cref="InvalidOperationException">Thrown when there are missing elements.</exception>
         /// <exception cref="ApplicationException">Thrown when failed to parse template contents.</exception>
-        public virtual void ApplyOwner(WorldSpawn spawn, SystemModel model, PersonModel owner, byte[] hash,
-            byte[] salt)
+        public virtual void ApplyOwner(WorldSpawn spawn, SystemModel model, PersonModel owner, Password password)
         {
-            spawn.Login(model, owner.UserName, hash, salt, true, owner);
+            spawn.Login(model, owner.UserName, password, true, owner);
         }
 
         /// <summary>
@@ -259,10 +257,9 @@ namespace HacknetSharp.Server.Templates
                 {
                     var match = s_userRegex.Match(userKvp.Key);
                     if (!match.Success) throw new ApplicationException($"Failed to parse user for {userKvp.Key}");
-                    var (hashSub, saltSub) = ServerUtil.HashPassword(userKvp.Value);
+                    var password = ServerUtil.HashPassword(userKvp.Value);
                     string uname = match.Groups[1].Value;
-                    unameToLoginDict.Add(uname, spawn.Login(model, uname.ToLowerInvariant(), hashSub,
-                        saltSub, match.Groups[2].Success));
+                    unameToLoginDict.Add(uname, spawn.Login(model, uname.ToLowerInvariant(), password, match.Groups[2].Success));
                 }
 
             if (Vulnerabilities != null)

@@ -60,8 +60,8 @@ namespace HacknetSharp.Server.CorePrograms
                         Write("Password:");
                         var input = Input(User, true);
                         yield return input;
-                        var (hash, salt) = ServerUtil.HashPassword(input.Input!.Input);
-                        spawn.Login(System, name, hash, salt, admin);
+                        var password = ServerUtil.HashPassword(input.Input!.Input);
+                        spawn.Login(System, name, password, admin);
                         break;
                     }
                 case "delete":

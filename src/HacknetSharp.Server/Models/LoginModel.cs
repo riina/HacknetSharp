@@ -36,5 +36,10 @@ namespace HacknetSharp.Server.Models
         /// Password salt.
         /// </summary>
         public virtual byte[] Salt { get; set; } = null!;
+
+        /// <summary>
+        /// Password.
+        /// </summary>
+        public Password Password => new(Salt, Hash);
     }
 }

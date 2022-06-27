@@ -47,5 +47,20 @@ namespace HacknetSharp.Server.Models
         /// Currently available outputs for server events.
         /// </summary>
         public HashSet<IPersonContext> Outputs { get; set; } = new();
+
+        /// <summary>
+        /// Password.
+        /// </summary>
+        public Password Password => new(Salt, Hash);
+
+        /// <summary>
+        /// Sets password.
+        /// </summary>
+        /// <param name="password">Password.</param>
+        public void SetPassword(Password password)
+        {
+            Salt = password.Salt;
+            Hash = password.Hash;
+        }
     }
 }

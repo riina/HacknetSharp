@@ -160,7 +160,7 @@ namespace HacknetSharp.Server
             }
 
             var login = system.Logins.FirstOrDefault(l => l.User == username);
-            if (login == null || !ServerUtil.ValidatePassword(password, login.Hash, login.Salt))
+            if (login == null || !ServerUtil.ValidatePassword(password, login.Password))
             {
                 user.WriteEventSafe(Output("Invalid credentials\n"));
                 user.FlushSafeAsync();

@@ -354,8 +354,7 @@ namespace hss
                              ?? RegisterNewSystem(world, _user, person);
                 var pk = person.Key;
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
-                            ?? world.Spawn.Login(system, person.UserName,
-                                _user.Hash, _user.Salt, true, person);
+                            ?? world.Spawn.Login(system, person.UserName, _user.Password, true, person);
                 world.StartShell(this, person, login, new[] { ServerConstants.ShellName }, true);
             }
 
@@ -378,7 +377,7 @@ namespace hss
             PersonModel person)
         {
             var system = world.Spawn.System(world.PlayerSystemTemplate, world.Model.PlayerSystemTemplate, person,
-                user.Hash, user.Salt, new IPAddressRange(world.Model.PlayerAddressRange));
+                user.Password, new IPAddressRange(world.Model.PlayerAddressRange));
             person.DefaultSystem = system.Key;
             return system;
         }

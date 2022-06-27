@@ -56,6 +56,13 @@ namespace HacknetSharp.Test.Misc
             Assert.AreEqual("/well", Executable.GetPathInCommon("/well/waitforit", "/well/waitfor"));
         }
 
+        [Test]
+        public void Test_Password()
+        {
+            var pw = ServerUtil.HashPassword("pass1");
+            Assert.That(ServerUtil.ValidatePassword("pass2", pw), Is.False);
+            Assert.That(ServerUtil.ValidatePassword("pass1", pw), Is.True);
+        }
 
         [Test]
         public void Test_Cidr()
@@ -160,9 +167,9 @@ return x";
             var w = s.World("Kawahara", tg, wt);
             var ws = new WorldSpawn(db, w);
             var person = ws.Person("Barney from Black Mesa", "barney");
-            var (hash, salt) = ServerUtil.HashPassword("password");
-            var sys = ws.System(st, "system", person, hash, salt, new IPAddressRange("69.69.0.0/16"));
-            var li = ws.Login(sys, "jacob", hash, salt, true, person);
+            var password = ServerUtil.HashPassword("password");
+            var sys = ws.System(st, "system", person, password, new IPAddressRange("69.69.0.0/16"));
+            var li = ws.Login(sys, "jacob", password, true, person);
             ws.Folder(sys, li, "/etc");
             ws.Folder(sys, li, "/bin");
             ws.ProgFile(sys, li, "/bin/porthack", "core:porthack");

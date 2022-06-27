@@ -256,14 +256,14 @@ namespace HacknetSharp.Server.Lua
                    ?? SpawnSystemBase(owner, password, template, addressRange, tag, key);
         }
 
-        private SystemModel? SpawnSystemBase(PersonModel? owner, string password, string template, string addressRange,
+        private SystemModel? SpawnSystemBase(PersonModel? owner, string pass, string template, string addressRange,
             string? tag = null, Guid? key = null)
         {
             if (owner == null) return null;
             if (!_world.Templates.SystemTemplates.TryGetValue(template, out var sysTemplate)) return null;
             if (!IPAddressRange.TryParse(addressRange, true, out var range)) return null;
-            var (hash, salt) = ServerUtil.HashPassword(password);
-            return _world.Spawn.System(sysTemplate, template, owner, hash, salt, range, tag, key);
+            var password = ServerUtil.HashPassword(pass);
+            return _world.Spawn.System(sysTemplate, template, owner, password, range, tag, key);
         }
 
         [Global(typeof(Action<SystemModel?>))]

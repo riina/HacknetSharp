@@ -40,9 +40,9 @@ namespace hss.Runnables
                 Console.Write("Pass:");
                 string? pass = Util.ReadPassword();
                 if (pass == null) return 0;
-                var (hash, salt) = ServerUtil.HashPassword(pass);
+                var password = ServerUtil.HashPassword(pass);
                 var db = new ServerDatabase(ctx);
-                new Spawn(db).User(Name, hash, salt, Admin);
+                new Spawn(db).User(Name, password, Admin);
                 Console.Write("Committing database... ");
                 await db.SyncAsync().Caf();
                 Console.WriteLine("Done.");

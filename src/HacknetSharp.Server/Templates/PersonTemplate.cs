@@ -202,7 +202,7 @@ namespace HacknetSharp.Server.Templates
             person.ProxyClocks = ProxyClocks;
             person.ClockSpeed = ClockSpeed;
             person.Tag = Tag;
-            var (hash, salt) = ServerUtil.HashPassword(password);
+            var genPassword = ServerUtil.HashPassword(password);
 
             if (Network != null)
             {
@@ -221,7 +221,7 @@ namespace HacknetSharp.Server.Templates
                         throw new KeyNotFoundException($"Unknown template {template}");
                     var netTemplateShim =
                         new SystemTemplateShim(netTemplate) { Configuration = networkEntry.Configuration };
-                    var netSystem = spawn.System(netTemplateShim, template, person, hash, salt, addr);
+                    var netSystem = spawn.System(netTemplateShim, template, person, genPassword, addr);
                     networkDict.Add(address, netSystem);
                     if (networkEntry.Links != null)
                         networkLinkDict.Add(address, networkEntry.Links);
@@ -235,9 +235,8 @@ namespace HacknetSharp.Server.Templates
             }
 
             SystemModel system = PrimaryAddress != null
-                ? spawn.System(systemTemplate, systemTemplateName, person, hash, salt,
-                    new IPAddressRange(PrimaryAddress).OnHost(range))
-                : spawn.System(systemTemplate, systemTemplateName, person, hash, salt, range);
+                ? spawn.System(systemTemplate, systemTemplateName, person, genPassword, new IPAddressRange(PrimaryAddress).OnHost(range))
+                : spawn.System(systemTemplate, systemTemplateName, person, genPassword, range);
             person.DefaultSystem = system.Key;
 
             if (FleetTemplates != null)
@@ -250,10 +249,9 @@ namespace HacknetSharp.Server.Templates
                     string fleetSystemTemplateName = FleetTemplates.SelectWeighted();
                     if (!templates.SystemTemplates.TryGetValue(fleetSystemTemplateName, out var fleetSystemTemplate))
                         throw new KeyNotFoundException($"Unknown template {fleetSystemTemplateName}");
-                    systems.Add(spawn.System(fleetSystemTemplate, fleetSystemTemplateName, person, hash, salt,
-                        fixedRange
-                            ? range
-                            : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange)));
+                    systems.Add(spawn.System(fleetSystemTemplate, fleetSystemTemplateName, person, genPassword, fixedRange
+                        ? range
+                        : new IPAddressRange(fleetSystemTemplate.AddressRange ?? Constants.DefaultAddressRange)));
                 }
 
                 for (int i = 0; i < systems.Count; i++)

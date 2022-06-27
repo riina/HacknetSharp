@@ -61,8 +61,8 @@ namespace HacknetSharp.Server.CorePrograms
 
             string un = ServerUtil.GenerateUser();
             string pw = ServerUtil.GeneratePassword();
-            var (hash, salt) = ServerUtil.HashPassword(pw);
-            World.Spawn.Login(system, un, hash, salt, true);
+            var password = ServerUtil.HashPassword(pw);
+            World.Spawn.Login(system, un, password, true);
             Shell.SetVariable("NAME", un);
             Shell.SetVariable("PASS", pw);
             Write($"\n«««« OPERATION COMPLETE »»»»\n$NAME: {un}\n$PASS: {pw}\n");

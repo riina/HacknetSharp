@@ -83,7 +83,7 @@ namespace HacknetSharp.Server.CorePrograms
             }
 
             var rLogin = rSystem.Logins.FirstOrDefault(l => l.User == name);
-            if (rLogin == null || !ServerUtil.ValidatePassword(password, rLogin.Hash, rLogin.Salt))
+            if (rLogin == null || !ServerUtil.ValidatePassword(password, rLogin.Password))
             {
                 Write("scp: Invalid credentials\n");
                 yield break;

@@ -108,15 +108,14 @@ namespace HacknetSharp.Server
         /// <param name="template">System template.</param>
         /// <param name="templateName">Template name.</param>
         /// <param name="owner">System owner.</param>
-        /// <param name="hash">Owner password hash.</param>
-        /// <param name="salt">Owner password salt.</param>
+        /// <param name="password">Owner password.</param>
         /// <param name="range">Address range or single address.</param>
         /// <param name="tag">Tag to apply.</param>
         /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <returns>Generated model.</returns>
         /// <exception cref="ApplicationException">Thrown when address range is not IPv4 range.</exception>
-        public unsafe SystemModel System(SystemTemplate template, string templateName, PersonModel owner, byte[] hash,
-            byte[] salt, IPAddressRange range, string? tag = null, Guid? spawnGroup = null)
+        public unsafe SystemModel System(SystemTemplate template, string templateName, PersonModel owner,
+            Password password, IPAddressRange range, string? tag = null, Guid? spawnGroup = null)
         {
             if (!range.TryGetIPv4HostAndSubnetMask(out uint host, out uint subnetMask))
                 throw new ApplicationException("Address range is not IPv4");
@@ -146,7 +145,7 @@ namespace HacknetSharp.Server
                 resAddr = host;
             }
 
-            return System(template, templateName, owner, hash, salt, resAddr, tag, spawnGroup);
+            return System(template, templateName, owner, password, resAddr, tag, spawnGroup);
         }
 
         /// <summary>
@@ -155,15 +154,13 @@ namespace HacknetSharp.Server
         /// <param name="template">System template.</param>
         /// <param name="templateName">Template name.</param>
         /// <param name="owner">System owner.</param>
-        /// <param name="hash">Owner password hash.</param>
-        /// <param name="salt">Owner password salt.</param>
+        /// <param name="password">Owner password.</param>
         /// <param name="address">Address.</param>
         /// <param name="tag">Tag to apply.</param>
         /// <param name="spawnGroup">Spawn group to apply.</param>
         /// <returns>Generated model.</returns>
-        public SystemModel System(SystemTemplate template, string templateName, PersonModel owner, byte[] hash,
-            byte[] salt, uint address,
-            string? tag = null, Guid? spawnGroup = null)
+        public SystemModel System(SystemTemplate template, string templateName, PersonModel owner,
+            Password password, uint address, string? tag = null, Guid? spawnGroup = null)
         {
             var system = new SystemModel
             {
@@ -182,7 +179,7 @@ namespace HacknetSharp.Server
                 Tag = tag,
                 SpawnGroup = spawnGroup ?? Guid.Empty
             };
-            template.ApplyOwner(this, system, owner, hash, salt);
+            template.ApplyOwner(this, system, owner, password);
             template.ApplyTemplate(this, system);
             owner.Systems.Add(system);
             World.Systems.Add(system);
@@ -261,12 +258,11 @@ namespace HacknetSharp.Server
         /// </summary>
         /// <param name="owner">System the login belongs to.</param>
         /// <param name="user">Username to make login for.</param>
-        /// <param name="hash">Password hash.</param>
-        /// <param name="salt">Password salt.</param>
+        /// <param name="password">Password.</param>
         /// <param name="admin">If true, admin on system.</param>
         /// <param name="person">Person to associate login with.</param>
         /// <returns>Generated model.</returns>
-        public LoginModel Login(SystemModel owner, string user, byte[] hash, byte[] salt, bool admin,
+        public LoginModel Login(SystemModel owner, string user, Password password, bool admin,
             PersonModel? person = null)
         {
             var login = new LoginModel
@@ -275,8 +271,8 @@ namespace HacknetSharp.Server
                 World = World,
                 System = owner,
                 User = user,
-                Hash = hash,
-                Salt = salt,
+                Hash = password.Hash,
+                Salt = password.Salt,
                 Person = person?.Key ?? Guid.Empty,
                 Admin = admin
             };
