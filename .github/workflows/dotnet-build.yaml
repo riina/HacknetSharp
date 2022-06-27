@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --framework net6.0 --no-build
+      run: dotnet test --framework net6.0 --configuration Release --no-build
 
     # - name: Publish hsh net5.0 osx-x64
     #   run: dotnet publish hsh --framework net5.0 --configuration Release --runtime osx-x64 --self-contained false
