@@ -21,7 +21,7 @@ public class CatTests
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
         StartBasicShell(world, ctx, person, system);
         QueueAndUpdate(server, ctx, user, "cat /bin/cat");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin/cat: Is a directory\n"));
+        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin/cat: Is a binary file\n"));
         AssertDisconnect(server, ctx);
     }
 
@@ -31,7 +31,7 @@ public class CatTests
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
         StartBasicShell(world, ctx, person, system);
         QueueAndUpdate(server, ctx, user, "cat /bin");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin: Is a binary file\n"));
+        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin: Is a directory\n"));
         AssertDisconnect(server, ctx);
     }
 
