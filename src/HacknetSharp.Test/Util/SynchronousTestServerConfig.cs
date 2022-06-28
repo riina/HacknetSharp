@@ -2,7 +2,7 @@ using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using Microsoft.Extensions.Logging;
 
-namespace HacknetSharp.Test.Server;
+namespace HacknetSharp.Test.Util;
 
 internal class SynchronousTestServerConfig : ServerConfigBase
 {

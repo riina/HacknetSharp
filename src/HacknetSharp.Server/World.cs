@@ -322,11 +322,10 @@ namespace HacknetSharp.Server
         }
 
         /// <inheritdoc />
-        public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel,
-            LoginModel loginModel, string[] argv, bool attach)
+        public ShellProcess? StartShell(IPersonContext personContext, PersonModel personModel, LoginModel loginModel,
+            string[] argv, bool attach)
         {
-            var programContext =
-                ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
+            var programContext = ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
             return StartShell(programContext, _server.IntrinsicPrograms[ServerConstants.ShellName].Item1(), attach);
         }
 

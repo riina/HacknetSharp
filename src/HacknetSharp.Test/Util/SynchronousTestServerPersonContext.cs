@@ -9,10 +9,17 @@ using HacknetSharp.Events.Server;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 
-namespace HacknetSharp.Test.Server;
+namespace HacknetSharp.Test.Util;
 
 internal class SynchronousTestServerPersonContext : IPersonContext
 {
+    public string GetClearText()
+    {
+        string str = Text.ToString();
+        Text.Clear();
+        return str;
+    }
+
     public readonly StringBuilder Text;
     private readonly PersonModel _person;
 

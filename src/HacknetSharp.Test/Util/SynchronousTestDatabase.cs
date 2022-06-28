@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using HacknetSharp.Server;
 
-namespace HacknetSharp.Test.Server;
+namespace HacknetSharp.Test.Util;
 
 internal class SynchronousTestDatabase : IServerDatabase
 {

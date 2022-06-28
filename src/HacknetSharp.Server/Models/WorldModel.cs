@@ -106,6 +106,7 @@ namespace HacknetSharp.Server.Models
         {
             return new WorldModel
             {
+                Key = Guid.NewGuid(),
                 Name = name,
                 Label = label,
                 PlayerSystemTemplate = playerSystemTemplate,

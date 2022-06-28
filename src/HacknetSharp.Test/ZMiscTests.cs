@@ -9,9 +9,9 @@ using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
 using NUnit.Framework;
 
-namespace HacknetSharp.Test.Misc
+namespace HacknetSharp.Test
 {
-    public class MiscTests
+    public class ZMiscTests
     {
         [SetUp]
         public void Setup()

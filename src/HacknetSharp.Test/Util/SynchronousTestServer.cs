@@ -1,7 +1,7 @@
 using System;
 using HacknetSharp.Server;
 
-namespace HacknetSharp.Test.Server;
+namespace HacknetSharp.Test.Util;
 
 internal class SynchronousTestServer : ServerBaseSynchronous
 {
@@ -10,6 +10,8 @@ internal class SynchronousTestServer : ServerBaseSynchronous
         if (config.Database == null) throw new ArgumentException("Null database");
         if (config.MainWorld == null) throw new ArgumentException("Null main world");
         ConfigureDatabase(config.Database);
-        ConfigureDefaultWorld(new World(this, config.MainWorld));
+        var world = new World(this, config.MainWorld);
+        Worlds[world.Model.Key] = world;
+        ConfigureDefaultWorld(world);
     }
 }

@@ -98,11 +98,23 @@ namespace HacknetSharp.Server.Templates
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="files">Files.</param>
-        public void AddFiles(string key, IList files)
+        public void AddFiles(string key, IEnumerable files)
         {
             Filesystem ??= new Dictionary<string, List<string>>();
             if (!Filesystem.TryGetValue(key, out var list)) Filesystem[key] = list = new List<string>();
             list.AddRange(files.OfType<string>());
+        }
+
+        /// <summary>
+        /// Adds files.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        /// <param name="files">Files.</param>
+        public void AddFiles(string key, params string[] files)
+        {
+            Filesystem ??= new Dictionary<string, List<string>>();
+            if (!Filesystem.TryGetValue(key, out var list)) Filesystem[key] = list = new List<string>();
+            list.AddRange(files);
         }
 
         /// <summary>
