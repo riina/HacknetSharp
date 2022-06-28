@@ -56,7 +56,7 @@ namespace HacknetSharp.Server.CorePrograms
             foreach (string x in fileList)
             {
                 ReadOnlySpan<char> fn = Path.GetFileName(x.AsSpan());
-                if (pos + max >= conWidth)
+                if (pos != 0 && pos + max >= conWidth)
                 {
                     sb.Append('\n');
                     pos = 0;

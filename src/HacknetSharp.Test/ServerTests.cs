@@ -18,7 +18,7 @@ public class ServerTests
     [Test]
     public void SynchronousServer_ConnectionState_Works()
     {
-        using var server = ConfigureSimpleNormalSystem(out var world, out UserModel _, out _, out _, out var ctx);
+        using var server = ConfigureSimplePopulatedAdmin(out var world, out UserModel _, out _, out _, out var ctx);
         StartBasicShell(world, ctx);
         server.Update(0.0f);
         Assert.That(ctx.GetClearText(), Is.EqualTo(""));

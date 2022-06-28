@@ -405,6 +405,7 @@ namespace HacknetSharp.Server.Models
         /// <exception cref="DirectoryNotFoundException">Thrown if specified directory does not exist.</exception>
         public IEnumerable<FileModel> EnumerateDirectory(string path, bool hidden = false)
         {
+            path = Executable.GetNormalized(path);
             var (nPath, nName) = Executable.GetDirectoryAndName(path);
             if (nPath == "/" && nName == "")
                 return Files.Where(f => f.Hidden == hidden && f.Path == nPath);

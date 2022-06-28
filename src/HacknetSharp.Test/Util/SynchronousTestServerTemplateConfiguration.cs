@@ -43,6 +43,7 @@ internal static class SynchronousTestServerTemplateConfiguration
             "prog:/bin/mkdir core:mkdir",
             "prog:/bin/scp core:scp",
             "prog:/bin/edit core:edit",
+            "text+++:\"/root/jazzco_firmware_v2\" \"thanks for the tech tip\"",
             "file:/home/{UserName}/image.png misc/image.png"
         });
         return template;

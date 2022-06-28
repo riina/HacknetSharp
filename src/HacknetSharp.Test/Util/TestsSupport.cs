@@ -25,10 +25,10 @@ internal static class TestsSupport
 
     internal static void StartBasicShell(World world, SynchronousTestServerPersonContext ctx, PersonModel person, SystemModel system)
     {
-        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
+        world.StartShell(ctx, person, system.Logins.Single(v => v.Person == person.Key), ServerConstants.GetLoginShellArgv(), true);
     }
 
-    internal static SynchronousTestServer ConfigureSimpleEmptySystem(out World world, out UserModel user,
+    internal static SynchronousTestServer ConfigureSimpleEmptyAdmin(out World world, out UserModel user,
         out PersonModel person, out SystemModel system, out SynchronousTestServerPersonContext ctx)
     {
         var worldModel = CreateWorldModel();
@@ -37,13 +37,33 @@ internal static class TestsSupport
         return ConfigureSimpleInternal(worldModel, templateGroup, systemTemplate, "systemtemplate1", out world, out user, out person, out system, out ctx);
     }
 
-    internal static SynchronousTestServer ConfigureSimpleNormalSystem(out World world, out UserModel user,
+    internal static SynchronousTestServer ConfigureSimpleEmptyRegular(out World world, out UserModel user,
+        out PersonModel person, out SystemModel system, out SynchronousTestServerPersonContext ctx)
+    {
+        var worldModel = CreateWorldModel();
+        var templateGroup = CreateTemplateGroup();
+        var systemTemplate = templateGroup.SystemTemplates["systemtemplate1"] = CreateEmptySystemTemplate("jacobian");
+        var server = ConfigureSimpleInternal(worldModel, templateGroup, systemTemplate, "systemtemplate1", out world, out user, out person, out system, out ctx);
+        return ConfigureSimpleRegularUserInternal(server, system, systemTemplate, "systemtemplate1", out user, out person, out ctx);
+    }
+
+    internal static SynchronousTestServer ConfigureSimplePopulatedAdmin(out World world, out UserModel user,
         out PersonModel person, out SystemModel system, out SynchronousTestServerPersonContext ctx)
     {
         var worldModel = CreateWorldModel();
         var templateGroup = CreateTemplateGroup();
         var systemTemplate = templateGroup.SystemTemplates["systemtemplate1"] = CreateNormalSystemTemplate("jacobian");
         return ConfigureSimpleInternal(worldModel, templateGroup, systemTemplate, "systemtemplate1", out world, out user, out person, out system, out ctx);
+    }
+
+    internal static SynchronousTestServer ConfigureSimplePopulatedRegular(out World world, out UserModel user,
+        out PersonModel person, out SystemModel system, out SynchronousTestServerPersonContext ctx)
+    {
+        var worldModel = CreateWorldModel();
+        var templateGroup = CreateTemplateGroup();
+        var systemTemplate = templateGroup.SystemTemplates["systemtemplate1"] = CreateNormalSystemTemplate("jacobian");
+        var server = ConfigureSimpleInternal(worldModel, templateGroup, systemTemplate, "systemtemplate1", out world, out user, out person, out system, out ctx);
+        return ConfigureSimpleRegularUserInternal(server, system, systemTemplate, "systemtemplate1", out user, out person, out ctx);
     }
 
     private static SynchronousTestServer ConfigureSimpleInternal(WorldModel worldModel, TemplateGroup templateGroup,
@@ -59,6 +79,23 @@ internal static class TestsSupport
         Assert.That(person.Systems.Count, Is.EqualTo(0));
         system = world.Spawn.System(systemTemplate, systemTemplateName, person, user.Password, new IPAddressRange("192.168.0.32"));
         Assert.That(person.Systems.Count, Is.EqualTo(1));
+        person.DefaultSystem = system.Key;
+        ctx = new SynchronousTestServerPersonContext(person) { Connected = true };
+        return server;
+    }
+
+    private static SynchronousTestServer ConfigureSimpleRegularUserInternal(SynchronousTestServer server,
+        SystemModel system, SystemTemplate systemTemplate, string systemTemplateName,
+        out UserModel user, out PersonModel person, out SynchronousTestServerPersonContext ctx)
+    {
+        var world = server.DefaultWorld;
+        var password = ServerUtil.HashPassword("sangheili");
+        user = server.Spawn.User("user2", password, false);
+        person = world.Spawn.Person("person2", "person2username", user: user);
+        Assert.That(person.Systems.Count, Is.EqualTo(0));
+        world.Spawn.System(systemTemplate, systemTemplateName, person, user.Password, new IPAddressRange("192.168.0.33"));
+        Assert.That(person.Systems.Count, Is.EqualTo(1));
+        world.Spawn.Login(system, "person2login1", password, false, person);
         person.DefaultSystem = system.Key;
         ctx = new SynchronousTestServerPersonContext(person) { Connected = true };
         return server;
