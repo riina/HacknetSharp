@@ -174,14 +174,11 @@ namespace HacknetSharp.Server
                     if (!operation.Completed.HasValue)
                     {
                         bool fail = operation.ProcessContext is ProgramContext pc0 && !pc0.User.Connected;
-                        fail = fail || operation.ProcessContext.System.BootTime > Model.Now;
-                        fail = fail || !Model.Systems.Contains(operation.ProcessContext.System);
-                        fail = fail || !operation.ProcessContext.System.Logins.Contains(operation.ProcessContext.Login);
-                        fail = fail ||
-                               (operation is not ShellProcess ||
-                                operation is ShellProcess { RemoteParent: null }) &&
-                               operation.ProcessContext is ProgramContext pc2 &&
-                               !pc2.Person.ShellChain.Contains(pc2.Shell);
+                        fail |= operation.ProcessContext.System.BootTime > Model.Now;
+                        fail |= !Model.Systems.Contains(operation.ProcessContext.System);
+                        fail |= !operation.ProcessContext.System.Logins.Contains(operation.ProcessContext.Login);
+                        fail |= operation is not ShellProcess or ShellProcess { RemoteParent: null } &&
+                                operation.ProcessContext is ProgramContext pc2 && !pc2.Person.ShellChain.Contains(pc2.Shell);
                         if (fail)
                         {
                             try
