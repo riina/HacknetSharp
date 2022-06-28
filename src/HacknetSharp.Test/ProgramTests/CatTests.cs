@@ -16,12 +16,22 @@ public class CatTests
     }
 
     [Test]
-    public void BinaryFile_Works()
+    public void BinaryFile_Disabled()
     {
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
         StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, $"cat /bin/cat");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin/cat: Is a binary file\n"));
+        QueueAndUpdate(server, ctx, user, "cat /bin/cat");
+        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin/cat: Is a directory\n"));
+        AssertDisconnect(server, ctx);
+    }
+
+    [Test]
+    public void Directory_Disabled()
+    {
+        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
+        StartBasicShell(world, ctx, person, system);
+        QueueAndUpdate(server, ctx, user, "cat /bin");
+        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin: Is a binary file\n"));
         AssertDisconnect(server, ctx);
     }
 
