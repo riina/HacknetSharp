@@ -19,7 +19,7 @@ namespace HacknetSharp.Test
 
         [TestCase("/test/me", ExpectedResult = "/test", TestName = "Direct")]
         [TestCase("/", ExpectedResult = null, TestName = "Root")]
-        /*[TestCase("/test/sub/..", ExpectedResult = "/", TestName = "Backtrack")]*/ // TODO evaluate
+        [TestCase("/test/sub/..", ExpectedResult = "/test/sub", TestName = "Backtrack")] // .NET BCL does this
         public string? GetDirectoryName(string value) => Executable.GetDirectoryName(value);
 
         [TestCase("/root", ExpectedResult = "root", TestName = "Identity")]
