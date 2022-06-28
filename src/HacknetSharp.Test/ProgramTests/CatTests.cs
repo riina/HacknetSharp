@@ -14,6 +14,17 @@ public class CatTests
         Assert.That(ctx.GetClearText(), Is.EqualTo("ouf\n"));
         AssertDisconnect(server, ctx);
     }
+
+    [Test]
+    public void BinaryFile_Works()
+    {
+        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
+        StartBasicShell(world, ctx, person, system);
+        QueueAndUpdate(server, ctx, user, $"cat /bin/cat");
+        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin/cat: Is a binary file\n"));
+        AssertDisconnect(server, ctx);
+    }
+
     [Test]
     public void MissingFile_Works()
     {
