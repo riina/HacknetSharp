@@ -12,7 +12,7 @@ public class WorldTests
     public void SynchronousServer_MissingExe_NoBinFolder_Works()
     {
         using var server = ConfigureSimpleEmptySystem(out var world, out var user, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), new[] { ServerConstants.ShellName }, true);
+        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
         person.DefaultSystem = system.Key;
         server.QueueCommand(ctx, user, Guid.NewGuid(), 16, "grep");
         server.Update(0.0f);
@@ -24,7 +24,7 @@ public class WorldTests
     public void SynchronousServer_MissingExe_WithBinFolder_Works()
     {
         using var server = ConfigureSimpleNormalSystem(out var world, out var user, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), new[] { ServerConstants.ShellName }, true);
+        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
         person.DefaultSystem = system.Key;
         server.QueueCommand(ctx, user, Guid.NewGuid(), 16, "grep");
         server.Update(0.0f);

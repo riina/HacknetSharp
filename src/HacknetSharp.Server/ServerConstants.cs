@@ -6,6 +6,12 @@ namespace HacknetSharp.Server
     public class ServerConstants
     {
         /// <summary>
+        /// Gets a mutable default argv for a login shell.
+        /// </summary>
+        /// <returns>Argv.</returns>
+        public static string[] GetLoginShellArgv() => new[] { ShellName };
+
+        /// <summary>
         /// Path to extensions folder.
         /// </summary>
         public const string ExtensionsFolder = "extensions";

@@ -167,7 +167,7 @@ namespace HacknetSharp.Server
                 return false;
             }
 
-            context.World.StartShell(user, context.Person, login, new[] { ServerConstants.ShellName }, true);
+            context.World.StartShell(user, context.Person, login, ServerConstants.GetLoginShellArgv(), true);
             if (context.System.KnownSystems.All(p => p.To != system))
                 context.World.Spawn.Connection(context.System, system, false);
             if (system.ConnectCommandLine != null)

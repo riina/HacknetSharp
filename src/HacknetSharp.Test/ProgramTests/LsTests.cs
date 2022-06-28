@@ -12,7 +12,7 @@ public class LsTests
     public void SynchronousServer_Ls_Works()
     {
         using var server = ConfigureSimpleNormalSystem(out var world, out var user, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), new[] { ServerConstants.ShellName }, true);
+        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
         person.DefaultSystem = system.Key;
         server.QueueCommand(ctx, user, Guid.NewGuid(), 16, "ls /usr");
         server.Update(0.0f);

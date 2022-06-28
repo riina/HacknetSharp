@@ -355,7 +355,7 @@ namespace hss
                 var pk = person.Key;
                 var login = system.Logins.FirstOrDefault(l => l.Person == pk)
                             ?? world.Spawn.Login(system, person.UserName, _user.Password, true, person);
-                world.StartShell(this, person, login, new[] { ServerConstants.ShellName }, true);
+                world.StartShell(this, person, login, ServerConstants.GetLoginShellArgv(), true);
             }
 
             return person;

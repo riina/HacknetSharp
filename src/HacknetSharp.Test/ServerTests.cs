@@ -21,7 +21,7 @@ public class ServerTests
     public void SynchronousServer_ConnectionState_Works()
     {
         using var server = ConfigureSimpleNormalSystem(out var world, out UserModel _, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), new[] { ServerConstants.ShellName }, true);
+        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
         person.DefaultSystem = system.Key;
         server.Update(0.0f);
         Assert.That(ctx.GetClearText(), Is.EqualTo(""));
