@@ -23,9 +23,9 @@ internal static class TestsSupport
         server.Update(0.0f);
     }
 
-    internal static void StartBasicShell(World world, SynchronousTestServerPersonContext ctx, PersonModel person, SystemModel system)
+    internal static ShellProcess StartBasicShell(World world, SynchronousTestServerPersonContext ctx, PersonModel person, SystemModel system)
     {
-        world.StartShell(ctx, person, system.Logins.Single(v => v.Person == person.Key), ServerConstants.GetLoginShellArgv(), true);
+        return world.StartShell(ctx, person, system.Logins.Single(v => v.Person == person.Key), ServerConstants.GetLoginShellArgv(), true) ?? throw new InvalidOperationException();
     }
 
     internal static SynchronousTestServer ConfigureSimpleEmptyAdmin(out World world, out UserModel user,

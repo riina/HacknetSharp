@@ -3,6 +3,7 @@ using System.Linq;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
+using HacknetSharp.Test.Util;
 using NUnit.Framework;
 
 namespace HacknetSharp.Test

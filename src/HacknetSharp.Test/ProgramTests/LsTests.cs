@@ -10,7 +10,7 @@ public class LsTests
     // TODO .. pathing test
 
     [Test]
-    public void SynchronousServer_Ls_ExistingFolder_NoTrailingSlash_Works()
+    public void ExistingFolder_NoTrailingSlash_Works()
     {
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out _, out _, out var ctx);
         StartBasicShell(world, ctx);
@@ -20,7 +20,7 @@ public class LsTests
     }
 
     [Test]
-    public void SynchronousServer_Ls_ExistingFolder_WithTrailingSlash_Works()
+    public void ExistingFolder_WithTrailingSlash_Works()
     {
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out _, out _, out var ctx);
         StartBasicShell(world, ctx);
@@ -30,7 +30,7 @@ public class LsTests
     }
 
     [Test]
-    public void SynchronousServer_Ls_MissingFolder_MarkedMissing()
+    public void MissingFolder_MarkedMissing()
     {
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out _, out _, out var ctx);
         StartBasicShell(world, ctx);
@@ -40,7 +40,7 @@ public class LsTests
     }
 
     [Test]
-    public void SynchronousServer_Ls_ProtectedFolder_FromAdmin_Visible()
+    public void ProtectedFolder_FromAdmin_Visible()
     {
         using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
         StartBasicShell(world, ctx, person, system);
@@ -50,7 +50,7 @@ public class LsTests
     }
 
     [Test]
-    public void SynchronousServer_Ls_ProtectedFolder_FromRegular_Protected()
+    public void ProtectedFolder_FromRegular_Protected()
     {
         using var server = ConfigureSimplePopulatedRegular(out var world, out var user, out var person, out var system, out var ctx);
         StartBasicShell(world, ctx, person, system);
