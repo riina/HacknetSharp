@@ -326,7 +326,7 @@ namespace HacknetSharp.Server
             string[] argv, bool attach)
         {
             var programContext = ServerUtil.InitProgramContext(this, Guid.Empty, personContext, personModel, loginModel, argv);
-            return StartShell(programContext, _server.IntrinsicPrograms[ServerConstants.ShellName].Item1(), attach);
+            return StartShell(programContext, _server.IntrinsicPrograms[ServerConstants.ShellName].Func(), attach);
         }
 
         /// <inheritdoc />
@@ -478,14 +478,14 @@ namespace HacknetSharp.Server
             string[] line = argv.SplitCommandLine();
             if (line.Length == 0 || string.IsNullOrWhiteSpace(line[0])) return null;
             if (_server.IntrinsicPrograms.TryGetValue(line[0], out var prog))
-                return prog.Item2;
+                return prog.Info;
             if (_server.Programs.TryGetValue(line[0], out prog))
-                return prog.Item2;
+                return prog.Info;
             return null;
         }
 
         /// <inheritdoc />
-        public IEnumerable<(Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms => _server.IntrinsicPrograms.Values;
+        public IEnumerable<ProgramData> IntrinsicPrograms => _server.IntrinsicPrograms.Values;
 
         /// <inheritdoc />
         public void ExecuteCommand(ProgramContext programContext)
@@ -619,7 +619,7 @@ namespace HacknetSharp.Server
             }
 
             bool success = _server.IntrinsicPrograms.TryGetValue(line[0], out var res);
-            result = success ? (res.Item1(), res.Item2, line) : default;
+            result = success ? (res.Func(), res.Info, line) : default;
             return success;
         }
 
@@ -636,7 +636,7 @@ namespace HacknetSharp.Server
 
             if (_server.Programs.TryGetValue(id, out var res))
             {
-                result = (res.Item1(), res.Item2, line);
+                result = (res.Func(), res.Info, line);
                 return true;
             }
 
@@ -662,7 +662,7 @@ namespace HacknetSharp.Server
 
             if (_server.Services.TryGetValue(id, out var res))
             {
-                result = (res.Item1(), res.Item2, line);
+                result = (res.Func(), res.Info, line);
                 return true;
             }
 

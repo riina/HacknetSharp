@@ -21,7 +21,7 @@ internal class SynchronousTestServerPersonContext : IPersonContext
     }
 
     public readonly StringBuilder Text;
-    private readonly PersonModel _person;
+    public readonly PersonModel _person;
 
     public SynchronousTestServerPersonContext(PersonModel person)
     {

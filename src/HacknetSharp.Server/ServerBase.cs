@@ -55,17 +55,17 @@ namespace HacknetSharp.Server
         /// <summary>
         /// Programs.
         /// </summary>
-        public Dictionary<string, (Func<Program>, ProgramInfoAttribute)> Programs { get; }
+        public Dictionary<string, ProgramData> Programs { get; }
 
         /// <summary>
         /// Intrinsic programs.
         /// </summary>
-        public Dictionary<string, (Func<Program>, ProgramInfoAttribute)> IntrinsicPrograms { get; }
+        public Dictionary<string, ProgramData> IntrinsicPrograms { get; }
 
         /// <summary>
         /// Services.
         /// </summary>
-        public Dictionary<string, (Func<Service>, ServiceInfoAttribute)> Services { get; }
+        public Dictionary<string, ServiceData> Services { get; }
 
         /// <summary>
         /// Templates.
@@ -108,9 +108,9 @@ namespace HacknetSharp.Server
             _serviceTypes.UnionWith(config.Services);
             _pluginTypes = new HashSet<Type>(ServerUtil.DefaultPlugins);
             _pluginTypes.UnionWith(config.Plugins);
-            Programs = new Dictionary<string, (Func<Program>, ProgramInfoAttribute)>();
-            IntrinsicPrograms = new Dictionary<string, (Func<Program>, ProgramInfoAttribute)>();
-            Services = new Dictionary<string, (Func<Service>, ServiceInfoAttribute)>();
+            Programs = new Dictionary<string, ProgramData>();
+            IntrinsicPrograms = new Dictionary<string, ProgramData>();
+            Services = new Dictionary<string, ServiceData>();
             _countdown = new CountdownEvent(1);
             _op = new AutoResetEvent(true);
             _inputQueue = new Queue<ProgramContext>();
@@ -166,9 +166,9 @@ namespace HacknetSharp.Server
                                                    .Invoke(null, Array.Empty<object>()) ??
                                                throw new ApplicationException(
                                                    $"{type.FullName} supplied as program but failed to get delegate"));
-                    Programs.Add(info.ProgCode, (func, info));
+                    Programs.Add(info.ProgCode, new ProgramData(func, info));
                     if (info.Intrinsic)
-                        IntrinsicPrograms.Add(info.Name, (func, info));
+                        IntrinsicPrograms.Add(info.Name, new ProgramData(func, info));
                 }
 
                 foreach (var type in _serviceTypes)
@@ -185,7 +185,7 @@ namespace HacknetSharp.Server
                                                    .Invoke(null, Array.Empty<object>()) ??
                                                throw new ApplicationException(
                                                    $"{type.FullName} supplied as service but failed to get delegate"));
-                    Services.Add(info.ProgCode, (func, info));
+                    Services.Add(info.ProgCode, new ServiceData(func, info));
                 }
             }
             catch

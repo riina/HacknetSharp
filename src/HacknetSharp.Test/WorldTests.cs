@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using HacknetSharp.Server;
 using NUnit.Framework;
 using static HacknetSharp.Test.Util.TestsSupport;
 
@@ -11,11 +8,9 @@ public class WorldTests
     [Test]
     public void SynchronousServer_MissingExe_NoBinFolder_Works()
     {
-        using var server = ConfigureSimpleEmptySystem(out var world, out var user, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
-        person.DefaultSystem = system.Key;
-        server.QueueCommand(ctx, user, Guid.NewGuid(), 16, "grep");
-        server.Update(0.0f);
+        using var server = ConfigureSimpleEmptySystem(out var world, out var user, out _, out _, out var ctx);
+        StartBasicShell(world, ctx);
+        QueueAndUpdate(server, ctx, user, "grep");
         Assert.That(ctx.GetClearText(), Is.EqualTo("grep: command not found\n"));
         AssertDisconnect(server, ctx);
     }
@@ -23,11 +18,9 @@ public class WorldTests
     [Test]
     public void SynchronousServer_MissingExe_WithBinFolder_Works()
     {
-        using var server = ConfigureSimpleNormalSystem(out var world, out var user, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
-        person.DefaultSystem = system.Key;
-        server.QueueCommand(ctx, user, Guid.NewGuid(), 16, "grep");
-        server.Update(0.0f);
+        using var server = ConfigureSimpleNormalSystem(out var world, out var user, out _, out _, out var ctx);
+        StartBasicShell(world, ctx);
+        QueueAndUpdate(server, ctx, user, "grep");
         Assert.That(ctx.GetClearText(), Is.EqualTo("/bin/grep: not found\n"));
         AssertDisconnect(server, ctx);
     }

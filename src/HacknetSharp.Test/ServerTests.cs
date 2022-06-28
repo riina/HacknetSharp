@@ -1,5 +1,3 @@
-using System.Linq;
-using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using NUnit.Framework;
 using static HacknetSharp.Test.Util.TestsSupport;
@@ -20,9 +18,8 @@ public class ServerTests
     [Test]
     public void SynchronousServer_ConnectionState_Works()
     {
-        using var server = ConfigureSimpleNormalSystem(out var world, out UserModel _, out var person, out var system, out var ctx);
-        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
-        person.DefaultSystem = system.Key;
+        using var server = ConfigureSimpleNormalSystem(out var world, out UserModel _, out _, out _, out var ctx);
+        StartBasicShell(world, ctx);
         server.Update(0.0f);
         Assert.That(ctx.GetClearText(), Is.EqualTo(""));
         AssertDisconnect(server, ctx);

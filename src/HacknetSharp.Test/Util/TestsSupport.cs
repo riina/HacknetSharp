@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using HacknetSharp.Server;
 using HacknetSharp.Server.Models;
 using HacknetSharp.Server.Templates;
@@ -8,6 +10,24 @@ namespace HacknetSharp.Test.Util;
 
 internal static class TestsSupport
 {
+    internal static void StartBasicShell(World world, SynchronousTestServerPersonContext ctx)
+    {
+        var person = ctx.GetPerson(world);
+        var system = person.Systems.First();
+        StartBasicShell(world, ctx, person, system);
+    }
+
+    internal static void QueueAndUpdate(SynchronousTestServer server, SynchronousTestServerPersonContext ctx, UserModel user, string command, int consoleWidth = 32)
+    {
+        server.QueueCommand(ctx, user, Guid.NewGuid(), consoleWidth, command);
+        server.Update(0.0f);
+    }
+
+    internal static void StartBasicShell(World world, SynchronousTestServerPersonContext ctx, PersonModel person, SystemModel system)
+    {
+        world.StartShell(ctx, person, system.Logins.Single(), ServerConstants.GetLoginShellArgv(), true);
+    }
+
     internal static SynchronousTestServer ConfigureSimpleEmptySystem(out World world, out UserModel user,
         out PersonModel person, out SystemModel system, out SynchronousTestServerPersonContext ctx)
     {
@@ -39,6 +59,7 @@ internal static class TestsSupport
         Assert.That(person.Systems.Count, Is.EqualTo(0));
         system = world.Spawn.System(systemTemplate, systemTemplateName, person, user.Password, new IPAddressRange("192.168.0.32"));
         Assert.That(person.Systems.Count, Is.EqualTo(1));
+        person.DefaultSystem = system.Key;
         ctx = new SynchronousTestServerPersonContext(person) { Connected = true };
         return server;
     }
