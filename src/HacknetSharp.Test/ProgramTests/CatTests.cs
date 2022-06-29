@@ -8,7 +8,7 @@ public class CatTests : ProgramTestBase
     [Test]
     public void NormalFile_Works()
     {
-        UnixFs().Admin().UserName("a_user").Files("text:\"/home/{UserName}/test1.txt\" \"ouf\"").Build().Shell();
+        UnixFs().UserName("a_user").Files("text:\"/home/{UserName}/test1.txt\" \"ouf\"").Build().Shell();
         Assert.That(Run("cat /home/a_user/test1.txt").NextText(), Is.EqualTo("ouf\n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }
@@ -16,7 +16,7 @@ public class CatTests : ProgramTestBase
     [Test]
     public void BinaryFile_Disabled()
     {
-        UnixFs().Admin().Build().Shell();
+        UnixFs().Build().Shell();
         Assert.That(Run("cat /bin/cat").NextText(), Is.EqualTo("cat: /bin/cat: Is a binary file\n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }
@@ -24,7 +24,7 @@ public class CatTests : ProgramTestBase
     [Test]
     public void Directory_Disabled()
     {
-        UnixFs().Admin().Build().Shell();
+        UnixFs().Build().Shell();
         Assert.That(Run("cat /bin").NextText(), Is.EqualTo("cat: /bin: Is a directory\n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }
@@ -32,7 +32,7 @@ public class CatTests : ProgramTestBase
     [Test]
     public void MissingFile_Works()
     {
-        UnixFs().Admin().UserName("usao").Build().Shell();
+        UnixFs().UserName("usao").Build().Shell();
         Assert.That(Run("cat /home/usao/abec.txt").NextText(), Is.EqualTo("cat: /home/usao/abec.txt: No such file or directory\n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }

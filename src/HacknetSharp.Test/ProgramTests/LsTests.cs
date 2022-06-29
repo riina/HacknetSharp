@@ -12,7 +12,7 @@ public class LsTests : ProgramTestBase
     [Test]
     public void ExistingFolder_NoTrailingSlash_Works()
     {
-        UnixFs().Admin().Files("fold:/test/bin", "fold:/test/lib", "fold:/test/local", "fold:/test/share").Build().Shell();
+        UnixFs().Files("fold:/test/bin", "fold:/test/lib", "fold:/test/local", "fold:/test/share").Build().Shell();
         Assert.That(Run("ls /test", 16).NextText(), Is.EqualTo("bin   lib   \nlocal share \n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }
@@ -20,7 +20,7 @@ public class LsTests : ProgramTestBase
     [Test]
     public void ExistingFolder_WithTrailingSlash_Works()
     {
-        UnixFs().Admin().Files("fold:/test/bin", "fold:/test/lib", "fold:/test/local", "fold:/test/share").Build().Shell();
+        UnixFs().Files("fold:/test/bin", "fold:/test/lib", "fold:/test/local", "fold:/test/share").Build().Shell();
         Assert.That(Run("ls /test/", 16).NextText(), Is.EqualTo("bin   lib   \nlocal share \n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }
@@ -28,7 +28,7 @@ public class LsTests : ProgramTestBase
     [Test]
     public void MissingFolder_MarkedMissing()
     {
-        UnixFs().Admin().Build().Shell();
+        UnixFs().Build().Shell();
         Assert.That(Run("ls /usrs").NextText(), Is.EqualTo("ls: /usrs: No such file or directory\n"));
         Assert.That(ProcessCount(), Is.EqualTo(0));
     }
