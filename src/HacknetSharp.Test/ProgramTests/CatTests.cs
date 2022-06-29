@@ -1,67 +1,71 @@
+using HacknetSharp.Test.Util;
 using NUnit.Framework;
-using static HacknetSharp.Test.Util.TestsSupport;
 
 namespace HacknetSharp.Test.ProgramTests;
 
-public class CatTests
+public class CatTests : ProgramTestBase
 {
     [Test]
     public void NormalFile_Works()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
-        StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, $"cat /home/{person.UserName}/test1.txt");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("ouf\n"));
-        AssertDisconnect(server, ctx);
+        UnixFs().Admin().UserName("a_user").Files("text:\"/home/{UserName}/test1.txt\" \"ouf\"").Build().Shell();
+        Assert.That(Run("cat /home/a_user/test1.txt").NextText(), Is.EqualTo("ouf\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
     }
 
     [Test]
     public void BinaryFile_Disabled()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
-        StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, "cat /bin/cat");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin/cat: Is a binary file\n"));
-        AssertDisconnect(server, ctx);
+        UnixFs().Admin().Build().Shell();
+        Assert.That(Run("cat /bin/cat").NextText(), Is.EqualTo("cat: /bin/cat: Is a binary file\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
     }
 
     [Test]
     public void Directory_Disabled()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
-        StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, "cat /bin");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /bin: Is a directory\n"));
-        AssertDisconnect(server, ctx);
+        UnixFs().Admin().Build().Shell();
+        Assert.That(Run("cat /bin").NextText(), Is.EqualTo("cat: /bin: Is a directory\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
     }
 
     [Test]
     public void MissingFile_Works()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
-        StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, $"cat /home/{person.UserName}/test1nonexistent.txt");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /home/person1username/test1nonexistent.txt: No such file or directory\n"));
-        AssertDisconnect(server, ctx);
+        UnixFs().Admin().UserName("usao").Build().Shell();
+        Assert.That(Run("cat /home/usao/abec.txt").NextText(), Is.EqualTo("cat: /home/usao/abec.txt: No such file or directory\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
     }
 
     [Test]
     public void Protected_FromAdmin_Visible()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out var person, out var system, out var ctx);
-        StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, "cat /root/jazzco_firmware_v2");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("thanks for the tech tip\n"));
-        AssertDisconnect(server, ctx);
+        UnixFs().Admin().Files("text+++:/prot/file \"DATA\"").Build().Shell();
+        Assert.That(Run("cat /prot/file").NextText(), Is.EqualTo("DATA\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
     }
 
     [Test]
-    public void Protected_FromRegular_Protected()
+    public void ProtectedFolder_FromRegular_Protected()
     {
-        using var server = ConfigureSimplePopulatedRegular(out var world, out var user, out var person, out var system, out var ctx);
-        StartBasicShell(world, ctx, person, system);
-        QueueAndUpdate(server, ctx, user, "cat /root/jazzco_firmware_v2");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("cat: /root/jazzco_firmware_v2: No such file or directory\n"));
-        AssertDisconnect(server, ctx);
+        UnixFs().Unelevated().Files("fold+++:/prot/", "text+++:/prot/file \"DATA\"").Build().Shell();
+        Assert.That(Run("cat /prot/file").NextText(), Is.EqualTo("cat: /prot/file: No such file or directory\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void ProtectedFile_FromRegular_Protected()
+    {
+        UnixFs().Unelevated().Files("fold:/prot/", "text+++:/prot/file \"DATA\"").Build().Shell();
+        Assert.That(Run("cat /prot/file").NextText(), Is.EqualTo("cat: /prot/file: Permission denied\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void ProtectedFile2_FromRegular_Protected()
+    {
+        UnixFs().Unelevated().Files("text+++:/prot/file \"DATA\"").Build().Shell();
+        Assert.That(Run("cat /prot/file").NextText(), Is.EqualTo("cat: /prot/file: Permission denied\n"));
+        Assert.That(ProcessCount(), Is.EqualTo(0));
     }
 }

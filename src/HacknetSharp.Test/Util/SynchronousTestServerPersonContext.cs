@@ -13,7 +13,7 @@ namespace HacknetSharp.Test.Util;
 
 internal class SynchronousTestServerPersonContext : IPersonContext
 {
-    public string GetClearText()
+    public string NextText()
     {
         string str = Text.ToString();
         Text.Clear();

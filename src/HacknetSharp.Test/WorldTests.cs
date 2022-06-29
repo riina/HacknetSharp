@@ -1,3 +1,4 @@
+using HacknetSharp.Test.Util;
 using NUnit.Framework;
 using static HacknetSharp.Test.Util.TestsSupport;
 
@@ -8,20 +9,20 @@ public class WorldTests
     [Test]
     public void SynchronousServer_MissingExe_NoBinFolder_Works()
     {
-        using var server = ConfigureSimpleEmptyAdmin(out var world, out var user, out _, out _, out var ctx);
-        StartBasicShell(world, ctx);
+        using var server = Configure(new Setup {Populated = false, Admin = true}, out var world, out var user, out _, out _, out var ctx);
+        StartShell(world, ctx);
         QueueAndUpdate(server, ctx, user, "grep");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("grep: command not found\n"));
+        Assert.That(ctx.NextText(), Is.EqualTo("grep: command not found\n"));
         AssertDisconnect(server, ctx);
     }
 
     [Test]
     public void SynchronousServer_MissingExe_WithBinFolder_Works()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out var user, out _, out _, out var ctx);
-        StartBasicShell(world, ctx);
+        using var server = Configure(new Setup {Populated = true, Admin = true}, out var world, out var user, out _, out _, out var ctx);
+        StartShell(world, ctx);
         QueueAndUpdate(server, ctx, user, "grep");
-        Assert.That(ctx.GetClearText(), Is.EqualTo("/bin/grep: not found\n"));
+        Assert.That(ctx.NextText(), Is.EqualTo("/bin/grep: not found\n"));
         AssertDisconnect(server, ctx);
     }
 }

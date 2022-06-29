@@ -1,4 +1,5 @@
 using HacknetSharp.Server.Models;
+using HacknetSharp.Test.Util;
 using NUnit.Framework;
 using static HacknetSharp.Test.Util.TestsSupport;
 using static HacknetSharp.Test.Util.SynchronousTestServerTemplateConfiguration;
@@ -18,10 +19,10 @@ public class ServerTests
     [Test]
     public void SynchronousServer_ConnectionState_Works()
     {
-        using var server = ConfigureSimplePopulatedAdmin(out var world, out UserModel _, out _, out _, out var ctx);
-        StartBasicShell(world, ctx);
+        using var server = Configure(new Setup { Populated = true, Admin = true }, out var world, out UserModel _, out _, out _, out var ctx);
+        StartShell(world, ctx);
         server.Update(0.0f);
-        Assert.That(ctx.GetClearText(), Is.EqualTo(""));
+        Assert.That(ctx.NextText(), Is.EqualTo(""));
         AssertDisconnect(server, ctx);
     }
 }
